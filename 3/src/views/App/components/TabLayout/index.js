@@ -26,7 +26,8 @@ export default class TabLayout extends React.Component {
       ReactDOM.findDOMNode(this).addEventListener('selected', this.props.onSelect)
     }
   }
-  /*
+  
+  /**
     * selects and deselects tabs
     */
   selectTab = (tab) => {
@@ -41,7 +42,7 @@ export default class TabLayout extends React.Component {
     event.page = tab.props.data.page
     ReactDOM.findDOMNode(this).dispatchEvent(event)
   }
-  /*
+  /**
     * gets tab layout
     * @return {TabLayout}
     */

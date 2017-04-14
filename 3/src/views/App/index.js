@@ -1,9 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import {TweenMax, CSSPlugin} from 'gsap'
 
 import Toolbar from './components/Toolbar'
 import TabLayout from './components/TabLayout'
 import Tab from './components/TabLayout/components/Tab'
+import NavigationDrawer from './components/NavigationDrawer'
 
 import PostsTab from '../Tabs/Posts'
 import GalleryTab from '../Tabs/Gallery'
@@ -16,14 +18,28 @@ export default class App extends React.Component {
 
     this.state = ({
       toolbarItems: [],
-      tabLayoutLeft: 48
+      tabLayoutLeft: 48,
+      contentWidth: '100%'
     })
   }
 
   componentDidMount () {
+    const self = this
+    const navigationDrawer = this.refs.navigationDrawer
+
+    /** events */
     function onClickMenu () {
+      if (!navigationDrawer.state.toggled) {
+        navigationDrawer.show()
+      } else {
+        navigationDrawer.hide()
+      }
+    }
+
+    function onClickSearch () {
 
     }
+
     this.setState({
       toolbarItems: [
         {
@@ -42,7 +58,7 @@ export default class App extends React.Component {
           type: 'Icon',
           position: 'Right',
           image: 'src/images/Toolbar/search.png',
-          onClick: onClickMenu,
+          onClick: onClickSearch,
           style: {opacity: 1}
         }
       ]
@@ -70,6 +86,10 @@ export default class App extends React.Component {
     })
   }
 
+  /**
+    * get app
+    * @return {App}
+    */
   getApp = () => {
     return this
   }
@@ -78,20 +98,24 @@ export default class App extends React.Component {
     var tabLayoutStyle = {
       left: this.state.tabLayoutLeft
     }
+    var appContentStyle = {
+      width: this.state.contentWidth
+    }
     return (
-     <div>
-       <Toolbar height={128} items={this.state.toolbarItems} getApp={this.getApp}>
-         <TabLayout ref='tabLayout' className='tab-layout-1' style={tabLayoutStyle}>
-
-         </TabLayout>
-       </Toolbar>
-       <div className='tab-pages'>
-         <PostsTab ref='postsTab' />
-         <GalleryTab ref='galleryTab' />
-         <AboutClassTab ref='aboutClassTab' />
-         <LessonPlanTab ref='lessonPlanTab' />
-       </div>
-     </div>
+      <div>
+        <div className='app-content' ref='appContent' style={appContentStyle}>
+          <Toolbar height={128} items={this.state.toolbarItems} getApp={this.getApp}>
+            <TabLayout ref='tabLayout' className='tab-layout-1' style={tabLayoutStyle} />
+          </Toolbar>
+          <div className='tab-pages'>
+            <PostsTab ref='postsTab' />
+            <GalleryTab ref='galleryTab' />
+            <AboutClassTab ref='aboutClassTab' />
+            <LessonPlanTab ref='lessonPlanTab' />
+          </div>
+        </div>
+        <NavigationDrawer ref='navigationDrawer' getApp={this.getApp} />
+      </div>
     )
   }
 }

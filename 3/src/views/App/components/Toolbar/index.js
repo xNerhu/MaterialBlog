@@ -1,6 +1,18 @@
 import React from 'react'
 
 export default class Toolbar extends React.Component {
+  /**
+    * on tab icon mouse down event
+    * @param {object} event data
+    */
+  iconMouseDown = (e) => {
+    var ripple = Ripple.createRipple(e.target, {
+      backgroundColor: '#000',
+      opacity: 0.2
+    }, createRippleCenter(e.target, 14))
+    Ripple.makeRipple(ripple)
+  }
+  
   render () {
     var toolbarClass = (this.props.shadow) ? 'toolbar toolbar-shadow' : 'toolbar'
 
@@ -17,7 +29,7 @@ export default class Toolbar extends React.Component {
         <div className='toolbar-content'>
           {this.props.items.map((data, key) => {
             if (data.type === 'Icon') { // check if type of child is icon
-              var className = 'toolbar-icon toolbar-' + data.position.toLowerCase()
+              var className = 'toolbar-icon ripple-icon toolbar-' + data.position.toLowerCase()
 
               if (first) {
                 if (data.position === 'Right') {
@@ -36,7 +48,7 @@ export default class Toolbar extends React.Component {
                 }, data.style
               )
 
-              return <div key={key} className={className} style={style} onClick={data.onClick} />
+              return <div key={key} className={className} style={style} onClick={data.onClick} onMouseDown={this.iconMouseDown} />
             }
             if (data.type === 'Title') { // check if type of child is title
               var left = 16

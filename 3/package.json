@@ -1,9 +1,9 @@
 {
-  "name": "NodeEinstein",
+  "name": "MyClassBlog",
   "version": "0.0.1",
   "description": "Blog klasy 3b gimnazjum im. Alberta Einsteina WSERO",
   "scripts": {
-    "watch": "webpack && webpack-dev-server --hot --inline --port 2112"
+    "watch": "webpack && webpack-dev-server --hot --inline --port 1811"
   },
   "author": "Mikolaj Palkiewicz",
   "license": "MIT",

@@ -1,5 +1,6 @@
 html, body {
   @include Roboto-Regular;
+  @include cursor-default;
   padding: 0;
   margin: 0;
   background-color: $backgroundColor;
@@ -16,4 +17,12 @@ body {
 
 .tab-pages {
   position: relative;
+}
+
+.app-content {
+  top: 0;
+  right: 0;
+  position: absolute;
+  background-color: #FFFFFF;
+  transition: width 0.3s;
 }

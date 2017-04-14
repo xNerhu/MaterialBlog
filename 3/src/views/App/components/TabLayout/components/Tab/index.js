@@ -19,13 +19,26 @@ export default class Tab extends React.Component {
       tabLayout.selectTab(tabLayout.tabs[0])
     }, 1)
   }
-  /*
-  events
-  */
+
+  /**
+    * event
+    */
   onClick = () => {
     this.props.getTabLayout().selectTab(this)
   }
-  /*
+
+  /**
+    * event
+    * @param {object} event data
+    */
+  onMouseDown = (e) => {
+    var ripple = Ripple.createRipple(this.refs.tab, {
+      backgroundColor: '#fff'
+    }, createRippleMouse(this.refs.tab, e, 1.5))
+    Ripple.makeRipple(ripple)
+  }
+
+  /**
     * deselects tab
     */
   deselect = () => {
@@ -36,9 +49,10 @@ export default class Tab extends React.Component {
 
     this.selected = false
   }
-  /*
-  * selects tab
-  */
+  
+  /**
+    * selects tab
+    */
   select = () => {
     this.selected = true
     var tabLayout = this.props.getTabLayout()
@@ -90,7 +104,7 @@ export default class Tab extends React.Component {
     }
 
     return (
-      <div ref='tab' onClick={this.onClick} style={this.props.style} className='tab'>
+      <div ref='tab' onClick={this.onClick} onMouseDown={this.onMouseDown} style={this.props.style} className='tab ripple'>
         <div style={tabTitleStyle} className='tab-title'>
           {this.props.data.title}
         </div>

@@ -1,0 +1,22 @@
+.navigation-drawer {
+  position: absolute;
+  bottom: 0;
+  transition: 0.3s all;
+  transition-property: left, width;
+  z-index: 10;
+}
+
+.navigation-drawer-header {
+  width: 100%;
+  height: 128px;
+  background-color: $navigationDrawerHeader;
+}
+
+.dark {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  @include set(0, 0, 0, 0);
+  transition: 0.3s opacity;
+  z-index: 9;
+}

@@ -13,7 +13,7 @@ module.exports = {
 
   devServer: {
     contentBase: './',
-    publicPath: 'http://localhost:2112/build/'
+    publicPath: 'http://localhost:1811/build/'
   },
 
   module: {
