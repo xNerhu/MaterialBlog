@@ -17,6 +17,8 @@ body {
 
 .tab-pages {
   position: relative;
+  height: calc(100% - 136px);
+  overflow: auto;
 }
 
 .app-content {
@@ -25,4 +27,5 @@ body {
   position: absolute;
   background-color: #FFFFFF;
   transition: width 0.3s;
+  height: 100%;
 }

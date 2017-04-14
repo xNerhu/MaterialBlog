@@ -1,6 +1,6 @@
 $backgroundColor: #FAFAFA;
 $indicator-color: #fff;
-$navigationDrawerHeader: #1976D2;
+$navigationDrawerHeader: #1E88E5;
 
 @import 'mixins/positioning.scss';
 @import 'mixins/fonts.scss';
@@ -13,4 +13,5 @@ $navigationDrawerHeader: #1976D2;
 @import 'views/App/components/Toolbar/style.scss';
 @import 'views/App/components/TabLayout/style.scss';
 @import 'views/App/components/TabLayout/components/Tab/style.scss';
+@import 'views/Tabs/Posts/components/Post/style.scss';
 @import 'views/App/components/NavigationDrawer/style.scss';

@@ -1,0 +1,90 @@
+.post {
+  width: 60%;
+  height: auto;
+  background-color: #fff;
+  color: #444;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  position: relative;
+  margin: 0 auto;
+  -webkit-user-select: auto;
+  border-radius: 2px;
+  padding-bottom: 12px;
+
+  &:first-child {
+    margin-top: 24px;
+  }
+}
+
+.post-title {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  font-size: 19px;
+  @include Roboto-Medium;
+  display: block;
+}
+
+.post-info {
+  padding-left: 20px;
+  padding-right: 6px;
+  padding-top: 4px;
+  font-size: 14px;
+  @include Roboto-Medium;
+}
+
+.post-content {
+  font-size: 16px;
+  padding-top: 8px;
+  padding-left: 20px;
+  padding-right: 32px;
+  @include Roboto-Regular;
+}
+
+.post-action {
+  width: 100%;
+  height: 24px;
+  margin-top: 24px;
+  @include cursor-default;
+}
+
+.post-action-like {
+  width: 24px;
+  height: 24px;
+  @include image-center(24px, 24px);
+  opacity: 0.7;
+  margin-left: 20px;
+  float: left;
+  cursor: pointer;
+}
+
+.post-action-like-count {
+  width: auto;
+  height: 26px;
+  margin-top: 4px;
+  margin-left: 8px;
+  float: left;
+  font-size: 16px;
+  @include Roboto-Medium;
+}
+
+.post-action-show-comments {
+  width: 200px;
+  height: 24px;
+  font-size: 15px;
+  text-align: center;
+  margin-right: 20px;
+  margin-top: 4px;
+  float: right;
+  position: relative;
+}
+
+.post-action-show-comments-button {
+  width: 28px;
+  height: 28px;
+  @include image-center(28px, 28px);
+  opacity: 0.7;
+  position: absolute;
+  right: 0;
+  top: -4px;
+  cursor: pointer;
+}

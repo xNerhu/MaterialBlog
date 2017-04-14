@@ -155,12 +155,26 @@ export default class NavigationDrawer extends React.Component {
     }, 300)
   }
 
+  /**
+    * on navigation drawer item mouse down
+    * @param {object} event data
+    */
+  onItemMouseDown = (e) => {
+    var ripple = Ripple.createRipple(e.target, {
+      backgroundColor: '#000',
+      opacity: 0.2
+    }, createRippleMouse(e.target, e, 1.5))
+    Ripple.makeRipple(ripple)
+  }
+
   render () {
     var navigationDrawerStyle = {
       backgroundColor: this.props.backgroundColor,
       width: this.state.width,
       height: this.state.height,
-      left: this.state.left,
+      left: this.state.left
+    }
+    var navigationDrawerContentStyle = {
       borderRight: (this.state.persistent && this.state.toggled) ? '1px solid rgba(0,0,0,0.12)' : 'none'
     }
     var darkStyle = {
@@ -169,13 +183,28 @@ export default class NavigationDrawer extends React.Component {
       opacity: this.state.darkOpacity
     }
     var headerStyle = {
-      display: (this.state.persistent) ? 'none' : 'block'
+      display: 'block' // (this.state.persistent) ? 'none' : 'block'
+    }
+    var infoIconStyle = {
+      backgroundImage: 'url(src/images/NavigationDrawer/info.png)'
+    }
+    var settingsIconStyle = {
+      backgroundImage: 'url(src/images/NavigationDrawer/settings.png)'
     }
 
     return (
       <div>
         <div className='navigation-drawer' style={navigationDrawerStyle}>
-          <div className='navigation-drawer-header' style={headerStyle}>
+          <div className='navigation-drawer-header' style={headerStyle} />
+          <div className='navigation-drawer-content' style={navigationDrawerContentStyle}>
+            <div className='navigation-drawer-item ripple' onMouseDown={this.onItemMouseDown}>
+              <div className='navigation-drawer-item-icon' style={infoIconStyle} />
+              Informacje
+            </div>
+            <div className='navigation-drawer-item ripple' onMouseDown={this.onItemMouseDown}>
+              <div className='navigation-drawer-item-icon' style={settingsIconStyle} />
+              Panel
+            </div>
           </div>
         </div>
         <div className='dark' style={darkStyle} onClick={this.hide} />
