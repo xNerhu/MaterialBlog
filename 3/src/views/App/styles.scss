@@ -1,0 +1,19 @@
+html, body {
+  @include Roboto-Regular;
+  padding: 0;
+  margin: 0;
+  background-color: $backgroundColor;
+}
+
+body {
+  overflow: hidden;
+}
+
+.tab-layout-1 {
+  position: absolute;
+  bottom: 0;
+}
+
+.tab-pages {
+  position: relative;
+}

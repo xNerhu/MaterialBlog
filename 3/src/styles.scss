@@ -1,0 +1,14 @@
+$backgroundColor: #FAFAFA;
+$indicator-color: #fff;
+
+@import 'mixins/positioning.scss';
+@import 'mixins/fonts.scss';
+@import 'mixins/icons.scss';
+@import 'mixins/cursors.scss';
+@import 'mixins/backgrounds.scss';
+@import 'mixins/shadows.scss';
+
+@import 'views/App/styles.scss';
+@import 'views/App/components/Toolbar/style.scss';
+@import 'views/App/components/TabLayout/style.scss';
+@import 'views/App/components/TabLayout/components/Tab/style.scss';
