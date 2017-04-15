@@ -173,7 +173,7 @@ export default class Post extends React.Component {
     }
     const commentsStyle = {
       overflow: (!this.state.commentsVisible) ? 'hidden' : 'auto',
-      height: (!this.state.commentsVisible) ? 0 : ((this.props.comments.length <= 4) ? this.props.comments.length * 56 : 224),
+      height: (!this.state.commentsVisible) ? 0 : this.refs.comments.scrollHeight,
       borderTop: (!this.state.commentsVisible) ? 'none' : '1px solid #eee'
     }
     return (
@@ -206,6 +206,7 @@ export default class Post extends React.Component {
                 <div className='post-comment-avatar-right'>
                   <div className='post-comment-author'>{data.author}</div>
                   <div className='post-comment-text'>{data.content}</div>
+                  <div className='post-comment-date'>{data.date}</div>
                 </div>
               </div>
             )

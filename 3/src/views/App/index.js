@@ -13,6 +13,7 @@ import AboutClassTab from '../Tabs/AboutClass'
 import LessonPlanTab from '../Tabs/LessonPlan'
 
 import Tooltip from '../../imports/materialdesign/components/Tooltip'
+import Preloader from '../../imports/materialdesign/components/Preloader'
 
 export default class App extends React.Component {
   constructor () {
@@ -131,6 +132,7 @@ export default class App extends React.Component {
             <LessonPlanTab ref='lessonPlanTab' />
           </div>
         </div>
+        <Preloader ref='preloader' className='data-preloader' style={{width: 54, height: 54}} strokeColor='#2196f3' strokeWidth={4} />
         <NavigationDrawer ref='navigationDrawer' getApp={this.getApp} />
         <Tooltip ref='tooltipLike'>{this.state.toolTipLikeText}</Tooltip>
         <Tooltip ref='tooltipLikesList'>{this.state.toolTipLikesList}</Tooltip>

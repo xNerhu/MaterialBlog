@@ -131,6 +131,12 @@
   font-size: 14px;
 }
 
+.post-comment-date {
+  margin-top: 2px;
+  @include Roboto-Medium;
+  font-size: 14px;
+}
+
 .post-comment-avatar {
   width: 36px;
   height: 36px;
@@ -139,7 +145,7 @@
 }
 
 .post-comment-avatar-right {
-  width: auto;
+  width: calc(100% - 76px);
   float: left;
   padding-left: 12px;
 }
