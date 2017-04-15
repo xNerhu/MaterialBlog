@@ -81,6 +81,7 @@ export default class Post extends React.Component {
     * @param {Object} event data
     */
   onLikeMouseEnter = (e) => {
+    this.props.getApp().setState({toolTipLikeText: (this.liked(this.props.likes, this.props.getApp().getAccountInfo()) ? 'Nie lubię!' : 'Lubię to!')})
     this.props.getApp().refs.tooltipLike.show(this.refs.like)
   }
 
@@ -91,6 +92,29 @@ export default class Post extends React.Component {
     */
   onLikeMouseLeave = (e) => {
     this.props.getApp().refs.tooltipLike.hide()
+  }
+
+  /**
+    * on likes list button mouse enter event
+    * shows tooltip
+    * @param {Object} event data
+    */
+  onLikesListMouseEnter = (e) => {
+    var list = ''
+    for (var i = 0; i < this.props.likes.length; i++) {
+      list += this.props.likes[i].userName + ((i < this.props.likes.length - 1) ? '\n' : '')
+    }
+    this.props.getApp().setState({toolTipLikesList: list})
+    this.props.getApp().refs.tooltipLikesList.show(this.refs.likeCount)
+  }
+
+  /**
+    * on likes list button mouse leave event
+    * hides tooltip
+    * @param {Object} event data
+    */
+  onLikesListMouseLeave = (e) => {
+    this.props.getApp().refs.tooltipLikesList.hide()
   }
 
   /**
@@ -113,16 +137,35 @@ export default class Post extends React.Component {
     */
   onShowCommentsButtonMouseLeave = (e) => {
     if (!this.props.getApp().refs.tooltipShowComments.isToogled()) {
-        this.props.getApp().refs.tooltipShowComments.hide()
+      this.props.getApp().refs.tooltipShowComments.hide()
     }
     if (!this.props.getApp().refs.tooltipHideComments.isToogled()) {
       this.props.getApp().refs.tooltipHideComments.hide()
     }
   }
 
+  /**
+    * check if user is liked post
+    * @param {Object} likes data
+    * @param {Object} account info
+    */
+  liked = (likesData, accountInfo) => {
+    var flag = false
+    for(var i = 0; i < likesData.length; i++) {
+      if (likesData[i].userID === accountInfo.userID) {
+        flag = true
+        break
+      }
+    }
+    return flag
+  }
+
   render () {
+    const avatarIconStyle = {
+      backgroundImage: 'url(' + this.props.avatar + ')'
+    }
     const likeIconStyle = {
-      backgroundImage: 'url(src/images/Post/favorite_full.png)'
+      backgroundImage: (this.liked(this.props.likes, this.props.getApp().getAccountInfo())) ? 'url(src/images/Post/favorite_full.png)' : 'url(src/images/Post/favorite_border.png)'
     }
     const commentIconStyle = {
       backgroundImage: 'url(src/images/Post/expand_more.png)',
@@ -136,16 +179,19 @@ export default class Post extends React.Component {
     return (
       <div className='post' ref='post'>
         <div className='ripple' ref='content' onMouseDown={this.onMouseDown}>
-          <div className='post-title'>
-            {this.props.title}
+          <div className='post-avatar' style={avatarIconStyle} />
+          <div className='post-avatar-right'>
+            <div className='post-title'>
+              {this.props.title}
+            </div>
+            <div className='post-info'>{this.props.date}, {this.props.author}</div>
           </div>
-          <div className='post-info'>{this.props.date}, {this.props.author}</div>
           <div className='post-text'>
             {this.props.children}
           </div>
           <div className='post-action'>
             <div className='post-action-like ripple-icon' ref='like' style={likeIconStyle} onMouseDown={this.onLikeMouseDown} onMouseEnter={this.onLikeMouseEnter} onMouseLeave={this.onLikeMouseLeave} />
-            <div className='post-action-like-count' ref='likeCount'>{this.props.likes.length}</div>
+            <div className='post-action-like-count' ref='likeCount' onMouseEnter={this.onLikesListMouseEnter} onMouseLeave={this.onLikesListMouseLeave}>{this.props.likes.length}</div>
             <div className='post-action-show-comments'>
               <div ref='commentsCount' onClick={this.onShowCommentsButtonClick}>KOMENTARZE ({this.props.comments.length})</div>
               <div className='post-action-show-comments-button ripple-icon' ref='showComments' onMouseDown={this.onShowCommentsButtonMouseDown} onClick={this.onShowCommentsButtonClick} style={commentIconStyle} onMouseEnter={this.onShowCommentsButtonMouseEnter} onMouseLeave={this.onShowCommentsButtonMouseLeave} />
@@ -156,8 +202,11 @@ export default class Post extends React.Component {
           {this.props.comments.map((data, i) => {
             return (
               <div className='post-comment ripple' key={i} onMouseDown={this.onCommentMouseDown}>
-                <div className='post-comment-author'>{data.author}</div>
-                <div className='post-comment-text'>{data.content}</div>
+                <div className='post-comment-avatar' style={{backgroundImage: 'url(' + data.avatar + ')'}} />
+                <div className='post-comment-avatar-right'>
+                  <div className='post-comment-author'>{data.author}</div>
+                  <div className='post-comment-text'>{data.content}</div>
+                </div>
               </div>
             )
           })}

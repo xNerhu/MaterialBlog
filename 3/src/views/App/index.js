@@ -21,8 +21,15 @@ export default class App extends React.Component {
     this.state = ({
       toolbarItems: [],
       tabLayoutLeft: 48,
-      contentWidth: '100%'
+      contentWidth: '100%',
+      toolTipLikeText: 'Polub',
+      toolTipLikesList: ''
     })
+
+    this.accountInfo = {
+      userID: 1,
+      userName: 'Mikołaj Palkiewicz'
+    }
   }
 
   componentDidMount () {
@@ -89,11 +96,19 @@ export default class App extends React.Component {
   }
 
   /**
-    * get app
+    * gets app
     * @return {App}
     */
   getApp = () => {
     return this
+  }
+
+  /**
+    * gets account info
+    * @return {Object}
+    */
+  getAccountInfo = () => {
+    return this.accountInfo
   }
 
   render () {
@@ -117,7 +132,8 @@ export default class App extends React.Component {
           </div>
         </div>
         <NavigationDrawer ref='navigationDrawer' getApp={this.getApp} />
-        <Tooltip ref='tooltipLike'>Polub</Tooltip>
+        <Tooltip ref='tooltipLike'>{this.state.toolTipLikeText}</Tooltip>
+        <Tooltip ref='tooltipLikesList'>{this.state.toolTipLikesList}</Tooltip>
         <Tooltip ref='tooltipShowComments'>Pokaż komentarze</Tooltip>
         <Tooltip ref='tooltipHideComments'>Ukryj komentarze</Tooltip>
       </div>

@@ -188,8 +188,8 @@ export default class NavigationDrawer extends React.Component {
     var infoIconStyle = {
       backgroundImage: 'url(src/images/NavigationDrawer/info.png)'
     }
-    var settingsIconStyle = {
-      backgroundImage: 'url(src/images/NavigationDrawer/settings.png)'
+    var loginIconStyle = {
+      backgroundImage: 'url(src/images/NavigationDrawer/login.png)'
     }
 
     return (
@@ -202,8 +202,8 @@ export default class NavigationDrawer extends React.Component {
               Informacje
             </div>
             <div className='navigation-drawer-item ripple' onMouseDown={this.onItemMouseDown}>
-              <div className='navigation-drawer-item-icon' style={settingsIconStyle} />
-              Panel
+              <div className='navigation-drawer-item-icon' style={loginIconStyle} />
+              Zaloguj się
             </div>
           </div>
         </div>

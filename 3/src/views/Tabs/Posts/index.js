@@ -25,8 +25,9 @@ export default class PostsTab extends React.Component {
         {
           title: 'Test',
           author: 'Mikołaj Palkiewicz',
-          content: 'Lorem impsum warto wiedziec',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in neque turpis. Aenean tincidunt nunc nec ligula cursus iaculis. Pellentesque nisl nulla, malesuada a est a, tempor dapibus eros. Sed facilisis porta auctor.',
           date: '14.04.2017 20:38',
+          avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
           likes: [
             {
               userName: 'Mikołaj Palkiewicz',
@@ -37,8 +38,9 @@ export default class PostsTab extends React.Component {
             {
               author: 'Mikołaj Palkiewicz',
               userID: 1,
-              content: 'Muu ale super',
-              date: '14.04.2017 21:12'
+              content: 'Przykładowy komentarz',
+              date: '14.04.2017 21:12',
+              avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
             }
           ]
         }
@@ -64,7 +66,7 @@ export default class PostsTab extends React.Component {
           <div className='posts-tab tab-page' ref={(t) => { this.root = t }} style={{left: value.left, display: this.state.display}}>
             <div className='posts'>
               {this.state.posts.map((data, i) => {
-                return <Post key={i} title={data.title} author={data.author} date={data.date} likes={data.likes} comments={data.comments} getApp={this.props.getApp}>{data.content}</Post>
+                return <Post key={i} title={data.title} author={data.author} date={data.date} likes={data.likes} comments={data.comments} getApp={this.props.getApp} avatar={data.avatar}>{data.content}</Post>
               })}
 
             </div>

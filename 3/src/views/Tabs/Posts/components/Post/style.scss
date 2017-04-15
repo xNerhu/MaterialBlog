@@ -14,19 +14,33 @@
   }
 }
 
+.post-avatar {
+  width: 40px;
+  height: 40px;
+  float: left;
+  margin-top: 16px;
+  margin-left: 20px;
+  @include image-center(40px, 40px);
+}
+
+.post-avatar-right {
+  width: auto;
+  float: left;
+}
+
 .post-title {
-  padding-left: 20px;
+  padding-left: 12px;
   padding-right: 20px;
-  padding-top: 10px;
+  padding-top: 16px;
   font-size: 19px;
   @include Roboto-Medium;
   display: block;
 }
 
 .post-info {
-  padding-left: 20px;
+  padding-left: 12px;
   padding-right: 6px;
-  padding-top: 4px;
+  padding-top: 1px;
   font-size: 14px;
   @include Roboto-Medium;
 }
@@ -37,6 +51,7 @@
   padding-left: 20px;
   padding-right: 32px;
   @include Roboto-Regular;
+  clear:both;
 }
 
 .post-action {
@@ -101,7 +116,7 @@
 .post-comment {
   padding-top: 10px;
   padding-bottom: 10px;
-  padding-left: 32px;
+  padding-left: 40px;
   padding-right: 20px;
   width: 100%;
 }
@@ -114,4 +129,17 @@
 .post-comment-text {
   @include Roboto-Regular;
   font-size: 14px;
+}
+
+.post-comment-avatar {
+  width: 36px;
+  height: 36px;
+  float: left;
+  @include image-center(36px, 36px);
+}
+
+.post-comment-avatar-right {
+  width: auto;
+  float: left;
+  padding-left: 12px;
 }

@@ -50,9 +50,12 @@ export default class Tooltip extends React.Component {
       left: this.state.left,
       top: this.state.top
     }
+
     return (
       <div className='tooltip' style={toolTipStyle}>
-        {this.props.children}
+        {this.props.children.split('\n').map((item, key) => {
+          return <span key={key}>{item}<br /></span>
+        })}
       </div>
     )
   }
