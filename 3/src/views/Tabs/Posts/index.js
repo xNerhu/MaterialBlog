@@ -10,12 +10,40 @@ export default class PostsTab extends React.Component {
     this.state = {
       left: 0,
       display: 'none',
-      defaultLeft: 0
+      defaultLeft: 0,
+      posts: []
     }
 
     this.isVisible = false
 
     this.root = null
+  }
+
+  componentDidMount () {
+    this.setState({
+      posts: [
+        {
+          title: 'Test',
+          author: 'Mikołaj Palkiewicz',
+          content: 'Lorem impsum warto wiedziec',
+          date: '14.04.2017 20:38',
+          likes: [
+            {
+              userName: 'Mikołaj Palkiewicz',
+              userID: 1
+            }
+          ],
+          comments: [
+            {
+              author: 'Mikołaj Palkiewicz',
+              userID: 1,
+              content: 'Muu ale super',
+              date: '14.04.2017 21:12'
+            }
+          ]
+        }
+      ]
+    })
   }
 
   getRoot = () => {
@@ -35,7 +63,10 @@ export default class PostsTab extends React.Component {
         {value =>
           <div className='posts-tab tab-page' ref={(t) => { this.root = t }} style={{left: value.left, display: this.state.display}}>
             <div className='posts'>
-              <Post title='Test' author='Mikołaj Palkiewicz' date='14.04.2017 20:19' likes={0}>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Post>
+              {this.state.posts.map((data, i) => {
+                return <Post key={i} title={data.title} author={data.author} date={data.date} likes={data.likes} comments={data.comments} getApp={this.props.getApp}>{data.content}</Post>
+              })}
+
             </div>
           </div>}
       </Motion>

@@ -12,6 +12,8 @@ import GalleryTab from '../Tabs/Gallery'
 import AboutClassTab from '../Tabs/AboutClass'
 import LessonPlanTab from '../Tabs/LessonPlan'
 
+import Tooltip from '../../imports/materialdesign/components/Tooltip'
+
 export default class App extends React.Component {
   constructor () {
     super()
@@ -108,13 +110,16 @@ export default class App extends React.Component {
             <TabLayout ref='tabLayout' className='tab-layout-1' style={tabLayoutStyle} />
           </Toolbar>
           <div className='tab-pages'>
-            <PostsTab ref='postsTab' />
+            <PostsTab ref='postsTab' getApp={this.getApp} />
             <GalleryTab ref='galleryTab' />
             <AboutClassTab ref='aboutClassTab' />
             <LessonPlanTab ref='lessonPlanTab' />
           </div>
         </div>
         <NavigationDrawer ref='navigationDrawer' getApp={this.getApp} />
+        <Tooltip ref='tooltipLike'>Polub</Tooltip>
+        <Tooltip ref='tooltipShowComments'>Pokaż komentarze</Tooltip>
+        <Tooltip ref='tooltipHideComments'>Ukryj komentarze</Tooltip>
       </div>
     )
   }
