@@ -7,7 +7,9 @@ export default class Post extends React.Component {
     super()
 
     this.state = {
-      commentsVisible: false
+      commentsVisible: false,
+      isFullView: false,
+      width: '60%'
     }
   }
 
@@ -63,6 +65,16 @@ export default class Post extends React.Component {
   }
 
   /**
+    * on post click event
+    * @param {Object} event data
+    */
+  onClick = (e) => {
+    if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode.parentNode !== this.refs.comments) {
+      this.props.onClick(e, this)
+    }
+  }
+
+  /**
     * on comment mouse down event
     * @param {Object} event data
     */
@@ -101,8 +113,12 @@ export default class Post extends React.Component {
     */
   onLikesListMouseEnter = (e) => {
     var list = ''
-    for (var i = 0; i < this.props.likes.length; i++) {
-      list += this.props.likes[i].userName + ((i < this.props.likes.length - 1) ? '\n' : '')
+    if (this.props.likes.length >= 1) {
+      for (var i = 0; i < this.props.likes.length; i++) {
+        list += this.props.likes[i].userName + ((i < this.props.likes.length - 1) ? '\n' : '')
+      }
+    } else {
+      list = '...'
     }
     this.props.getApp().setState({toolTipLikesList: list})
     this.props.getApp().refs.tooltipLikesList.show(this.refs.likeCount)
@@ -160,6 +176,19 @@ export default class Post extends React.Component {
     return flag
   }
 
+  viewFullScreen = () => {
+    this.top = this.refs.post.offsetTop
+    this.setState({isFullView: true, width: '100%'})
+    this.props.getApp().setState({postFullScreen: true})
+  }
+
+  exitFullScreen = () => {
+    var self = this
+    self.setState({width: '60%'})
+    self.setState({isFullView: false})
+    self.props.getApp().setState({postFullScreen: false})
+  }
+
   render () {
     const avatarIconStyle = {
       backgroundImage: 'url(' + this.props.avatar + ')'
@@ -176,8 +205,13 @@ export default class Post extends React.Component {
       height: (!this.state.commentsVisible) ? 0 : this.refs.comments.scrollHeight,
       borderTop: (!this.state.commentsVisible) ? 'none' : '1px solid #eee'
     }
+    const postStyle = {
+      position: (!this.state.isFullView) ? 'relative' : 'absolute',
+      width: this.state.width,
+      zIndex: (!this.state.isFullView) ? 1 : 2
+    }
     return (
-      <div className='post' ref='post'>
+      <div className='post' ref='post' onClick={this.onClick} style={postStyle}>
         <div className='ripple' ref='content' onMouseDown={this.onMouseDown}>
           <div className='post-avatar' style={avatarIconStyle} />
           <div className='post-avatar-right'>

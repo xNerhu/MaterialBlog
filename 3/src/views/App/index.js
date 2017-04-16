@@ -24,7 +24,10 @@ export default class App extends React.Component {
       tabLayoutLeft: 48,
       contentWidth: '100%',
       toolTipLikeText: 'Polub',
-      toolTipLikesList: ''
+      toolTipLikesList: '',
+      tabLayoutHidden: false,
+      menuOpacity: 1,
+      postFullScreen: false
     })
 
     this.accountInfo = {
@@ -34,15 +37,22 @@ export default class App extends React.Component {
   }
 
   componentDidMount () {
-    const self = this
+    var self = this
     const navigationDrawer = this.refs.navigationDrawer
 
     /** events */
-    function onClickMenu () {
-      if (!navigationDrawer.state.toggled) {
-        navigationDrawer.show()
+    function onClickMenu (event) {
+      if (!self.state.postFullScreen) {
+        if (!navigationDrawer.state.toggled) {
+          navigationDrawer.show()
+        } else {
+          navigationDrawer.hide()
+        }
       } else {
-        navigationDrawer.hide()
+        self.getToolBar().refs.menuIcon.changeToDefault()
+        self.getToolBar().setState({height: 128})
+        self.setState({tabLayoutHidden: false})
+        self.refs.postsTab.clickedPost.exitFullScreen()
       }
     }
 
@@ -54,10 +64,17 @@ export default class App extends React.Component {
       toolbarItems: [
         {
           type: 'Icon',
+          subType: 'Menu',
           position: 'Left',
           image: 'src/images/Toolbar/menu.png',
           onClick: onClickMenu,
-          style: {opacity: 1}
+          style: {
+            width: 24,
+            height: 18,
+            position: 'absolute',
+            top: '50%',
+            transform: 'translateY(-50%)'
+          },
         },
         {
           type: 'Title',
@@ -112,20 +129,41 @@ export default class App extends React.Component {
     return this.accountInfo
   }
 
+  /**
+    * gets tool bar
+    * @return {Toolbar}
+    */
+  getToolBar = () => {
+    return this.refs.toolbar
+  }
+
+  /**
+    * gets tab layout
+    * @return {TabLayout}
+    */
+  getTabLayout = () => {
+    return this.refs.tabLayout
+  }
+
   render () {
     var tabLayoutStyle = {
-      left: this.state.tabLayoutLeft
+      left: this.state.tabLayoutLeft,
+      visibility: (!this.state.tabLayoutHidden) ? 'visible' : 'hidden',
+      opacity: (!this.state.tabLayoutHidden) ? 1 : 0
     }
     var appContentStyle = {
       width: this.state.contentWidth
     }
+    var tabPagesStyle = {
+      height: 'calc(100% - ' + ((!this.state.tabLayoutHidden) ? '136px' : '64px') + ')'
+    }
     return (
       <div>
         <div className='app-content' ref='appContent' style={appContentStyle}>
-          <Toolbar height={128} items={this.state.toolbarItems} getApp={this.getApp}>
+          <Toolbar ref='toolbar' items={this.state.toolbarItems} getApp={this.getApp}>
             <TabLayout ref='tabLayout' className='tab-layout-1' style={tabLayoutStyle} />
           </Toolbar>
-          <div className='tab-pages'>
+          <div className='tab-pages' style={tabPagesStyle}>
             <PostsTab ref='postsTab' getApp={this.getApp} />
             <GalleryTab ref='galleryTab' />
             <AboutClassTab ref='aboutClassTab' />

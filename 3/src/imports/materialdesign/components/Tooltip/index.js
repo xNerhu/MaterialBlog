@@ -18,7 +18,10 @@ export default class Tooltip extends React.Component {
     */
   show = (el) => {
     const bounds = el.getBoundingClientRect()
-    const left = bounds.left - el.offsetWidth * 0.6
+    var left = bounds.left - el.offsetWidth * 0.6
+    if (left + 100 > window.innerWidth) {
+      left -= 100
+    }
     const top = bounds.top + el.offsetHeight + 10
     this.setState({toogled: true, opacity: 0.8, left: left, top: top})
   }

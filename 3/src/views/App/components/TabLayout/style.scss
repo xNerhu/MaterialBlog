@@ -3,6 +3,7 @@
   height: 48px;
   color: rgba(255, 255, 255, 0.6);
   white-space: nowrap;
+  transition: 0.3s opacity;
 }
 
 .indicator {
@@ -17,8 +18,4 @@
   top: 0;
   width: 100%;
   height: auto;
-}
-
-.posts-tab {
-  margin-bottom: 24px;
 }

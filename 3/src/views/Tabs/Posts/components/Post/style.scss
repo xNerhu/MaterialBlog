@@ -6,7 +6,11 @@
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   position: relative;
   margin: 0 auto;
+  left: 0;
+  right: 0;
   border-radius: 2px;
+  top: 0;
+  transition: 0.3s width, 0.3s height, 0.3s top;
   margin-top: 32px;
 
   &:first-child {

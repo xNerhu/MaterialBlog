@@ -1,6 +1,15 @@
 import React from 'react'
 
+import MenuArrow from './components/MenuArrow'
+
 export default class Toolbar extends React.Component {
+  constructor () {
+    super()
+
+    this.state = {
+      height: 128
+    }
+  }
   /**
     * on tab icon mouse down event
     * @param {object} event data
@@ -12,13 +21,13 @@ export default class Toolbar extends React.Component {
     }, createRippleCenter(e.target, 14))
     Ripple.makeRipple(ripple)
   }
-  
+
   render () {
     var toolbarClass = (this.props.shadow) ? 'toolbar toolbar-shadow' : 'toolbar'
 
     var toolbarStyle = {
       backgroundColor: this.props.backgroundColor,
-      height: this.props.height
+      height: this.state.height
     }
 
     var first = true
@@ -48,7 +57,11 @@ export default class Toolbar extends React.Component {
                 }, data.style
               )
 
-              return <div key={key} className={className} style={style} onClick={data.onClick} onMouseDown={this.iconMouseDown} />
+              if (data.subType === 'Menu') {
+                return <MenuArrow ref='menuIcon' key={key} className={className} style={data.style} onClick={(e) => data.onClick(e)} onMouseDown={this.iconMouseDown} />
+              } else {
+                return <div key={key} className={className} style={style} onClick={data.onClick} onMouseDown={this.iconMouseDown} />
+              }
             }
             if (data.type === 'Title') { // check if type of child is title
               var left = 16
