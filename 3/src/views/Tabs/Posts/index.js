@@ -70,11 +70,22 @@ export default class PostsTab extends React.Component {
     * @param {int} post index
     */
   onPostClick = (data, element) => {
-    //var bounds = this.props.getApp().getToolBar().getBoundingClientRect()
+    var self = this
+    const navigationDrawer = this.props.getApp().refs.navigationDrawer
+
     this.props.getApp().getToolBar().setState({height: 64})
     this.props.getApp().setState({tabLayoutHidden: true})
     element.viewFullScreen()
-    this.props.getApp().getToolBar().refs.menuIcon.changeToArrow()
+
+    if (navigationDrawer.state.toggled) {
+      navigationDrawer.hide()
+      this.props.getApp().getToolBar().refs.menuIcon.changeToDefault()
+      setTimeout(function () {
+        self.props.getApp().getToolBar().refs.menuIcon.changeToArrow()
+      }, 100)
+    } else {
+      self.props.getApp().getToolBar().refs.menuIcon.changeToArrow()
+    }
 
     this.clickedPost = element
   }

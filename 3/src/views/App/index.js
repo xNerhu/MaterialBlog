@@ -44,8 +44,10 @@ export default class App extends React.Component {
     function onClickMenu (event) {
       if (!self.state.postFullScreen) {
         if (!navigationDrawer.state.toggled) {
+          self.getToolBar().refs.menuIcon.changeToExit()
           navigationDrawer.show()
         } else {
+          self.getToolBar().refs.menuIcon.changeToDefault()
           navigationDrawer.hide()
         }
       } else {
@@ -69,7 +71,7 @@ export default class App extends React.Component {
           image: 'src/images/Toolbar/menu.png',
           onClick: onClickMenu,
           style: {
-            width: 24,
+            width: 24, //24, 18
             height: 18,
             position: 'absolute',
             top: '50%',

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import MenuArrow from './components/MenuArrow'
+import MultiIcon from './components/MultiIcon'
 
 export default class Toolbar extends React.Component {
   constructor () {
@@ -58,7 +58,7 @@ export default class Toolbar extends React.Component {
               )
 
               if (data.subType === 'Menu') {
-                return <MenuArrow ref='menuIcon' key={key} className={className} style={data.style} onClick={(e) => data.onClick(e)} onMouseDown={this.iconMouseDown} />
+                return <MultiIcon ref='menuIcon' key={key} className={className} style={data.style} onClick={(e) => data.onClick(e)} onMouseDown={this.iconMouseDown} />
               } else {
                 return <div key={key} className={className} style={style} onClick={data.onClick} onMouseDown={this.iconMouseDown} />
               }
