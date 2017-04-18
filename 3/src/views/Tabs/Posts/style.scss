@@ -1,0 +1,26 @@
+.posts {
+  transition: 0.3s opacity;
+}
+
+.fullscreen-post {
+  width: 100% !important;
+  transition: all 0.3s !important;
+  position: absolute !important;
+  margin-top: 0 !important;
+
+  & .post-avatar-right {
+    @include text-selectable
+  }
+
+  & .post-text {
+    @include text-selectable
+  }
+
+  & .post-action-like-count {
+    @include text-selectable
+  }
+
+  & .post-comments .post-comment-avatar-right {
+    @include text-selectable
+  }
+}

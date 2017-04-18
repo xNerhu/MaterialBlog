@@ -15,6 +15,8 @@ import LessonPlanTab from '../Tabs/LessonPlan'
 import Tooltip from '../../imports/materialdesign/components/Tooltip'
 import Preloader from '../../imports/materialdesign/components/Preloader'
 
+import Url from '../../helpers/Url'
+
 export default class App extends React.Component {
   constructor () {
     super()
@@ -42,7 +44,7 @@ export default class App extends React.Component {
 
     /** events */
     function onClickMenu (event) {
-      if (!self.state.postFullScreen) {
+      if (!self.refs.postsTab.state.isFullScreen) {
         if (!navigationDrawer.state.toggled) {
           self.getToolBar().refs.menuIcon.changeToExit()
           navigationDrawer.show()
@@ -51,10 +53,7 @@ export default class App extends React.Component {
           navigationDrawer.hide()
         }
       } else {
-        self.getToolBar().refs.menuIcon.changeToDefault()
-        self.getToolBar().setState({height: 128})
-        self.setState({tabLayoutHidden: false})
-        self.refs.postsTab.clickedPost.exitFullScreen()
+        self.refs.postsTab.exitFullScreenPost()
       }
     }
 
@@ -113,6 +112,18 @@ export default class App extends React.Component {
         }
       ]
     })
+
+    // react bug with states, must wait 1 sec
+    setTimeout(function () {
+      var postsTab = self.getPostsTab()
+      const urlPost = Url.getUrlParameter('post')
+      const postID = isNaN(parseInt(urlPost)) ? false : parseInt(urlPost)
+      if (postID != false) {
+        var postData = postsTab.getPost(postID)
+        postsTab.setState({fullScreenPost: postData})
+        postsTab.showFullScreenPost(postID)
+      }
+    }, 1)
   }
 
   /**
@@ -145,6 +156,14 @@ export default class App extends React.Component {
     */
   getTabLayout = () => {
     return this.refs.tabLayout
+  }
+
+  /**
+    * gets posts tab
+    * @return {PostsTab}
+    */
+  getPostsTab = () => {
+    return this.refs.postsTab
   }
 
   render () {

@@ -9,8 +9,7 @@
   left: 0;
   right: 0;
   border-radius: 2px;
-  top: 0;
-  transition: 0.3s width, 0.3s height, 0.3s top;
+  transition: 0.3s opacity;
   margin-top: 32px;
 
   &:first-child {

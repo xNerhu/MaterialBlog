@@ -7,9 +7,7 @@ export default class Post extends React.Component {
     super()
 
     this.state = {
-      commentsVisible: false,
-      isFullView: false,
-      width: '60%'
+      commentsVisible: false
     }
   }
 
@@ -55,7 +53,7 @@ export default class Post extends React.Component {
     * @param {Object} event data
     */
   onMouseDown = (e) => {
-    if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode.parentNode !== this.refs.comments) {
+    if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode.parentNode !== this.refs.comments && this.props.ripple === true) {
       var ripple = Ripple.createRipple(this.refs.content, {
         backgroundColor: '#444',
         opacity: 0.3
@@ -69,7 +67,7 @@ export default class Post extends React.Component {
     * @param {Object} event data
     */
   onClick = (e) => {
-    if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode.parentNode !== this.refs.comments) {
+    if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode.parentNode !== this.refs.comments && this.props.onClick !== undefined) {
       this.props.onClick(e, this)
     }
   }
@@ -79,12 +77,14 @@ export default class Post extends React.Component {
     * @param {Object} event data
     */
   onCommentMouseDown = (e) => {
-    const target = (e.target.parentNode.classList.contains('post-comment')) ? e.target.parentNode : e.target
-    var ripple = Ripple.createRipple(target, {
-      backgroundColor: '#444',
-      opacity: 0.3
-    }, createRippleMouse(target, e, 1.5))
-    Ripple.makeRipple(ripple)
+    if (this.props.commentsRipple === true) {
+      const target = (e.target.parentNode.classList.contains('post-comment')) ? e.target.parentNode : e.target
+      var ripple = Ripple.createRipple(target, {
+        backgroundColor: '#444',
+        opacity: 0.3
+      }, createRippleMouse(target, e, 1.5))
+      Ripple.makeRipple(ripple)
+    }
   }
 
   /**
@@ -176,19 +176,6 @@ export default class Post extends React.Component {
     return flag
   }
 
-  viewFullScreen = () => {
-    this.top = this.refs.post.offsetTop
-    this.setState({isFullView: true, width: '100%'})
-    this.props.getApp().setState({postFullScreen: true})
-  }
-
-  exitFullScreen = () => {
-    var self = this
-    self.setState({width: '60%'})
-    self.setState({isFullView: false})
-    self.props.getApp().setState({postFullScreen: false})
-  }
-
   render () {
     const avatarIconStyle = {
       backgroundImage: 'url(' + this.props.avatar + ')'
@@ -205,13 +192,8 @@ export default class Post extends React.Component {
       height: (!this.state.commentsVisible) ? 0 : this.refs.comments.scrollHeight,
       borderTop: (!this.state.commentsVisible) ? 'none' : '1px solid #eee'
     }
-    const postStyle = {
-      position: (!this.state.isFullView) ? 'relative' : 'absolute',
-      width: this.state.width,
-      zIndex: (!this.state.isFullView) ? 1 : 2
-    }
     return (
-      <div className='post' ref='post' onClick={this.onClick} style={postStyle}>
+      <div className={'post ' + ((this.props.className !== undefined) ? this.props.className : '')} ref='post' onClick={this.onClick} style={this.props.style}>
         <div className='ripple' ref='content' onMouseDown={this.onMouseDown}>
           <div className='post-avatar' style={avatarIconStyle} />
           <div className='post-avatar-right'>
@@ -249,4 +231,9 @@ export default class Post extends React.Component {
       </div>
     )
   }
+}
+
+Post.defaultProps = {
+  ripple: true,
+  commentsRipple: true
 }

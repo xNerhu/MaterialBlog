@@ -167,6 +167,11 @@ export default class NavigationDrawer extends React.Component {
     Ripple.makeRipple(ripple)
   }
 
+  onDarkClick = () => {
+    this.hide()
+    this.props.getApp().getToolBar().refs.menuIcon.changeToDefault()
+  }
+
   render () {
     var navigationDrawerStyle = {
       backgroundColor: this.props.backgroundColor,
@@ -207,7 +212,7 @@ export default class NavigationDrawer extends React.Component {
             </div>
           </div>
         </div>
-        <div className='dark' style={darkStyle} onClick={this.hide} />
+        <div className='dark' style={darkStyle} onClick={this.onDarkClick} />
       </div>
     )
   }
