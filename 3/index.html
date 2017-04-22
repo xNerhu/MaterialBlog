@@ -13,12 +13,17 @@
         <script>
           function loadScripts (arr) {
             for (var i = 0; i < arr.length; i++) {
-              var script = document.createElement('script')
-              script.src = arr[i]
-              document.body.appendChild(script)
+                var script = document.createElement('script')
+                script.src = arr[i]
+                document.body.appendChild(script)
             }
           }
-          loadScripts(['http://localhost:1811/build/entry.bundle.js', 'http://localhost:1811/webpack-dev-server.js']);
+          const isLocalHost = true;
+          if (isLocalHost) {
+            loadScripts(['http://localhost:1811/build/entry.bundle.js', 'http://localhost:1811/webpack-dev-server.js']);
+          } else {
+            loadScripts(['build/entry.bundle.js']);
+          }
         </script>
         <script src="src/helpers/global.js"></script>
         <script src="src/imports/materialdesign/helpers/ripple/index.js"></script>

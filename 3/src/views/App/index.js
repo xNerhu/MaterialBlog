@@ -29,7 +29,8 @@ export default class App extends React.Component {
       toolTipLikesList: '',
       tabLayoutHidden: false,
       menuOpacity: 1,
-      postFullScreen: false
+      postFullScreen: false,
+      dataPreloaderVisible: false
     })
 
     this.accountInfo = {
@@ -178,6 +179,11 @@ export default class App extends React.Component {
     var tabPagesStyle = {
       height: 'calc(100% - ' + ((!this.state.tabLayoutHidden) ? '136px' : '64px') + ')'
     }
+    var dataPreloaderStyle = {
+      height: 54,
+      width: 54,
+      visibility: (this.state.dataPreloaderVisible) ? 'visible' : 'hidden'
+    }
     return (
       <div>
         <div className='app-content' ref='appContent' style={appContentStyle}>
@@ -191,7 +197,7 @@ export default class App extends React.Component {
             <LessonPlanTab ref='lessonPlanTab' />
           </div>
         </div>
-        <Preloader ref='preloader' className='data-preloader' style={{width: 54, height: 54}} strokeColor='#2196f3' strokeWidth={4} />
+        <Preloader ref='preloader' className='data-preloader' style={dataPreloaderStyle} strokeColor='#2196f3' strokeWidth={4} />
         <NavigationDrawer ref='navigationDrawer' getApp={this.getApp} />
         <Tooltip ref='tooltipLike'>{this.state.toolTipLikeText}</Tooltip>
         <Tooltip ref='tooltipLikesList'>{this.state.toolTipLikesList}</Tooltip>

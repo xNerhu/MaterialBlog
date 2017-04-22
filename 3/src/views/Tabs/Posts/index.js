@@ -16,7 +16,8 @@ export default class PostsTab extends React.Component {
       defaultLeft: 0,
       posts: [],
       isFullScreen: false,
-      postsDisplay: 'block',
+      postsDisplay: 'none',
+      postsOpacity: 0,
       fullScreenPostDisplay: 'none',
       fullScreenPostTop: 200,
       fullScreenPostOpacity: 0,
@@ -39,7 +40,7 @@ export default class PostsTab extends React.Component {
   }
 
   componentDidMount () {
-    this.setState({
+    /*this.setState({
       posts: [
         {
           id: 2,
@@ -75,7 +76,8 @@ export default class PostsTab extends React.Component {
           comments: []
         }
       ]
-    })
+    })*/
+    this.loadPosts()
   }
 
   getRoot = () => {
@@ -105,7 +107,7 @@ export default class PostsTab extends React.Component {
     this.props.getApp().getToolBar().setState({height: 64})
     this.props.getApp().setState({tabLayoutHidden: true})
 
-    this.setState({isFullScreen: true})
+    this.setState({isFullScreen: true, postsOpacity: 0})
     setTimeout(function () {
       self.setState({postsDisplay: 'none'})
     }, 300)
@@ -151,7 +153,7 @@ export default class PostsTab extends React.Component {
 
     this.setState({postsDisplay: 'block'})
     setTimeout(function () {
-      self.setState({isFullScreen: false})
+      self.setState({isFullScreen: false, postsOpacity: 1})
     }, 10)
 
     this.props.getApp().getToolBar().refs.menuIcon.changeToDefault()
@@ -189,6 +191,59 @@ export default class PostsTab extends React.Component {
     return post
   }
 
+  loadPosts = () => {
+    var self = this
+
+    this.props.getApp().setState({dataPreloaderVisible: true})
+    this.setState({postsDisplay: 'none', postsOpacity: 0})
+
+    // TODO: get posts from database
+    setTimeout(function () {
+      self.props.getApp().setState({dataPreloaderVisible: false})
+      self.setState({postsDisplay: 'block'})
+      setTimeout(function () {
+        self.setState({
+          postsOpacity: 1,
+          posts: [
+            {
+              id: 2,
+              title: 'Test',
+              author: 'Mikołaj Palkiewicz',
+              content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in neque turpis. Aenean tincidunt nunc nec ligula cursus iaculis. Pellentesque nisl nulla, malesuada a est a, tempor dapibus eros. Sed facilisis porta auctor.',
+              date: '14.04.2017 20:38',
+              avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+              likes: [
+                {
+                  userName: 'Mikołaj Palkiewicz',
+                  userID: 1
+                }
+              ],
+              comments: [
+                {
+                  author: 'Mikołaj Palkiewicz',
+                  userID: 1,
+                  content: 'Lorem ipsum dolor sit amet',
+                  date: '14.04.2017 21:12',
+                  avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
+                }
+              ]
+            },
+            {
+              id: 1,
+              title: 'Test 2',
+              author: 'Mikołaj Palkiewicz',
+              content: 'Wart.',
+              date: '14.04.2017 10:38',
+              avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+              likes: [],
+              comments: []
+            }
+          ]
+        })
+      }, 1)
+    }, 1000)
+  }
+
   render () {
     var self = this
     function onRest () {
@@ -199,7 +254,7 @@ export default class PostsTab extends React.Component {
     var index = 0
 
     const postsStyle = {
-      opacity: (!this.state.isFullScreen) ? 1 : 0,
+      opacity: this.state.postsOpacity,
       display: this.state.postsDisplay
     }
 

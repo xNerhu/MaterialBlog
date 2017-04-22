@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "Blog klasy 3b gimnazjum im. Alberta Einsteina WSERO",
   "scripts": {
-    "watch": "webpack && webpack-dev-server --hot --inline --port 1811"
+    "watch": "webpack && webpack-dev-server --hot --inline --port 1811",
+    "build": "webpack"
   },
   "author": "Mikolaj Palkiewicz",
   "license": "MIT",
