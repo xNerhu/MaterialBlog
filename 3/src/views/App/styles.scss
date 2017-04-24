@@ -1,8 +1,8 @@
 html, body {
   @include Roboto-Regular;
   @include cursor-default;
-  padding: 0;
-  margin: 0;
+  padding: 0 !important;
+  margin: 0 !important;
   background-color: $backgroundColor;
   overflow: hidden;
 }

@@ -17,6 +17,7 @@ export default class TabLayout extends React.Component {
 
     this.lastSelectedIndex = -1
     this.lastSelectedIndex2 = -1
+    this.selectedIndex = -1
   }
 
   componentDidMount () {
@@ -26,7 +27,7 @@ export default class TabLayout extends React.Component {
       ReactDOM.findDOMNode(this).addEventListener('selected', this.props.onSelect)
     }
   }
-  
+
   /**
     * selects and deselects tabs
     */
@@ -41,6 +42,7 @@ export default class TabLayout extends React.Component {
     event.initEvent('selected', true, true)
     event.page = tab.props.data.page
     ReactDOM.findDOMNode(this).dispatchEvent(event)
+    this.selectedIndex = this.tabs.indexOf(tab)
   }
   /**
     * gets tab layout

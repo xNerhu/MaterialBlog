@@ -167,11 +167,20 @@ export default class App extends React.Component {
     return this.refs.postsTab
   }
 
+  /**
+    * gets gallery tab
+    * @return {GalleryTab}
+    */
+  getGalleryTab = () => {
+    return this.refs.galleryTab
+  }
+
   render () {
     var tabLayoutStyle = {
       left: this.state.tabLayoutLeft,
       visibility: (!this.state.tabLayoutHidden) ? 'visible' : 'hidden',
-      opacity: (!this.state.tabLayoutHidden) ? 1 : 0
+      opacity: (!this.state.tabLayoutHidden) ? 1 : 0,
+      width: 'calc(100% - ' + this.state.tabLayoutLeft + 'px)'
     }
     var appContentStyle = {
       width: this.state.contentWidth
@@ -192,7 +201,7 @@ export default class App extends React.Component {
           </Toolbar>
           <div className='tab-pages' style={tabPagesStyle}>
             <PostsTab ref='postsTab' getApp={this.getApp} />
-            <GalleryTab ref='galleryTab' />
+            <GalleryTab ref='galleryTab' getApp={this.getApp} />
             <AboutClassTab ref='aboutClassTab' />
             <LessonPlanTab ref='lessonPlanTab' />
           </div>

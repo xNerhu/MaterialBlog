@@ -49,7 +49,7 @@ export default class Tab extends React.Component {
 
     this.selected = false
   }
-  
+
   /**
     * selects tab
     */
@@ -91,6 +91,9 @@ export default class Tab extends React.Component {
           lastTab.getPage().isVisible = false
         }
       }
+    }
+    if (this.props.data.onSelect !== undefined) {
+      this.props.data.onSelect()
     }
   }
 

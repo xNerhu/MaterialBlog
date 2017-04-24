@@ -1,0 +1,37 @@
+.categories {
+  width: auto;
+  height: 100%;
+  margin: 0 auto;
+  padding-top: 12px;
+  padding-bottom: 24px;
+  padding-left: 48px;
+  padding-right: 32px;
+
+  &:after {
+    clear:both;
+  }
+}
+.pictures-container {
+  width: 50%;
+  height: 100%;
+  margin: 0 auto;
+}
+.picture-title {
+  font-size: 20px;
+  color: #2196f3;
+  padding: 16px;
+  padding-left: 8px;
+  @include Roboto-Medium;
+}
+.picture {
+  width: 300px;
+  height: 200px;
+  float: left;
+  background-color: red;
+  @include image-center(100%, 100%);
+}
+.picture-category {
+  height: auto;
+  background-color: white;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}

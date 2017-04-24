@@ -1,0 +1,30 @@
+.category {
+  width: 200px;
+  height: 200px;
+  background-color: #fff;
+  position: relative;
+  @include image-center(auto, auto);
+  float: left;
+  margin-right: 12px;
+  margin-top: 12px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.category-title {
+  width: calc(100% - 48px);
+  height: auto;
+  padding: 16px;
+  padding-right: 32px;
+  position: absolute;
+  bottom: 0;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.4);
+  @include Roboto-Regular;
+  @include text-selectable;
+  z-index: 10;
+
+  & .count {
+      position: absolute;
+      right: 16px;
+      @include center-vertical;
+  }
+}

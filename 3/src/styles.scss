@@ -15,9 +15,13 @@ $navigationDrawerHeader: #1E88E5;
 @import 'views/App/components/Toolbar/components/MultiIcon/style.scss';
 @import 'views/App/components/TabLayout/style.scss';
 @import 'views/App/components/TabLayout/components/Tab/style.scss';
+@import 'views/App/components/NavigationDrawer/style.scss';
+
 @import 'views/Tabs/Posts/style.scss';
 @import 'views/Tabs/Posts/components/Post/style.scss';
-@import 'views/App/components/NavigationDrawer/style.scss';
+
+@import 'views/Tabs/Gallery/style.scss';
+@import 'views/Tabs/Gallery/Components/Category/style.scss';
 
 @import 'src/imports/materialdesign/helpers/ripple/style.scss';
 @import 'src/imports/materialdesign/components/Tooltip/style.scss';
