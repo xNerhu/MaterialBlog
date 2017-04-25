@@ -10,6 +10,9 @@ export default class MultiIcon extends React.Component {
     this.canClick = true
   }
 
+  /**
+   * Change to arrow version.
+   */
   changeToArrow = () => {
     var self = this
 
@@ -18,12 +21,16 @@ export default class MultiIcon extends React.Component {
       this.refs.multiIcon.classList.remove('multiIcon-arrow-true')
       this.refs.multiIcon.className += ' multiIcon-arrow multiIcon-arrow-change'
       this.isArrow = null
+      // Wait until end of animation.
       setTimeout(function () {
         self.isArrow = true
       }, 500)
     }
   }
 
+  /**
+   * Change to exit (X) version
+   */
   changeToExit = () => {
     var self = this
 
@@ -31,12 +38,16 @@ export default class MultiIcon extends React.Component {
       this.blockClick()
       this.refs.multiIcon.className += ' multiIcon-exit multiIcon-exit-change'
       this.isExit = null
+      // Wait until end of animation.
       setTimeout(function () {
         self.isExit = true
       }, 500)
     }
   }
 
+  /**
+   * Change to normal menu.
+   */
   changeToDefault = () => {
     var self = this
 
@@ -46,6 +57,7 @@ export default class MultiIcon extends React.Component {
       this.refs.multiIcon.classList.remove('multiIcon-arrow')
       this.refs.multiIcon.classList.remove('multiIcon-arrow-change')
       this.isArrow = null
+      // Wait until end of animation.
       setTimeout(function () {
         self.refs.multiIcon.classList.remove('multiIcon-arrow-backtodefault')
         self.isArrow = false
@@ -55,6 +67,7 @@ export default class MultiIcon extends React.Component {
       this.refs.multiIcon.classList.remove('multiIcon-exit')
       this.refs.multiIcon.classList.remove('multiIcon-exit-change')
       this.isExit = null
+      // Wait until end of animation.
       setTimeout(function () {
         self.refs.multiIcon.classList.remove('multiIcon-exit-backtodefault')
         self.isExit = false
@@ -62,16 +75,25 @@ export default class MultiIcon extends React.Component {
     }
   }
 
+  /**
+   * Blocks click mouse event.
+   */
   blockClick = () => {
     var self = this
-
+    // Block click mouse event.
     this.canClick = false
+    // Wait 1.5 second then unlock click mouse event.
     setTimeout(function () {
       self.canClick = true
     }, 1500)
   }
 
+  /**
+   * On click
+   * @param {Object} event data
+   */
   onClick = (e) => {
+    // If click mouse event has't been blocked.
     if (this.canClick) {
       this.props.onClick(e)
     }

@@ -55,6 +55,10 @@ export default class GalleryTab extends React.Component {
     this.pictureWidth = 300
   }
 
+  /**
+   * Gets root.
+   * @param {DomElement}
+   */
   getRoot = () => {
     return this.root
   }
@@ -66,7 +70,9 @@ export default class GalleryTab extends React.Component {
         self.setState({display: 'none'})
       }
     }
+
     var index = 0
+
     return (
       <Motion onRest={onRest} style={{left: this.state.left}}>
         {value =>

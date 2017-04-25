@@ -18,6 +18,8 @@ export default class NavigationDrawer extends React.Component {
   componentDidMount () {
     const self = this
     // Add on window resize event listener.
+    // If window width is less than 768 pixels and navigation drawer is toggled, then show temporary navigation drawer.
+    // If window width is more than 768 pixels and navigation drawer is toggled, then show persistent navigation drawer.
     window.addEventListener('resize', function () {
       if (window.innerWidth <= 768 && self.state.persistent && self.state.toggled) {
         self.showTemporary()
@@ -156,7 +158,7 @@ export default class NavigationDrawer extends React.Component {
   }
 
   /**
-    * on navigation drawer item mouse down
+    * On navigation drawer item mouse down event.
     * @param {object} event data
     */
   onItemMouseDown = (e) => {
@@ -167,33 +169,43 @@ export default class NavigationDrawer extends React.Component {
     Ripple.makeRipple(ripple)
   }
 
+  /**
+    * On dark click event.
+    * Hides navigation drawer.
+    */
   onDarkClick = () => {
     this.hide()
     this.props.getApp().getToolBar().refs.menuIcon.changeToDefault()
   }
 
   render () {
-    var navigationDrawerStyle = {
+    // Styles.
+    const navigationDrawerStyle = {
       backgroundColor: this.props.backgroundColor,
       width: this.state.width,
       height: this.state.height,
       left: this.state.left
     }
-    var navigationDrawerContentStyle = {
+
+    const navigationDrawerContentStyle = {
       borderRight: (this.state.persistent && this.state.toggled) ? '1px solid rgba(0,0,0,0.12)' : 'none'
     }
-    var darkStyle = {
+
+    const darkStyle = {
       backgroundColor: this.props.darkBackgroundColor,
       visibility: (this.state.darkVisible) ? 'visible' : 'hidden',
       opacity: this.state.darkOpacity
     }
-    var headerStyle = {
-      display: 'block' // (this.state.persistent) ? 'none' : 'block'
+
+    const headerStyle = {
+      display: 'block'
     }
-    var infoIconStyle = {
+
+    const infoIconStyle = {
       backgroundImage: 'url(src/images/NavigationDrawer/info.png)'
     }
-    var loginIconStyle = {
+
+    const loginIconStyle = {
       backgroundImage: 'url(src/images/NavigationDrawer/login.png)'
     }
 

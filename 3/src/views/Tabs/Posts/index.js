@@ -3,9 +3,6 @@ import {Motion} from 'react-motion'
 
 import Post from './components/Post'
 
-//import Url from '../../../helpers/Url'
-//import Preloader from '../../../imports/materialdesign/components/Preloader'
-
 export default class PostsTab extends React.Component {
   constructor () {
     super()
@@ -43,15 +40,20 @@ export default class PostsTab extends React.Component {
     this.loadPosts()
   }
 
+  /**
+   * Gets root.
+   * @param {DomElement}
+   */
   getRoot = () => {
     return this.root
   }
 
   /**
-    * on post click event
-    * @param {Object} event data
-    * @param {DomElement} post
-    */
+   * On post click event.
+   * Shows full version post.
+   * @param {Object} event data
+   * @param {DomElement} post
+   */
   onPostClick = (event, element) => {
     var postData = this.getPost(element.props.id)
     this.setState({fullScreenPost: postData})
@@ -59,10 +61,10 @@ export default class PostsTab extends React.Component {
   }
 
   /**
-    * enter full screen post
-    * @param {int} post index
-    * @param {DomElement} post
-    */
+   * Enter full screen post.
+   * @param {int} post index
+   * @param {DomElement} post
+   */
   showFullScreenPost = (index, element) => {
     var self = this
     const navigationDrawer = this.props.getApp().refs.navigationDrawer
@@ -101,8 +103,8 @@ export default class PostsTab extends React.Component {
   }
 
   /**
-    * exit full screen post
-    */
+   * Exit full screen post.
+   */
   exitFullScreenPost = () => {
     var self = this
 
@@ -131,18 +133,18 @@ export default class PostsTab extends React.Component {
   }
 
   /**
-    * gets posts tab
-    * @return {PostsTab}
-    */
+   * Gets posts tab.
+   * @return {PostsTab}
+   */
   getPostsTab = () => {
     return this
   }
 
   /**
-    * gets post with id
-    * @param {int} post id
-    * @return {Object} post data
-    */
+   * Gets post with id.
+   * @param {int} post id
+   * @return {Object} post data
+   */
   getPost = (id, postsData = this.state.posts) => {
     var post = false
     for (var i = 0; i < postsData.length; i++) {
@@ -154,6 +156,9 @@ export default class PostsTab extends React.Component {
     return post
   }
 
+  /**
+   * Loads posts
+   */
   loadPosts = () => {
     var self = this
 
@@ -220,6 +225,7 @@ export default class PostsTab extends React.Component {
     }
     var index = 0
 
+    // Styles.
     const postsStyle = {
       opacity: this.state.postsOpacity,
       display: this.state.postsDisplay

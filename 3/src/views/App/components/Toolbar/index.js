@@ -10,10 +10,11 @@ export default class Toolbar extends React.Component {
       height: 128
     }
   }
+
   /**
-    * on tab icon mouse down event
-    * @param {object} event data
-    */
+   * On tab icon mouse down event.
+   * @param {object} event data
+   */
   iconMouseDown = (e) => {
     var ripple = Ripple.createRipple(e.target, {
       backgroundColor: '#000',
@@ -23,9 +24,10 @@ export default class Toolbar extends React.Component {
   }
 
   render () {
-    var toolbarClass = (this.props.shadow) ? 'toolbar toolbar-shadow' : 'toolbar'
+    // Styles.
+    const toolbarClass = (this.props.shadow) ? 'toolbar toolbar-shadow' : 'toolbar'
 
-    var toolbarStyle = {
+    const toolbarStyle = {
       backgroundColor: this.props.backgroundColor,
       height: this.state.height
     }
@@ -37,7 +39,7 @@ export default class Toolbar extends React.Component {
       <div style={toolbarStyle} className={toolbarClass}>
         <div className='toolbar-content'>
           {this.props.items.map((data, key) => {
-            if (data.type === 'Icon') { // check if type of child is icon
+            if (data.type === 'Icon') { // Check if type of child is icon.
               var className = 'toolbar-icon ripple-icon toolbar-' + data.position.toLowerCase()
 
               if (first) {
@@ -63,9 +65,9 @@ export default class Toolbar extends React.Component {
                 return <div key={key} className={className} style={style} onClick={data.onClick} onMouseDown={this.iconMouseDown} />
               }
             }
-            if (data.type === 'Title') { // check if type of child is title
+            if (data.type === 'Title') { // Check if type of child is title.
               var left = 16
-              if (hasLeftIcon) { // check if there is icon before title
+              if (hasLeftIcon) { // Check if there is icon before title.
                 left = 80
               }
 

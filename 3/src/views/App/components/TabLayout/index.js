@@ -29,8 +29,8 @@ export default class TabLayout extends React.Component {
   }
 
   /**
-    * selects and deselects tabs
-    */
+   * Selects and deselects tabs.
+   */
   selectTab = (tab) => {
     for (var i = 0; i < this.tabs.length; i++) {
       if (this.tabs[i] !== tab && this.tabs[i].selected) {
@@ -44,10 +44,11 @@ export default class TabLayout extends React.Component {
     ReactDOM.findDOMNode(this).dispatchEvent(event)
     this.selectedIndex = this.tabs.indexOf(tab)
   }
+
   /**
-    * gets tab layout
-    * @return {TabLayout}
-    */
+   * Gets tab layout.
+   * @return {TabLayout}
+   */
   getTabLayout = () => {
     return this
   }

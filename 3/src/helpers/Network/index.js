@@ -1,6 +1,6 @@
 export default class Network {
   /**
-   * requests url and gets response
+   * Requests url and gets response.
    * @param {string} url
    * @param {function(response)} callback (optional)
    */

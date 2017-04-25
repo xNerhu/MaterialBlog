@@ -16,6 +16,10 @@ export default class AboutClassTab extends React.Component {
     this.root = null
   }
 
+  /**
+   * Gets root
+   * @param {DomElement}
+   */
   getRoot = () => {
     return this.root
   }

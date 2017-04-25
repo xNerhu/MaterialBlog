@@ -51,7 +51,7 @@ export default class App extends React.Component {
     var self = this
     const navigationDrawer = this.refs.navigationDrawer
 
-    /** events */
+    // Events.
     function onClickMenu (event) {
       if (!self.refs.postsTab.state.isFullScreen) {
         if (!navigationDrawer.state.toggled) {
@@ -66,10 +66,12 @@ export default class App extends React.Component {
       }
     }
 
+    // On search icon click event.
     function onClickSearch () {
 
     }
 
+    // Set toolbar items.
     this.setState({
       toolbarItems: [
         {
@@ -79,12 +81,12 @@ export default class App extends React.Component {
           image: 'src/images/Toolbar/menu.png',
           onClick: onClickMenu,
           style: {
-            width: 24, //24, 18
+            width: 24,
             height: 18,
             position: 'absolute',
             top: '50%',
             transform: 'translateY(-50%)'
-          },
+          }
         },
         {
           type: 'Title',
@@ -101,6 +103,7 @@ export default class App extends React.Component {
       ]
     })
 
+    // Set tabs.
     this.refs.tabLayout.setState({
       tabs: [
         {
@@ -122,12 +125,13 @@ export default class App extends React.Component {
       ]
     })
 
-    // react bug with states, must wait 1 sec
+    // Timer, because there is react bug with states so must wait 1 sec.
+    // if in url is 'post' parametr eg. http://localhost:1811/?post=1 will be displayed post in full screen version.
     setTimeout(function () {
       var postsTab = self.getPostsTab()
       const urlPost = Url.getUrlParameter('post')
-      const postID = isNaN(parseInt(urlPost)) ? false : parseInt(urlPost)
-      if (postID != false) {
+      const postID = isNaN(parseInt(urlPost)) ? false : parseInt(urlPost) // Check if 'post' parametr is int.
+      if (postID !== false) {
         var postData = postsTab.getPost(postID)
         postsTab.setState({fullScreenPost: postData})
         postsTab.showFullScreenPost(postID)
@@ -136,76 +140,83 @@ export default class App extends React.Component {
   }
 
   /**
-    * gets app
-    * @return {App}
-    */
+   * Gets app.
+   * @return {App}
+   */
   getApp = () => {
     return this
   }
 
   /**
-    * gets account info
-    * @return {Object}
-    */
+   * Gets account info.
+   * @return {Object}
+   */
   getAccountInfo = () => {
     return this.accountInfo
   }
 
   /**
-    * gets tool bar
-    * @return {Toolbar}
-    */
+   * Gets toolbar.
+   * @return {Toolbar}
+   */
   getToolBar = () => {
     return this.refs.toolbar
   }
 
   /**
-    * gets tab layout
-    * @return {TabLayout}
-    */
+   * Gets tablayout.
+   * @return {TabLayout}
+   */
   getTabLayout = () => {
     return this.refs.tabLayout
   }
 
   /**
-    * gets posts tab
-    * @return {PostsTab}
-    */
+   * Gets posts tab.
+   * @return {PostsTab}
+   */
   getPostsTab = () => {
     return this.refs.postsTab
   }
 
   /**
-    * gets gallery tab
-    * @return {GalleryTab}
-    */
+   * Gets gallery tab.
+   * @return {GalleryTab}
+   */
   getGalleryTab = () => {
     return this.refs.galleryTab
   }
 
   render () {
-    var tabLayoutStyle = {
+    // Styles.
+    const tabLayoutStyle = {
       left: this.state.tabLayoutLeft,
       visibility: (!this.state.tabLayoutHidden) ? 'visible' : 'hidden',
       opacity: (!this.state.tabLayoutHidden) ? 1 : 0,
       width: 'calc(100% - ' + this.state.tabLayoutLeft + 'px)'
     }
-    var appContentStyle = {
+
+    const appContentStyle = {
       width: this.state.contentWidth
     }
-    var tabPagesStyle = {
+
+    const tabPagesStyle = {
       height: 'calc(100% - ' + ((!this.state.tabLayoutHidden) ? '136px' : '64px') + ')'
     }
-    var dataPreloaderStyle = {
+
+    const dataPreloaderStyle = {
       height: 54,
       width: 54,
       visibility: (this.state.dataPreloaderVisible) ? 'visible' : 'hidden'
     }
-    const tooltipLikeText = this.state.tooltipsData.like.text
-    const tooltipLikeList = this.state.tooltipsData.like.list
-    const tooltipShowComments = 'Pokaż komentarze'
-    const tooltipHideComments = 'Ukryj komentarze'
-    const tooltipCategoryInfo = 'Data utworzenia: ' + this.state.tooltipsData.category.date + '\n Ilość zdjęć: ' + this.state.tooltipsData.category.picturesCount
+
+    // Tooltips contents.
+    const tooltipLikeText = this.state.tooltipsData.like.text // Like text is when you don't likes post: Like it! or you have already like post: Don't like it!.
+    const tooltipLikeList = this.state.tooltipsData.like.list // Likes list is a list of people who liked post.
+    const tooltipShowComments = 'Pokaż komentarze' // Show comments.
+    const tooltipHideComments = 'Ukryj komentarze' // Hide comments.
+    const tooltipCategoryInfo = 'Data utworzenia: ' + this.state.tooltipsData.category.date + '\n Ilość zdjęć: ' + this.state.tooltipsData.category.picturesCount // Category info: create category date and number of pictures.
+
     return (
       <div>
         <div className='app-content' ref='appContent' style={appContentStyle}>

@@ -1,4 +1,9 @@
 export default class Url {
+  /**
+   * Gets parametr from url
+   * @param {String} parametr
+   * @return {String} value of parametr
+   */
   static getUrlParameter (r) {
     var t
     var e

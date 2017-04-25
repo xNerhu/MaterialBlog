@@ -12,9 +12,9 @@ export default class Post extends React.Component {
   }
 
   /**
-    * on like icon mouse down event
-    * @param {Object} event data
-    */
+   * On like icon mouse down event.
+   * @param {Object} event data
+   */
   onLikeMouseDown = (e) => {
     var ripple = Ripple.createRipple(e.target, {
       backgroundColor: '#000',
@@ -24,9 +24,9 @@ export default class Post extends React.Component {
   }
 
   /**
-    * on show comments button mouse down event
-    * @param {Object} event data
-    */
+   * On show comments button mouse down event.
+   * @param {Object} event data
+   */
   onShowCommentsButtonMouseDown = (e) => {
     var ripple = Ripple.createRipple(this.refs.showComments, {
       backgroundColor: '#000',
@@ -36,8 +36,8 @@ export default class Post extends React.Component {
   }
 
   /**
-    * on show comments button click event
-    */
+   * On show comments button click event.
+   */
   onShowCommentsButtonClick = () => {
     if (!this.props.getApp().refs.tooltipShowComments.isToogled()) {
         this.props.getApp().refs.tooltipShowComments.hide()
@@ -49,9 +49,9 @@ export default class Post extends React.Component {
   }
 
   /**
-    * on post mouse down event
-    * @param {Object} event data
-    */
+   * On post mouse down event.
+   * @param {Object} event data
+   */
   onMouseDown = (e) => {
     if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode.parentNode !== this.refs.comments && this.props.ripple === true) {
       var ripple = Ripple.createRipple(this.refs.content, {
@@ -63,9 +63,9 @@ export default class Post extends React.Component {
   }
 
   /**
-    * on post click event
-    * @param {Object} event data
-    */
+   * On post click event.
+   * @param {Object} event data
+   */
   onClick = (e) => {
     if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode.parentNode !== this.refs.comments && this.props.onClick !== undefined) {
       this.props.onClick(e, this)
@@ -73,9 +73,9 @@ export default class Post extends React.Component {
   }
 
   /**
-    * on comment mouse down event
-    * @param {Object} event data
-    */
+   * On comment mouse down event.
+   * @param {Object} event data
+   */
   onCommentMouseDown = (e) => {
     if (this.props.commentsRipple === true) {
       const target = (e.target.parentNode.classList.contains('post-comment')) ? e.target.parentNode : e.target
@@ -88,10 +88,10 @@ export default class Post extends React.Component {
   }
 
   /**
-    * on like button mouse enter event
-    * shows tooltip
-    * @param {Object} event data
-    */
+   * On like button mouse enter event.
+   * Shows tooltip.
+   * @param {Object} event data
+   */
   onLikeMouseEnter = (e) => {
     var tooltipsData = this.props.getApp().state.tooltipsData
     const tooltip = this.props.getApp().refs.tooltipCategoryInfo
@@ -102,10 +102,10 @@ export default class Post extends React.Component {
   }
 
   /**
-    * on like button mouse leave event
-    * hides tooltip
-    * @param {Object} event data
-    */
+   * On like button mouse leave event.
+   * Hides tooltip.
+   * @param {Object} event data
+   */
   onLikeMouseLeave = (e) => {
     this.props.getApp().refs.tooltipLike.hide()
   }
@@ -133,19 +133,19 @@ export default class Post extends React.Component {
   }
 
   /**
-    * on likes list button mouse leave event
-    * hides tooltip
-    * @param {Object} event data
-    */
+   * On likes list button mouse leave event.
+   * Hides tooltip.
+   * @param {Object} event data
+   */
   onLikesListMouseLeave = (e) => {
     this.props.getApp().refs.tooltipLikesList.hide()
   }
 
   /**
-    * on show comments button mouse enter event
-    * shows tooltip
-    * @param {Object} event data
-    */
+   * On show comments button mouse enter event.
+   * Shows tooltip.
+   * @param {Object} event data
+   */
   onShowCommentsButtonMouseEnter = (e) => {
     if (this.state.commentsVisible) {
       this.props.getApp().refs.tooltipHideComments.show(this.refs.showComments)
@@ -155,10 +155,10 @@ export default class Post extends React.Component {
   }
 
   /**
-    * on show comments button mouse leave event
-    * hides tooltip
-    * @param {Object} event data
-    */
+   * On show comments button mouse leave event.
+   * Hides tooltip.
+   * @param {Object} event data
+   */
   onShowCommentsButtonMouseLeave = (e) => {
     if (!this.props.getApp().refs.tooltipShowComments.isToogled()) {
       this.props.getApp().refs.tooltipShowComments.hide()
@@ -169,10 +169,10 @@ export default class Post extends React.Component {
   }
 
   /**
-    * check if user is liked post
-    * @param {Object} likes data
-    * @param {Object} account info
-    */
+   * Check if user liked post.
+   * @param {Object} likes data
+   * @param {Object} account info
+   */
   liked = (likesData, accountInfo) => {
     var flag = false
     for(var i = 0; i < likesData.length; i++) {
@@ -185,21 +185,26 @@ export default class Post extends React.Component {
   }
 
   render () {
+    // Styles.
     const avatarIconStyle = {
       backgroundImage: 'url(' + this.props.avatar + ')'
     }
+
     const likeIconStyle = {
       backgroundImage: (this.liked(this.props.likes, this.props.getApp().getAccountInfo())) ? 'url(src/images/Post/favorite_full.png)' : 'url(src/images/Post/favorite_border.png)'
     }
+
     const commentIconStyle = {
       backgroundImage: 'url(src/images/Post/expand_more.png)',
       transform: (!this.state.commentsVisible) ? 'rotate(0deg)' : 'rotate(180deg)'
     }
+
     const commentsStyle = {
       overflow: (!this.state.commentsVisible) ? 'hidden' : 'auto',
       height: (!this.state.commentsVisible) ? 0 : this.refs.comments.scrollHeight,
       borderTop: (!this.state.commentsVisible) ? 'none' : '1px solid #eee'
     }
+
     return (
       <div className={'post ' + ((this.props.className !== undefined) ? this.props.className : '')} ref='post' onClick={this.onClick} style={this.props.style}>
         <div className='ripple' ref='content' onMouseDown={this.onMouseDown}>

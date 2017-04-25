@@ -21,16 +21,16 @@ export default class Tab extends React.Component {
   }
 
   /**
-    * event
-    */
+   * On click event.
+   */
   onClick = () => {
     this.props.getTabLayout().selectTab(this)
   }
 
   /**
-    * event
-    * @param {object} event data
-    */
+   * On mouse down event.
+   * @param {object} event data
+   */
   onMouseDown = (e) => {
     var ripple = Ripple.createRipple(this.refs.tab, {
       backgroundColor: '#fff'
@@ -39,8 +39,8 @@ export default class Tab extends React.Component {
   }
 
   /**
-    * deselects tab
-    */
+   * Deselects tab.
+   */
   deselect = () => {
     var tabLayout = this.props.getTabLayout()
     this.setState({color: tabLayout.props.defaultColor})
@@ -51,8 +51,8 @@ export default class Tab extends React.Component {
   }
 
   /**
-    * selects tab
-    */
+   * Selects tab.
+   */
   select = () => {
     this.selected = true
     var tabLayout = this.props.getTabLayout()
@@ -75,7 +75,7 @@ export default class Tab extends React.Component {
       var lastTab = tabLayout.tabs[tabLayout.lastSelectedIndex]
       var width = tabLayout.refs.tabLayout.offsetWidth
       if (tabLayout.tabs.indexOf(this) > tabLayout.lastSelectedIndex) {
-        page.setState({left: window.innerWidth}, function() {
+        page.setState({left: window.innerWidth}, function () {
           page.setState({left: spring(0, tabLayoutAnimationData.pageMoveSpring)})
         })
         if (lastTab.getPage() != null) {
@@ -83,7 +83,7 @@ export default class Tab extends React.Component {
           lastTab.getPage().isVisible = false
         }
       } else {
-        page.setState({left: -window.innerWidth}, function() {
+        page.setState({left: -window.innerWidth}, function () {
           page.setState({left: spring(0, tabLayoutAnimationData.pageMoveSpring)})
         })
         if (lastTab.getPage() != null) {
@@ -97,12 +97,17 @@ export default class Tab extends React.Component {
     }
   }
 
+  /**
+   * Gets page.
+   * @return {DomElement}
+   */
   getPage = () => {
     return this.props.data.page
   }
 
   render () {
-    var tabTitleStyle = {
+    // Styles.
+    const tabTitleStyle = {
       color: this.state.color
     }
 
