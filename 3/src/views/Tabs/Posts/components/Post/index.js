@@ -93,7 +93,11 @@ export default class Post extends React.Component {
     * @param {Object} event data
     */
   onLikeMouseEnter = (e) => {
-    this.props.getApp().setState({toolTipLikeText: (this.liked(this.props.likes, this.props.getApp().getAccountInfo()) ? 'Nie lubię!' : 'Lubię to!')})
+    var tooltipsData = this.props.getApp().state.tooltipsData
+    const tooltip = this.props.getApp().refs.tooltipCategoryInfo
+    var text = (this.liked(this.props.likes, this.props.getApp().getAccountInfo()) ? 'Nie lubię!' : 'Lubię to!')
+    tooltipsData.like.text = text
+    this.props.getApp().setState({tooltipsData: tooltipsData})
     this.props.getApp().refs.tooltipLike.show(this.refs.like)
   }
 
@@ -112,6 +116,9 @@ export default class Post extends React.Component {
     * @param {Object} event data
     */
   onLikesListMouseEnter = (e) => {
+    var tooltipsData = this.props.getApp().state.tooltipsData
+    const tooltip = this.props.getApp().refs.tooltipCategoryInfo
+
     var list = ''
     if (this.props.likes.length >= 1) {
       for (var i = 0; i < this.props.likes.length; i++) {
@@ -120,7 +127,8 @@ export default class Post extends React.Component {
     } else {
       list = '...'
     }
-    this.props.getApp().setState({toolTipLikesList: list})
+    tooltipsData.like.list = list
+    this.props.getApp().setState({tooltipsData: tooltipsData})
     this.props.getApp().refs.tooltipLikesList.show(this.refs.likeCount)
   }
 

@@ -25,16 +25,18 @@ export default class App extends React.Component {
       toolbarItems: [],
       tabLayoutLeft: 48,
       contentWidth: '100%',
-      toolTipLikeText: 'Polub',
-      toolTipLikesList: '',
       tabLayoutHidden: false,
       menuOpacity: 1,
       postFullScreen: false,
       dataPreloaderVisible: false,
       tooltipsData: {
+        like: {
+          text: '...',
+          list: '...'
+        },
         category: {
-          date: '',
-          picturesCount: ''
+          date: '...',
+          picturesCount: '...'
         }
       }
     })
@@ -199,6 +201,10 @@ export default class App extends React.Component {
       width: 54,
       visibility: (this.state.dataPreloaderVisible) ? 'visible' : 'hidden'
     }
+    const tooltipLikeText = this.state.tooltipsData.like.text
+    const tooltipLikeList = this.state.tooltipsData.like.list
+    const tooltipShowComments = 'Pokaż komentarze'
+    const tooltipHideComments = 'Ukryj komentarze'
     const tooltipCategoryInfo = 'Data utworzenia: ' + this.state.tooltipsData.category.date + '\n Ilość zdjęć: ' + this.state.tooltipsData.category.picturesCount
     return (
       <div>
@@ -215,10 +221,10 @@ export default class App extends React.Component {
         </div>
         <Preloader ref='preloader' className='data-preloader' style={dataPreloaderStyle} strokeColor='#2196f3' strokeWidth={4} />
         <NavigationDrawer ref='navigationDrawer' getApp={this.getApp} />
-        <Tooltip ref='tooltipLike'>{this.state.toolTipLikeText}</Tooltip>
-        <Tooltip ref='tooltipLikesList'>{this.state.toolTipLikesList}</Tooltip>
-        <Tooltip ref='tooltipShowComments'>Pokaż komentarze</Tooltip>
-        <Tooltip ref='tooltipHideComments'>Ukryj komentarze</Tooltip>
+        <Tooltip ref='tooltipLike'>{tooltipLikeText}</Tooltip>
+        <Tooltip ref='tooltipLikesList'>{tooltipLikeList}</Tooltip>
+        <Tooltip ref='tooltipShowComments'>{tooltipShowComments}</Tooltip>
+        <Tooltip ref='tooltipHideComments'>{tooltipHideComments}</Tooltip>
         <Tooltip ref='tooltipCategoryInfo'>{tooltipCategoryInfo}</Tooltip>
       </div>
     )
