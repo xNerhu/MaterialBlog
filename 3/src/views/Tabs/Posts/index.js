@@ -179,6 +179,10 @@ export default class PostsTab extends React.Component {
                 {
                   userName: 'Mikołaj Palkiewicz',
                   userID: 1
+                },
+                {
+                  userName: 'Ecrab',
+                  userID: 15
                 }
               ],
               comments: [

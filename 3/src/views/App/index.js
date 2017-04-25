@@ -30,7 +30,13 @@ export default class App extends React.Component {
       tabLayoutHidden: false,
       menuOpacity: 1,
       postFullScreen: false,
-      dataPreloaderVisible: false
+      dataPreloaderVisible: false,
+      tooltipsData: {
+        category: {
+          date: '',
+          picturesCount: ''
+        }
+      }
     })
 
     this.accountInfo = {
@@ -193,6 +199,7 @@ export default class App extends React.Component {
       width: 54,
       visibility: (this.state.dataPreloaderVisible) ? 'visible' : 'hidden'
     }
+    const tooltipCategoryInfo = 'Data utworzenia: ' + this.state.tooltipsData.category.date + '\n Ilość zdjęć: ' + this.state.tooltipsData.category.picturesCount
     return (
       <div>
         <div className='app-content' ref='appContent' style={appContentStyle}>
@@ -212,6 +219,7 @@ export default class App extends React.Component {
         <Tooltip ref='tooltipLikesList'>{this.state.toolTipLikesList}</Tooltip>
         <Tooltip ref='tooltipShowComments'>Pokaż komentarze</Tooltip>
         <Tooltip ref='tooltipHideComments'>Ukryj komentarze</Tooltip>
+        <Tooltip ref='tooltipCategoryInfo'>{tooltipCategoryInfo}</Tooltip>
       </div>
     )
   }

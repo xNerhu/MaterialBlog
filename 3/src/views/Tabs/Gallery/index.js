@@ -14,6 +14,7 @@ export default class GalleryTab extends React.Component {
       categories: [
         {
           name: 'Material Design',
+          date: '25.04.2017',
           pictures: [
             {
               url: 'http://www.materialdoc.com/content/images/2015/11/materialdesign_introduction.png'
@@ -25,6 +26,7 @@ export default class GalleryTab extends React.Component {
         },
         {
           name: 'Material Design Dark',
+          date: '20.04.2017',
           pictures: [
             {
               url: 'http://orig11.deviantart.net/20eb/f/2015/030/6/f/_minflat__dark_material_design_wallpaper__4k__by_dakoder-d8fjqzu.jpg'
@@ -36,6 +38,7 @@ export default class GalleryTab extends React.Component {
         },
         {
           name: 'Avatar',
+          date: '17.04.2017',
           pictures: [
             {
               url: 'https://avatars2.githubusercontent.com/u/12050791?v=3&s=460'
@@ -72,7 +75,7 @@ export default class GalleryTab extends React.Component {
               {
                 this.state.categories.map((data, i) => {
                   index++
-                  return <Category key={i} index={index - 1} data={data}>{data.name}</Category>
+                  return <Category key={i} index={index - 1} data={data} getApp={this.props.getApp}>{data.name}</Category>
                 })
               }
             </div>
