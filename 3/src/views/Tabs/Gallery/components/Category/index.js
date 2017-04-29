@@ -63,7 +63,7 @@ export default class Category extends React.Component {
     }
 
     return (
-      <div className='category ripple' ref='category' style={style} onMouseDown={this.onMouseDown}>
+      <div className='category ripple' ref='category' style={style} onMouseDown={this.onMouseDown} onClick={this.props.onClick}>
         <div className='category-title' ref='title'>
           {this.props.children}
           <div className='category-info ripple-icon' ref='info' style={infoStyle} onMouseDown={this.onInfoMouseDown} onMouseEnter={this.onInfoMouseEnter} onMouseLeave={this.onInfoMouseLeave} />

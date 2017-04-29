@@ -1,6 +1,7 @@
 $backgroundColor: #FAFAFA;
 $indicator-color: #fff;
 $navigationDrawerHeader: #1E88E5;
+$pictureBlur: 10px;
 
 @import 'mixins/positioning.scss';
 @import 'mixins/fonts.scss';
@@ -22,6 +23,7 @@ $navigationDrawerHeader: #1E88E5;
 
 @import 'views/Tabs/Gallery/style.scss';
 @import 'views/Tabs/Gallery/Components/Category/style.scss';
+@import 'views/Tabs/Gallery/Components/Picture/style.scss';
 
 @import 'src/imports/materialdesign/helpers/ripple/style.scss';
 @import 'src/imports/materialdesign/components/Tooltip/style.scss';
