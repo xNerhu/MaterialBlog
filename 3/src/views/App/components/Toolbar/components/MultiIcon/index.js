@@ -85,7 +85,7 @@ export default class MultiIcon extends React.Component {
     // Wait 1.5 second then unlock click mouse event.
     setTimeout(function () {
       self.canClick = true
-    }, 1500)
+    }, 2000)
   }
 
   /**

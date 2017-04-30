@@ -53,7 +53,7 @@ export default class App extends React.Component {
 
     // Events.
     function onClickMenu (event) {
-      if (!self.refs.postsTab.state.isFullScreen) {
+      if (!self.refs.postsTab.state.isFullScreen && !self.refs.galleryTab.state.picturesVisible) {
         if (!navigationDrawer.state.toggled) {
           self.getToolBar().refs.menuIcon.changeToExit()
           navigationDrawer.show()
@@ -62,7 +62,8 @@ export default class App extends React.Component {
           navigationDrawer.hide()
         }
       } else {
-        self.refs.postsTab.exitFullScreenPost()
+        if (self.refs.postsTab.state.isFullScreen) self.refs.postsTab.exitFullScreenPost()
+        if (self.refs.galleryTab.state.picturesVisible) self.refs.galleryTab.hidePictures()
       }
     }
 
@@ -90,7 +91,7 @@ export default class App extends React.Component {
         },
         {
           type: 'Title',
-          title: 'Blog klasy 3B',
+          title: this.props.toolbarTitle,
           style: {color: '#fff'}
         },
         {
@@ -240,4 +241,7 @@ export default class App extends React.Component {
       </div>
     )
   }
+}
+App.defaultProps = {
+  toolbarTitle: 'Blog klasy 3B'
 }

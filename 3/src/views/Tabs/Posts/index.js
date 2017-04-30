@@ -108,7 +108,7 @@ export default class PostsTab extends React.Component {
   exitFullScreenPost = () => {
     var self = this
 
-    this.props.getApp().getToolBar().setState({height: 129})
+    this.props.getApp().getToolBar().setState({height: 128})
     this.props.getApp().setState({tabLayoutHidden: false})
 
     this.setState({fullScreenPostTop: 200, fullScreenPostOpacity: 0})

@@ -91,7 +91,7 @@ export default class GalleryTab extends React.Component {
   }
 
   /**
-   * on window resize event
+   * On window resize event.
    * @param {Object} event data
    */
   onResize = (e) => {
@@ -99,7 +99,7 @@ export default class GalleryTab extends React.Component {
   }
 
   /**
-   * resizes pictures container to windows width
+   * Resizes pictures container to windows width.
    */
   resizePicturesContainer = () => {
     if (window.innerWidth <= 2 * this.pictureWidth) {
@@ -135,15 +135,40 @@ export default class GalleryTab extends React.Component {
   }
 
   /**
-   * on category click
+   * On category click event.
    * @param {Object} category data
    */
   onCategoryClick = (data) => {
+    var self = this
+    const navigationDrawer = this.props.getApp().refs.navigationDrawer
+
+    this.props.getApp().getToolBar().setState({height: 64})
+    this.props.getApp().setState({
+      tabLayoutHidden: true
+    })
+    var toolbarItems = this.props.getApp().state.toolbarItems
+    for (var i = 0; i < toolbarItems.length; i++) {
+      if (toolbarItems[i].title !== undefined) {
+        toolbarItems[i].title = data.name
+        break
+      }
+    }
+
+    if (navigationDrawer.state.toggled) {
+      navigationDrawer.hide()
+      this.props.getApp().getToolBar().refs.menuIcon.changeToDefault()
+      setTimeout(function () {
+        self.props.getApp().getToolBar().refs.menuIcon.changeToArrow()
+      }, 100)
+    } else {
+      self.props.getApp().getToolBar().refs.menuIcon.changeToArrow()
+    }
+
     this.showPictures(data)
   }
 
   /**
-   * shows all pictures from category
+   * Shows all pictures from category.
    * @param {Object} category data
    */
   showPictures = (data) => {
@@ -158,6 +183,28 @@ export default class GalleryTab extends React.Component {
     setTimeout(function () {
       self.resizePicturesContainer()
     }, 10)
+  }
+
+  hidePictures = () => {
+    var self = this
+
+    this.props.getApp().getToolBar().setState({height: 128})
+    this.props.getApp().setState({tabLayoutHidden: false})
+
+    var toolbarItems = this.props.getApp().state.toolbarItems
+    for (var i = 0; i < toolbarItems.length; i++) {
+      if (toolbarItems[i].title !== undefined) {
+        toolbarItems[i].title = this.props.getApp().props.toolbarTitle
+        break
+      }
+    }
+
+    this.props.getApp().getToolBar().refs.menuIcon.changeToDefault()
+
+    this.setState({
+      pictures: [],
+      picturesVisible: false
+    })
   }
 
   render () {

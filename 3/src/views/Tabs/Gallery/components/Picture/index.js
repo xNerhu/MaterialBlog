@@ -39,7 +39,7 @@ export default class Picture extends React.Component {
   }
 
   /**
-   * checks that image is vertical or horizontal
+   * Checks that image is vertical or horizontal.
    * @param {int} image width
    * @param {int} image height
    * @return {boolean} is vertical
@@ -49,7 +49,7 @@ export default class Picture extends React.Component {
   }
 
   /**
-   * gets image width proportionally to height
+   * Gets image width proportionally to height.
    * @param {int} default image height
    * @param {int} default image width
    * @param {int} image height
