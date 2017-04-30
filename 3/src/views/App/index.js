@@ -23,6 +23,8 @@ export default class App extends React.Component {
 
     this.state = ({
       toolbarItems: [],
+      toolbarBackgroundColor: '#2196F3',
+      toolbarShadow: true,
       tabLayoutLeft: 48,
       contentWidth: '100%',
       tabLayoutHidden: false,
@@ -53,7 +55,7 @@ export default class App extends React.Component {
 
     // Events.
     function onClickMenu (event) {
-      if (!self.refs.postsTab.state.isFullScreen && !self.refs.galleryTab.state.picturesVisible) {
+      if (!self.refs.postsTab.state.isFullScreen && !self.refs.galleryTab.state.picturesVisible && !self.refs.galleryTab.state.fullPictureVisible) {
         if (!navigationDrawer.state.toggled) {
           self.getToolBar().refs.menuIcon.changeToExit()
           navigationDrawer.show()
@@ -64,6 +66,7 @@ export default class App extends React.Component {
       } else {
         if (self.refs.postsTab.state.isFullScreen) self.refs.postsTab.exitFullScreenPost()
         if (self.refs.galleryTab.state.picturesVisible) self.refs.galleryTab.hidePictures()
+        if (self.refs.galleryTab.state.fullPictureVisible) self.refs.galleryTab.hidefullPicture()
       }
     }
 
@@ -221,7 +224,7 @@ export default class App extends React.Component {
     return (
       <div>
         <div className='app-content' ref='appContent' style={appContentStyle}>
-          <Toolbar ref='toolbar' items={this.state.toolbarItems} getApp={this.getApp}>
+          <Toolbar ref='toolbar' items={this.state.toolbarItems} getApp={this.getApp} backgroundColor={this.state.toolbarBackgroundColor} shadow={this.state.toolbarShadow}>
             <TabLayout ref='tabLayout' className='tab-layout-1' style={tabLayoutStyle} />
           </Toolbar>
           <div className='tab-pages' style={tabPagesStyle}>
@@ -243,5 +246,6 @@ export default class App extends React.Component {
   }
 }
 App.defaultProps = {
-  toolbarTitle: 'Blog klasy 3B'
+  toolbarTitle: 'Blog klasy 3B',
+  toolbarBackgroundColor: '#2196F3'
 }

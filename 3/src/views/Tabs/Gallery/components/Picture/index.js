@@ -25,8 +25,8 @@ export default class Picture extends React.Component {
 
       self.refs.picFull.style.backgroundImage = 'url(' + this.src + ')'
 
-      if (self.isVertical(this.width, this.height)) {
-        const width = self.getImageWidth(this.height, this.width, self.refs.pic.clientHeight) * 100 / self.pictureWidth
+      if (self.props.isVertical(this.width, this.height)) {
+        const width = self.props.getImageWidth(this.height, this.width, self.refs.pic.clientHeight) * 100 / self.pictureWidth
 
         self.refs.picBackground.style.backgroundImage = 'url(' + this.src + ')'
         self.setState({
@@ -39,24 +39,16 @@ export default class Picture extends React.Component {
   }
 
   /**
-   * Checks that image is vertical or horizontal.
-   * @param {int} image width
-   * @param {int} image height
-   * @return {boolean} is vertical
+   * On mouse down event.
+   * @param {Object} event data
    */
-  isVertical = (width, height) => {
-    return (width <= height) ? true : false
-  }
-
-  /**
-   * Gets image width proportionally to height.
-   * @param {int} default image height
-   * @param {int} default image width
-   * @param {int} image height
-   * @return {int} image width
-   */
-  getImageWidth = (imgHeight, imgWidth, height) => {
-    return height * imgWidth / imgHeight
+  onMouseDown = (e) => {
+    var ripple = Ripple.createRipple(this.refs.pic, {
+      backgroundColor: '#fff',
+      opacity: 0.3,
+      zIndex: 8
+    }, createRippleMouse(this.refs.pic, e, 1.5))
+    Ripple.makeRipple(ripple)
   }
 
   render () {
@@ -76,7 +68,7 @@ export default class Picture extends React.Component {
     }
 
     return (
-      <div className='picture' ref='pic' style={style}>
+      <div className='picture ripple' ref='pic' style={style} onMouseDown={this.onMouseDown} onClick={(e) => this.props.onClick(e, this.props.data)}>
         <div className='pictureBackground' ref='picBackground' style={picBackgroundStyle} />
         <div className='pictureFull' ref='picFull' style={picFullStyle} />
       </div>

@@ -18,3 +18,19 @@
   background-repeat: no-repeat;
   padding: 20px;
 }
+
+@mixin gradient ($color1, $color2) {
+  background: transparent;
+  background: -webkit-linear-gradient($color1, $color2);
+  background: -o-linear-gradient($color1, $color2);
+  background: -moz-linear-gradient($color1, $color2);
+  background: linear-gradient($color1, $color2);
+}
+
+@mixin blur ($px)  {
+  filter: blur($px);
+  -webkit-filter: blur($px);
+  -moz-filter: blur($px);
+  -o-filter: blur($px);
+  -ms-filter: blur($px);
+}

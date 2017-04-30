@@ -16,6 +16,7 @@ export default class GalleryTab extends React.Component {
       picturesWidth: '100%',
       pictureWidth: 300,
       pictureHeight: 200,
+      fullPictureVisible: false,
       categories: [
         {
           name: 'Vertical Image Test',
@@ -84,6 +85,9 @@ export default class GalleryTab extends React.Component {
 
     this.pictureWidth = 300
     this.pictureHeight = 200
+
+    this.fullPictureWidth = 0
+    this.fullPictureHeight = 0
   }
 
   componentDidMount () {
@@ -207,6 +211,65 @@ export default class GalleryTab extends React.Component {
     })
   }
 
+  /**
+   * On picture click event.
+   * @param {Object} event data
+   * @param {Object} picture data
+   */
+  onPictureClick = (e, data) => {
+    var self = this
+    var img = new Image()
+
+    img.onload = function () {
+      self.fullPictureBackground.src = this.src
+      self.setState({
+        picturesVisible: false,
+        fullPictureVisible: true
+      })
+      self.props.getApp().setState({
+        toolbarBackgroundColor: 'transparent',
+        toolbarShadow: false
+      })
+      self.fullPictureBlur.style.backgroundImage = 'url(' + this.src + ')'
+    }
+    img.src = data.url
+  }
+
+  /**
+   * Hides full screen picture.
+   */
+  hidefullPicture = () => {
+    this.setState({
+      picturesVisible: true,
+      fullPictureVisible: false
+    })
+    this.props.getApp().setState({
+      toolbarBackgroundColor: this.props.getApp().props.toolbarBackgroundColor,
+      toolbarShadow: true
+    })
+  }
+
+  /**
+   * Checks that image is vertical or horizontal.
+   * @param {int} image width
+   * @param {int} image height
+   * @return {boolean} is vertical
+   */
+  isVertical = (width, height) => {
+    return (width <= height) ? true : false
+  }
+
+  /**
+   * Gets image width proportionally to height.
+   * @param {int} default image height
+   * @param {int} default image width
+   * @param {int} image height
+   * @return {int} image width
+   */
+  getImageWidth = (imgHeight, imgWidth, height) => {
+    return height * imgWidth / imgHeight
+  }
+
   render () {
     var self = this
     function onRest () {
@@ -219,8 +282,8 @@ export default class GalleryTab extends React.Component {
 
     // Styles.
     const categoriesStyle = {
-      opacity: (!this.state.picturesVisible) ? 1 : 0,
-      visibility: (!this.state.picturesVisible) ? 'visible' : 'hidden'
+      opacity: (!this.state.picturesVisible && !this.state.fullPictureVisible) ? 1 : 0,
+      visibility: (!this.state.picturesVisible && !this.state.fullPictureVisible) ? 'visible' : 'hidden'
     }
 
     const picturesStyle = {
@@ -232,6 +295,16 @@ export default class GalleryTab extends React.Component {
     const pictureStyle = {
       width: this.state.pictureWidth,
       height: this.state.pictureHeight
+    }
+
+    const fullPictureStyle = {
+      opacity: (!this.state.fullPictureVisible) ? 0 : 1,
+      visibility: (!this.state.fullPictureVisible) ? 'hidden' : 'visible'
+    }
+
+    const fullPictureGradientStyle = {
+      opacity: (!this.state.fullPictureVisible) ? 0 : 1,
+      visibility: (!this.state.fullPictureVisible) ? 'hidden' : 'visible'
     }
 
     return (
@@ -249,10 +322,15 @@ export default class GalleryTab extends React.Component {
             <div className='pictures' style={picturesStyle}>
               {
                 this.state.pictures.map((data, i) => {
-                  return <Picture key={i} data={data} getApp={this.props.getApp} image={data.url} style={pictureStyle} />
+                  return <Picture key={i} data={data} getApp={this.props.getApp} image={data.url} style={pictureStyle} onClick={this.onPictureClick} isVertical={this.isVertical} getImageWidth={this.getImageWidth} />
                 })
               }
             </div>
+            <div className='full-picture' ref={(t) => { this.fullPicture = t }} style={fullPictureStyle}>
+              <div className='full-picture-blur' ref={(t) => { this.fullPictureBlur = t }} />
+              <img className='full-picture-background' ref={(t) => { this.fullPictureBackground = t }} />
+            </div>
+            <div className='full-picture-gradient' style={fullPictureGradientStyle} />
           </div>}
       </Motion>
     )
