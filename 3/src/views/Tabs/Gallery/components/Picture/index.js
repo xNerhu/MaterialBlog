@@ -9,6 +9,9 @@ export default class Picture extends React.Component {
       isVertical: false,
       picFullWidth: 200
     }
+
+    this.pictureWidth = 300
+    this.pictureHeight = 200
   }
 
   componentDidMount () {
@@ -23,22 +26,35 @@ export default class Picture extends React.Component {
       self.refs.picFull.style.backgroundImage = 'url(' + this.src + ')'
 
       if (self.isVertical(this.width, this.height)) {
-        const width = self.getImageWidth(this.height, this.width, self.refs.pic.clientHeight)
+        const width = self.getImageWidth(this.height, this.width, self.refs.pic.clientHeight) * 100 / self.pictureWidth
 
         self.refs.picBackground.style.backgroundImage = 'url(' + this.src + ')'
         self.setState({
           isVertical: true,
-          picFullWidth: width
+          picFullWidth: width + '%'
         })
       }
     }
     img.src = this.props.image
   }
 
+  /**
+   * checks that image is vertical or horizontal
+   * @param {int} image width
+   * @param {int} image height
+   * @return {boolean} is vertical
+   */
   isVertical = (width, height) => {
     return (width <= height) ? true : false
   }
 
+  /**
+   * gets image width proportionally to height
+   * @param {int} default image height
+   * @param {int} default image width
+   * @param {int} image height
+   * @return {int} image width
+   */
   getImageWidth = (imgHeight, imgWidth, height) => {
     return height * imgWidth / imgHeight
   }
