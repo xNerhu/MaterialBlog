@@ -13,12 +13,12 @@
         <script>
           function loadScripts (arr) {
             for (var i = 0; i < arr.length; i++) {
-                var script = document.createElement('script')
-                script.src = arr[i]
-                document.body.appendChild(script)
+              var script = document.createElement('script');
+              script.src = arr[i];
+              document.body.appendChild(script);
             }
           }
-          const isLocalHost = true;
+          const isLocalHost = (window.location.href.includes('C:/') || window.location.href.includes('localhost')) ? true : false;
           if (isLocalHost) {
             loadScripts(['http://localhost:1811/build/entry.bundle.js', 'http://localhost:1811/webpack-dev-server.js']);
           } else {
