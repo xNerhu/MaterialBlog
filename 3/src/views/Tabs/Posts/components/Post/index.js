@@ -2,6 +2,8 @@ import React from 'react'
 
 import Tooltip from '../../../../../imports/materialdesign/components/Tooltip'
 
+import Comment from './components/Comment'
+
 export default class Post extends React.Component {
   constructor () {
     super()
@@ -107,21 +109,6 @@ export default class Post extends React.Component {
   onClick = (e) => {
     if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode.parentNode !== this.refs.comments && this.props.onClick !== undefined) {
       this.props.onClick(e, this)
-    }
-  }
-
-  /**
-   * On comment mouse down event.
-   * @param {Object} event data
-   */
-  onCommentMouseDown = (e) => {
-    if (this.props.commentsRipple === true) {
-      const target = (e.target.parentNode.classList.contains('post-comment')) ? e.target.parentNode : e.target
-      var ripple = Ripple.createRipple(target, {
-        backgroundColor: '#444',
-        opacity: 0.3
-      }, createRippleMouse(target, e, 1.5))
-      Ripple.makeRipple(ripple)
     }
   }
 
@@ -285,14 +272,7 @@ export default class Post extends React.Component {
         <div className='post-comments' ref='comments' style={commentsStyle}>
           {this.props.comments.map((data, i) => {
             return (
-              <div className='post-comment ripple' key={i} onMouseDown={this.onCommentMouseDown}>
-                <div className='post-comment-avatar' style={{backgroundImage: 'url(' + data.avatar + ')'}} />
-                <div className='post-comment-avatar-right'>
-                  <div className='post-comment-author'>{data.author}</div>
-                  <div className='post-comment-text'>{data.content}</div>
-                  <div className='post-comment-date'>{data.date}</div>
-                </div>
-              </div>
+              <Comment key={i} data={data} ripple={this.props.commentsRipple} />
             )
           })}
         </div>
