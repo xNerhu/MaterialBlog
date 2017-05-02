@@ -1,0 +1,30 @@
+.navigation-drawer-item {
+  max-width: 100%;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  padding-left: 64px;
+  color: #444;
+  font-size: 16px;
+  @include Roboto-Medium;
+  position: relative;
+  transition: all 0.3s;
+
+  &:first-child {
+    margin-top: 10px;
+  }
+
+  &:hover {
+    transition: all 0.3s;
+    background-color: #eee;
+  }
+}
+
+.navigation-drawer-item-icon {
+  height: 26px;
+  width: 26px;
+  opacity: 0.6;
+  @include image-center(24px, 24px);
+  position: absolute;
+  left: 16px;
+  @include center-vertical;
+}

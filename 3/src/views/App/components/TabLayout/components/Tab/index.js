@@ -39,6 +39,17 @@ export default class Tab extends React.Component {
   }
 
   /**
+   * On touch event (on mobile).
+   * @param {Object} event data
+   */
+  onTouchStart = (e) => {
+    var ripple = Ripple.createRipple(this.refs.tab, {
+      backgroundColor: '#fff'
+    }, createRippleMouse(this.refs.tab, e, 1.5, true))
+    Ripple.makeRipple(ripple)
+  }
+
+  /**
    * Deselects tab.
    */
   deselect = () => {
@@ -112,7 +123,7 @@ export default class Tab extends React.Component {
     }
 
     return (
-      <div ref='tab' onClick={this.onClick} onMouseDown={this.onMouseDown} style={this.props.style} className='tab ripple'>
+      <div ref='tab' onClick={this.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart} style={this.props.style} className='tab ripple'>
         <div style={tabTitleStyle} className='tab-title'>
           {this.props.data.title}
         </div>

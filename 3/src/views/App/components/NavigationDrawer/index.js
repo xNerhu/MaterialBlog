@@ -1,5 +1,7 @@
 import React from 'react'
 
+import NavigationDrawerItem from './components/NavigationDrawerItem'
+
 export default class NavigationDrawer extends React.Component {
   constructor () {
     super()
@@ -158,18 +160,6 @@ export default class NavigationDrawer extends React.Component {
   }
 
   /**
-    * On navigation drawer item mouse down event.
-    * @param {object} event data
-    */
-  onItemMouseDown = (e) => {
-    var ripple = Ripple.createRipple(e.target, {
-      backgroundColor: '#000',
-      opacity: 0.2
-    }, createRippleMouse(e.target, e, 1.5))
-    Ripple.makeRipple(ripple)
-  }
-
-  /**
     * On dark click event.
     * Hides navigation drawer.
     */
@@ -214,14 +204,8 @@ export default class NavigationDrawer extends React.Component {
         <div className='navigation-drawer' style={navigationDrawerStyle}>
           <div className='navigation-drawer-header' style={headerStyle} />
           <div className='navigation-drawer-content' style={navigationDrawerContentStyle}>
-            <div className='navigation-drawer-item ripple' onMouseDown={this.onItemMouseDown}>
-              <div className='navigation-drawer-item-icon' style={infoIconStyle} />
-              Informacje
-            </div>
-            <div className='navigation-drawer-item ripple' onMouseDown={this.onItemMouseDown}>
-              <div className='navigation-drawer-item-icon' style={loginIconStyle} />
-              Zaloguj się
-            </div>
+            <NavigationDrawerItem iconStyle={infoIconStyle}>Informacje</NavigationDrawerItem>
+            <NavigationDrawerItem iconStyle={loginIconStyle}>Zaloguj</NavigationDrawerItem>
           </div>
         </div>
         <div className='dark' style={darkStyle} onClick={this.onDarkClick} />

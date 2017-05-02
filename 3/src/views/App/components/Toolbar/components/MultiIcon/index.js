@@ -85,7 +85,7 @@ export default class MultiIcon extends React.Component {
     // Wait 1.5 second then unlock click mouse event.
     setTimeout(function () {
       self.canClick = true
-    }, 2000)
+    }, 1500)
   }
 
   /**
@@ -101,7 +101,7 @@ export default class MultiIcon extends React.Component {
 
   render () {
     return (
-      <div style={this.props.style} className={this.props.className} onMouseDown={this.props.onMouseDown} onClick={this.onClick}>
+      <div style={this.props.style} className={this.props.className} onMouseDown={this.props.onMouseDown} onClick={this.onClick} onTouchStart={this.props.onTouchStart}>
         <div className='multiIcon' ref='multiIcon'>
           <div className='multiIcon-grid multiIcon-grid-1' />
           <div className='multiIcon-grid multiIcon-grid-2' />

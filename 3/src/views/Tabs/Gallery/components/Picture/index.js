@@ -51,6 +51,19 @@ export default class Picture extends React.Component {
     Ripple.makeRipple(ripple)
   }
 
+  /**
+   * On touch event (on mobile).
+   * @param {Object} event data
+   */
+  onTouchStart = (e) => {
+    var ripple = Ripple.createRipple(this.refs.pic, {
+      backgroundColor: '#fff',
+      opacity: 0.3,
+      zIndex: 8
+    }, createRippleMouse(this.refs.pic, e, 1.5, true))
+    Ripple.makeRipple(ripple)
+  }
+
   render () {
     // Styles.
     const style = Object.assign(
@@ -68,7 +81,7 @@ export default class Picture extends React.Component {
     }
 
     return (
-      <div className='picture ripple' ref='pic' style={style} onMouseDown={this.onMouseDown} onClick={(e) => this.props.onClick(e, this.props.data)}>
+      <div className='picture ripple' ref='pic' style={style} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart} onClick={(e) => this.props.onClick(e, this.props.data)}>
         <div className='pictureBackground' ref='picBackground' style={picBackgroundStyle} />
         <div className='pictureFull' ref='picFull' style={picFullStyle} />
       </div>

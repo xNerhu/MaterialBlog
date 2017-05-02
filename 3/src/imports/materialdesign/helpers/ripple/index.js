@@ -7,7 +7,7 @@ var Ripple = class Ripple {
       * @param {DOMElement} rootElement - fake root element (optional)
       * @return {DOMElement}
       */
-  static createRipple (element, css, options = {x: 0, y: 0, scale: 15, time: 0.4, scaleY: null}, rootElement = '') {
+  static createRipple (element, css, options = {x: 0, y: 0, scale: 15, time: 0.4, scaleY: null, touch: false}, rootElement = '') {
     var rippleElement = document.createElement('span')
     rippleElement.className = 'ripple-effect'
     element.appendChild(rippleElement)
@@ -34,7 +34,8 @@ var Ripple = class Ripple {
       scale = rippleElement.options.scale,
       time = rippleElement.options.time,
       scaleY = rippleElement.options.scaleY,
-      size = 0
+      size = 0,
+      touch = rippleElement.options.touch
 
     if (scaleY == null) {
       scaleY = scale
@@ -57,6 +58,9 @@ var Ripple = class Ripple {
 
     rippleElement.element.addEventListener('mouseout', removeRipple)
     rippleElement.element.addEventListener('mouseup', removeRipple)
+    if (touch) {
+      rippleElement.element.addEventListener('touchend', removeRipple)
+    }
   }
 }
 
@@ -66,8 +70,8 @@ var Ripple = class Ripple {
   * @param {Number} scale (optional)
   * @param {Number} time (optional)
   */
-function createRippleCenter (item, scale = 15, time = 0.4) {
-  return {x: item.clientWidth / 2, y: item.clientHeight / 2, scale: scale, time: time}
+function createRippleCenter (item, scale = 15, time = 0.4, touch = false) {
+  return {x: item.clientWidth / 2, y: item.clientHeight / 2, scale: scale, time: time, touch: touch}
 }
 
 /**
@@ -76,10 +80,10 @@ function createRippleCenter (item, scale = 15, time = 0.4) {
   * @param {Number} scale (optional)
   * @param {Number} time (optional)
   */
-function createRippleMouse (item, e, time = 1) {
-  var relX = e.pageX - item.getBoundingClientRect().left
-  var relY = e.pageY - item.getBoundingClientRect().top
-  return {x: relX, y: relY, scale: item.clientWidth, time: time, scaleY: item.clientHeight}
+function createRippleMouse (item, e, time = 1, touch = false) {
+  var relX = (!touch) ? e.pageX - item.getBoundingClientRect().left : e.touches[0].clientX - item.getBoundingClientRect().left
+  var relY = (!touch) ? e.pageY - item.getBoundingClientRect().top : e.touches[0].clientY - item.getBoundingClientRect().top
+  return {x: relX, y: relY, scale: item.clientWidth, time: time, scaleY: item.clientHeight, touch: touch}
 }
 
 /**

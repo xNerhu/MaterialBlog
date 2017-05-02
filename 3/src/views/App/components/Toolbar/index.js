@@ -23,6 +23,18 @@ export default class Toolbar extends React.Component {
     Ripple.makeRipple(ripple)
   }
 
+  /**
+   * On tab icon touch start event.
+   * @param {object} event data
+   */
+  iconTouchStart = (e) => {
+    var ripple = Ripple.createRipple(e.target, {
+      backgroundColor: '#000',
+      opacity: 0.2
+    }, createRippleCenter(e.target, 14, 0.4, true))
+    Ripple.makeRipple(ripple)
+  }
+
   render () {
     // Styles.
     const toolbarClass = (this.props.shadow) ? 'toolbar toolbar-shadow' : 'toolbar'
@@ -60,9 +72,9 @@ export default class Toolbar extends React.Component {
               )
 
               if (data.subType === 'Menu') {
-                return <MultiIcon ref='menuIcon' key={key} className={className} style={data.style} onClick={(e) => data.onClick(e)} onMouseDown={this.iconMouseDown} />
+                return <MultiIcon ref='menuIcon' key={key} className={className} style={data.style} onClick={(e) => data.onClick(e)} onMouseDown={this.iconMouseDown} onTouchStart={this.iconTouchStart} />
               } else {
-                return <div key={key} className={className} style={style} onClick={data.onClick} onMouseDown={this.iconMouseDown} />
+                return <div key={key} className={className} style={style} onClick={data.onClick} onMouseDown={this.iconMouseDown} onTouchStart={this.iconTouchStart} />
               }
             }
             if (data.type === 'Title') { // Check if type of child is title.

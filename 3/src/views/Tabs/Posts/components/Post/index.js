@@ -24,6 +24,18 @@ export default class Post extends React.Component {
   }
 
   /**
+   * On like icon touch event (on mobile).
+   * @param {Object} event data
+   */
+  onLikeTouchStart = (e) => {
+    var ripple = Ripple.createRipple(e.target, {
+      backgroundColor: '#000',
+      opacity: 0.4
+    }, createRippleCenter(e.target, 14, 0.4, true))
+    Ripple.makeRipple(ripple)
+  }
+
+  /**
    * On show comments button mouse down event.
    * @param {Object} event data
    */
@@ -32,6 +44,18 @@ export default class Post extends React.Component {
       backgroundColor: '#000',
       opacity: 0.4
     }, createRippleCenter(this.refs.showComments, 14))
+    Ripple.makeRipple(ripple)
+  }
+
+  /**
+   * On show comments button touch event (on mobile).
+   * @param {Object} event data
+   */
+  onShowCommentsButtonTouchStart = (e) => {
+    var ripple = Ripple.createRipple(this.refs.showComments, {
+      backgroundColor: '#000',
+      opacity: 0.4
+    }, createRippleCenter(this.refs.showComments, 14, 0.4, true))
     Ripple.makeRipple(ripple)
   }
 
@@ -58,6 +82,20 @@ export default class Post extends React.Component {
         backgroundColor: '#444',
         opacity: 0.3
       }, createRippleMouse(this.refs.content, e, 1.5))
+      Ripple.makeRipple(ripple)
+    }
+  }
+
+  /**
+   * On post touch event (on mobile).
+   * @param {Object} event data
+   */
+  onTouchStart = (e) => {
+    if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode.parentNode !== this.refs.comments && this.props.ripple === true) {
+      var ripple = Ripple.createRipple(this.refs.content, {
+        backgroundColor: '#444',
+        opacity: 0.3
+      }, createRippleMouse(this.refs.content, e, 1.5, true))
       Ripple.makeRipple(ripple)
     }
   }
@@ -207,7 +245,7 @@ export default class Post extends React.Component {
 
     return (
       <div className={'post ' + ((this.props.className !== undefined) ? this.props.className : '')} ref='post' onClick={this.onClick} style={this.props.style}>
-        <div className='ripple' ref='content' onMouseDown={this.onMouseDown}>
+        <div className='ripple' ref='content' onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>
           <div className='post-avatar' style={avatarIconStyle} />
           <div className='post-avatar-right'>
             <div className='post-title'>
@@ -219,11 +257,28 @@ export default class Post extends React.Component {
             {this.props.children}
           </div>
           <div className='post-action'>
-            <div className='post-action-like ripple-icon' ref='like' style={likeIconStyle} onMouseDown={this.onLikeMouseDown} onMouseEnter={this.onLikeMouseEnter} onMouseLeave={this.onLikeMouseLeave} />
-            <div className='post-action-like-count' ref='likeCount' onMouseEnter={this.onLikesListMouseEnter} onMouseLeave={this.onLikesListMouseLeave}>{this.props.likes.length}</div>
+            <div className='post-action-like ripple-icon' ref='like'
+              style={likeIconStyle}
+              onMouseDown={this.onLikeMouseDown}
+              onMouseEnter={this.onLikeMouseEnter}
+              onMouseLeave={this.onLikeMouseLeave}
+              onTouchStart={this.onLikeTouchStart} />
+            <div className='post-action-like-count' ref='likeCount'
+              onMouseEnter={this.onLikesListMouseEnter}
+              onMouseLeave={this.onLikesListMouseLeave}>
+              {this.props.likes.length}
+            </div>
             <div className='post-action-show-comments'>
-              <div ref='commentsCount' onClick={this.onShowCommentsButtonClick}>KOMENTARZE ({this.props.comments.length})</div>
-              <div className='post-action-show-comments-button ripple-icon' ref='showComments' onMouseDown={this.onShowCommentsButtonMouseDown} onClick={this.onShowCommentsButtonClick} style={commentIconStyle} onMouseEnter={this.onShowCommentsButtonMouseEnter} onMouseLeave={this.onShowCommentsButtonMouseLeave} />
+              <div ref='commentsCount'
+                onClick={this.onShowCommentsButtonClick}>
+                KOMENTARZE ({this.props.comments.length})
+              </div>
+              <div className='post-action-show-comments-button ripple-icon' ref='showComments' onMouseDown={this.onShowCommentsButtonMouseDown}
+                onClick={this.onShowCommentsButtonClick}
+                style={commentIconStyle}
+                onMouseEnter={this.onShowCommentsButtonMouseEnter}
+                onMouseLeave={this.onShowCommentsButtonMouseLeave}
+                onTouchStart={this.onShowCommentsButtonTouchStart} />
             </div>
           </div>
         </div>
