@@ -1,5 +1,5 @@
 .post {
-  width: 60%;
+  width: 100%;
   height: auto;
   background-color: #fff;
   color: #444;
@@ -9,11 +9,17 @@
   left: 0;
   right: 0;
   border-radius: 2px;
-  transition: 0.3s opacity;
+  transition: 0.3s opacity, 0.3s width;
   margin-top: 32px;
 
   &:first-child {
     margin-top: 24px;
+  }
+}
+
+@media screen and (min-width: 540px) {
+  .post {
+    width: 60%;
   }
 }
 
@@ -114,41 +120,4 @@
   max-height: 224px;
   overflow: hidden;
   transition: height 0.3s;
-}
-
-.post-comment {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 40px;
-  padding-right: 20px;
-  width: 100%;
-}
-
-.post-comment-author {
-  @include Roboto-Medium;
-  font-size: 16px;
-}
-
-.post-comment-text {
-  @include Roboto-Regular;
-  font-size: 14px;
-}
-
-.post-comment-date {
-  margin-top: 2px;
-  @include Roboto-Medium;
-  font-size: 14px;
-}
-
-.post-comment-avatar {
-  width: 36px;
-  height: 36px;
-  float: left;
-  @include image-center(36px, 36px);
-}
-
-.post-comment-avatar-right {
-  width: calc(100% - 76px);
-  float: left;
-  padding-left: 12px;
 }

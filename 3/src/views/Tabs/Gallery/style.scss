@@ -4,13 +4,29 @@
   margin: 0 auto;
   padding-top: 12px;
   padding-bottom: 24px;
-  padding-left: 48px;
-  padding-right: 32px;
   opacity: 1;
   transition: 0.3s all;
+  padding-left: 48px;
+  padding-right: 32px;
 
   &:after {
     clear:both;
+  }
+}
+
+@media screen and (max-width: 424px) {
+  .categories {
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 200px;
+  }
+}
+
+@media screen and (min-width: 424px) and (max-width: 532px) {
+  .categories {
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 424px;
   }
 }
 
