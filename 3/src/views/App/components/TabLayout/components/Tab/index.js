@@ -90,7 +90,7 @@ export default class Tab extends React.Component {
           page.setState({left: spring(0, tabLayoutAnimationData.pageMoveSpring)})
         })
         if (lastTab.getPage() != null) {
-          lastTab.getPage().setState({left: spring(-width, tabLayoutAnimationData.pageMoveSpring)})
+          lastTab.getPage().setState({left: spring(-window.innerWidth, tabLayoutAnimationData.pageMoveSpring)})
           lastTab.getPage().isVisible = false
         }
       } else {
@@ -98,7 +98,7 @@ export default class Tab extends React.Component {
           page.setState({left: spring(0, tabLayoutAnimationData.pageMoveSpring)})
         })
         if (lastTab.getPage() != null) {
-          lastTab.getPage().setState({left: spring(width, tabLayoutAnimationData.pageMoveSpring)})
+          lastTab.getPage().setState({left: spring(window.innerWidth, tabLayoutAnimationData.pageMoveSpring)})
           lastTab.getPage().isVisible = false
         }
       }
