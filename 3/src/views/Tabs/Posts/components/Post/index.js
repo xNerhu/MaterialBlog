@@ -3,6 +3,7 @@ import React from 'react'
 import Tooltip from '../../../../../imports/materialdesign/components/Tooltip'
 
 import Comment from './components/Comment'
+import CommentInput from './components/CommentInput'
 
 export default class Post extends React.Component {
   constructor () {
@@ -275,6 +276,7 @@ export default class Post extends React.Component {
               <Comment key={i} data={data} ripple={this.props.commentsRipple} />
             )
           })}
+          <CommentInput getApp={this.props.getApp} />
         </div>
       </div>
     )

@@ -84,7 +84,6 @@ export default class Tab extends React.Component {
       tabLayout.lastSelectedIndex2 = tabLayout.tabs.indexOf(this)
 
       var lastTab = tabLayout.tabs[tabLayout.lastSelectedIndex]
-      var width = tabLayout.refs.tabLayout.offsetWidth
       if (tabLayout.tabs.indexOf(this) > tabLayout.lastSelectedIndex) {
         page.setState({left: window.innerWidth}, function () {
           page.setState({left: spring(0, tabLayoutAnimationData.pageMoveSpring)})

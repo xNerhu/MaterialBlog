@@ -1,0 +1,62 @@
+.material-text-field {
+  width: 250px;
+  position: relative;
+  @include Roboto-Regular;
+}
+
+.material-text-field-input {
+  width: 100%;
+  height: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 0;
+  outline: none;
+  border: none;
+  -webkit-text-fill-color: transparent;
+  background-color: transparent;
+  cursor: text;
+}
+
+.material-text-field-input:disabled {
+  background-color: transparent;
+}
+
+.material-text-field-hint {
+  position: absolute;
+  left: 0;
+  transition: all 0.3s;
+  cursor: text;
+}
+
+.material-text-field-place-holder {
+  position: absolute;
+  left: 0;
+  cursor: text;
+}
+
+.material-text-field-divider {
+  width: 100%;
+  height: 2px;
+  transition: 0.3s opacity, 0.3s height, 0.3s background-color;
+}
+
+.material-text-field-focus-divider {
+  width: 0%;
+  margin-left: auto;
+  margin-right: auto;
+  transition: 0.3s width;
+}
+
+.material-textfield-helper-text {
+  float: left;
+  transition: 0.3s opacity, 0.3s color;
+}
+
+.material-textfield-counter {
+  float: right;
+  transition: 0.3s opacity, 0.3s color;
+}
+
+.material-textfield-counter:after {
+  clear: both;
+}
