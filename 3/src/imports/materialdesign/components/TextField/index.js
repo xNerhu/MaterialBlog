@@ -12,6 +12,14 @@ export default class TextField extends React.Component {
       error: false,
       counter: '0/0'
     }
+
+    this.errorID = 0
+  }
+
+  componentDidMount () {
+    if (this.props.multiple) {
+      this.refs.textarea.style.height = '54px'
+    }
   }
 
   /**
@@ -38,11 +46,12 @@ export default class TextField extends React.Component {
    */
   toggleOn = () => {
     if (!this.state.focus) {
+      const element = (!this.props.multiple) ? this.refs.input : this.refs.textarea
       this.setState({
         focus: true,
         placeHolder: true
       })
-      this.refs.input.select()
+      element.select()
     }
   }
 
@@ -51,7 +60,8 @@ export default class TextField extends React.Component {
    */
   toggleOff = () => {
     if (this.state.focus) {
-      if (this.refs.input.value.length === 0) {
+      const element = (!this.props.multiple) ? this.refs.input : this.refs.textarea
+      if (element.value.length === 0) {
         this.setState({
           focus: false,
           placeHolder: false
@@ -86,9 +96,11 @@ export default class TextField extends React.Component {
    * @param {Object} event data
    */
   onInput = (e) => {
-    const placeHolder = (this.refs.input.value.length > 0) ? false : true
-    const length = this.refs.input.value.length
+    const element = (!this.props.multiple) ? this.refs.input : this.refs.textarea
+    const placeHolder = (element.value.length > 0) ? false : true
+    const length = element.value.length
     const maxLength = this.props.maxLength
+    var textArea = this.refs.textarea
 
     this.setState({
       placeHolder: placeHolder,
@@ -102,9 +114,13 @@ export default class TextField extends React.Component {
            * On error.
            * @param {DomObject} element
            * @param {String} error name
-           * @param {Boolean} too much letters error
+           * @param {int} error id
            */
-          this.props.onError(this, 'Too much letters!', true)
+          this.props.onError(this, 'Too much letters!', 1)
+
+          // 0 - no errors
+          // 1 - too much letters
+          this.errorID = 1
         }
         this.setState({
           error: true
@@ -113,6 +129,7 @@ export default class TextField extends React.Component {
         this.setState({
           error: false
         })
+        this.errorID = 0
         /**
          * On error end.
          * @param {DomObject} element
@@ -120,6 +137,19 @@ export default class TextField extends React.Component {
         this.props.onErrorEnd(this)
       }
     }
+
+    // It can't be state, because when resizes there is weird drop.
+    textArea.style.height = 'auto'
+    textArea.style.height = textArea.scrollHeight + 'px'
+  }
+
+  /**
+   * Returns any error.
+   * @return {Boolean} only false if there isn't any error.
+   * @return {Int} error id. Only if there is any error.
+   */
+  getErrors = () => {
+    return (this.state.error) ? this.errorID : false
   }
 
   render () {
@@ -127,8 +157,17 @@ export default class TextField extends React.Component {
     var inputStyle = Object.assign(
       {
         color: (!this.state.error) ? this.props.focusHintStyle.color : this.props.errorColor,
-        textShadow: '0px 0px 0px ' + this.props.textColor
+        textShadow: '0px 0px 0px ' + this.props.textColor,
+        display: (!this.props.multiple) ? 'block' : 'none'
       }, this.props.inputStyle
+    )
+
+    var textAreaStyle = Object.assign(
+      {
+        color: (!this.state.error) ? this.props.focusHintStyle.color : this.props.errorColor,
+        textShadow: '0px 0px 0px ' + this.props.textColor,
+        display: (!this.props.multiple) ? 'none' : 'block'
+      }, this.props.textAreaStyle
     )
 
     var _hintStyle = (!this.state.focus) ? this.props.defaultHintStyle : this.props.focusHintStyle
@@ -193,6 +232,16 @@ export default class TextField extends React.Component {
           onInput={this.onInput}
           style={inputStyle}
         />
+        <textarea
+          ref='textarea'
+          className='material-text-field-textarea'
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
+          onMouseEnter={this.onMouseEnter}
+          onMouseLeave={this.onMouseLeave}
+          onInput={this.onInput}
+          style={textAreaStyle}
+        />
         <div
           className='material-text-field-place-holder'
           style={placeHolderStyle}
@@ -240,9 +289,18 @@ TextField.defaultProps = {
   hover: false, // true or false
   errorColor: '#d32f2f',
   textColor: '#000',
+  multiple: false,
   inputStyle: {
     // do not set 'color' attribute
-    fontSize: 16
+    fontSize: 16,
+    paddingTop: 8,
+    paddingBottom: 8
+  },
+  textAreaStyle: {
+    // do not set 'color' attribute
+    fontSize: 16,
+    paddingTop: 8,
+    paddingBottom: 8
   },
   defaultHintStyle: {
     fontSize: 16,

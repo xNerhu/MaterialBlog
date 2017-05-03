@@ -7,8 +7,6 @@
 .material-text-field-input {
   width: 100%;
   height: 100%;
-  padding-top: 8px;
-  padding-bottom: 8px;
   margin: 0;
   outline: none;
   border: none;
@@ -19,6 +17,19 @@
 
 .material-text-field-input:disabled {
   background-color: transparent;
+}
+
+.material-text-field-textarea {
+  width: 100%;
+  -webkit-text-fill-color: transparent;
+  background-color: transparent;
+  cursor: text;
+  resize: none;
+  outline: none;
+  border: none;
+  margin: 0;
+  display: block;
+  @include Roboto-Regular;
 }
 
 .material-text-field-hint {
