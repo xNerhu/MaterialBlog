@@ -152,13 +152,46 @@ export default class TextField extends React.Component {
     return (this.state.error) ? this.errorID : false
   }
 
+  /**
+   * On action icon mouse down event.
+   * @param {Object} event data
+   */
+  onActionIconMouseDown = (e) => {
+    if (this.props.actionIcon) {
+      var ripple = Ripple.createRipple(this.refs.actionIcon, this.props.actionIconRippleStyle, createRippleCenter(this.refs.actionIcon, 14))
+      Ripple.makeRipple(ripple)
+    }
+  }
+
+  /**
+   * On action icon touch start event. (on mobile)
+   * @param {Object} event data
+   */
+  onActionIconTouchStart = (e) => {
+    if (this.props.actionIcon) {
+      var ripple = Ripple.createRipple(this.refs.actionIcon, this.props.actionIconRippleStyle, createRippleCenter(this.refs.actionIcon, 14, 0.4, true))
+      Ripple.makeRipple(ripple)
+    }
+  }
+
+  /**
+   * On action icon click event.
+   * @param {Object} event data
+   */
+  onActionIconClick = (e) => {
+    if (typeof this.props.onActionIconClick === 'function') {
+      this.props.onActionIconClick(e)
+    }
+  }
+
   render () {
     // Styles.
     var inputStyle = Object.assign(
       {
         color: (!this.state.error) ? this.props.focusHintStyle.color : this.props.errorColor,
         textShadow: '0px 0px 0px ' + this.props.textColor,
-        display: (!this.props.multiple) ? 'block' : 'none'
+        display: (!this.props.multiple) ? 'block' : 'none',
+        width: (!this.props.actionIcon) ? '' : 'calc(100% - ' + this.props.actionIconStyle.width + 'px)'
       }, this.props.inputStyle
     )
 
@@ -170,13 +203,16 @@ export default class TextField extends React.Component {
       }, this.props.textAreaStyle
     )
 
-    var _hintStyle = (!this.state.focus) ? this.props.defaultHintStyle : this.props.focusHintStyle
+    var _hintStyle = (!this.state.focus) ? this.props.defaultHintStyle : Object.assign({
+      color: this.props.focusColor
+    }, this.props.focusHintStyle)
 
     var _dividerStyle = (!this.state.hover && !this.state.focus || !this.props.hover) ? this.props.dividerStyle : this.props.hoverDividerStyle
 
     var focusDividerStyle = Object.assign(
       {
-        width: (!this.state.focus) ? '0%' : '100%'
+        width: (!this.state.focus) ? '0%' : '100%',
+        backgroundColor: this.props.focusColor
       }, this.props.focusDividerStyle
     )
 
@@ -201,6 +237,13 @@ export default class TextField extends React.Component {
       }, this.props.iconStyle
     )
 
+    var actionIconStyle = Object.assign(
+      {
+        backgroundImage: (!this.props.actionIcon) ? '' : 'url(' + this.props.actionIcon + ')',
+        display: (!this.props.actionIcon) ? 'none' : 'block'
+      }, this.props.actionIconStyle
+    )
+
     var hintStyle = Object.assign({}, _hintStyle)
     var dividerStyle = Object.assign({}, _dividerStyle)
     var placeHolderStyle = Object.assign({}, _placeHolderStyle)
@@ -223,9 +266,11 @@ export default class TextField extends React.Component {
     const placeHolderText = (!this.props.placeHolder) ? '' : this.props.placeHolder
     const helperText = (!this.props.helperText) ? '' : this.props.helperText
 
+    const classes = 'material-text-field ' + this.props.className
+
     return (
       <div
-        className='material-text-field'
+        className={classes}
         style={this.props.style}
       >
         <input
@@ -286,6 +331,14 @@ export default class TextField extends React.Component {
           className='material-text-field-icon'
           style={iconStyle}
         />
+        <div
+          className='material-text-field-action-icon ripple-icon'
+          ref='actionIcon'
+          onMouseDown={this.onActionIconMouseDown}
+          onTouchStart={this.onActionIconTouchStart}
+          onClick={this.onActionIconClick}
+          style={actionIconStyle}
+        />
       </div>
     )
   }
@@ -300,8 +353,15 @@ TextField.defaultProps = {
   hover: false, // true or false
   errorColor: '#d32f2f',
   textColor: '#000',
+  focusColor: '#2d5cfa',
   multiple: false,
-  icon: false, // or link to image
+  icon: false, // or image link
+  actionIcon: false, // or image link
+  actionIconRipple: true,
+  actionIconRippleStyle: {
+    backgroundColor: '#000',
+    opacity: 0.4
+  },
   inputStyle: {
     // do not set 'color' attribute
     fontSize: 16,
@@ -320,17 +380,16 @@ TextField.defaultProps = {
     top: 8,
     opacity: 0.7
   },
+  focusHintStyle: {
+    fontSize: 14,
+    top: -12,
+    opacity: 0.85,
+    cursor: 'default'
+  },
   placeHolderStyle: {
     color: '#000',
     opacity: 0.7,
     top: 8
-  },
-  focusHintStyle: {
-    fontSize: 14,
-    color: '#2d5cfa',
-    top: -12,
-    opacity: 0.85,
-    cursor: 'default'
   },
   dividerStyle: {
     height: 1,
@@ -343,8 +402,7 @@ TextField.defaultProps = {
   },
   focusDividerStyle: {
     height: 2,
-    marginTop: -2,
-    backgroundColor: '#2d5cfa'
+    marginTop: -2
   },
   helperTextStyle: {
     fontSize: 14,
@@ -363,5 +421,12 @@ TextField.defaultProps = {
     height: 24,
     left: -32,
     opacity: 0.5
+  },
+  actionIconStyle: {
+    width: 24,
+    height: 24,
+    right: 0,
+    top: -8,
+    opacity: 0.7
   }
 }

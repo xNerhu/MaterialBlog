@@ -1,5 +1,5 @@
 .material-text-field {
-  width: 250px;
+  width: 100%;
   position: relative;
   @include Roboto-Regular;
 }
@@ -80,4 +80,12 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.material-text-field-action-icon {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  position: absolute;
+  cursor: pointer;
 }

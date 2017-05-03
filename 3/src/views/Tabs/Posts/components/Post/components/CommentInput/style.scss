@@ -1,5 +1,23 @@
 .post-comment-input {
-  width: 100%;
+  width: calc(100% - 80px);
   height: auto;
-  background-color: red;
+  border-top: 1px solid rgba(0, 0, 0, 0.4);
+  padding-top: 25px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.post-comment-input-avatar {
+  width: 36px;
+  height: 36px;
+  @include image-center(36px, 36px);
+  background-image: url(https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281);
+  float: left;
+}
+
+.post-comment-input-textfield {
+  width: calc(100% - 56px) !important;
+  margin-left: 20px;
+  margin-bottom: 10px;
+  float: left;
 }
