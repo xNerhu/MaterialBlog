@@ -194,6 +194,13 @@ export default class TextField extends React.Component {
       }, this.props.counterStyle
     )
 
+    var iconStyle = Object.assign(
+      {
+        backgroundImage: (!this.props.icon) ? '' : 'url(' + this.props.icon + ')',
+        display: (!this.props.icon) ? 'none' : 'block'
+      }, this.props.iconStyle
+    )
+
     var hintStyle = Object.assign({}, _hintStyle)
     var dividerStyle = Object.assign({}, _dividerStyle)
     var placeHolderStyle = Object.assign({}, _placeHolderStyle)
@@ -270,11 +277,15 @@ export default class TextField extends React.Component {
           {helperText}
         </div>
         <div
-          className='material-textfield-counter'
+          className='material-text-field-counter'
           style={counterStyle}
         >
           {this.state.counter}
         </div>
+        <div
+          className='material-text-field-icon'
+          style={iconStyle}
+        />
       </div>
     )
   }
@@ -290,6 +301,7 @@ TextField.defaultProps = {
   errorColor: '#d32f2f',
   textColor: '#000',
   multiple: false,
+  icon: false, // or link to image
   inputStyle: {
     // do not set 'color' attribute
     fontSize: 16,
@@ -306,11 +318,11 @@ TextField.defaultProps = {
     fontSize: 16,
     color: '#000',
     top: 8,
-    opacity: 0.6
+    opacity: 0.7
   },
   placeHolderStyle: {
     color: '#000',
-    opacity: 0.6,
+    opacity: 0.7,
     top: 8
   },
   focusHintStyle: {
@@ -345,5 +357,11 @@ TextField.defaultProps = {
     color: '#000',
     opacity: 0.6,
     marginTop: 12
+  },
+  iconStyle: {
+    width: 24,
+    height: 24,
+    left: -32,
+    opacity: 0.5
   }
 }

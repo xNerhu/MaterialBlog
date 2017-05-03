@@ -29,6 +29,7 @@
   border: none;
   margin: 0;
   display: block;
+  text-decoration: none !important;
   @include Roboto-Regular;
 }
 
@@ -63,11 +64,20 @@
   transition: 0.3s opacity, 0.3s color;
 }
 
-.material-textfield-counter {
+.material-text-field-counter {
   float: right;
   transition: 0.3s opacity, 0.3s color;
 }
 
-.material-textfield-counter:after {
+.material-text-field-counter:after {
   clear: both;
+}
+
+.material-text-field-icon {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
