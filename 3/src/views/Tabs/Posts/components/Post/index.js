@@ -108,7 +108,7 @@ export default class Post extends React.Component {
    * @param {Object} event data
    */
   onClick = (e) => {
-    if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode.parentNode !== this.refs.comments && this.props.onClick !== undefined) {
+    if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode !== this.refs.comments && e.target.parentNode.parentNode !== this.refs.comments && e.target.parentNode.parentNode.parentNode !== this.refs.comments && e.target !== this.refs.comments && this.props.onClick !== undefined) {
       this.props.onClick(e, this)
     }
   }

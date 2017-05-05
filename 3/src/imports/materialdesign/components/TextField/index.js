@@ -130,11 +130,13 @@ export default class TextField extends React.Component {
           error: false
         })
         this.errorID = 0
-        /**
-         * On error end.
-         * @param {DomObject} element
-         */
-        this.props.onErrorEnd(this)
+        if (typeof this.props.onErrorEnd === 'function') {
+          /**
+           * On error end.
+           * @param {DomObject} element
+           */
+          this.props.onErrorEnd(this)
+        }
       }
     }
 
@@ -181,6 +183,26 @@ export default class TextField extends React.Component {
   onActionIconClick = (e) => {
     if (typeof this.props.onActionIconClick === 'function') {
       this.props.onActionIconClick(e)
+    }
+  }
+
+  /**
+   * On action icon mouse enter event.
+   * @param {Object} event data
+   */
+  onActionIconMouseEnter = (e) => {
+    if (typeof this.props.onActionIconMouseEnter === 'function') {
+      this.props.onActionIconMouseEnter(e)
+    }
+  }
+
+  /**
+   * On action icon mouse leave event.
+   * @param {Object} event data
+   */
+  onActionIconMouseLeave = (e) => {
+    if (typeof this.props.onActionIconMouseLeave === 'function') {
+      this.props.onActionIconMouseLeave(e)
     }
   }
 
@@ -337,6 +359,8 @@ export default class TextField extends React.Component {
           onMouseDown={this.onActionIconMouseDown}
           onTouchStart={this.onActionIconTouchStart}
           onClick={this.onActionIconClick}
+          onMouseEnter={this.onActionIconMouseEnter}
+          onMouseLeave={this.onActionIconMouseLeave}
           style={actionIconStyle}
         />
       </div>

@@ -220,6 +220,7 @@ export default class App extends React.Component {
     const tooltipShowComments = 'Pokaż komentarze' // Show comments.
     const tooltipHideComments = 'Ukryj komentarze' // Hide comments.
     const tooltipCategoryInfo = 'Data utworzenia: ' + this.state.tooltipsData.category.date + '\n Ilość zdjęć: ' + this.state.tooltipsData.category.picturesCount // Category info: create category date and number of pictures.
+    const tooltipAddComment = 'Dodaj komentarz' // Add comment.
 
     return (
       <div>
@@ -241,6 +242,7 @@ export default class App extends React.Component {
         <Tooltip ref='tooltipShowComments'>{tooltipShowComments}</Tooltip>
         <Tooltip ref='tooltipHideComments'>{tooltipHideComments}</Tooltip>
         <Tooltip ref='tooltipCategoryInfo'>{tooltipCategoryInfo}</Tooltip>
+        <Tooltip ref='tooltipAddComment'>{tooltipAddComment}</Tooltip>
       </div>
     )
   }
