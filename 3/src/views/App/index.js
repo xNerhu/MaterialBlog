@@ -54,6 +54,8 @@ export default class App extends React.Component {
       aboutClass: false,
       lessonsPlan: false
     }
+
+    this.blockMouseDownEvent = false
   }
 
   componentDidMount () {
@@ -259,7 +261,7 @@ export default class App extends React.Component {
       <div>
         <div className='app-content' ref='appContent' style={appContentStyle}>
           <Toolbar ref='toolbar' items={this.state.toolbarItems} getApp={this.getApp} backgroundColor={this.state.toolbarBackgroundColor} shadow={this.state.toolbarShadow}>
-            <TabLayout ref='tabLayout' className='tab-layout-1' style={tabLayoutStyle} />
+            <TabLayout ref='tabLayout' className='tab-layout-1' style={tabLayoutStyle} getApp={this.getApp} />
           </Toolbar>
           <div className='tab-pages' style={tabPagesStyle}>
             <PostsTab ref='postsTab' getApp={this.getApp} />

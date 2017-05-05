@@ -32,10 +32,12 @@ export default class Tab extends React.Component {
    * @param {object} event data
    */
   onMouseDown = (e) => {
-    var ripple = Ripple.createRipple(this.refs.tab, {
-      backgroundColor: '#fff'
-    }, createRippleMouse(this.refs.tab, e, 1.5))
-    Ripple.makeRipple(ripple)
+    if (!this.props.getApp().blockMouseDownEvent) {
+      var ripple = Ripple.createRipple(this.refs.tab, {
+        backgroundColor: '#fff'
+      }, createRippleMouse(this.refs.tab, e, 1.5))
+      Ripple.makeRipple(ripple)
+    }
   }
 
   /**
@@ -47,6 +49,7 @@ export default class Tab extends React.Component {
       backgroundColor: '#fff'
     }, createRippleMouse(this.refs.tab, e, 1.5, true))
     Ripple.makeRipple(ripple)
+    this.props.getApp().blockMouseDownEvent = true
   }
 
   /**

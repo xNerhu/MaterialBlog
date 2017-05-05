@@ -16,11 +16,13 @@ export default class Toolbar extends React.Component {
    * @param {object} event data
    */
   iconMouseDown = (e) => {
-    var ripple = Ripple.createRipple(e.target, {
-      backgroundColor: '#000',
-      opacity: 0.2
-    }, createRippleCenter(e.target, 14))
-    Ripple.makeRipple(ripple)
+    if (!this.props.getApp().blockMouseDownEvent) {
+      var ripple = Ripple.createRipple(e.target, {
+        backgroundColor: '#000',
+        opacity: 0.2
+      }, createRippleCenter(e.target, 14))
+      Ripple.makeRipple(ripple)
+    }
   }
 
   /**

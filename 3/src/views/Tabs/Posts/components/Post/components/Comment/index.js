@@ -6,12 +6,14 @@ export default class Comment extends React.Component {
    * @param {Object} event data
    */
   onMouseDown = (e) => {
-    if (this.props.ripple) {
-      var ripple = Ripple.createRipple(this.refs.comment, {
-        backgroundColor: '#444',
-        opacity: 0.3
-      }, createRippleMouse(this.refs.comment, e, 2))
-      Ripple.makeRipple(ripple)
+    if (!this.props.getApp().blockMouseDownEvent) {
+      if (this.props.ripple) {
+        var ripple = Ripple.createRipple(this.refs.comment, {
+          backgroundColor: '#444',
+          opacity: 0.3
+        }, createRippleMouse(this.refs.comment, e, 2))
+        Ripple.makeRipple(ripple)
+      }
     }
   }
 
@@ -27,6 +29,7 @@ export default class Comment extends React.Component {
       }, createRippleMouse(this.refs.comment, e, 2, true))
       Ripple.makeRipple(ripple)
     }
+    this.props.getApp().blockMouseDownEvent = true
   }
 
   render () {

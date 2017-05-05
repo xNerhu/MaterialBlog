@@ -19,11 +19,13 @@ export default class Post extends React.Component {
    * @param {Object} event data
    */
   onLikeMouseDown = (e) => {
-    var ripple = Ripple.createRipple(e.target, {
-      backgroundColor: '#000',
-      opacity: 0.4
-    }, createRippleCenter(e.target, 14))
-    Ripple.makeRipple(ripple)
+    if (!this.props.getApp().blockMouseDownEvent) {
+      var ripple = Ripple.createRipple(e.target, {
+        backgroundColor: '#000',
+        opacity: 0.4
+      }, createRippleCenter(e.target, 14))
+      Ripple.makeRipple(ripple)
+    }
   }
 
   /**
@@ -36,6 +38,7 @@ export default class Post extends React.Component {
       opacity: 0.4
     }, createRippleCenter(e.target, 14, 0.4, true))
     Ripple.makeRipple(ripple)
+    this.props.getApp().blockMouseDownEvent = true
   }
 
   /**
@@ -43,11 +46,13 @@ export default class Post extends React.Component {
    * @param {Object} event data
    */
   onShowCommentsButtonMouseDown = (e) => {
-    var ripple = Ripple.createRipple(this.refs.showComments, {
-      backgroundColor: '#000',
-      opacity: 0.4
-    }, createRippleCenter(this.refs.showComments, 14))
-    Ripple.makeRipple(ripple)
+    if (!this.props.getApp().blockMouseDownEvent) {
+      var ripple = Ripple.createRipple(this.refs.showComments, {
+        backgroundColor: '#000',
+        opacity: 0.4
+      }, createRippleCenter(this.refs.showComments, 14))
+      Ripple.makeRipple(ripple)
+    }
   }
 
   /**
@@ -60,6 +65,7 @@ export default class Post extends React.Component {
       opacity: 0.4
     }, createRippleCenter(this.refs.showComments, 14, 0.4, true))
     Ripple.makeRipple(ripple)
+    this.props.getApp().blockMouseDownEvent = true
   }
 
   /**
@@ -80,12 +86,14 @@ export default class Post extends React.Component {
    * @param {Object} event data
    */
   onMouseDown = (e) => {
-    if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode.parentNode !== this.refs.comments && this.props.ripple === true) {
-      var ripple = Ripple.createRipple(this.refs.content, {
-        backgroundColor: '#444',
-        opacity: 0.3
-      }, createRippleMouse(this.refs.content, e, 1.5))
-      Ripple.makeRipple(ripple)
+    if (!this.props.getApp().blockMouseDownEvent) {
+      if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode.parentNode !== this.refs.comments && this.props.ripple === true) {
+        var ripple = Ripple.createRipple(this.refs.content, {
+          backgroundColor: '#444',
+          opacity: 0.3
+        }, createRippleMouse(this.refs.content, e, 1.5))
+        Ripple.makeRipple(ripple)
+      }
     }
   }
 
@@ -100,6 +108,7 @@ export default class Post extends React.Component {
         opacity: 0.3
       }, createRippleMouse(this.refs.content, e, 1.5, true))
       Ripple.makeRipple(ripple)
+      this.props.getApp().blockMouseDownEvent = true
     }
   }
 
@@ -273,7 +282,7 @@ export default class Post extends React.Component {
         <div className='post-comments' ref='comments' style={commentsStyle}>
           {this.props.comments.map((data, i) => {
             return (
-              <Comment key={i} data={data} ripple={this.props.commentsRipple} />
+              <Comment key={i} data={data} ripple={this.props.commentsRipple} getApp={this.getApp} />
             )
           })}
           <CommentInput getApp={this.props.getApp} />

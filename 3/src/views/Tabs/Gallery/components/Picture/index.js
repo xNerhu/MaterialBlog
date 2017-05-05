@@ -43,12 +43,14 @@ export default class Picture extends React.Component {
    * @param {Object} event data
    */
   onMouseDown = (e) => {
-    var ripple = Ripple.createRipple(this.refs.pic, {
-      backgroundColor: '#fff',
-      opacity: 0.3,
-      zIndex: 8
-    }, createRippleMouse(this.refs.pic, e, 1.5))
-    Ripple.makeRipple(ripple)
+    if (!this.props.getApp().blockMouseDownEvent) {
+      var ripple = Ripple.createRipple(this.refs.pic, {
+        backgroundColor: '#fff',
+        opacity: 0.3,
+        zIndex: 8
+      }, createRippleMouse(this.refs.pic, e, 1.5))
+      Ripple.makeRipple(ripple)
+    }
   }
 
   /**
@@ -62,6 +64,7 @@ export default class Picture extends React.Component {
       zIndex: 8
     }, createRippleMouse(this.refs.pic, e, 1.5, true))
     Ripple.makeRipple(ripple)
+    this.props.getApp().blockMouseDownEvent = true
   }
 
   render () {

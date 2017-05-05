@@ -6,12 +6,14 @@ export default class Category extends React.Component {
    * @param {Object} event data
    */
   onMouseDown = (e) => {
-    if (e.target !== this.refs.title && e.target.parentNode !== this.refs.title) {
-      var ripple = Ripple.createRipple(this.refs.category, {
-        backgroundColor: '#fff',
-        opacity: 0.3
-      }, createRippleMouse(this.refs.category, e, 1.5))
-      Ripple.makeRipple(ripple)
+    if (!this.props.getApp().blockMouseDownEvent) {
+      if (e.target !== this.refs.title && e.target.parentNode !== this.refs.title) {
+        var ripple = Ripple.createRipple(this.refs.category, {
+          backgroundColor: '#fff',
+          opacity: 0.3
+        }, createRippleMouse(this.refs.category, e, 1.5))
+        Ripple.makeRipple(ripple)
+      }
     }
   }
 
@@ -20,11 +22,13 @@ export default class Category extends React.Component {
    * @param {Object} event data
    */
   onInfoMouseDown = (e) => {
-    var ripple = Ripple.createRipple(this.refs.info, {
-      backgroundColor: '#000',
-      opacity: 0.2
-    }, createRippleCenter(this.refs.info, 14))
-    Ripple.makeRipple(ripple)
+    if (!this.props.getApp().blockMouseDownEvent) {
+      var ripple = Ripple.createRipple(this.refs.info, {
+        backgroundColor: '#000',
+        opacity: 0.2
+      }, createRippleCenter(this.refs.info, 14))
+      Ripple.makeRipple(ripple)
+    }
   }
 
   /**
@@ -37,6 +41,7 @@ export default class Category extends React.Component {
       opacity: 0.2
     }, createRippleCenter(this.refs.info, 14, 0.4, true))
     Ripple.makeRipple(ripple)
+    this.props.getApp().blockMouseDownEvent = true
   }
 
   /**
@@ -85,6 +90,7 @@ export default class Category extends React.Component {
         opacity: 0.3
       }, createRippleMouse(this.refs.category, e, 1.5, true))
       Ripple.makeRipple(ripple)
+      this.props.getApp().blockMouseDownEvent = true
     }
   }
 

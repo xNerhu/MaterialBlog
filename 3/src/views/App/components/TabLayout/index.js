@@ -57,7 +57,7 @@ export default class TabLayout extends React.Component {
     return (
       <div ref='tabLayout' style={this.props.style} className={'tab-layout ' + this.props.className} onMouseDown={this.onMouseDown}>
         {this.state.tabs.map((object, i) => {
-          return <Tab getTabLayout={this.getTabLayout} key={i} data={object} />
+          return <Tab getTabLayout={this.getTabLayout} key={i} data={object} getApp={this.props.getApp} />
         })}
         <Motion style={{
           left: this.state.dividerLeft,
