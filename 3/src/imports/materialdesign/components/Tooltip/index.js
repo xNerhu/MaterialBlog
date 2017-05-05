@@ -5,41 +5,43 @@ export default class Tooltip extends React.Component {
     super()
 
     this.state = {
-      toggled: false,
-      top: 0,
-      left: 0,
-      opacity: 0
+      toggled: false
     }
   }
 
   /**
-    * show tooltip
+    * Shows tooltip.
     * @param {DOMElement} element
     */
   show = (el) => {
     const bounds = el.getBoundingClientRect()
     var left = bounds.left - el.offsetWidth * 0.6
+    var top = bounds.top + el.offsetHeight + 10
     if (left + 100 > window.innerWidth) {
       left -= 100
     }
-    const top = bounds.top + el.offsetHeight + 10
-    this.setState({toogled: true, opacity: 0.8, left: left, top: top})
+    if (top + 50 > window.innerHeight) {
+      top -= 50
+    }
+    this.refs.tooltip.style.top = top + 'px'
+    this.refs.tooltip.style.left = left + 'px'
+    this.setState({
+      toogled: true
+    })
   }
 
   /**
-    * hide tooltip
+    * Hides tooltip.
     */
   hide = () => {
-    const self = this
-    this.setState({opacity: 0})
-    setTimeout(function () {
-      self.setState({toogled: false})
-    }, 300)
+    this.setState({
+      toogled: false
+    })
   }
 
   /**
-    * is visible
-    * @return {boolean}
+    * Returns that tooltip is visible
+    * @return {Boolean}
     */
   isToogled = () => {
     return this.state.toggled
@@ -47,15 +49,12 @@ export default class Tooltip extends React.Component {
 
   render () {
     const toolTipStyle = {
-      opacity: this.state.opacity,
-      visibility: (!this.state.toogled) ? 'hidden' : 'visible',
-      transition: this.state.transition,
-      left: this.state.left,
-      top: this.state.top
+      opacity: (!this.state.toogled) ? 0 : 0.75,
+      visibility: (!this.state.toogled) ? 'hidden' : 'visible'
     }
 
     return (
-      <div className='tooltip' style={toolTipStyle}>
+      <div className='tooltip' ref='tooltip' style={toolTipStyle}>
         {this.props.children.split('\n').map((item, key) => {
           return <span key={key}>{item}<br /></span>
         })}

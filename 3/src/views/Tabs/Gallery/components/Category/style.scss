@@ -30,4 +30,5 @@
   @include center-vertical-important;
   @include image-center(22px, 22px);
   @include invert-colors;
+  cursor: pointer;
 }

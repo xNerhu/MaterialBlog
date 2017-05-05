@@ -6,11 +6,13 @@ export default class NavigationDrawerItem extends React.Component {
     * @param {object} event data
     */
   onMouseDown = (e) => {
-    var ripple = Ripple.createRipple(this.refs.item, {
-      backgroundColor: '#000',
-      opacity: 0.2
-    }, createRippleMouse(this.refs.item, e, 1.5))
-    Ripple.makeRipple(ripple)
+    if (!this.props.getApp().blockMouseDownEvent) {
+      var ripple = Ripple.createRipple(this.refs.item, {
+        backgroundColor: '#000',
+        opacity: 0.2
+      }, createRippleMouse(this.refs.item, e, 1.5))
+      Ripple.makeRipple(ripple)
+    }
   }
 
   /**
@@ -23,6 +25,7 @@ export default class NavigationDrawerItem extends React.Component {
       opacity: 0.2
     }, createRippleMouse(this.refs.item, e, 1.5, true))
     Ripple.makeRipple(ripple)
+    this.props.getApp().blockMouseDownEvent = true
   }
 
   render () {

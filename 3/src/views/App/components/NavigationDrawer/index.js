@@ -204,8 +204,8 @@ export default class NavigationDrawer extends React.Component {
         <div className='navigation-drawer' style={navigationDrawerStyle}>
           <div className='navigation-drawer-header' style={headerStyle} />
           <div className='navigation-drawer-content' style={navigationDrawerContentStyle}>
-            <NavigationDrawerItem iconStyle={infoIconStyle}>Informacje</NavigationDrawerItem>
-            <NavigationDrawerItem iconStyle={loginIconStyle}>Zaloguj</NavigationDrawerItem>
+            <NavigationDrawerItem iconStyle={infoIconStyle} getApp={this.props.getApp}>Informacje</NavigationDrawerItem>
+            <NavigationDrawerItem iconStyle={loginIconStyle} getApp={this.props.getApp}>Zaloguj</NavigationDrawerItem>
           </div>
         </div>
         <div className='dark' style={darkStyle} onClick={this.onDarkClick} />

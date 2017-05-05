@@ -173,6 +173,7 @@ export default class GalleryTab extends React.Component {
         toolbarShadow: false
       })
       self.fullPictureBlur.style.backgroundImage = 'url(' + this.src + ')'
+      self.fullPicture.style.backgroundImage = 'url(' + this.src + ')'
     }
     img.src = data.url
   }
