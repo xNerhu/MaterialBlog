@@ -13,8 +13,8 @@ export default class PostsTab extends React.Component {
       defaultLeft: 0,
       posts: [],
       isFullScreen: false,
-      postsDisplay: 'none',
-      postsOpacity: 0,
+      postsDisplay: 'block',
+      postsOpacity: 1,
       fullScreenPostDisplay: 'none',
       fullScreenPostTop: 200,
       fullScreenPostOpacity: 0,
@@ -34,10 +34,6 @@ export default class PostsTab extends React.Component {
     this.root = null
 
     this.clickedPost = null
-  }
-
-  componentDidMount () {
-    this.loadPosts()
   }
 
   /**
@@ -162,13 +158,19 @@ export default class PostsTab extends React.Component {
   loadPosts = () => {
     var self = this
 
-    this.props.getApp().setState({dataPreloaderVisible: true})
-    this.setState({postsDisplay: 'none', postsOpacity: 0})
+    this.props.getApp().setState({
+      dataPreloaderVisible: true
+    })
+    this.props.getApp().selected.posts = true
+    //this.setState({postsDisplay: 'none', postsOpacity: 0})
 
-    // TODO: get posts from database
+    // TODO: make request
     setTimeout(function () {
-      self.props.getApp().setState({dataPreloaderVisible: false})
-      self.setState({postsDisplay: 'block'})
+      //self.props.getApp().setState({dataPreloaderVisible: false})
+      //self.setState({postsDisplay: 'block'})
+      self.props.getApp().setState({
+        dataPreloaderVisible: false
+      })
       setTimeout(function () {
         self.setState({
           postsOpacity: 1,

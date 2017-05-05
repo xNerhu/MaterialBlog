@@ -10,7 +10,7 @@ import NavigationDrawer from './components/NavigationDrawer'
 import PostsTab from '../Tabs/Posts'
 import GalleryTab from '../Tabs/Gallery'
 import AboutClassTab from '../Tabs/AboutClass'
-import LessonPlanTab from '../Tabs/LessonPlan'
+import LessonsPlanTab from '../Tabs/LessonsPlan'
 
 import Tooltip from '../../imports/materialdesign/components/Tooltip'
 import Preloader from '../../imports/materialdesign/components/Preloader'
@@ -47,6 +47,13 @@ export default class App extends React.Component {
       userID: 1,
       userName: 'Mikołaj Palkiewicz'
     }
+
+    this.selected = {
+      posts: false,
+      gallery: false,
+      aboutClass: false,
+      lessonsPlan: false
+    }
   }
 
   componentDidMount () {
@@ -73,6 +80,18 @@ export default class App extends React.Component {
     // On search icon click event.
     function onClickSearch () {
 
+    }
+
+    function onPostsSelect () {
+      if (!self.selected.posts) self.getPostsTab().loadPosts()
+    }
+
+    function onGalleryTabSelect () {
+      if (!self.selected.gallery) self.getGalleryTab().loadCategories()
+    }
+
+    function onLessonsPlanTabSelect () {
+      if (!self.selected.lessonsPlan) self.getLessonsPlanTab().loadPlan()
     }
 
     // Set toolbar items.
@@ -112,11 +131,13 @@ export default class App extends React.Component {
       tabs: [
         {
           title: 'POSTY',
-          page: this.refs.postsTab
+          page: this.refs.postsTab,
+          onSelect: onPostsSelect
         },
         {
           title: 'GALERIA',
-          page: this.refs.galleryTab
+          page: this.refs.galleryTab,
+          onSelect: onGalleryTabSelect
         },
         {
           title: 'O KLASIE',
@@ -124,7 +145,8 @@ export default class App extends React.Component {
         },
         {
           title: 'PLAN LEKCJI',
-          page: this.refs.lessonPlanTab
+          page: this.refs.lessonsPlanTab,
+          onSelect: onLessonsPlanTabSelect
         }
       ]
     })
@@ -141,6 +163,8 @@ export default class App extends React.Component {
         postsTab.showFullScreenPost(postID)
       }
     }, 1)
+
+    this.getPostsTab().loadPosts()
   }
 
   /**
@@ -191,6 +215,14 @@ export default class App extends React.Component {
     return this.refs.galleryTab
   }
 
+  /**
+   * Gets lessons plan tab.
+   * @return {LessonsPlanTab}
+   */
+  getLessonsPlanTab = () => {
+    return this.refs.lessonsPlanTab
+  }
+
   render () {
     // Styles.
     const tabLayoutStyle = {
@@ -205,7 +237,8 @@ export default class App extends React.Component {
     }
 
     const tabPagesStyle = {
-      height: 'calc(100% - ' + ((!this.state.tabLayoutHidden) ? '136px' : '64px') + ')'
+      height: 'calc(100% - ' + ((!this.state.tabLayoutHidden) ? '136px' : '64px') + ')',
+      opacity: (!this.state.dataPreloaderVisible) ? 1 : 0
     }
 
     const dataPreloaderStyle = {
@@ -232,7 +265,7 @@ export default class App extends React.Component {
             <PostsTab ref='postsTab' getApp={this.getApp} />
             <GalleryTab ref='galleryTab' getApp={this.getApp} />
             <AboutClassTab ref='aboutClassTab' />
-            <LessonPlanTab ref='lessonPlanTab' />
+            <LessonsPlanTab ref='lessonsPlanTab' getApp={this.getApp} />
           </div>
         </div>
         <Preloader ref='preloader' className='data-preloader' style={dataPreloaderStyle} strokeColor='#2196f3' strokeWidth={4} />

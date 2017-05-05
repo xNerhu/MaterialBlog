@@ -1,0 +1,33 @@
+.material-table {
+  width: 100%;
+
+  & thead tr th {
+    @include Roboto-Regular;
+    font-size: 16px;
+    color: rgba(0,0,0,0.7);
+    text-align: left;
+    padding: 18px;
+    vertical-align: top;
+    border-top: 0;
+    vertical-align: bottom;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+  & tbody tr td {
+    @include Roboto-Light;
+    @include text-selectable;
+    text-align: left;
+    padding: 18px;
+    vertical-align: top;
+    border-top: 0;
+    color: #000;
+  }
+
+  & tbody .border td {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+  & .bold {
+    @include Roboto-Medium;
+  }
+}

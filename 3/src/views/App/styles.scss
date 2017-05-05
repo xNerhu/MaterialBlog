@@ -19,6 +19,7 @@ html, body {
   overflow-x: hidden;
   overflow-y: auto;
   z-index: 7;
+  transition: 0.3s opacity;
 }
 
 .app-content {
