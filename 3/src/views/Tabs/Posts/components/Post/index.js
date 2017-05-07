@@ -210,10 +210,12 @@ export default class Post extends React.Component {
    */
   liked = (likesData, accountInfo) => {
     var flag = false
-    for(var i = 0; i < likesData.length; i++) {
-      if (likesData[i].userID === accountInfo.userID) {
-        flag = true
-        break
+    if (this.props.getApp().accountInfo) {
+      for(var i = 0; i < likesData.length; i++) {
+        if (likesData[i].userID === accountInfo.userID) {
+          flag = true
+          break
+        }
       }
     }
     return flag
@@ -285,7 +287,7 @@ export default class Post extends React.Component {
               <Comment key={i} data={data} ripple={this.props.commentsRipple} getApp={this.getApp} />
             )
           })}
-          <CommentInput getApp={this.props.getApp} />
+          <CommentInput getApp={this.props.getApp} isFullScreen={this.props.isFullScreen} />
         </div>
       </div>
     )

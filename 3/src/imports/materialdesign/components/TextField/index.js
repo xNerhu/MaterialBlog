@@ -45,7 +45,7 @@ export default class TextField extends React.Component {
    * Toggle on input
    */
   toggleOn = () => {
-    if (!this.state.focus) {
+    if (!this.state.focus && !this.props.disabled) {
       const element = (!this.props.multiple) ? this.refs.input : this.refs.textarea
       this.setState({
         focus: true,
@@ -159,7 +159,7 @@ export default class TextField extends React.Component {
    * @param {Object} event data
    */
   onActionIconMouseDown = (e) => {
-    if (this.props.actionIcon) {
+    if (this.props.actionIcon && !this.props.disabled) {
       var ripple = Ripple.createRipple(this.refs.actionIcon, this.props.actionIconRippleStyle, createRippleCenter(this.refs.actionIcon, 14))
       Ripple.makeRipple(ripple)
     }
@@ -170,7 +170,7 @@ export default class TextField extends React.Component {
    * @param {Object} event data
    */
   onActionIconTouchStart = (e) => {
-    if (this.props.actionIcon) {
+    if (this.props.actionIcon && !this.props.disabled) {
       var ripple = Ripple.createRipple(this.refs.actionIcon, this.props.actionIconRippleStyle, createRippleCenter(this.refs.actionIcon, 14, 0.4, true))
       Ripple.makeRipple(ripple)
     }
@@ -181,7 +181,7 @@ export default class TextField extends React.Component {
    * @param {Object} event data
    */
   onActionIconClick = (e) => {
-    if (typeof this.props.onActionIconClick === 'function') {
+    if (typeof this.props.onActionIconClick === 'function' && !this.props.disabled) {
       this.props.onActionIconClick(e)
     }
   }
@@ -191,7 +191,7 @@ export default class TextField extends React.Component {
    * @param {Object} event data
    */
   onActionIconMouseEnter = (e) => {
-    if (typeof this.props.onActionIconMouseEnter === 'function') {
+    if (typeof this.props.onActionIconMouseEnter === 'function' && !this.props.disabled) {
       this.props.onActionIconMouseEnter(e)
     }
   }
@@ -201,7 +201,7 @@ export default class TextField extends React.Component {
    * @param {Object} event data
    */
   onActionIconMouseLeave = (e) => {
-    if (typeof this.props.onActionIconMouseLeave === 'function') {
+    if (typeof this.props.onActionIconMouseLeave === 'function' && !this.props.disabled) {
       this.props.onActionIconMouseLeave(e)
     }
   }
@@ -217,6 +217,8 @@ export default class TextField extends React.Component {
       }, this.props.inputStyle
     )
 
+    const inputDisabled = (!this.props.disabled) ? false : true
+
     var textAreaStyle = Object.assign(
       {
         color: (!this.state.error) ? this.props.focusHintStyle.color : this.props.errorColor,
@@ -230,6 +232,7 @@ export default class TextField extends React.Component {
     }, this.props.focusHintStyle)
 
     var _dividerStyle = (!this.state.hover && !this.state.focus || !this.props.hover) ? this.props.dividerStyle : this.props.hoverDividerStyle
+    if (this.props.disabled) _dividerStyle = this.props.disabledDividerStyle
 
     var focusDividerStyle = Object.assign(
       {
@@ -255,14 +258,14 @@ export default class TextField extends React.Component {
     var iconStyle = Object.assign(
       {
         backgroundImage: (!this.props.icon) ? '' : 'url(' + this.props.icon + ')',
-        display: (!this.props.icon) ? 'none' : 'block'
+        display: (!this.props.icon || this.props.disabled) ? 'none' : 'block'
       }, this.props.iconStyle
     )
 
     var actionIconStyle = Object.assign(
       {
         backgroundImage: (!this.props.actionIcon) ? '' : 'url(' + this.props.actionIcon + ')',
-        display: (!this.props.actionIcon) ? 'none' : 'block'
+        display: (!this.props.actionIcon || this.props.disabled) ? 'none' : 'block'
       }, this.props.actionIconStyle
     )
 
@@ -284,6 +287,8 @@ export default class TextField extends React.Component {
       counterStyle.opacity = 1
     }
 
+    if (this.props.disabled) counterStyle.display = 'none'
+
     const hintText = this.props.hint
     const placeHolderText = (!this.props.placeHolder) ? '' : this.props.placeHolder
     const helperText = (!this.props.helperText) ? '' : this.props.helperText
@@ -294,6 +299,7 @@ export default class TextField extends React.Component {
       <div
         className={classes}
         style={this.props.style}
+        onClick={this.onClick}
       >
         <input
           type='text'
@@ -305,6 +311,7 @@ export default class TextField extends React.Component {
           onMouseLeave={this.onMouseLeave}
           onInput={this.onInput}
           style={inputStyle}
+          disabled={inputDisabled}
         />
         <textarea
           ref='textarea'
@@ -379,6 +386,7 @@ TextField.defaultProps = {
   textColor: '#000',
   focusColor: '#2d5cfa',
   multiple: false,
+  disabled: false,
   icon: false, // or image link
   actionIcon: false, // or image link
   actionIconRipple: true,
@@ -419,6 +427,10 @@ TextField.defaultProps = {
     height: 1,
     backgroundColor: '#000',
     opacity: 0.42
+  },
+  disabledDividerStyle: {
+    height: 0,
+    borderBottom: '1px dashed rgba(0, 0, 0, 0.42)'
   },
   hoverDividerStyle: {
     height: 2,

@@ -268,6 +268,7 @@ export default class PostsTab extends React.Component {
               avatar={this.state.fullScreenPost.avatar}
               ripple={false}
               commentsRipple={false}
+              isFullScreen={true}
             >
               {this.state.fullScreenPost.content}
             </Post>

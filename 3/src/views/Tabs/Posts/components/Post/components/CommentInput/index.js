@@ -11,6 +11,12 @@ export default class CommentInput extends React.Component {
     }
   }
 
+  componentDidMount () {
+    if (!this.props.getApp().accountInfo) {
+
+    }
+  }
+
   /**
    * On text field error event.
    * Shows error message.
@@ -55,6 +61,7 @@ export default class CommentInput extends React.Component {
   }
 
   render () {
+    // Styles.
     const actionIcon = 'src/images/Post/add.png'
 
     const actionIconStyle = {
@@ -65,12 +72,21 @@ export default class CommentInput extends React.Component {
       top: 5
     }
 
+    const avatarURL = (!this.props.getApp().accountInfo) ? 'src/images/NavigationDrawer/login.png' : this.props.getApp().accountInfo.avatar
+
+    const avatarStyle = {
+      backgroundImage: 'url(' + avatarURL + ')',
+      opacity: (!this.props.getApp().accountInfo) ? 0.5 : 1
+    }
+
+    const hint = (!this.props.getApp().accountInfo) ? 'Zaloguj się, by móc dodać komentarz' : 'Dodaj komentarz'
+
     return (
       <div className='post-comment-input'>
-        <div className='post-comment-input-avatar' />
+        <div className='post-comment-input-avatar' style={avatarStyle} />
         <TextField
           className='post-comment-input-textfield'
-          hint='Dodaj komentarz'
+          hint={hint}
           placeHolder='Treść komentarza'
           actionIcon={actionIcon}
           actionIconStyle={actionIconStyle}
@@ -81,6 +97,7 @@ export default class CommentInput extends React.Component {
           onErrorEnd={this.onErrorEnd}
           onActionIconMouseEnter={this.onActionIconMouseEnter}
           onActionIconMouseLeave={this.onActionIconMouseLeave}
+          disabled={!this.props.getApp().accountInfo}
         />
       </div>
     )

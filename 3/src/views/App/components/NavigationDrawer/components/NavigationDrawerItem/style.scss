@@ -7,7 +7,7 @@
   font-size: 16px;
   @include Roboto-Medium;
   position: relative;
-  transition: all 0.3s;
+  transition: background-color 0.3s, margin-left 0.15s;
   cursor: pointer;
 
   &:first-child {

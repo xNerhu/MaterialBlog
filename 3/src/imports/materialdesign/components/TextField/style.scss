@@ -38,12 +38,18 @@
   left: 0;
   transition: all 0.3s;
   cursor: text;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .material-text-field-place-holder {
   position: absolute;
   left: 0;
   cursor: text;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .material-text-field-divider {
