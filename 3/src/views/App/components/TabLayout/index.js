@@ -32,17 +32,19 @@ export default class TabLayout extends React.Component {
    * Selects and deselects tabs.
    */
   selectTab = (tab) => {
-    for (var i = 0; i < this.tabs.length; i++) {
-      if (this.tabs[i] !== tab && this.tabs[i].selected) {
-        this.tabs[i].deselect()
+    if (this.props.getApp().canSelectTab) {
+      for (var i = 0; i < this.tabs.length; i++) {
+        if (this.tabs[i] !== tab && this.tabs[i].selected) {
+          this.tabs[i].deselect()
+        }
       }
+      tab.select()
+      var event = document.createEvent('Event')
+      event.initEvent('selected', true, true)
+      event.page = tab.props.data.page
+      ReactDOM.findDOMNode(this).dispatchEvent(event)
+      this.selectedIndex = this.tabs.indexOf(tab)
     }
-    tab.select()
-    var event = document.createEvent('Event')
-    event.initEvent('selected', true, true)
-    event.page = tab.props.data.page
-    ReactDOM.findDOMNode(this).dispatchEvent(event)
-    this.selectedIndex = this.tabs.indexOf(tab)
   }
 
   /**

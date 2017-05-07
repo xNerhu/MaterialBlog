@@ -45,13 +45,14 @@ export default class LessonsPlanTab extends React.Component {
       dataPreloaderVisible: true
     })
     this.props.getApp().selected.lessonsPlan = true
+    this.props.getApp().canSelectTab = false
 
     // TODO: make request
     setTimeout(function () {
       self.props.getApp().setState({
         dataPreloaderVisible: false
       })
-
+      self.props.getApp().canSelectTab = true
       var plan = [
         {
           day: 'Poniedziałek',

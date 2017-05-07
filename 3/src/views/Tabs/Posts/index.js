@@ -162,6 +162,9 @@ export default class PostsTab extends React.Component {
       dataPreloaderVisible: true
     })
     this.props.getApp().selected.posts = true
+    setTimeout(function () {
+      self.props.getApp().canSelectTab = false
+    }, 50)
     //this.setState({postsDisplay: 'none', postsOpacity: 0})
 
     // TODO: make request
@@ -171,6 +174,8 @@ export default class PostsTab extends React.Component {
       self.props.getApp().setState({
         dataPreloaderVisible: false
       })
+      self.props.getApp().canSelectTab = true
+      this.canSelectTab = false
       setTimeout(function () {
         self.setState({
           postsOpacity: 1,

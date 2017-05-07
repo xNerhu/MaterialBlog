@@ -223,12 +223,14 @@ export default class GalleryTab extends React.Component {
       dataPreloaderVisible: true
     })
     this.props.getApp().selected.gallery = true
+    this.props.getApp().canSelectTab = false
 
     // TODO: make request
     setTimeout(function () {
       self.props.getApp().setState({
         dataPreloaderVisible: false
       })
+      self.props.getApp().canSelectTab = true
       self.setState({
         categories: [
           {
