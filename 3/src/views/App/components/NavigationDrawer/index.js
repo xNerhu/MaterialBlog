@@ -188,11 +188,16 @@ export default class NavigationDrawer extends React.Component {
     }
 
     const headerStyle = {
-      display: 'block'
+      display: 'block',
+      backgroundImage: 'url(src/images/NavigationDrawer/header.png)'
     }
 
     const infoIconStyle = {
       backgroundImage: 'url(src/images/NavigationDrawer/info.png)'
+    }
+
+    const panelIconStyle = {
+      backgroundImage: 'url(src/images/NavigationDrawer/settings.png)'
     }
 
     const loginIconStyle = {
@@ -205,6 +210,7 @@ export default class NavigationDrawer extends React.Component {
           <div className='navigation-drawer-header' style={headerStyle} />
           <div className='navigation-drawer-content' style={navigationDrawerContentStyle}>
             <NavigationDrawerItem iconStyle={infoIconStyle} getApp={this.props.getApp}>Informacje</NavigationDrawerItem>
+            <NavigationDrawerItem iconStyle={panelIconStyle} getApp={this.props.getApp}>Panel</NavigationDrawerItem>
             <NavigationDrawerItem iconStyle={loginIconStyle} getApp={this.props.getApp}>Zaloguj</NavigationDrawerItem>
           </div>
         </div>

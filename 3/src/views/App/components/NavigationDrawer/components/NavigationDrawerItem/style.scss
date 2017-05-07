@@ -8,6 +8,7 @@
   @include Roboto-Medium;
   position: relative;
   transition: all 0.3s;
+  cursor: pointer;
 
   &:first-child {
     margin-top: 10px;
