@@ -134,20 +134,24 @@ export default class App extends React.Component {
       tabs: [
         {
           title: 'POSTY',
+          url: 'posts',
           page: this.refs.postsTab,
           onSelect: onPostsSelect
         },
         {
           title: 'GALERIA',
+          url: 'gallery',
           page: this.refs.galleryTab,
           onSelect: onGalleryTabSelect
         },
         {
           title: 'O KLASIE',
+          url: 'aboutclass',
           page: this.refs.aboutClassTab
         },
         {
           title: 'PLAN LEKCJI',
+          url: 'lessonsplan',
           page: this.refs.lessonsPlanTab,
           onSelect: onLessonsPlanTabSelect
         }
@@ -167,7 +171,7 @@ export default class App extends React.Component {
       }
     }, 1)
 
-    this.getPostsTab().loadPosts()
+  //  this.getPostsTab().loadPosts()
   }
 
   /**

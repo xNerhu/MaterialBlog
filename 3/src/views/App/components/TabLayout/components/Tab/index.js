@@ -1,6 +1,8 @@
 import React from 'react'
 import {Motion, spring} from 'react-motion'
 
+import Url from '../../../../../../helpers/Url'
+
 export default class Tab extends React.Component {
   constructor () {
     super()
@@ -11,13 +13,24 @@ export default class Tab extends React.Component {
   }
 
   componentDidMount () {
+    var self = this
     var tabLayout = this.props.getTabLayout()
     this.setState({color: tabLayout.props.defaultColor})
     tabLayout.tabs.push(this)
 
     setTimeout(function () {
-      tabLayout.selectTab(tabLayout.tabs[0])
-    }, 1)
+      const urlTab = Url.getUrlParameter('tab')
+      var tabIndex = 0
+      if (urlTab !== '') {
+        for (var i = 0; i < self.props.allTabsData.length; i++) {
+          if (self.props.allTabsData[i].url === urlTab) {
+            tabIndex = i
+            break
+          }
+        }
+      }
+      tabLayout.selectTab(tabLayout.tabs[tabIndex])
+    }, 10)
   }
 
   /**
@@ -68,6 +81,10 @@ export default class Tab extends React.Component {
    * Selects tab.
    */
   select = () => {
+    //this.props.data.onSelect()
+    if (typeof this.props.data.onSelect === 'function') {
+      this.props.data.onSelect()
+    }
     this.selected = true
     var tabLayout = this.props.getTabLayout()
     this.setState({color: tabLayout.props.color})
@@ -104,9 +121,6 @@ export default class Tab extends React.Component {
           lastTab.getPage().isVisible = false
         }
       }
-    }
-    if (this.props.data.onSelect !== undefined) {
-      this.props.data.onSelect()
     }
   }
 

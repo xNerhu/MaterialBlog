@@ -44,6 +44,7 @@ export default class TabLayout extends React.Component {
       event.page = tab.props.data.page
       ReactDOM.findDOMNode(this).dispatchEvent(event)
       this.selectedIndex = this.tabs.indexOf(tab)
+      window.history.pushState('', '', '?tab=' + tab.props.data.url)
     }
   }
 
@@ -59,7 +60,7 @@ export default class TabLayout extends React.Component {
     return (
       <div ref='tabLayout' style={this.props.style} className={'tab-layout ' + this.props.className} onMouseDown={this.onMouseDown}>
         {this.state.tabs.map((object, i) => {
-          return <Tab getTabLayout={this.getTabLayout} key={i} data={object} getApp={this.props.getApp} />
+          return <Tab getTabLayout={this.getTabLayout} key={i} data={object} allTabsData={this.state.tabs} getApp={this.props.getApp} />
         })}
         <Motion style={{
           left: this.state.dividerLeft,
