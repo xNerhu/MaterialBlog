@@ -1,0 +1,13 @@
+.material-button {
+  width: auto;
+  min-width: 88px;
+  display: inline-block;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 24px;
+  padding-right: 24px;
+  border-radius: 2px;
+  @include Roboto-Medium;
+  text-align: center;
+  cursor: pointer;
+}

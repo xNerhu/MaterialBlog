@@ -6,16 +6,19 @@ import Toolbar from './components/Toolbar'
 import TabLayout from './components/TabLayout'
 import Tab from './components/TabLayout/components/Tab'
 import NavigationDrawer from './components/NavigationDrawer'
+import LoginPanel from './components/LoginPanel'
 
 import PostsTab from '../Tabs/Posts'
 import GalleryTab from '../Tabs/Gallery'
 import AboutClassTab from '../Tabs/AboutClass'
 import LessonsPlanTab from '../Tabs/LessonsPlan'
 
+import Dialog from '../../imports/materialdesign/components/Dialog'
 import Tooltip from '../../imports/materialdesign/components/Tooltip'
 import Preloader from '../../imports/materialdesign/components/Preloader'
 
 import Url from '../../helpers/Url'
+import Cookies from '../../helpers/Cookies'
 
 export default class App extends React.Component {
   constructor () {
@@ -263,6 +266,31 @@ export default class App extends React.Component {
     const tooltipCategoryInfo = 'Data utworzenia: ' + this.state.tooltipsData.category.date + '\n Ilość zdjęć: ' + this.state.tooltipsData.category.picturesCount // Category info: create category date and number of pictures.
     const tooltipAddComment = 'Dodaj komentarz' // Add comment.
 
+    const buttons = [
+      {
+        text: 'AGREE',
+        shadow: false,
+        style: {},
+        rippleStyle: {
+          backgroundColor: '#2196f3'
+        },
+        foreground: '#2196f3',
+        backgroundColor: 'transparent',
+        onButtonClick: function () {
+          console.log('bąk')
+        }
+      }, {
+        text: 'DISAGREE',
+        shadow: false,
+        style: {},
+        rippleStyle: {
+          backgroundColor: '#2196f3'
+        },
+        foreground: '#2196f3',
+        backgroundColor: 'transparent'
+      }
+    ]
+
     return (
       <div>
         <div className='app-content' ref='appContent' style={appContentStyle}>
@@ -276,6 +304,9 @@ export default class App extends React.Component {
             <LessonsPlanTab ref='lessonsPlanTab' getApp={this.getApp} />
           </div>
         </div>
+        <Dialog title='Title' buttons={buttons} style={{width: 600}}>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labori Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.s nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+        </Dialog>
         <Preloader ref='preloader' className='data-preloader' style={dataPreloaderStyle} strokeColor='#2196f3' strokeWidth={4} />
         <NavigationDrawer ref='navigationDrawer' getApp={this.getApp} />
         <Tooltip ref='tooltipLike'>{tooltipLikeText}</Tooltip>
