@@ -212,11 +212,28 @@ export default class TextField extends React.Component {
   }
 
   /**
-   * Gets input value
+   * Gets input value.
    * @return {String} text
    */
   getValue = () => {
     return this.refs.input.value
+  }
+
+  /**
+   * Sets input value.
+   * @param {String} value
+   */
+  setValue = (value) => {
+    this.refs.input.value = value
+    if (value.length < 1) {
+      this.setState({
+        focus: false
+      })
+    } if (value.length >= 1) {
+      this.setState({
+        focus: true
+      })
+    }
   }
 
   render () {

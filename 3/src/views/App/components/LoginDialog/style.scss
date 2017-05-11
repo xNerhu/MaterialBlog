@@ -6,3 +6,20 @@
   cursor: pointer;
   clear:both;
 }
+
+.login-dialog-content {
+  width: 100%;
+  transition: 0.3s opacity, 0.3s visibility, 0.3s margin-left;
+}
+
+.login-dialog-message {
+  margin-left: 100%;
+  transition: 0.3s opacity, 0.3s visibility, 0.3s margin-left;
+}
+
+.login-dialog-preloader {
+  width: 54px;
+  height: 54px;
+  position: absolute;
+  @include center;
+}
