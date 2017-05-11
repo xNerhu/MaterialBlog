@@ -16,8 +16,8 @@ export default class Dialog extends React.Component {
    * @param {Object} button data.
    */
   onActionButtonClick = (e, data) => {
-    if (typeof data.onActionButtonClick === 'function') {
-      data.onActionButtonClick(e)
+    if (typeof data.onClick === 'function') {
+      data.onClick(e)
     }
   }
 

@@ -2,18 +2,17 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {TweenMax, CSSPlugin} from 'gsap'
 
+import LoginDialog from './components/LoginDialog'
 import Toolbar from './components/Toolbar'
 import TabLayout from './components/TabLayout'
 import Tab from './components/TabLayout/components/Tab'
 import NavigationDrawer from './components/NavigationDrawer'
-import LoginPanel from './components/LoginPanel'
 
 import PostsTab from '../Tabs/Posts'
 import GalleryTab from '../Tabs/Gallery'
 import AboutClassTab from '../Tabs/AboutClass'
 import LessonsPlanTab from '../Tabs/LessonsPlan'
 
-import Dialog from '../../imports/materialdesign/components/Dialog'
 import Tooltip from '../../imports/materialdesign/components/Tooltip'
 import Preloader from '../../imports/materialdesign/components/Preloader'
 
@@ -86,7 +85,7 @@ export default class App extends React.Component {
 
     // On search icon click event.
     function onClickSearch () {
-
+      self.refs.loginDialog.show()
     }
 
     function onPostsSelect () {
@@ -279,6 +278,7 @@ export default class App extends React.Component {
             <LessonsPlanTab ref='lessonsPlanTab' getApp={this.getApp} />
           </div>
         </div>
+        <LoginDialog ref='loginDialog' />
         <Preloader ref='preloader' className='data-preloader' style={dataPreloaderStyle} strokeColor='#2196f3' strokeWidth={4} />
         <NavigationDrawer ref='navigationDrawer' getApp={this.getApp} />
         <Tooltip ref='tooltipLike'>{tooltipLikeText}</Tooltip>

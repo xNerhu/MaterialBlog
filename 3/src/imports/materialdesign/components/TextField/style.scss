@@ -7,6 +7,9 @@
 .material-text-field-input {
   width: 100%;
   height: 100%;
+  font-size: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   margin: 0;
   outline: none;
   border: none;
@@ -20,6 +23,9 @@
 }
 
 .material-text-field-textarea {
+  font-size: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   width: 100%;
   -webkit-text-fill-color: transparent;
   background-color: transparent;
@@ -34,6 +40,10 @@
 }
 
 .material-text-field-hint {
+  font-size: 16px;
+  color: #000;
+  top: 8px;
+  opacity: 0.7;
   position: absolute;
   left: 0;
   transition: all 0.3s;
@@ -44,6 +54,9 @@
 }
 
 .material-text-field-place-holder {
+  color: #000;
+  opacity: 0.7;
+  top: 8px;
   position: absolute;
   left: 0;
   cursor: text;
@@ -55,22 +68,34 @@
 .material-text-field-divider {
   width: 100%;
   height: 2px;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.42);
   transition: 0.3s opacity, 0.3s height, 0.3s background-color;
 }
 
 .material-text-field-focus-divider {
   width: 0%;
+  height: 2px;
+  margin-top: -2px;
   margin-left: auto;
   margin-right: auto;
   transition: 0.3s width;
 }
 
 .material-textfield-helper-text {
+  font-size: 14px;
+  color: #000;
+  opacity: 0.6;
+  margin-top: 8px;
   float: left;
   transition: 0.3s opacity, 0.3s color;
 }
 
 .material-text-field-counter {
+  font-size: 12px;
+  color: #000;
+  opacity: 0.6;
+  margin-top: 12px;
   float: right;
   transition: 0.3s opacity, 0.3s color;
 }
@@ -94,4 +119,9 @@
   background-size: 100% 100%;
   position: absolute;
   cursor: pointer;
+  opacity: 0.7;
+  width: 24px;
+  height: 24px;
+  right: 0;
+  top: -8px;
 }

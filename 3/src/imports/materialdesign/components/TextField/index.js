@@ -10,7 +10,8 @@ export default class TextField extends React.Component {
       hover: false,
       placeHolder: false,
       error: false,
-      counter: '0/0'
+      counter: '0/0',
+      focusedDivider: false
     }
 
     this.errorID = 0
@@ -29,6 +30,7 @@ export default class TextField extends React.Component {
    */
   onFocus = (e) => {
     this.toggleOn()
+    if (typeof this.props.onFocus === 'function') this.props.onFocus(e)
   }
 
   /**
@@ -39,6 +41,7 @@ export default class TextField extends React.Component {
    */
   onBlur = (e) => {
     this.toggleOff()
+    if (typeof this.props.onBlur === 'function') this.props.onBlur(e)
   }
 
   /**
@@ -140,6 +143,8 @@ export default class TextField extends React.Component {
       }
     }
 
+    if (typeof this.props.onInput === 'function') this.props.onInput(e)
+
     // It can't be state, because when resizes there is weird drop.
     textArea.style.height = 'auto'
     textArea.style.height = textArea.scrollHeight + 'px'
@@ -206,7 +211,17 @@ export default class TextField extends React.Component {
     }
   }
 
+  /**
+   * Gets input value
+   * @return {String} text
+   */
+  getValue = () => {
+    return this.refs.input.value
+  }
+
   render () {
+    var self = this
+
     // Styles.
     var inputStyle = Object.assign(
       {
@@ -236,7 +251,7 @@ export default class TextField extends React.Component {
 
     var focusDividerStyle = Object.assign(
       {
-        width: (!this.state.focus) ? '0%' : '100%',
+        width: (!this.state.focus && !self.state.focusedDivider) ? '0%' : '100%',
         backgroundColor: this.props.focusColor
       }, this.props.focusDividerStyle
     )
@@ -302,7 +317,7 @@ export default class TextField extends React.Component {
         onClick={this.onClick}
       >
         <input
-          type='text'
+          type={this.props.type}
           className='material-text-field-input'
           ref='input'
           onFocus={this.onFocus}
@@ -387,6 +402,7 @@ TextField.defaultProps = {
   focusColor: '#2d5cfa',
   multiple: false,
   disabled: false,
+  type: 'text',
   icon: false, // or image link
   actionIcon: false, // or image link
   actionIconRipple: true,
@@ -396,38 +412,19 @@ TextField.defaultProps = {
   },
   inputStyle: {
     // do not set 'color' attribute
-    fontSize: 16,
-    paddingTop: 8,
-    paddingBottom: 8
   },
   textAreaStyle: {
     // do not set 'color' attribute
-    fontSize: 16,
-    paddingTop: 8,
-    paddingBottom: 8
   },
-  defaultHintStyle: {
-    fontSize: 16,
-    color: '#000',
-    top: 8,
-    opacity: 0.7
-  },
+  defaultHintStyle: {},
   focusHintStyle: {
     fontSize: 14,
     top: -12,
     opacity: 0.85,
     cursor: 'default'
   },
-  placeHolderStyle: {
-    color: '#000',
-    opacity: 0.7,
-    top: 8
-  },
-  dividerStyle: {
-    height: 1,
-    backgroundColor: '#000',
-    opacity: 0.42
-  },
+  placeHolderStyle: {},
+  dividerStyle: {},
   disabledDividerStyle: {
     height: 0,
     borderBottom: '1px dashed rgba(0, 0, 0, 0.42)'
@@ -436,33 +433,14 @@ TextField.defaultProps = {
     height: 2,
     backgroundColor: '#000'
   },
-  focusDividerStyle: {
-    height: 2,
-    marginTop: -2
-  },
-  helperTextStyle: {
-    fontSize: 14,
-    color: '#000',
-    opacity: 0.6,
-    marginTop: 8
-  },
-  counterStyle: {
-    fontSize: 12,
-    color: '#000',
-    opacity: 0.6,
-    marginTop: 12
-  },
+  focusDividerStyle: {},
+  helperTextStyle: {},
+  counterStyle: {},
   iconStyle: {
     width: 24,
     height: 24,
     left: -32,
     opacity: 0.5
   },
-  actionIconStyle: {
-    width: 24,
-    height: 24,
-    right: 0,
-    top: -8,
-    opacity: 0.7
-  }
+  actionIconStyle: {}
 }

@@ -16,10 +16,11 @@ $pictureBlur: 10px;
 @import 'views/App/components/Toolbar/components/MultiIcon/style.scss';
 @import 'views/App/components/TabLayout/style.scss';
 @import 'views/App/components/TabLayout/components/Tab/style.scss';
-@import 'views/App/components/LoginPanel/style.scss';
 
 @import 'views/App/components/NavigationDrawer/style.scss';
 @import 'views/App/components/NavigationDrawer/components/NavigationDrawerItem/style.scss';
+
+@import 'views/App/components/LoginDialog/style.scss';
 
 @import 'views/Tabs/Posts/style.scss';
 @import 'views/Tabs/Posts/components/Post/style.scss';
