@@ -8,6 +8,7 @@
   transform: translate(-50%, -50%);
   z-index: 9;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  transition: 0.3s opacity, 0.3s visibility, 0.3s top;
 }
 
 .material-dialog-title {
@@ -54,14 +55,14 @@
   }
 }
 
-.material-dialog-footer {
+.material-dialog-action {
   width: 100%;
   padding-top: 8px;
   padding-bottom: 8px;
   margin-top: 24px;
 }
 
-.material-dialog-footer-side-by-side .material-button {
+.material-dialog-action-side-by-side .material-button {
   margin-right: 8px;
   float: right;
   min-width: 64px;
@@ -69,20 +70,20 @@
   padding-right: 10px;
 }
 
-.material-dialog-footer-side-by-side .material-dialog-footer-clear {
+.material-dialog-action-side-by-side .material-dialog-action-clear {
   clear: both;
 }
 
-.material-dialog-footer-list {
+.material-dialog-action-list {
   padding-bottom: 8px;
 }
 
-.material-dialog-footer-list .material-dialog-footer {
+.material-dialog-action-list .material-dialog-action {
   padding-top: 0px;
   padding-bottom: 0px;
 }
 
-.material-dialog-footer-list .material-button {
+.material-dialog-action-list .material-button {
   padding-top: 16px;
   padding-bottom: 16px;
   padding-right: 16px;
@@ -98,4 +99,5 @@
   opacity: 0.7;
   position: absolute;
   z-index: 8;
+  transition: 0.3s opacity, 0.3s visibility;
 }
