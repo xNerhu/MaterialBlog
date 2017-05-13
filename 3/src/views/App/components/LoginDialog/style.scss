@@ -13,8 +13,23 @@
 }
 
 .login-dialog-message {
-  margin-left: 100%;
+  width: 100%;
+  margin-left: 80%;
   transition: 0.3s opacity, 0.3s visibility, 0.3s margin-left;
+  opacity: 0;
+  display: none;
+}
+
+.login-dialog-message-avatar {
+  width: 0px;
+  height: 0px;
+  background-color: red;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 18px;
+  border-radius: 100%;
+  transition: 0.5s width ease-in-out, 0.5s height ease-in-out;
+  @include image-center(100%, 100%);
 }
 
 .login-dialog-preloader {

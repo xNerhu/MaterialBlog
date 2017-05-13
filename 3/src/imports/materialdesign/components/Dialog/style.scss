@@ -9,6 +9,7 @@
   z-index: 9;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   transition: 0.3s opacity, 0.3s visibility, 0.3s top;
+  display: none;
 }
 
 .material-dialog-title {
@@ -27,7 +28,9 @@
   padding-top: 20px;
   font-size: 16px;
   color: #444;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
 
   &::-webkit-scrollbar {
     width: 6px;

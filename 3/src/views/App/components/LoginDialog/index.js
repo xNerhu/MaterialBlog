@@ -10,7 +10,7 @@ export default class LoginDialog extends React.Component {
 
     this.defaultTitle = 'Zaloguj się'
     this.logginTitle = 'Logowanie...'
-    this.loggedTitle = 'Zalogowano!'
+    this.loggedTitle = 'Witaj na naszym blogu!'
 
     this.state = {
       passwordVisible: false,
@@ -82,7 +82,24 @@ export default class LoginDialog extends React.Component {
           self.setState({
             logged: true
           })
-          self.refs.content.style.display = 'none'
+          setTimeout(function () {
+            self.refs.content.style.display = 'none'
+            self.refs.message.style.display = 'block'
+            setTimeout(function () {
+              self.refs.message.style.opacity = '1'
+              self.refs.message.style.marginLeft = '0px'
+              setTimeout(function () {
+                var img = new Image()
+
+                img.onload = function () {
+                  self.refs.messageAvatar.style.backgroundImage = 'url(' + this.src + ')'
+                  self.refs.messageAvatar.style.width = '96px'
+                  self.refs.messageAvatar.style.height = '96px'
+                }
+                img.src = 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
+              }, 150)
+            }, 50)
+          }, 200)
         }
       }, 1000)
     }
@@ -154,11 +171,6 @@ export default class LoginDialog extends React.Component {
       display: (!this.state.loggin) ? 'none' : 'block'
     }
 
-    const messageStyle = {
-      marginLeft: (!this.state.logged) ? '100%' : 0,
-      display: (!this.state.logged) ? 'none' : 'block'
-    }
-
     const passwordStyle = {
       marginTop: 48
     }
@@ -214,7 +226,25 @@ export default class LoginDialog extends React.Component {
       }
     ]
 
-    const actionButtons = (!this.state.loggin) ? actionButtonsDefault : actionButtonsLogin
+    const actionButtonsLogged = [
+      {
+        text: 'ZAMKNIJ',
+        shadow: false,
+        style: {},
+        rippleStyle: {
+          backgroundColor: '#2196f3'
+        },
+        foreground: '#2196f3',
+        backgroundColor: 'transparent',
+        onClick: function () {
+          self.refs.dialog.hide()
+        }
+      }
+    ]
+
+    var actionButtons = actionButtonsDefault
+    if (this.state.loggin) actionButtons = actionButtonsLogin
+    else if (this.state.logged) actionButtons = actionButtonsLogged
 
     var dialogTitle = this.defaultTitle
     if (this.state.loggin) dialogTitle = this.logginTitle
@@ -253,8 +283,16 @@ export default class LoginDialog extends React.Component {
               Zapomniałem/am hasła
             </div>
           </div>
-          <div className='login-dialog-message' style={messageStyle}>
-            Witaj na naszym blogu!
+          <div className='login-dialog-message' ref='message'>
+            <div className='login-dialog-message-avatar' ref='messageAvatar' />
+            Zostałeś zalogowany na koncie Nersent!
+            <br />
+            Możesz komentować wszystkie posty,
+            <br />
+            edytować informacje o sobie tutaj
+            <br />
+            oraz logować się do aplikacji Nersent
+            <br />
           </div>
           <Preloader style={preloaderStyle} className='login-dialog-preloader' strokeColor='#2196f3' strokeWidth={4} />
         </Dialog>

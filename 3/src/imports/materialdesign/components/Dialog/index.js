@@ -25,29 +25,39 @@ export default class Dialog extends React.Component {
    * Shows dialog.
    */
   show = () => {
-    this.setState({
-      toggled: true
-    })
+    var self = this
+
+    this.refs.dialog.style.display = 'block'
+    setTimeout(function () {
+      self.setState({
+        toggled: true
+      })
+    }, 10)
   }
 
   /**
    * Hides dialog.
    */
   hide = () => {
+    var self = this
+
     this.setState({
       toggled: false
     })
+    setTimeout(function () {
+      self.refs.dialog.style.display = 'none'
+    }, 300)
   }
 
   render () {
     // Styles.
     const style = Object.assign(
       {
-        visibility: (!this.state.toggled) ? 'hidden' : 'visible',
         opacity: (!this.state.toggled) ? 0 : 1,
         top: (!this.state.toggled) ? this.props.toggledOffTop : '50%'
       }, this.props.style
     )
+    //        visibility: (!this.state.toggled) ? 'hidden' : 'visible',
 
     const darkStyle = {
       visibility: (!this.state.toggled) ? 'hidden' : 'visible',
@@ -62,7 +72,7 @@ export default class Dialog extends React.Component {
 
     return (
       <div className={this.props.className}>
-        <div className={className} style={style}>
+        <div className={className} style={style} ref='dialog'>
           <div className='material-dialog-title'>{this.props.title}</div>
           <div className='material-dialog-content' style={contentStyle}>{this.props.children}</div>
           <div className='material-dialog-action'>

@@ -168,6 +168,17 @@ export default class NavigationDrawer extends React.Component {
     this.props.getApp().getToolBar().refs.menuIcon.changeToDefault()
   }
 
+  /**
+   * On login item click event.
+   */
+  onLoginClick = () => {
+    if (this.state.toggled) {
+      this.props.getApp().getToolBar().refs.menuIcon.changeToDefault()
+      this.hide()
+    }
+    this.props.getApp().refs.loginDialog.show()
+  }
+
   render () {
     // Styles.
     const navigationDrawerStyle = {
@@ -211,7 +222,7 @@ export default class NavigationDrawer extends React.Component {
           <div className='navigation-drawer-content' style={navigationDrawerContentStyle}>
             <NavigationDrawerItem iconStyle={infoIconStyle} getApp={this.props.getApp}>Informacje</NavigationDrawerItem>
             <NavigationDrawerItem iconStyle={panelIconStyle} getApp={this.props.getApp}>Panel</NavigationDrawerItem>
-            <NavigationDrawerItem iconStyle={loginIconStyle} getApp={this.props.getApp}>Zaloguj</NavigationDrawerItem>
+            <NavigationDrawerItem onClick={this.onLoginClick} iconStyle={loginIconStyle} getApp={this.props.getApp}>Zaloguj</NavigationDrawerItem>
           </div>
         </div>
         <div className='dark' style={darkStyle} onClick={this.onDarkClick} />

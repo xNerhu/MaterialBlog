@@ -85,7 +85,7 @@ export default class App extends React.Component {
 
     // On search icon click event.
     function onClickSearch () {
-      self.refs.loginDialog.show()
+
     }
 
     function onPostsSelect () {
