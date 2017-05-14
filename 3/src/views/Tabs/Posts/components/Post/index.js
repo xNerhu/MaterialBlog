@@ -91,7 +91,7 @@ export default class Post extends React.Component {
         var ripple = Ripple.createRipple(this.refs.content, {
           backgroundColor: '#444',
           opacity: 0.3
-        }, createRippleMouse(this.refs.content, e, 1.5))
+        }, createRippleMouse(this.refs.content, e, 2))
         Ripple.makeRipple(ripple)
       }
     }
@@ -106,7 +106,7 @@ export default class Post extends React.Component {
       var ripple = Ripple.createRipple(this.refs.content, {
         backgroundColor: '#444',
         opacity: 0.3
-      }, createRippleMouse(this.refs.content, e, 1.5, true))
+      }, createRippleMouse(this.refs.content, e, 2, true))
       Ripple.makeRipple(ripple)
       this.props.getApp().blockMouseDownEvent = true
     }
