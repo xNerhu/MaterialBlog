@@ -192,6 +192,13 @@ export default class NavigationDrawer extends React.Component {
     this.props.getApp().refs.loginDialog.show()
   }
 
+  /**
+   * On github item click event.
+   */
+   onGitHubClick = () => {
+     window.open('https://github.com/xNerhu22/MyClassBlog', '_blank')
+   }
+
   render () {
     // Styles.
     const navigationDrawerStyle = {
@@ -220,6 +227,10 @@ export default class NavigationDrawer extends React.Component {
       backgroundImage: 'url(src/images/NavigationDrawer/info.png)'
     }
 
+    const gitHubIconStyle = {
+      backgroundImage: 'url(src/images/NavigationDrawer/github.png)'
+    }
+
     const panelIconStyle = {
       backgroundImage: 'url(src/images/NavigationDrawer/settings.png)'
     }
@@ -234,6 +245,8 @@ export default class NavigationDrawer extends React.Component {
           <div className='navigation-drawer-header' style={headerStyle} />
           <div className='navigation-drawer-content' style={navigationDrawerContentStyle}>
             <NavigationDrawerItem onClick={this.onInfoClick} iconStyle={infoIconStyle} getApp={this.props.getApp}>Informacje</NavigationDrawerItem>
+            <NavigationDrawerItem onClick={this.onGitHubClick} iconStyle={gitHubIconStyle} getApp={this.props.getApp}>GitHub</NavigationDrawerItem>
+            <div className='navigation-drawer-divider' />
             <NavigationDrawerItem iconStyle={panelIconStyle} getApp={this.props.getApp}>Panel</NavigationDrawerItem>
             <NavigationDrawerItem onClick={this.onLoginClick} iconStyle={loginIconStyle} getApp={this.props.getApp}>Zaloguj</NavigationDrawerItem>
           </div>

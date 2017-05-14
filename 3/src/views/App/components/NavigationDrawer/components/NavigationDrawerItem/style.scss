@@ -10,10 +10,6 @@
   transition: background-color 0.3s, margin-left 0.15s;
   cursor: pointer;
 
-  &:first-child {
-    margin-top: 10px;
-  }
-
   &:hover {
     transition: all 0.3s;
     background-color: #eee;
