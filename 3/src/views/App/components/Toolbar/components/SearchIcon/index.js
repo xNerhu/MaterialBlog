@@ -12,6 +12,9 @@ export default class SearchIcon extends React.Component {
     }
   }
 
+  /**
+   * On search icon click event.
+   */
   onClick = () => {
     this.setState({
       toggled: true,
@@ -19,6 +22,9 @@ export default class SearchIcon extends React.Component {
     })
   }
 
+  /**
+   * On action icon click event.
+   */
   onActionIconClick = () => {
     var self = this
 
@@ -33,17 +39,19 @@ export default class SearchIcon extends React.Component {
   }
 
   render () {
+    // Styles.
     const textFieldStyle = {
       width: (!this.state.toggled) ? 0 : 400,
       overflow: this.state.overflow
     }
 
-    const className = 'search-icon ' + this.props.className
     const buttonStyle = {
       backgroundImage: 'url(' + this.props.image + ')'
     }
 
     const actionIcon = 'src/images/Toolbar/close.png'
+
+    const className = 'search-icon ' + this.props.className
 
     return (
       <div className={className}>
