@@ -3,6 +3,8 @@ import {Motion, spring} from 'react-motion'
 import ReactDOM from 'react-dom'
 import Tab from './components/Tab'
 
+import Url from '../../../../helpers/Url'
+
 export default class TabLayout extends React.Component {
   constructor () {
     super()
@@ -44,7 +46,9 @@ export default class TabLayout extends React.Component {
       event.page = tab.props.data.page
       ReactDOM.findDOMNode(this).dispatchEvent(event)
       this.selectedIndex = this.tabs.indexOf(tab)
-      window.history.pushState('', '', '?tab=' + tab.props.data.url)
+      const action = Url.getUrlParameter('action')
+      const param = (action === undefined) ? '?tab=' + tab.props.data.url : '?tab=' + tab.props.data.url + '&action=' + action
+      window.history.pushState('', '', param)
     }
   }
 

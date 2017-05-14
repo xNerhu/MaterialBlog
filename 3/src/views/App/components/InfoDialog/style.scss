@@ -1,0 +1,28 @@
+.info-dialog {
+  & .material-dialog {
+    width: 600px;
+  }
+
+  & .material-dialog-content {
+    font-size: 16px;
+  }
+
+  a {
+    text-decoration: none;
+    color: #000;
+    @include Roboto-Medium;
+  }
+
+  .bold {
+    color: #000;
+    @include Roboto-Medium;
+  }
+}
+
+@media (max-width: 600px) {
+  .info-dialog {
+    & .material-dialog {
+      width: 100%;
+    }
+  }
+}

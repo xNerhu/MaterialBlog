@@ -169,7 +169,20 @@ export default class NavigationDrawer extends React.Component {
   }
 
   /**
+   * On info item click event.
+   * Shows info dialog.
+   */
+  onInfoClick = () => {
+    if (this.state.toggled) {
+      this.props.getApp().getToolBar().refs.menuIcon.changeToDefault()
+      this.hide()
+    }
+    this.props.getApp().refs.infoDialog.show()
+  }
+
+  /**
    * On login item click event.
+   * Show login dialog.
    */
   onLoginClick = () => {
     if (this.state.toggled) {
@@ -220,7 +233,7 @@ export default class NavigationDrawer extends React.Component {
         <div className='navigation-drawer' style={navigationDrawerStyle}>
           <div className='navigation-drawer-header' style={headerStyle} />
           <div className='navigation-drawer-content' style={navigationDrawerContentStyle}>
-            <NavigationDrawerItem iconStyle={infoIconStyle} getApp={this.props.getApp}>Informacje</NavigationDrawerItem>
+            <NavigationDrawerItem onClick={this.onInfoClick} iconStyle={infoIconStyle} getApp={this.props.getApp}>Informacje</NavigationDrawerItem>
             <NavigationDrawerItem iconStyle={panelIconStyle} getApp={this.props.getApp}>Panel</NavigationDrawerItem>
             <NavigationDrawerItem onClick={this.onLoginClick} iconStyle={loginIconStyle} getApp={this.props.getApp}>Zaloguj</NavigationDrawerItem>
           </div>

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import {TweenMax, CSSPlugin} from 'gsap'
 
 import LoginDialog from './components/LoginDialog'
+import InfoDialog from './components/InfoDialog'
 import Toolbar from './components/Toolbar'
 import TabLayout from './components/TabLayout'
 import Tab from './components/TabLayout/components/Tab'
@@ -172,6 +173,11 @@ export default class App extends React.Component {
         postsTab.setState({fullScreenPost: postData})
         postsTab.showFullScreenPost(postID)
       }
+
+      const action = Url.getUrlParameter('action')
+      if (action === 'info') {
+        self.refs.infoDialog.show()
+      }
     }, 1)
 
   //  this.getPostsTab().loadPosts()
@@ -279,6 +285,7 @@ export default class App extends React.Component {
           </div>
         </div>
         <LoginDialog ref='loginDialog' />
+        <InfoDialog ref='infoDialog' />
         <Preloader ref='preloader' className='data-preloader' style={dataPreloaderStyle} strokeColor='#2196f3' strokeWidth={4} />
         <NavigationDrawer ref='navigationDrawer' getApp={this.getApp} />
         <Tooltip ref='tooltipLike'>{tooltipLikeText}</Tooltip>
