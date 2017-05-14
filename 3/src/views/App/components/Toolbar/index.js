@@ -1,6 +1,7 @@
 import React from 'react'
 
 import MultiIcon from './components/MultiIcon'
+import SearchIcon from './components/SearchIcon'
 
 export default class Toolbar extends React.Component {
   constructor () {
@@ -47,6 +48,7 @@ export default class Toolbar extends React.Component {
     }
 
     var first = true
+    var _first = true
     var hasLeftIcon = false
 
     return (
@@ -74,7 +76,16 @@ export default class Toolbar extends React.Component {
               )
 
               if (data.subType === 'Menu') {
-                return <MultiIcon ref='menuIcon' key={key} className={className} style={data.style} onClick={(e) => data.onClick(e)} onMouseDown={this.iconMouseDown} onTouchStart={this.iconTouchStart} />
+                return <MultiIcon ref='menuIcon' key={key} className={className} style={data.style} onClick={data.onClick} onMouseDown={this.iconMouseDown} onTouchStart={this.iconTouchStart} />
+              } else if (data.subType === 'Search') {
+                if (data.position === 'Right') {
+                  className = 'toolbar-right'
+                  if (_first) {
+                    className += ' toolbar-right-first'
+                    _first = false
+                  }
+                }
+                return <SearchIcon ref='searchIcon' key={key} className={className} image={data.image} onClick={data.onClick} onMouseDown={this.iconMouseDown} onTouchStart={this.iconTouchStart} />
               } else {
                 return <div key={key} className={className} style={style} onClick={data.onClick} onMouseDown={this.iconMouseDown} onTouchStart={this.iconTouchStart} />
               }

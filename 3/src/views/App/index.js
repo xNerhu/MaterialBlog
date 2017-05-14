@@ -125,13 +125,28 @@ export default class App extends React.Component {
         },
         {
           type: 'Icon',
+          subType: 'Search',
+          position: 'Right',
+          image: 'src/images/Toolbar/search.png'
+        },
+        {
+          type: 'Icon',
           position: 'Right',
           image: 'src/images/Toolbar/search.png',
           onClick: onClickSearch,
-          style: {opacity: 1}
+          style: {opacity: 1, display: 'none'}
         }
       ]
     })
+    /*
+    {
+      type: 'Icon',
+      position: 'Right',
+      image: 'src/images/Toolbar/search.png',
+      onClick: onClickSearch,
+      style: {opacity: 1}
+    }
+    */
 
     // Set tabs.
     this.refs.tabLayout.setState({

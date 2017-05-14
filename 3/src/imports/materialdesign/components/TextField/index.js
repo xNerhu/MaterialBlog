@@ -21,6 +21,11 @@ export default class TextField extends React.Component {
     if (this.props.multiple) {
       this.refs.textarea.style.height = '54px'
     }
+    if (this.props.placeHolderAlwaysVisible) {
+      this.setState({
+        placeHolder: true
+      })
+    }
   }
 
   /**
@@ -67,7 +72,7 @@ export default class TextField extends React.Component {
       if (element.value.length === 0) {
         this.setState({
           focus: false,
-          placeHolder: false
+          placeHolder: (this.props.placeHolderAlwaysVisible)
         })
       }
     }
@@ -357,6 +362,7 @@ export default class TextField extends React.Component {
         />
         <div
           className='material-text-field-place-holder'
+          onClick={this.toggleOn}
           style={placeHolderStyle}
         >
           {placeHolderText}
@@ -410,6 +416,7 @@ export default class TextField extends React.Component {
 TextField.defaultProps = {
   hint: 'Label',
   placeHolder: 'Place holder', // or 'Place holder'
+  placeHolderAlwaysVisible: false,
   helperText: false, // or 'Helper text'
   counter: false, // true or false
   maxLength: 10,
