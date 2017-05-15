@@ -8,6 +8,7 @@
 .toolbar-content {
   height: 64px;
   position: relative;
+  overflow: hidden;
 }
 
 .toolbar-shadow {
@@ -19,6 +20,7 @@
   @include toolbar-icon;
   @include invert-colors
   cursor: pointer;
+  transition: 0.3s top, 0.3s opacity;
 }
 
 .toolbar-left {
@@ -45,4 +47,5 @@
   position: absolute;
   left: 80px;
   font-size: 18px;
+  transition: 0.3s top, 0.3s opacity;
 }

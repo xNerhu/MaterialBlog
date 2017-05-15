@@ -110,6 +110,7 @@ export default class App extends React.Component {
           position: 'Left',
           image: 'src/images/Toolbar/menu.png',
           onClick: onClickMenu,
+          id: 'toolbar-icon-menu',
           style: {
             width: 24,
             height: 18,
@@ -121,13 +122,20 @@ export default class App extends React.Component {
         {
           type: 'Title',
           title: this.props.toolbarTitle,
-          style: {color: '#fff'}
+          id: 'toolbar-title',
+          style: {
+            color: '#fff',
+            display: 'none'
+          }
         },
         {
           type: 'Icon',
           subType: 'Search',
           position: 'Right',
-          image: 'src/images/Toolbar/search.png'
+          image: 'src/images/Toolbar/search.png',
+          onSearch: function (query) {
+            console.log(query)
+          }
         }
       ]
     })

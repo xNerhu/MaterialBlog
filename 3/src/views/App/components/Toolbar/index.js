@@ -76,7 +76,7 @@ export default class Toolbar extends React.Component {
               )
 
               if (data.subType === 'Menu') {
-                return <MultiIcon ref='menuIcon' key={key} className={className} style={data.style} onClick={data.onClick} onMouseDown={this.iconMouseDown} onTouchStart={this.iconTouchStart} />
+                return <MultiIcon ref='menuIcon' key={key} className={className} style={data.style} onClick={data.onClick} onMouseDown={this.iconMouseDown} onTouchStart={this.iconTouchStart} id={data.id} />
               } else if (data.subType === 'Search') {
                 if (data.position === 'Right') {
                   className = 'toolbar-right'
@@ -85,9 +85,9 @@ export default class Toolbar extends React.Component {
                     _first = false
                   }
                 }
-                return <SearchIcon ref='searchIcon' key={key} className={className} image={data.image} onClick={data.onClick} onMouseDown={this.iconMouseDown} onTouchStart={this.iconTouchStart} />
+                return <SearchIcon ref='searchIcon' key={key} id={data.id} className={className} image={data.image} onClick={data.onClick} onMouseDown={this.iconMouseDown} onTouchStart={this.iconTouchStart} onSearch={data.onSearch} getApp={this.props.getApp} />
               } else {
-                return <div key={key} className={className} style={style} onClick={data.onClick} onMouseDown={this.iconMouseDown} onTouchStart={this.iconTouchStart} />
+                return <div key={key} className={className} id={data.id} style={style} onClick={data.onClick} onMouseDown={this.iconMouseDown} onTouchStart={this.iconTouchStart} />
               }
             }
             if (data.type === 'Title') { // Check if type of child is title.
@@ -96,7 +96,7 @@ export default class Toolbar extends React.Component {
                 left = 80
               }
 
-              return <div key={key} className='toolbar-title' style={Object.assign(data.style, {left: left})}>{data.title}</div>
+              return <div key={key} className='toolbar-title' id={data.id} style={Object.assign(data.style, {left: left})}>{data.title}</div>
             }
 
             return null

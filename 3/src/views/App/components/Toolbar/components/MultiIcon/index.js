@@ -101,7 +101,7 @@ export default class MultiIcon extends React.Component {
 
   render () {
     return (
-      <div style={this.props.style} className={this.props.className} onMouseDown={this.props.onMouseDown} onClick={this.onClick} onTouchStart={this.props.onTouchStart}>
+      <div style={this.props.style} className={this.props.className} onMouseDown={this.props.onMouseDown} onClick={this.onClick} onTouchStart={this.props.onTouchStart} id={this.props.id}>
         <div className='multiIcon' ref='multiIcon'>
           <div className='multiIcon-grid multiIcon-grid-1' />
           <div className='multiIcon-grid multiIcon-grid-2' />
