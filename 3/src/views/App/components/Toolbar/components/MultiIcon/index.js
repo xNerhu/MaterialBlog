@@ -8,12 +8,15 @@ export default class MultiIcon extends React.Component {
     this.isExit = false
 
     this.canClick = true
+
+    this.actualState = 'default'
   }
 
   /**
    * Change to arrow version.
+   * @param {Boolean} update actual state.
    */
-  changeToArrow = () => {
+  changeToArrow = (update = true) => {
     var self = this
 
     if (!this.isArrow && !this.isExit) {
@@ -25,13 +28,16 @@ export default class MultiIcon extends React.Component {
       setTimeout(function () {
         self.isArrow = true
       }, 500)
+
+      if (update) this.actualState = 'arrow'
     }
   }
 
   /**
    * Change to exit (X) version
+   * @param {Boolean} update actual state.
    */
-  changeToExit = () => {
+  changeToExit = (update = true) => {
     var self = this
 
     if (!this.isArrow && !this.isExit) {
@@ -42,13 +48,16 @@ export default class MultiIcon extends React.Component {
       setTimeout(function () {
         self.isExit = true
       }, 500)
+
+      if (update) this.actualState = 'exit'
     }
   }
 
   /**
    * Change to normal menu.
+   * @param {Boolean} update last state.
    */
-  changeToDefault = () => {
+  changeToDefault = (update = true) => {
     var self = this
 
     if (this.isArrow && !this.isExit) {
@@ -62,6 +71,8 @@ export default class MultiIcon extends React.Component {
         self.refs.multiIcon.classList.remove('multiIcon-arrow-backtodefault')
         self.isArrow = false
       }, 500)
+
+      if (update) this.actualState = 'default'
     } else if (!this.isArrow && this.isExit) {
       this.blockClick()
       this.refs.multiIcon.classList.remove('multiIcon-exit')
@@ -72,6 +83,8 @@ export default class MultiIcon extends React.Component {
         self.refs.multiIcon.classList.remove('multiIcon-exit-backtodefault')
         self.isExit = false
       }, 500)
+
+      if (update) this.actualState = 'default'
     }
   }
 

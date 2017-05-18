@@ -8,10 +8,11 @@ export default class SearchIcon extends React.Component {
 
     this.state = {
       toggled: false,
-      textFieldWidth: 0,
       overflow: 'hidden',
       fullWidth: false
     }
+
+    this.maxWidth = 700
   }
 
   /**
@@ -21,100 +22,192 @@ export default class SearchIcon extends React.Component {
   onWindowResize = (e) => {
     var self = this
 
-    if (this.state.toggled && window.innerWidth <= 655) {
+    if (this.state.toggled && !this.state.fullWidth && window.innerWidth <= this.maxWidth) {
       this.showFullWidth()
-    } else if (this.state.toggled && window.innerWidth > 655 && this.state.textFieldWidth !== 400) {
+    } else if (this.state.toggled && this.state.fullWidth && window.innerWidth > this.maxWidth) {
       this.showNormal()
+      this.backMenu()
     }
   }
 
   /**
-   * On search icon click event.
+   * Shows normal-width search input.
    */
-  onClick = () => {
-    if (window.innerWidth > 655) {
-      this.showNormal()
-    } else {
-      /*var toolbarItems = this.props.getApp().state.toolbarItems
-      var indexies = []
-      var searchIconIndex = 0
-      for (var i = 0; i < toolbarItems.length; i++) {
-        if (toolbarItems[i].subType !== 'Menu' && toolbarItems[i].subType !== 'Search') {
-          indexies.push(i)
-        } else {
-          searchIconIndex = i
-        }
-      }
-      for (var i = 0; i < indexies.length; i++) {
-        var itemStyle = toolbarItems[indexies[i]].style
-        var style = Object.assign({}, itemStyle)
-        style.top = '64'
-        toolbarItems[indexies[i]].style = style
-      }*/
-      this.showFullWidth()
-    }
-  }
-
   showNormal = () => {
-    this.props.getApp().getToolBar().refs.menuIcon.changeToDefault()
-    this.refs.searchIcon.style.width = ''
-    this.refs.searchIcon.style.marginLeft = '0px'
+    const menuIcon = this.props.getApp().getToolBar().refs.menuIcon
+
     this.setState({
+      overflow: 'visible',
       toggled: true,
-      fullWidth: false,
-      textFieldWidth: 400,
-      overflow: 'visible'
+      fullWidth: false
     })
-    window.removeEventListener('resize', this.onWindowResize)
-    window.addEventListener('resize', this.onWindowResize)
+
+    this.toolBarItems(true)
   }
 
+  /**
+   * Shows full-width search input.
+   */
   showFullWidth = () => {
-    this.props.getApp().getToolBar().refs.menuIcon.changeToExit()
+    const menuIcon = this.props.getApp().getToolBar().refs.menuIcon
+
+    if (!menuIcon.isExit) {
+      if (menuIcon.isArrow) {
+        menuIcon.changeToDefault(false)
+        setTimeout(function () {
+          menuIcon.changeToExit(false)
+        }, 500)
+      } else {
+        menuIcon.changeToExit(false)
+      }
+    }
+
     this.setState({
+      overflow: 'hidden',
       fullWidth: true,
-      textFieldWidth: '100%'
+      toggled: true
     })
-    this.refs.searchIcon.style.width = 'calc(100% - 100px)'
-    this.refs.searchIcon.style.marginLeft = '30px'
+
+    this.toolBarItems(false)
+  }
+
+  toolBarItems = (flag) => {
+    var toolbarItems = this.props.getApp().state.toolbarItems
+    var indexies = []
+    var searchIconIndex = 0
+
+    for (var i = 0; i < toolbarItems.length; i++) {
+      if (toolbarItems[i].subType !== 'Menu' && toolbarItems[i].subType !== 'Search') {
+        indexies.push(i)
+      } else {
+        searchIconIndex = i
+      }
+    }
+    for (var i = 0; i < indexies.length; i++) {
+      var itemStyle = toolbarItems[indexies[i]].style
+      var style = Object.assign({}, itemStyle)
+      style.top = (!flag) ? '96px' : '50%'
+      toolbarItems[indexies[i]].style = style
+    }
+    this.props.getApp().setState({
+      toolbarItems: toolbarItems
+    })
+  }
+
+  /**
+   * Hides search input.
+   */
+  hide = () => {
+    var self = this
+
+    this.setState({
+      toggled: false,
+      fullWidth: false
+    })
+
+    setTimeout(function () {
+      self.setState({
+        overflow: 'hidden'
+      })
+    }, 250)
+
+    if (this.props.getApp().getToolBar().refs.menuIcon.isExit) {
+      this.backMenu()
+      this.toolBarItems(true)
+    }
+    window.removeEventListener('resize', this.onWindowResize)
+  }
+
+  /**
+   * Backs menu state.
+   */
+  backMenu = () => {
+    const menuIcon = this.props.getApp().getToolBar().refs.menuIcon
+
+    if (menuIcon.actualState) {
+      if (menuIcon.actualState === 'default') {
+        menuIcon.changeToDefault(false)
+      } else if (menuIcon.actualState === 'arrow') {
+        menuIcon.changeToDefault(false)
+        setTimeout(function () {
+          menuIcon.changeToArrow(false)
+        }, 500)
+      }
+    }
   }
 
   /**
    * On action icon click event.
    */
   onActionIconClick = () => {
-    var self = this
+    this.hide()
+  }
 
-    this.setState({
-      textFieldWidth: 0
-    })
-    setTimeout(function () {
-      self.setState({
-        overflow: 'hidden'
-      })
-    }, 250)
+  /**
+   * On search button click event.
+   */
+  onSearchButtonClick = () => {
+    if (!this.state.toggled) {
+      if (window.innerWidth <= this.maxWidth) this.showFullWidth()
+      else this.showNormal()
+
+      window.removeEventListener('resize', this.onWindowResize)
+      window.addEventListener('resize', this.onWindowResize)
+    } else {
+      if (typeof this.props.onSearch === 'function') {
+        const value = this.refs.textField.getValue()
+        this.props.onSearch(value)
+      }
+    }
+  }
+
+  /**
+   * On text field key press event.
+   * @param {Object} event data.
+   */
+  onKeyPress = (e) => {
+    if (e.key.toLowerCase() === 'enter') {
+      if (typeof this.props.onSearch === 'function') {
+        const value = this.refs.textField.getValue()
+        this.props.onSearch(value)
+      }
+    }
   }
 
   render () {
     // Styles.
+    const style = {
+      width: (!this.state.toggled) ? 64 : ((!this.state.fullWidth) ? 400 : 'calc(100% - 96px)')
+    }
+
     const textFieldStyle = {
-      width: this.state.textFieldWidth,
+      width: (!this.state.fullWidth) ? 'calc(100% - 64px)' : '100%',
       overflow: this.state.overflow
     }
 
-    const searchIconButtonStyle = {
+    const textFieldInputStyle = {
+      width: (!this.state.fullWidth) ? 'calc(100% - 24px)' : '100%'
+    }
+
+    const searchButtonStyle = {
       backgroundImage: 'url(' + this.props.image + ')',
       display: (!this.state.fullWidth) ? 'block' : 'none'
     }
 
-    const actionIcon = (!this.state.fullWidth) ? 'src/images/Toolbar/close.png' : false
+    const actionIcon = 'src/images/Toolbar/close.png'
+
+    const actionIconStyle = {
+      opacity: (!this.state.fullWidth) ? 0.7 : 0,
+      visibility: (!this.state.fullWidth) ? 'visible' : 'hidden'
+    }
 
     const className = 'search-icon ' + this.props.className
 
     return (
-      <div className={className} ref='searchIcon'>
-        <div className='search-icon-button' style={searchIconButtonStyle} onClick={this.onClick} onMouseDown={this.props.onMouseDown} onTouchStart={this.onTouchStart} />
+      <div className={className} ref='searchIcon' style={style}>
+        <div className='search-icon-button' ref='searchButton' style={searchButtonStyle} onClick={this.onSearchButtonClick} onMouseDown={this.props.onMouseDown} onTouchStart={this.onTouchStart} />
         <TextField
+          ref='textField'
           style={textFieldStyle}
           className='search-icon-textfield'
           hint={false}
@@ -124,6 +217,9 @@ export default class SearchIcon extends React.Component {
           textColor='#fff'
           actionIcon={actionIcon}
           onActionIconClick={this.onActionIconClick}
+          actionIconStyle={actionIconStyle}
+          inputStyle={textFieldInputStyle}
+          onKeyPress={this.onKeyPress}
         />
       </div>
     )

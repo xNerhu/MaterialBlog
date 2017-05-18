@@ -156,6 +156,14 @@ export default class TextField extends React.Component {
   }
 
   /**
+   * On key press event.
+   * @param {Object} event data.
+   */
+  onKeyPress = (e) => {
+    if (typeof this.props.onKeyPress === 'function') this.props.onKeyPress(e)
+  }
+
+  /**
    * Returns any error.
    * @return {Boolean} only false if there isn't any error.
    * @return {Int} error id. Only if there is any error.
@@ -347,6 +355,7 @@ export default class TextField extends React.Component {
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
           onInput={this.onInput}
+          onKeyPress={this.onKeyPress}
           style={inputStyle}
           disabled={inputDisabled}
         />

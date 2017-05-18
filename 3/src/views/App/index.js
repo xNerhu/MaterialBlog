@@ -69,7 +69,7 @@ export default class App extends React.Component {
 
     // Events.
     function onClickMenu (event) {
-      if (!self.refs.postsTab.state.isFullScreen && !self.refs.galleryTab.state.picturesVisible && !self.refs.galleryTab.state.fullPictureVisible) {
+      if (!self.refs.postsTab.state.isFullScreen && !self.refs.galleryTab.state.picturesVisible && !self.refs.galleryTab.state.fullPictureVisible && (!self.getToolBar().refs.searchIcon.state.fullWidth || !self.getToolBar().refs.searchIcon.state.toggled)) {
         if (!navigationDrawer.state.toggled) {
           self.getToolBar().refs.menuIcon.changeToExit()
           navigationDrawer.show()
@@ -77,10 +77,12 @@ export default class App extends React.Component {
           self.getToolBar().refs.menuIcon.changeToDefault()
           navigationDrawer.hide()
         }
-      } else {
+      } else if (!self.getToolBar().refs.searchIcon.state.fullWidth || !self.getToolBar().refs.searchIcon.state.toggled) {
         if (self.refs.postsTab.state.isFullScreen) self.refs.postsTab.exitFullScreenPost()
         if (self.refs.galleryTab.state.picturesVisible) self.refs.galleryTab.hidePictures()
         if (self.refs.galleryTab.state.fullPictureVisible) self.refs.galleryTab.hidefullPicture()
+      } else if (self.getToolBar().refs.searchIcon.state.fullWidth && self.getToolBar().refs.searchIcon.state.toggled) {
+        self.getToolBar().refs.searchIcon.hide()
       }
     }
 
@@ -124,8 +126,7 @@ export default class App extends React.Component {
           title: this.props.toolbarTitle,
           id: 'toolbar-title',
           style: {
-            color: '#fff',
-            display: 'none'
+            color: '#fff'
           }
         },
         {
@@ -133,8 +134,8 @@ export default class App extends React.Component {
           subType: 'Search',
           position: 'Right',
           image: 'src/images/Toolbar/search.png',
-          onSearch: function (query) {
-            console.log(query)
+          onSearch: function (value) {
+            console.log(value)
           }
         }
       ]
