@@ -12,11 +12,6 @@ export default class GalleryTab extends React.Component {
       left: 0,
       display: 'none',
       defaultLeft: 0,
-      picturesVisible: false,
-      picturesWidth: '100%',
-      pictureWidth: 300,
-      pictureHeight: 200,
-      fullPictureVisible: false,
       categories: [],
       pictures: []
     }
@@ -25,197 +20,9 @@ export default class GalleryTab extends React.Component {
 
     this.root = null
 
-    this.pictureWidth = 300
-    this.pictureHeight = 200
-
-    this.fullPictureWidth = 0
-    this.fullPictureHeight = 0
+    this.loadedCategories = 0
   }
 
-  componentDidMount () {
-    window.addEventListener('resize', this.onResize)
-  }
-
-  /**
-   * On window resize event.
-   * @param {Object} event data
-   */
-  onResize = (e) => {
-    if (this.state.picturesVisible) this.resizePicturesContainer()
-  }
-
-  /**
-   * Resizes pictures container to windows width.
-   */
-  resizePicturesContainer = () => {
-    if (window.innerWidth <= 2 * this.pictureWidth) {
-      this.setState({
-        picturesWidth: '100%',
-        pictureWidth: '100%',
-        pictureHeight: window.innerWidth * this.pictureHeight / this.pictureWidth
-      })
-    } else {
-      var picIndex = 1
-      while (true) {
-        if (picIndex * this.pictureWidth <= window.innerWidth && picIndex <= this.state.pictures.length) {
-          picIndex++
-        } else {
-          break
-        }
-      }
-      var picturesWidth = this.pictureWidth * (picIndex - 1)
-      this.setState({
-        picturesWidth: picturesWidth,
-        pictureWidth: this.pictureWidth,
-        pictureHeight: this.pictureHeight
-      })
-    }
-  }
-
-  /**
-   * Gets root.
-   * @param {DomElement}
-   */
-  getRoot = () => {
-    return this.root
-  }
-
-  /**
-   * On category click event.
-   * @param {Object} category data
-   */
-  onCategoryClick = (data) => {
-    var self = this
-    const navigationDrawer = this.props.getApp().refs.navigationDrawer
-
-    this.props.getApp().getToolBar().setState({height: 64})
-    this.props.getApp().setState({
-      tabLayoutHidden: true
-    })
-    var toolbarItems = this.props.getApp().state.toolbarItems
-    for (var i = 0; i < toolbarItems.length; i++) {
-      if (toolbarItems[i].title !== undefined) {
-        toolbarItems[i].title = data.name
-        break
-      }
-    }
-
-    if (navigationDrawer.state.toggled) {
-      navigationDrawer.hide()
-      this.props.getApp().getToolBar().refs.menuIcon.changeToDefault()
-      setTimeout(function () {
-        self.props.getApp().getToolBar().refs.menuIcon.changeToArrow()
-      }, 100)
-    } else {
-      self.props.getApp().getToolBar().refs.menuIcon.changeToArrow()
-    }
-
-    this.showPictures(data)
-  }
-
-  /**
-   * Shows all pictures from category.
-   * @param {Object} category data
-   */
-  showPictures = (data) => {
-    var self = this
-
-    this.setState({
-      pictures: data.pictures,
-      picturesVisible: true
-    })
-
-    // ReactBug, must wait 10 seconds
-    setTimeout(function () {
-      self.resizePicturesContainer()
-    }, 10)
-  }
-
-  hidePictures = () => {
-    var self = this
-
-    this.props.getApp().getToolBar().setState({height: 128})
-    this.props.getApp().setState({tabLayoutHidden: false})
-
-    var toolbarItems = this.props.getApp().state.toolbarItems
-    for (var i = 0; i < toolbarItems.length; i++) {
-      if (toolbarItems[i].title !== undefined) {
-        toolbarItems[i].title = this.props.getApp().props.toolbarTitle
-        break
-      }
-    }
-
-    this.props.getApp().getToolBar().refs.menuIcon.changeToDefault()
-
-    this.setState({
-      pictures: [],
-      picturesVisible: false
-    })
-  }
-
-  /**
-   * On picture click event.
-   * @param {Object} event data
-   * @param {Object} picture data
-   */
-  onPictureClick = (e, data) => {
-    var self = this
-    var img = new Image()
-
-    img.onload = function () {
-      self.fullPictureBackground.src = this.src
-      self.setState({
-        picturesVisible: false,
-        fullPictureVisible: true
-      })
-      self.props.getApp().setState({
-        toolbarBackgroundColor: 'transparent',
-        toolbarShadow: false
-      })
-      self.fullPictureBlur.style.backgroundImage = 'url(' + this.src + ')'
-      self.fullPicture.style.backgroundImage = 'url(' + this.src + ')'
-    }
-    img.src = data.url
-  }
-
-  /**
-   * Hides full screen picture.
-   */
-  hidefullPicture = () => {
-    this.setState({
-      picturesVisible: true,
-      fullPictureVisible: false
-    })
-    this.props.getApp().setState({
-      toolbarBackgroundColor: this.props.getApp().props.toolbarBackgroundColor,
-      toolbarShadow: true
-    })
-  }
-
-  /**
-   * Checks that image is vertical or horizontal.
-   * @param {int} image width
-   * @param {int} image height
-   * @return {boolean} is vertical
-   */
-  isVertical = (width, height) => {
-    return (width <= height) ? true : false
-  }
-
-  /**
-   * Gets image width proportionally to height.
-   * @param {int} default image height
-   * @param {int} default image width
-   * @param {int} image height
-   * @return {int} image width
-   */
-  getImageWidth = (imgHeight, imgWidth, height) => {
-    return height * imgWidth / imgHeight
-  }
-
-  /**
-   * Loads categories
-   */
   loadCategories = () => {
     var self = this
 
@@ -223,14 +30,8 @@ export default class GalleryTab extends React.Component {
       dataPreloaderVisible: true
     })
     this.props.getApp().selected.gallery = true
-    this.props.getApp().canSelectTab = false
-
-    // TODO: make request
     setTimeout(function () {
-      self.props.getApp().setState({
-        dataPreloaderVisible: false
-      })
-      self.props.getApp().canSelectTab = true
+      self.props.getApp().canSelectTab = false
       self.setState({
         categories: [
           {
@@ -292,9 +93,31 @@ export default class GalleryTab extends React.Component {
           }
         ]
       })
-    }, 1000)
+    }, 50)
   }
 
+  onCategoryLoad = () => {
+    this.loadedCategories++
+    if (this.loadedCategories >= this.state.categories.length) {
+      this.props.getApp().setState({
+        dataPreloaderVisible: false
+      })
+      this.props.getApp().canSelectTab = true
+
+      var pics = []
+      for (var c = 0; c < 1; c++) {
+        for (var p = 0; p < this.state.categories[c].pictures.length; p++) {
+          pics.push(this.state.categories[c].pictures[p])
+        }
+      }
+      this.setState({
+        pictures: pics
+      })
+    }
+  }
+  isVertical = (width, height) => {
+    return (height === width)
+  }
   render () {
     var self = this
     function onRest () {
@@ -306,56 +129,28 @@ export default class GalleryTab extends React.Component {
     var index = 0
 
     // Styles.
-    const categoriesStyle = {
-      opacity: (!this.state.picturesVisible && !this.state.fullPictureVisible) ? 1 : 0,
-      visibility: (!this.state.picturesVisible && !this.state.fullPictureVisible) ? 'visible' : 'hidden'
-    }
 
-    const picturesStyle = {
-      visibility: (!this.state.picturesVisible) ? 'hidden' : 'visible',
-      opacity: (!this.state.picturesVisible) ? 0 : 1,
-      width: this.state.picturesWidth
-    }
-
-    const pictureStyle = {
-      width: this.state.pictureWidth,
-      height: this.state.pictureHeight
-    }
-
-    const fullPictureStyle = {
-      opacity: (!this.state.fullPictureVisible) ? 0 : 1,
-      visibility: (!this.state.fullPictureVisible) ? 'hidden' : 'visible'
-    }
-
-    const fullPictureGradientStyle = {
-      opacity: (!this.state.fullPictureVisible) ? 0 : 1,
-      visibility: (!this.state.fullPictureVisible) ? 'hidden' : 'visible'
-    }
+    var picturesClass = 'gallery-pictures'
+    if (this.state.pictures.length > 4) picturesClass += ' gallery-pictures-many'
 
     return (
       <Motion onRest={onRest} style={{left: this.state.left}}>
         {value =>
           <div className='gallery-tab tab-page' ref={(t) => { this.root = t }} style={{left: value.left, display: this.state.display}}>
-            <div className='categories' style={categoriesStyle}>
+            <div className='gallery-categories'>
               {
                 this.state.categories.map((data, i) => {
-                  index++
-                  return <Category key={i} index={index - 1} data={data} getApp={this.props.getApp} onClick={() => this.onCategoryClick(data)}>{data.name}</Category>
+                  return <Category key={i} data={data} getApp={this.props.getApp} onLoad={this.onCategoryLoad}>{data.name}</Category>
                 })
               }
             </div>
-            <div className='pictures' style={picturesStyle}>
+            <div className='gallery-pictures gallery-pictures-many' ref={(t) => { this.pictures = t }}>
               {
                 this.state.pictures.map((data, i) => {
-                  return <Picture key={i} data={data} getApp={this.props.getApp} image={data.url} style={pictureStyle} onClick={this.onPictureClick} isVertical={this.isVertical} getImageWidth={this.getImageWidth} />
+                  return <Picture key={i} image={data.url} isVertical={this.isVertical} />
                 })
               }
             </div>
-            <div className='full-picture' ref={(t) => { this.fullPicture = t }} style={fullPictureStyle}>
-              <div className='full-picture-blur' ref={(t) => { this.fullPictureBlur = t }} />
-              <img className='full-picture-background' ref={(t) => { this.fullPictureBackground = t }} />
-            </div>
-            <div className='full-picture-gradient' style={fullPictureGradientStyle} />
           </div>}
       </Motion>
     )

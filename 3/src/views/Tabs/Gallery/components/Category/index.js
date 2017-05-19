@@ -1,6 +1,17 @@
 import React from 'react'
 
 export default class Category extends React.Component {
+  componentDidMount () {
+    var self = this
+    var img = new Image()
+
+    img.onload = function () {
+      self.refs.category.style.backgroundImage = 'url(' + this.src + ')'
+      if (typeof self.props.onLoad === 'function') self.props.onLoad()
+    }
+    img.src = this.props.data.pictures[0].url
+  }
+
   /**
    * On mouse down event.
    * @param {Object} event data
@@ -96,16 +107,12 @@ export default class Category extends React.Component {
 
   render () {
     // Styles.
-    const style = {
-      backgroundImage: 'url(' + this.props.data.pictures[0].url + ')'
-    }
-
     const infoStyle = {
       backgroundImage: 'url(src/images/NavigationDrawer/info.png)'
     }
 
     return (
-      <div className='category ripple' ref='category' style={style} onMouseDown={this.onMouseDown} onClick={this.onClick} onTouchStart={this.onTouchStart}>
+      <div className='category ripple' ref='category' onMouseDown={this.onMouseDown} onClick={this.onClick} onTouchStart={this.onTouchStart}>
         <div className='category-title' ref='title'>
           {this.props.children}
           <div className='category-info ripple-icon' ref='info' style={infoStyle} onMouseDown={this.onInfoMouseDown} onMouseEnter={this.onInfoMouseEnter} onMouseLeave={this.onInfoMouseLeave} onTouchStart={this.onInfoTouchStart} />
