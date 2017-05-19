@@ -26,6 +26,9 @@ export default class TextField extends React.Component {
         placeHolder: true
       })
     }
+    this.setState({
+      counter: '0/' + this.props.maxLength
+    })
   }
 
   /**
@@ -105,7 +108,7 @@ export default class TextField extends React.Component {
    */
   onInput = (e) => {
     const element = (!this.props.multiple) ? this.refs.input : this.refs.textarea
-    const placeHolder = (element.value.length > 0) ? false : true
+    const placeHolder = !(element.value.length > 0)
     const length = element.value.length
     const maxLength = this.props.maxLength
     var textArea = this.refs.textarea
@@ -262,7 +265,7 @@ export default class TextField extends React.Component {
       }, this.props.inputStyle
     )
 
-    const inputDisabled = (!this.props.disabled) ? false : true
+    const inputDisabled = this.props.disabled
 
     var textAreaStyle = Object.assign(
       {
@@ -276,7 +279,7 @@ export default class TextField extends React.Component {
       color: this.props.focusColor
     }, this.props.focusHintStyle)
 
-    var _dividerStyle = (!this.state.hover && !this.state.focus || !this.props.hover) ? this.props.dividerStyle : this.props.hoverDividerStyle
+    var _dividerStyle = ((!this.state.hover && !this.state.focus) || !this.props.hover) ? this.props.dividerStyle : this.props.hoverDividerStyle
     if (this.props.disabled) _dividerStyle = this.props.disabledDividerStyle
 
     var focusDividerStyle = Object.assign(
