@@ -69,7 +69,7 @@ export default class App extends React.Component {
 
     // Events.
     function onClickMenu (event) {
-      if (!self.refs.postsTab.state.isFullScreen && !self.refs.galleryTab.state.picturesVisible && !self.refs.galleryTab.state.fullPictureVisible && (!self.getToolBar().refs.searchIcon.state.fullWidth || !self.getToolBar().refs.searchIcon.state.toggled)) {
+      /*if (!self.refs.postsTab.state.isFullScreen && !self.refs.galleryTab.state.toggledPictures && !self.refs.galleryTab.state.fullPictureVisible && (!self.getToolBar().refs.searchIcon.state.fullWidth || !self.getToolBar().refs.searchIcon.state.toggled)) {
         if (!navigationDrawer.state.toggled) {
           self.getToolBar().refs.menuIcon.changeToExit()
           navigationDrawer.show()
@@ -79,10 +79,18 @@ export default class App extends React.Component {
         }
       } else if (!self.getToolBar().refs.searchIcon.state.fullWidth || !self.getToolBar().refs.searchIcon.state.toggled) {
         if (self.refs.postsTab.state.isFullScreen) self.refs.postsTab.exitFullScreenPost()
-        if (self.refs.galleryTab.state.picturesVisible) self.refs.galleryTab.hidePictures()
+        if (self.refs.galleryTab.state.toggledPictures) self.refs.galleryTab.hidePictures()
         if (self.refs.galleryTab.state.fullPictureVisible) self.refs.galleryTab.hidefullPicture()
       } else if (self.getToolBar().refs.searchIcon.state.fullWidth && self.getToolBar().refs.searchIcon.state.toggled) {
         self.getToolBar().refs.searchIcon.hide()
+      }*/
+      var galleryTab = self.refs.galleryTab
+      if (galleryTab.toggledPictures) {
+        if (galleryTab.toggledFullScreen) {
+          galleryTab.hideFullScreen()
+        } else {
+          galleryTab.hidePictures()
+        }
       }
     }
 

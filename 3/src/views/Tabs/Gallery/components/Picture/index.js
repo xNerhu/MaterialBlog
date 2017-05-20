@@ -5,22 +5,28 @@ export default class Picture extends React.Component {
     var self = this
     var img = new Image()
 
+    /**
+     * On img load event.
+     */
     img.onload = function () {
-      const width = this.width
-      const height = this.height
-      const vertical = self.props.isVertical(width, height)
-      if (vertical) {
-        self.refs.pic.style.transform = 'translateZ(0) rotate(90deg)'
-      }
       self.refs.pic.src = this.src
-      if (typeof self.props.onLoad === 'function') self.props.onLoad()
+      self.refs.pic.style.opacity = '1'
     }
+
+    /**
+     * On img error event.
+     * @param {Object} error data.
+     */
+    img.onerror = function (err) {
+      console.log('Component: Picture')
+    }
+
     img.src = this.props.image
   }
+
   render () {
-    // Styles.
     return (
-      <img ref='pic' />
+      <img onClick={(e) => this.props.onClick(e, this.props.image)} ref='pic' className='picture' onMouseDown={this.onMouseDown} />
     )
   }
 }

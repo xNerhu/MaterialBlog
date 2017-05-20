@@ -5,10 +5,23 @@ export default class Category extends React.Component {
     var self = this
     var img = new Image()
 
+    /**
+     * On img load event.
+     */
     img.onload = function () {
       self.refs.category.style.backgroundImage = 'url(' + this.src + ')'
       if (typeof self.props.onLoad === 'function') self.props.onLoad()
     }
+
+    /**
+     * On img error event.
+     * @param {Object} error data.
+     */
+    img.onerror = function (err) {
+      console.log('Component: Category')
+      if (typeof self.props.onLoad === 'function') self.props.onLoad()
+    }
+
     img.src = this.props.data.pictures[0].url
   }
 
@@ -86,7 +99,7 @@ export default class Category extends React.Component {
    */
   onClick = (e) => {
     if (e.target !== this.refs.title && e.target !== this.refs.info) {
-      this.props.onClick(e)
+      this.props.onClick(e, this.props.data)
     }
   }
 
