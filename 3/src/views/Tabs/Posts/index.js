@@ -43,7 +43,7 @@ export default class PostsTab extends React.Component {
           id: 9,
           title: 'Test 2',
           author: 'Mikołaj Palkiewicz',
-          content: '9',
+          content: 'wrwrr',
           date: '14.04.2017 10:38',
           avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
           likes: [],
@@ -197,6 +197,24 @@ export default class PostsTab extends React.Component {
     }, 1000)*/
   }
 
+  /**
+   * Chechs that logged user likes the post
+   * @param {Object} post likes data.
+   * @return {Boolean}
+   */
+  isLikes = (data) => {
+    const app = this.props.getApp()
+
+    if (app.accountInfo) {
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].userID === app.accountInfo.userID) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
   render () {
     var self = this
     function onRest () {
@@ -206,7 +224,7 @@ export default class PostsTab extends React.Component {
     }
 
     // Styles.
-
+    var index = -1
     return (
       <Motion onRest={onRest} style={{left: this.state.left}}>
         {value =>
@@ -214,7 +232,8 @@ export default class PostsTab extends React.Component {
             <div className='posts'>
               {
                 this.state.posts.map((data, i) => {
-                  return <Post key={i} data={data} getApp={this.props.getApp}>{data.content}</Post>
+                  index++
+                  return <Post key={i} data={data} index={index} getApp={this.props.getApp} isLikes={this.isLikes}>{data.content}</Post>
                 })
               }
             </div>
