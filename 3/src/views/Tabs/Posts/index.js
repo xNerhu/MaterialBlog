@@ -41,6 +41,7 @@ export default class PostsTab extends React.Component {
         },
         {
           id: 9,
+          media: 'http://img11.deviantart.net/a66d/i/2015/109/3/b/forest_wallpaper_16_9_by_iorgudesign-d8qa67w.jpg',
           title: 'Test 2',
           author: 'Mikołaj Palkiewicz',
           content: 'wrwrr',
@@ -83,9 +84,10 @@ export default class PostsTab extends React.Component {
     }
 
     this.isVisible = false
-
     this.root = null
-
+    this.postsObjects = []
+    this.isFullScreen = false
+    this.focusedPost = null
   }
 
   /**
@@ -215,6 +217,112 @@ export default class PostsTab extends React.Component {
     return false
   }
 
+  getPostsTab = () => {
+    return this
+  }
+
+  /**
+   * Shows full screen post.
+   * @param {DOMElement} post object.
+   * @param {Object} post data.
+   */
+  enterFullScreen = (post, data) => {
+    const self = this
+    const app = this.props.getApp()
+    var toolbar = app.getToolBar()
+    const posts = this.postsObjects
+
+    if (this.isFullScreen === false) {
+      this.isFullScreen = null
+      for (var p = 0; p < posts.length; p++) {
+        const main = posts[p]
+        const object = main.refs.post
+
+        if (object !== post) {
+          object.style.height = object.scrollHeight + 'px'
+
+          setTimeout(function () {
+            object.style.height = '0px'
+
+            setTimeout(function () {
+              post.style.maxWidth = '100%'
+              post.style.marginTop = '0px'
+            }, 100)
+            setTimeout(function () {
+              object.style.display = 'none'
+              self.isFullScreen = true
+            }, 250)
+          }, 10)
+        } else {
+          this.focusedPost = post
+        }
+      }
+
+      toolbar.refs.menuIcon.changeToArrow()
+
+      var toolBarItems = app.state.toolbarItems
+      var toolBarTitleIndex = 0
+
+      // Get title index.
+      for (var i = 0; i < toolBarItems.length; i++) {
+        if (toolBarItems[i].type === 'Title') {
+          toolBarTitleIndex = i
+          break
+        }
+      }
+
+      // Change title.
+      toolBarItems[toolBarTitleIndex].title = data.title
+      app.setState({
+        toolbarItems: toolBarItems
+      })
+
+      // Hide tabbar.
+      toolbar.setState({
+        height: 64
+      })
+      app.setState({
+        tabLayoutHidden: true
+      })
+    }
+  }
+
+  /**
+   * Hides full screen post.
+   */
+  exitFullScreen = () => {
+    const self = this
+    const app = this.props.getApp()
+    var toolbar = app.getToolBar()
+    const posts = this.postsObjects
+    const post = this.focusedPost
+
+    if (this.isFullScreen === true) {
+      this.isFullScreen = null
+
+      post.style.maxWidth = '550px'
+      setTimeout(function () {
+        for (var p = 0; p < posts.length; p++) {
+          const main = posts[p]
+          const object = main.refs.post
+
+          if (object !== post) {
+            object.style.display = 'block'
+            setTimeout(function () {
+              object.style.height = object.scrollHeight + 'px'
+              post.style.marginTop = '32px'
+
+              setTimeout(function () {
+                object.style.height = 'auto'
+                self.isFullScreen = false
+              }, 250)
+            }, 10)
+          }
+        }
+      }, 100)
+    }
+  }
+
   render () {
     var self = this
     function onRest () {
@@ -233,7 +341,7 @@ export default class PostsTab extends React.Component {
               {
                 this.state.posts.map((data, i) => {
                   index++
-                  return <Post key={i} data={data} index={index} getApp={this.props.getApp} isLikes={this.isLikes}>{data.content}</Post>
+                  return <Post key={i} data={data} index={index} getApp={this.props.getApp} isLikes={this.isLikes} getPostsTab={this.getPostsTab} enterFullScreen={this.enterFullScreen}>{data.content}</Post>
                 })
               }
             </div>

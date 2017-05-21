@@ -77,8 +77,8 @@ export default class App extends React.Component {
 
       if (searchIcon.state.toggled) {
         searchIcon.hide()
-      } else if (postsTab.state.isFullScreen) {
-        postsTab.exitFullScreenPost()
+      } else if (postsTab.isFullScreen) {
+        postsTab.exitFullScreen()
       } else if (galleryTab.toggledPictures) {
         if (galleryTab.toggledFullScreen) {
           galleryTab.hideFullScreen()

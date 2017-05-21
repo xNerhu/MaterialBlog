@@ -8,7 +8,6 @@ export default class Post extends React.Component {
     super()
 
     this.toggledComments = false
-
     this.canClickShowCommentsButton = true
   }
 
@@ -44,6 +43,8 @@ export default class Post extends React.Component {
       self.refs.post.style.opacity = '1'
       self.refs.post.style.marginTop = '32px'
     }, until)
+
+    this.props.getPostsTab().postsObjects.push(this)
   }
 
   /**
@@ -178,6 +179,11 @@ export default class Post extends React.Component {
     app.refs.tooltipLike.hide()
   }
 
+  /**
+   * On likes list mouse enter event.
+   * Shows tooltip.
+   * @param {Object} event data.
+   */
   onLikesListMouseEnter = (e) => {
     const app = this.props.getApp()
     var tooltipsData = app.state.tooltipsData
@@ -199,10 +205,23 @@ export default class Post extends React.Component {
     app.refs.tooltipLikesList.show(this.refs.likesList)
   }
 
+  /**
+   * On likes list mouse enter leave.
+   * Hides tooltip.
+   * @param {Object} event data.
+   */
   onLikesListMouseLeave = (e) => {
     const app = this.props.getApp()
 
     app.refs.tooltipLikesList.hide()
+  }
+
+  /**
+   * On post click event.
+   * @param {Object} event data.
+   */
+  onClick = (e) => {
+    this.props.enterFullScreen(this.refs.post, this.props.data)
   }
 
   render () {
@@ -212,7 +231,7 @@ export default class Post extends React.Component {
     }
 
     return (
-      <div className='post' ref='post'>
+      <div className='post' ref='post' onClick={this.onClick}>
         <div className='post-media'>
           <div className='post-media-blur' ref='blurPic' />
           <img className='post-media-pic' ref='pic' />
