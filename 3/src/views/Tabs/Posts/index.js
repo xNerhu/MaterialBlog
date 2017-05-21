@@ -11,76 +11,7 @@ export default class PostsTab extends React.Component {
       left: 0,
       display: 'none',
       defaultLeft: 0,
-      posts: [
-        {
-          id: 10,
-          title: 'Test',
-          author: 'Mikołaj Palkiewicz',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in neque turpis. Aenean tincidunt nunc nec ligula cursus iaculis. Pellentesque nisl nulla, malesuada a est a, tempor dapibus eros. Sed facilisis porta auctor.',
-          date: '14.04.2017 20:38',
-          avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
-          likes: [
-            {
-              userName: 'Mikołaj Palkiewicz',
-              userID: 1
-            },
-            {
-              userName: 'Eryk Rakowsky',
-              userID: 15
-            }
-          ],
-          comments: [
-            {
-              author: 'Mikołaj Palkiewicz',
-              userID: 1,
-              content: 'Lorem ipsum dolor sit amet',
-              date: '14.04.2017 18:49',
-              avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
-            }
-          ]
-        },
-        {
-          id: 9,
-          media: 'http://img11.deviantart.net/a66d/i/2015/109/3/b/forest_wallpaper_16_9_by_iorgudesign-d8qa67w.jpg',
-          title: 'Test 2',
-          author: 'Mikołaj Palkiewicz',
-          content: 'wrwrr',
-          date: '14.04.2017 10:38',
-          avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
-          likes: [],
-          comments: []
-        },
-        {
-          id: 8,
-          title: 'Test 2',
-          author: 'Mikołaj Palkiewicz',
-          content: '8',
-          date: '14.04.2017 10:38',
-          avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
-          likes: [],
-          comments: []
-        },
-        {
-          id: 7,
-          title: 'Test 2',
-          author: 'Mikołaj Palkiewicz',
-          content: '7',
-          date: '14.04.2017 10:38',
-          avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
-          likes: [],
-          comments: []
-        },
-        {
-          id: 6,
-          title: 'Test 2',
-          author: 'Mikołaj Palkiewicz',
-          content: '6',
-          date: '14.04.2017 10:38',
-          avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
-          likes: [],
-          comments: []
-        }
-      ]
+      posts: []
     }
 
     this.isVisible = false
@@ -99,24 +30,22 @@ export default class PostsTab extends React.Component {
   }
 
   /**
-   * Loads posts
+   * Loads posts.
    */
   loadPosts = () => {
-    /*var self = this
+    var self = this
 
     this.props.getApp().setState({
       dataPreloaderVisible: true
     })
     this.props.getApp().selected.posts = true
+
     setTimeout(function () {
       self.props.getApp().canSelectTab = false
     }, 50)
-    //this.setState({postsDisplay: 'none', postsOpacity: 0})
 
     // TODO: make request
     setTimeout(function () {
-      //self.props.getApp().setState({dataPreloaderVisible: false})
-      //self.setState({postsDisplay: 'block'})
       self.props.getApp().setState({
         dataPreloaderVisible: false
       })
@@ -155,9 +84,10 @@ export default class PostsTab extends React.Component {
             },
             {
               id: 9,
-              title: 'Test 2',
+              media: 'http://img11.deviantart.net/a66d/i/2015/109/3/b/forest_wallpaper_16_9_by_iorgudesign-d8qa67w.jpg',
+              title: 'Test',
               author: 'Mikołaj Palkiewicz',
-              content: '9',
+              content: 'Card with picture test',
               date: '14.04.2017 10:38',
               avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
               likes: [],
@@ -165,20 +95,21 @@ export default class PostsTab extends React.Component {
             },
             {
               id: 8,
-              title: 'Test 2',
+              media: 'https://images.alphacoders.com/120/120313.jpg',
+              title: 'Rain',
               author: 'Mikołaj Palkiewicz',
-              content: '8',
-              date: '14.04.2017 10:38',
-              avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+              content: 'Rainy day',
+              date: '14.04.2017 9:45',
+              avatar: 'https://images.alphacoders.com/120/thumb-1920-120313.jpg',
               likes: [],
               comments: []
             },
             {
               id: 7,
-              title: 'Test 2',
+              title: 'HTML TAGS TEST',
               author: 'Mikołaj Palkiewicz',
-              content: '7',
-              date: '14.04.2017 10:38',
+              content: '<div id="tag-test-margin"></div><div id="tag-test"></div><style>#tag-test-margin {height:128px;} #tag-test{width:48px;height:48px;background-color:#2196f3;border-radius:100%;animation-name:tag-test-animation;animation-duration:2s;animation-iteration-count:infinite;animation-timing-function:ease-in-out;position:absolute;top:0;left:0;right:0;margin:0 auto;}</style><style>@keyframes tag-test-animation {0% {border-radius:100%;width:48px; height:48px;background-color:#2196f3;}25% {border-radius:0%;width:152px;height:152px;background-color:#90CAF9;}100%{border-radius:100%;width:48px;height:48px;background-color:#2196f3;}}</style>',
+              date: '14.04.2017 8:07',
               avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
               likes: [],
               comments: []
@@ -196,7 +127,7 @@ export default class PostsTab extends React.Component {
           ]
         })
       }, 1)
-    }, 1000)*/
+    }, 1000)
   }
 
   /**
