@@ -9,6 +9,7 @@ export default class Post extends React.Component {
 
     this.toggledComments = false
     this.canClickShowCommentsButton = true
+    this.ripple = true
   }
 
   componentDidMount () {
@@ -221,7 +222,19 @@ export default class Post extends React.Component {
    * @param {Object} event data.
    */
   onClick = (e) => {
-    this.props.enterFullScreen(this.refs.post, this.props.data)
+    if (e.target !== this.refs.showCommentsButton && e.target !== this.refs.commentsCount && e.target !== this.refs.likeButton && e.target !== this.refs.likesList && this.ripple) {
+      this.props.enterFullScreen(this.refs.post, this.props.data)
+    }
+  }
+
+  onMouseDown = (e) => {
+    if (e.target !== this.refs.showCommentsButton && e.target !== this.refs.commentsCount && e.target !== this.refs.likeButton && e.target !== this.refs.likesList && this.ripple) {
+      var ripple = Ripple.createRipple(this.refs.content, {
+        backgroundColor: '#444',
+        opacity: 0.3
+      }, createRippleMouse(this.refs.content, e, 2))
+      Ripple.makeRipple(ripple)
+    }
   }
 
   render () {
@@ -231,31 +244,33 @@ export default class Post extends React.Component {
     }
 
     return (
-      <div className='post' ref='post' onClick={this.onClick}>
+      <div className='post' ref='post'>
         <div className='post-media'>
           <div className='post-media-blur' ref='blurPic' />
           <img className='post-media-pic' ref='pic' />
         </div>
-        <div className='post-info'>
-          <div className='post-avatar' />
-          <div className='post-primary'>
-            <div className='post-title'>
-              {this.props.data.title}
-            </div>
-            <div className='post-sub-title'>
-              {this.props.data.author}, {this.props.data.date}
+        <div className='post-content ripple' ref='content' onClick={this.onClick} onMouseDown={this.onMouseDown}>
+          <div className='post-info'>
+            <div className='post-avatar' />
+            <div className='post-primary'>
+              <div className='post-title'>
+                {this.props.data.title}
+              </div>
+              <div className='post-sub-title'>
+                {this.props.data.author}, {this.props.data.date}
+              </div>
             </div>
           </div>
-        </div>
-        <div className='post-text' ref='text' />
-        <div className='post-action'>
-          <div className='post-action-item post-action-show-comments ripple-icon' ref='showCommentsButton' onClick={this.onShowCommentsButtonClick} onMouseDown={this.onShowCommentsButtonMouseDown} onMouseEnter={this.onShowCommentsButtonMouseEnter} onMouseLeave={this.onShowCommentsButtonMouseLeave} />
-          <div className='post-action-item-count'>
-            {this.props.data.comments.length}
-          </div>
-          <div className='post-action-item post-action-like ripple-icon' ref='likeButton' style={likeButtonStyle} onClick={this.onLikeButtonClick} onMouseDown={this.onLikeButtonMouseDown} onMouseEnter={this.onLikeButtonMouseEnter} onMouseLeave={this.onLikeButtonMouseLeave} />
-          <div className='post-action-item-count' ref='likesList' onMouseEnter={this.onLikesListMouseEnter} onMouseLeave={this.onLikesListMouseLeave}>
-            {this.props.data.likes.length}
+          <div className='post-text' ref='text' />
+          <div className='post-action'>
+            <div className='post-action-item post-action-show-comments ripple-icon' ref='showCommentsButton' onClick={this.onShowCommentsButtonClick} onMouseDown={this.onShowCommentsButtonMouseDown} onMouseEnter={this.onShowCommentsButtonMouseEnter} onMouseLeave={this.onShowCommentsButtonMouseLeave} />
+            <div className='post-action-item-count' ref='commentsCount'>
+              {this.props.data.comments.length}
+            </div>
+            <div className='post-action-item post-action-like ripple-icon' ref='likeButton' style={likeButtonStyle} onClick={this.onLikeButtonClick} onMouseDown={this.onLikeButtonMouseDown} onMouseEnter={this.onLikeButtonMouseEnter} onMouseLeave={this.onLikeButtonMouseLeave} />
+            <div className='post-action-item-count' ref='likesList' onMouseEnter={this.onLikesListMouseEnter} onMouseLeave={this.onLikesListMouseLeave}>
+              {this.props.data.likes.length}
+            </div>
           </div>
         </div>
         <div className='post-comments' ref='comments'>
@@ -265,9 +280,4 @@ export default class Post extends React.Component {
       </div>
     )
   }
-}
-
-Post.defaultProps = {
-  ripple: true,
-  commentsRipple: true
 }

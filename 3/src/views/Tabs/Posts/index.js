@@ -255,6 +255,8 @@ export default class PostsTab extends React.Component {
           }, 10)
         } else {
           this.focusedPost = post
+          main.refs.content.style.userSelect = 'auto'
+          main.ripple = false
         }
       }
 
@@ -274,15 +276,13 @@ export default class PostsTab extends React.Component {
       // Change title.
       toolBarItems[toolBarTitleIndex].title = data.title
       app.setState({
-        toolbarItems: toolBarItems
+        toolbarItems: toolBarItems,
+        tabLayoutHidden: true
       })
 
       // Hide tabbar.
       toolbar.setState({
         height: 64
-      })
-      app.setState({
-        tabLayoutHidden: true
       })
     }
   }
@@ -317,9 +317,38 @@ export default class PostsTab extends React.Component {
                 self.isFullScreen = false
               }, 250)
             }, 10)
+          } else {
+            main.ripple = true
+            main.refs.content.style.userSelect = 'none'
           }
         }
       }, 100)
+
+      toolbar.refs.menuIcon.changeToDefault()
+
+      var toolBarItems = app.state.toolbarItems
+      var toolBarTitleIndex = 0
+
+      // Get title index.
+      for (var i = 0; i < toolBarItems.length; i++) {
+        if (toolBarItems[i].type === 'Title') {
+          toolBarTitleIndex = i
+          break
+        }
+      }
+
+      // Change title.
+      toolBarItems[toolBarTitleIndex].title = app.props.toolbarTitle
+
+      app.setState({
+        toolbarItems: toolBarItems,
+        tabLayoutHidden: false
+      })
+
+      // Hide tabbar.
+      toolbar.setState({
+        height: 128
+      })
     }
   }
 

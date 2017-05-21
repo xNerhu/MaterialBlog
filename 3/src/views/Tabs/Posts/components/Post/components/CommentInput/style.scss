@@ -10,6 +10,7 @@
   font-size: 14px;
   @include Roboto-Regular;
   margin-left: 16px;
+  background-color: transparent;
 }
 
 @mixin post-comment-textarea-placeholder {
