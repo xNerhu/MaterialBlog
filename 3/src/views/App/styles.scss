@@ -16,8 +16,6 @@ html, body {
 .tab-pages {
   position: relative;
   height: calc(100% - 136px);
-  overflow-x: hidden;
-  overflow-y: auto;
   z-index: 7;
   transition: 0.3s opacity;
 }

@@ -15,9 +15,11 @@
 }
 
 .tab-page {
-  margin-top: 8px;
   position: absolute !important;
   top: 0;
   width: 100%;
   height: auto;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
