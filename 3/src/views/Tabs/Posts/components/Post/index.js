@@ -1,7 +1,5 @@
 import React from 'react'
 
-import Tooltip from '../../../../../imports/materialdesign/components/Tooltip'
-
 import Comment from './components/Comment'
 import CommentInput from './components/CommentInput'
 
@@ -9,285 +7,91 @@ export default class Post extends React.Component {
   constructor () {
     super()
 
-    this.state = {
-      commentsVisible: false
+    this.toggledComments = false
+  }
+
+  /**
+    * On show comments button click event.
+    * Shows or hides comments.
+    */
+  onShowCommentsButtonClick = () => {
+    const comments = this.refs.comments
+    const showCommentsButton = this.refs.showCommentsButton
+
+    this.toggledComments = !this.toggledComments
+
+    if (this.toggledComments) {
+      showCommentsButton.style.transform = 'rotate(180deg)'
+      comments.style.height = comments.scrollHeight + 'px'
+
+      setTimeout(function () {
+        comments.style.height = 'auto'
+      }, 350)
+    } else {
+      showCommentsButton.style.transform = 'rotate(0deg)'
+
+      comments.style.height = comments.scrollHeight + 'px'
+      setTimeout(function () {
+        comments.style.height = '0px'
+      }, 10)
     }
   }
 
-  /**
-   * On like icon mouse down event.
-   * @param {Object} event data
-   */
-  onLikeMouseDown = (e) => {
-    if (!this.props.getApp().blockMouseDownEvent) {
-      var ripple = Ripple.createRipple(e.target, {
-        backgroundColor: '#000',
-        opacity: 0.4
-      }, createRippleCenter(e.target, 14))
-      Ripple.makeRipple(ripple)
-    }
-  }
-
-  /**
-   * On like icon touch event (on mobile).
-   * @param {Object} event data
-   */
-  onLikeTouchStart = (e) => {
-    var ripple = Ripple.createRipple(e.target, {
-      backgroundColor: '#000',
-      opacity: 0.4
-    }, createRippleCenter(e.target, 14, 0.4, true))
-    Ripple.makeRipple(ripple)
-    this.props.getApp().blockMouseDownEvent = true
-  }
-
-  /**
-   * On show comments button mouse down event.
-   * @param {Object} event data
-   */
   onShowCommentsButtonMouseDown = (e) => {
     if (!this.props.getApp().blockMouseDownEvent) {
-      var ripple = Ripple.createRipple(this.refs.showComments, {
+      var ripple = Ripple.createRipple(this.refs.showCommentsButton, {
         backgroundColor: '#000',
         opacity: 0.4
-      }, createRippleCenter(this.refs.showComments, 14))
+      }, createRippleCenter(this.refs.showCommentsButton, 14))
       Ripple.makeRipple(ripple)
     }
   }
 
-  /**
-   * On show comments button touch event (on mobile).
-   * @param {Object} event data
-   */
-  onShowCommentsButtonTouchStart = (e) => {
-    var ripple = Ripple.createRipple(this.refs.showComments, {
-      backgroundColor: '#000',
-      opacity: 0.4
-    }, createRippleCenter(this.refs.showComments, 14, 0.4, true))
-    Ripple.makeRipple(ripple)
-    this.props.getApp().blockMouseDownEvent = true
+  onLikeButtonClick = () => {
+
   }
 
-  /**
-   * On show comments button click event.
-   */
-  onShowCommentsButtonClick = () => {
-    if (!this.props.getApp().refs.tooltipShowComments.isToogled()) {
-        this.props.getApp().refs.tooltipShowComments.hide()
-    }
-    if (!this.props.getApp().refs.tooltipHideComments.isToogled()) {
-      this.props.getApp().refs.tooltipHideComments.hide()
-    }
-    this.setState({commentsVisible: !this.state.commentsVisible})
-  }
-
-  /**
-   * On post mouse down event.
-   * @param {Object} event data
-   */
-  onMouseDown = (e) => {
+  onLikeButtonMouseDown = (e) => {
     if (!this.props.getApp().blockMouseDownEvent) {
-      if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode.parentNode !== this.refs.comments && this.props.ripple === true) {
-        var ripple = Ripple.createRipple(this.refs.content, {
-          backgroundColor: '#444',
-          opacity: 0.3
-        }, createRippleMouse(this.refs.content, e, 2))
-        Ripple.makeRipple(ripple)
-      }
-    }
-  }
-
-  /**
-   * On post touch event (on mobile).
-   * @param {Object} event data
-   */
-  onTouchStart = (e) => {
-    if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode.parentNode !== this.refs.comments && this.props.ripple === true) {
-      var ripple = Ripple.createRipple(this.refs.content, {
-        backgroundColor: '#444',
-        opacity: 0.3
-      }, createRippleMouse(this.refs.content, e, 2, true))
+      var ripple = Ripple.createRipple(this.refs.likeButton, {
+        backgroundColor: '#000',
+        opacity: 0.4
+      }, createRippleCenter(this.refs.likeButton, 14))
       Ripple.makeRipple(ripple)
-      this.props.getApp().blockMouseDownEvent = true
     }
-  }
-
-  /**
-   * On post click event.
-   * @param {Object} event data
-   */
-  onClick = (e) => {
-    if (e.target !== this.refs.like && e.target !== this.refs.likeCount && e.target !== this.refs.commentsCount && e.target !== this.refs.showComments && e.target.parentNode !== this.refs.comments && e.target.parentNode.parentNode !== this.refs.comments && e.target.parentNode.parentNode.parentNode !== this.refs.comments && e.target !== this.refs.comments && this.props.onClick !== undefined) {
-      this.props.onClick(e, this)
-    }
-  }
-
-  /**
-   * On like button mouse enter event.
-   * Shows tooltip.
-   * @param {Object} event data
-   */
-  onLikeMouseEnter = (e) => {
-    var tooltipsData = this.props.getApp().state.tooltipsData
-    const tooltip = this.props.getApp().refs.tooltipCategoryInfo
-    var text = (this.liked(this.props.likes, this.props.getApp().getAccountInfo()) ? 'Nie lubię!' : 'Lubię to!')
-    tooltipsData.like.text = text
-    this.props.getApp().setState({tooltipsData: tooltipsData})
-    this.props.getApp().refs.tooltipLike.show(this.refs.like)
-  }
-
-  /**
-   * On like button mouse leave event.
-   * Hides tooltip.
-   * @param {Object} event data
-   */
-  onLikeMouseLeave = (e) => {
-    this.props.getApp().refs.tooltipLike.hide()
-  }
-
-  /**
-    * on likes list button mouse enter event
-    * shows tooltip
-    * @param {Object} event data
-    */
-  onLikesListMouseEnter = (e) => {
-    var tooltipsData = this.props.getApp().state.tooltipsData
-    const tooltip = this.props.getApp().refs.tooltipCategoryInfo
-
-    var list = ''
-    if (this.props.likes.length >= 1) {
-      for (var i = 0; i < this.props.likes.length; i++) {
-        list += this.props.likes[i].userName + ((i < this.props.likes.length - 1) ? '\n' : '')
-      }
-    } else {
-      list = '...'
-    }
-    tooltipsData.like.list = list
-    this.props.getApp().setState({tooltipsData: tooltipsData})
-    this.props.getApp().refs.tooltipLikesList.show(this.refs.likeCount)
-  }
-
-  /**
-   * On likes list button mouse leave event.
-   * Hides tooltip.
-   * @param {Object} event data
-   */
-  onLikesListMouseLeave = (e) => {
-    this.props.getApp().refs.tooltipLikesList.hide()
-  }
-
-  /**
-   * On show comments button mouse enter event.
-   * Shows tooltip.
-   * @param {Object} event data
-   */
-  onShowCommentsButtonMouseEnter = (e) => {
-    if (this.state.commentsVisible) {
-      this.props.getApp().refs.tooltipHideComments.show(this.refs.showComments)
-    } else {
-      this.props.getApp().refs.tooltipShowComments.show(this.refs.showComments)
-    }
-  }
-
-  /**
-   * On show comments button mouse leave event.
-   * Hides tooltip.
-   * @param {Object} event data
-   */
-  onShowCommentsButtonMouseLeave = (e) => {
-    if (!this.props.getApp().refs.tooltipShowComments.isToogled()) {
-      this.props.getApp().refs.tooltipShowComments.hide()
-    }
-    if (!this.props.getApp().refs.tooltipHideComments.isToogled()) {
-      this.props.getApp().refs.tooltipHideComments.hide()
-    }
-  }
-
-  /**
-   * Check if user liked post.
-   * @param {Object} likes data
-   * @param {Object} account info
-   */
-  liked = (likesData, accountInfo) => {
-    var flag = false
-    if (this.props.getApp().accountInfo) {
-      for(var i = 0; i < likesData.length; i++) {
-        if (likesData[i].userID === accountInfo.userID) {
-          flag = true
-          break
-        }
-      }
-    }
-    return flag
   }
 
   render () {
-    // Styles.
-    const avatarIconStyle = {
-      backgroundImage: 'url(' + this.props.avatar + ')'
-    }
-
-    const likeIconStyle = {
-      backgroundImage: (this.liked(this.props.likes, this.props.getApp().getAccountInfo())) ? 'url(src/images/Post/favorite_full.png)' : 'url(src/images/Post/favorite_border.png)'
-    }
-
-    const commentIconStyle = {
-      backgroundImage: 'url(src/images/Post/expand_more.png)',
-      transform: (!this.state.commentsVisible) ? 'rotate(0deg)' : 'rotate(180deg)'
-    }
-
-    const commentsStyle = {
-      overflow: (!this.state.commentsVisible) ? 'hidden' : 'auto',
-      height: (!this.state.commentsVisible) ? 0 : this.refs.comments.scrollHeight,
-      borderTop: (!this.state.commentsVisible) ? 'none' : '1px solid #eee'
-    }
-
     return (
-      <div className={'post ' + ((this.props.className !== undefined) ? this.props.className : '')} ref='post' onClick={this.onClick} style={this.props.style}>
-        <div className='ripple' ref='content' onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>
-          <div className='post-avatar' style={avatarIconStyle} />
-          <div className='post-avatar-right'>
+      <div className='post'>
+        <img className='post-media' src='http://img11.deviantart.net/a66d/i/2015/109/3/b/forest_wallpaper_16_9_by_iorgudesign-d8qa67w.jpg' />
+        <div className='post-info'>
+          <div className='post-avatar' />
+          <div className='post-primary'>
             <div className='post-title'>
-              {this.props.title}
+              Title
             </div>
-            <div className='post-info'>{this.props.date}, {this.props.author}</div>
-          </div>
-          <div className='post-text'>
-            {this.props.children}
-          </div>
-          <div className='post-action'>
-            <div className='post-action-like ripple-icon' ref='like'
-              style={likeIconStyle}
-              onMouseDown={this.onLikeMouseDown}
-              onMouseEnter={this.onLikeMouseEnter}
-              onMouseLeave={this.onLikeMouseLeave}
-              onTouchStart={this.onLikeTouchStart} />
-            <div className='post-action-like-count' ref='likeCount'
-              onMouseEnter={this.onLikesListMouseEnter}
-              onMouseLeave={this.onLikesListMouseLeave}>
-              {this.props.likes.length}
-            </div>
-            <div className='post-action-show-comments'>
-              <div ref='commentsCount'
-                onClick={this.onShowCommentsButtonClick}>
-                KOMENTARZE ({this.props.comments.length})
-              </div>
-              <div className='post-action-show-comments-button ripple-icon' ref='showComments' onMouseDown={this.onShowCommentsButtonMouseDown}
-                onClick={this.onShowCommentsButtonClick}
-                style={commentIconStyle}
-                onMouseEnter={this.onShowCommentsButtonMouseEnter}
-                onMouseLeave={this.onShowCommentsButtonMouseLeave}
-                onTouchStart={this.onShowCommentsButtonTouchStart} />
+            <div className='post-sub-title'>
+              Mikołaj Palkiewicz, 21.05.2017 12:47
             </div>
           </div>
         </div>
-        <div className='post-comments' ref='comments' style={commentsStyle}>
-          {this.props.comments.map((data, i) => {
-            return (
-              <Comment key={i} data={data} ripple={this.props.commentsRipple} getApp={this.getApp} />
-            )
-          })}
-          <CommentInput getApp={this.props.getApp} isFullScreen={this.props.isFullScreen} />
+        <div className='post-text'>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </div>
+        <div className='post-action'>
+          <div className='post-action-item post-action-show-comments ripple-icon' ref='showCommentsButton' onClick={this.onShowCommentsButtonClick} onMouseDown={this.onShowCommentsButtonMouseDown} />
+          <div className='post-action-item-count'>
+            10
+          </div>
+          <div className='post-action-item post-action-like ripple-icon' ref='likeButton' onClick={this.onLikeButtonClick} onMouseDown={this.onLikeButtonMouseDown} />
+          <div className='post-action-item-count'>
+            1
+          </div>
+        </div>
+        <div className='post-comments' ref='comments'>
+          <Comment />
+          <CommentInput />
         </div>
       </div>
     )

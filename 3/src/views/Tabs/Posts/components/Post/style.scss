@@ -1,123 +1,103 @@
 .post {
-  width: 100%;
+  width: 500px;
   height: auto;
   background-color: #fff;
   color: #444;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   position: relative;
   margin: 0 auto;
-  left: 0;
-  right: 0;
   border-radius: 2px;
   transition: 0.3s opacity, 0.3s width;
   margin-top: 32px;
-
-  &:first-child {
-    margin-top: 24px;
-  }
 }
 
-@media screen and (min-width: 540px) {
-  .post {
-    width: 60%;
-  }
+.post-media {
+  width: 100%;
+  height: auto;
 }
 
 .post-avatar {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+  @include image-center(100%, 100%);
+  background-image: url(https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281);
   float: left;
-  margin-top: 16px;
-  margin-left: 20px;
-  @include image-center(40px, 40px);
-}
-
-.post-avatar-right {
-  width: auto;
-  float: left;
-}
-
-.post-title {
-  padding-left: 12px;
-  padding-right: 20px;
-  padding-top: 16px;
-  font-size: 19px;
-  @include Roboto-Medium;
-  display: block;
 }
 
 .post-info {
-  padding-left: 12px;
-  padding-right: 6px;
-  padding-top: 1px;
-  font-size: 14px;
-  @include Roboto-Medium;
+  padding-top: 24px;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+  float: left;
+}
+
+.post-primary {
+  margin-left: 64px;
+  width: calc(100% - 64px);
+}
+
+.post-title {
+  font-size: 24px;
+}
+
+.post-sub-title {
+  font-size: 16px;
+  opacity: 0.75;
 }
 
 .post-text {
   font-size: 16px;
-  padding-top: 8px;
-  padding-left: 20px;
-  padding-right: 32px;
-  @include Roboto-Regular;
-  clear:both;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+  clear: both;
 }
 
 .post-action {
-  width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  height: 40px;
+}
+
+.post-action-item {
+  width: 24px;
   height: 24px;
-  margin-top: 24px;
-  margin-bottom: 12px;
-  @include cursor-default;
+  cursor: pointer;
+  @include image-center(24px, 24px);
+  opacity: 0.7;
+  padding: 8px;
+  float: right;
 }
 
 .post-action-like {
-  width: 24px;
-  height: 24px;
-  @include image-center(24px, 24px);
-  opacity: 0.7;
-  margin-left: 20px;
-  float: left;
-  cursor: pointer;
-}
-
-.post-action-like-count {
-  width: auto;
-  height: 26px;
-  margin-top: 4px;
-  margin-left: 8px;
-  float: left;
-  font-size: 16px;
-  @include Roboto-Medium;
+  background-image: url(images/Post/favorite_full.png);
 }
 
 .post-action-show-comments {
-  width: 200px;
-  height: 24px;
-  font-size: 15px;
-  text-align: center;
-  margin-right: 20px;
-  margin-top: 4px;
-  float: right;
-  position: relative;
+  background-image: url(images/Post/expand_more.png);
+  background-size: 26px 26px;
+  transform: rotate(0deg);
+  transition: 0.3s transform ease-in-out;
 }
 
-.post-action-show-comments-button {
-  width: 28px;
-  height: 28px;
-  @include image-center(28px, 28px);
-  opacity: 0.7;
-  position: absolute;
-  right: 0;
-  top: -4px;
-  cursor: pointer;
-  transition: 0.3s transform;
+.post-action-item-count {
+  float: right;
+  font-size: 16px;
+  margin-top: 10px;
+  @include Roboto-Medium;
 }
 
 .post-comments {
-  width: 100%;
+  clear: both;
+}
+
+.post-comments {
   height: 0px;
-  max-height: 224px;
   overflow: hidden;
-  transition: height 0.3s;
+  transition: 0.3s height ease-in-out;
 }

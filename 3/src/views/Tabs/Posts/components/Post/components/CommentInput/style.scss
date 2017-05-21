@@ -1,22 +1,40 @@
 .post-comment-input {
-  width: calc(100% - 80px);
-  height: auto;
-  border-top: 1px solid rgba(0, 0, 0, 0.4);
-  padding-top: 25px;
-  margin-left: auto;
-  margin-right: auto;
+  padding-bottom: 8px;
 }
 
-.post-comment-input-avatar {
-  width: 36px;
-  height: 36px;
-  @include image-center(36px, 36px);
-  float: left;
+.post-comment-input-textarea {
+  width: calc(100% - 42px);
+  outline: none;
+  border: none;
+  resize: none;
+  font-size: 14px;
+  @include Roboto-Regular;
+  margin-left: 16px;
 }
 
-.post-comment-input-textfield {
-  width: calc(100% - 56px) !important;
-  margin-left: 20px;
-  margin-bottom: 10px;
-  float: left;
+@mixin post-comment-textarea-placeholder {
+  opacity: 0.7;
+}
+
+.post-comment-input-textarea::-webkit-input-placeholder {
+  @include post-comment-textarea-placeholder;
+}
+
+.post-comment-input-textarea::-moz-placeholder {
+  @include post-comment-textarea-placeholder;
+}
+
+.post-comment-input-textarea:-ms-input-placeholder {
+  @include post-comment-textarea-placeholder;
+}
+
+.post-comment-input-textarea:-moz-placeholder {
+  @include post-comment-textarea-placeholder;
+}
+
+.post-comments-input-action {
+  padding-left: 16px;
+  height: 0px;
+  overflow: hidden;
+  transition: 0.3s height ease-in-out;
 }

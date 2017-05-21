@@ -1,46 +1,22 @@
 import React from 'react'
 
 export default class Comment extends React.Component {
-  /**
-   * On mouse down event.
-   * @param {Object} event data
-   */
-  onMouseDown = (e) => {
-    if (!this.props.getApp().blockMouseDownEvent) {
-      if (this.props.ripple) {
-        var ripple = Ripple.createRipple(this.refs.comment, {
-          backgroundColor: '#444',
-          opacity: 0.3
-        }, createRippleMouse(this.refs.comment, e, 2))
-        Ripple.makeRipple(ripple)
-      }
-    }
-  }
-
-  /**
-   * On touch event (on mobile).
-   * @param {Object} event data
-   */
-  onTouchStart = (e) => {
-    if (this.props.ripple) {
-      var ripple = Ripple.createRipple(this.refs.comment, {
-        backgroundColor: '#444',
-        opacity: 0.3
-      }, createRippleMouse(this.refs.comment, e, 2, true))
-      Ripple.makeRipple(ripple)
-    }
-    this.props.getApp().blockMouseDownEvent = true
-  }
-
   render () {
     return (
-      <div className='post-comment ripple' ref='comment' onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>
-        <div className='post-comment-avatar' style={{backgroundImage: 'url(' + this.props.data.avatar + ')'}} />
-        <div className='post-comment-avatar-right'>
-          <div className='post-comment-author'>{this.props.data.author}</div>
-          <div className='post-comment-text'>{this.props.data.content}</div>
-          <div className='post-comment-date'>{this.props.data.date}</div>
+      <div className='post-comment'>
+        <div className='post-comment-avatar' />
+        <div className='post-comment-info'>
+          <div className='post-comment-author'>
+            Mikołaj Palkiewicz
+          </div>
+          <div className='post-comment-text'>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          </div>
+          <div className='post-comment-date'>
+            1d
+          </div>
         </div>
+        <div className='post-comment-clear' />
       </div>
     )
   }
