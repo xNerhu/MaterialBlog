@@ -1,5 +1,4 @@
 import React from 'react'
-import {Motion} from 'react-motion'
 
 import Category from './components/Category'
 import Picture from './components/Picture'
@@ -15,8 +14,6 @@ export default class GalleryTab extends React.Component {
       categories: [],
       pictures: []
     }
-
-    this.isVisible = false
 
     this.root = null
 
@@ -284,6 +281,10 @@ export default class GalleryTab extends React.Component {
      this.toggledFullScreen = false
    }
 
+   getRoot = () => {
+     return this.root
+   }
+
   render () {
     var self = this
     function onRest () {
@@ -297,30 +298,27 @@ export default class GalleryTab extends React.Component {
     else if (this.state.pictures.length <= 2) picturesClass += ' gallery-pictures-' + this.state.pictures.length
 
     return (
-      <Motion onRest={onRest} style={{left: this.state.left}}>
-        {value =>
-          <div className='gallery-tab tab-page' ref={(t) => { this.root = t }} style={{left: value.left, display: this.state.display}}>
-            <div className='gallery-categories' ref={(t) => { this.categories = t }}>
-              {
-                this.state.categories.map((data, i) => {
-                  return <Category key={i} data={data} getApp={this.props.getApp} onClick={this.onCategoryClick} onLoad={this.onCategoryLoad}>{data.name}</Category>
-                })
-              }
-            </div>
-            <div className={picturesClass} ref={(t) => { this.pictures = t }}>
-              {
-                this.state.pictures.map((data, i) => {
-                  return <Picture onClick={this.onPictureClick} key={i} image={data.url} />
-                })
-              }
-            </div>
-            <div className='gallery-picture-full-screen' ref={(t) => { this.fullScreen = t }}>
-              <div className='gallery-picture-full-screen-blur' ref={(t) => { this.fullScreenBlur = t }} />
-              <div className='gallery-picture-full-screen-pic' ref={(t) => { this.fullScreenPicture = t }} />
-            </div>
-            <div className='gallery-gradient' ref={(t) => { this.gradient = t }} />
-          </div>}
-      </Motion>
+      <div className='gallery-tab tab-page' ref={(t) => { this.root = t }}>
+        <div className='gallery-categories' ref={(t) => { this.categories = t }}>
+          {
+            this.state.categories.map((data, i) => {
+              return <Category key={i} data={data} getApp={this.props.getApp} onClick={this.onCategoryClick} onLoad={this.onCategoryLoad}>{data.name}</Category>
+            })
+          }
+        </div>
+        <div className={picturesClass} ref={(t) => { this.pictures = t }}>
+          {
+            this.state.pictures.map((data, i) => {
+              return <Picture onClick={this.onPictureClick} key={i} image={data.url} />
+            })
+          }
+        </div>
+        <div className='gallery-picture-full-screen' ref={(t) => { this.fullScreen = t }}>
+          <div className='gallery-picture-full-screen-blur' ref={(t) => { this.fullScreenBlur = t }} />
+          <div className='gallery-picture-full-screen-pic' ref={(t) => { this.fullScreenPicture = t }} />
+        </div>
+        <div className='gallery-gradient' ref={(t) => { this.gradient = t }} />
+      </div>
     )
   }
 }

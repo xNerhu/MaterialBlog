@@ -1,5 +1,4 @@
 import React from 'react'
-import {Motion} from 'react-motion'
 
 export default class AboutClassTab extends React.Component {
   constructor () {
@@ -10,8 +9,6 @@ export default class AboutClassTab extends React.Component {
       display: 'none',
       defaultLeft: 0
     }
-
-    this.isVisible = false
 
     this.root = null
   }
@@ -33,12 +30,9 @@ export default class AboutClassTab extends React.Component {
     }
 
     return (
-      <Motion onRest={onRest} style={{left: this.state.left}}>
-        {value =>
-          <div className='about-class-tab tab-page' ref={(t) => { this.root = t }} style={{left: value.left, display: this.state.display}}>
-            O Klasie
-          </div>}
-      </Motion>
+      <div className='about-class-tab tab-page' ref={(t) => { this.root = t }}>
+        O Klasie
+      </div>
     )
   }
 }

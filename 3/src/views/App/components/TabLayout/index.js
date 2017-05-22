@@ -1,9 +1,9 @@
 import React from 'react'
-import {Motion, spring} from 'react-motion'
 import ReactDOM from 'react-dom'
-import Tab from './components/Tab'
 
 import Url from '../../../../helpers/Url'
+
+import Tab from './components/Tab'
 
 export default class TabLayout extends React.Component {
   constructor () {
@@ -61,21 +61,17 @@ export default class TabLayout extends React.Component {
   }
 
   render () {
+    // Styles.
+    const indicatorStyle = {
+      backgroundColor: this.props.indicatorColor
+    }
+
     return (
       <div ref='tabLayout' style={this.props.style} className={'tab-layout ' + this.props.className} onMouseDown={this.onMouseDown}>
         {this.state.tabs.map((object, i) => {
           return <Tab getTabLayout={this.getTabLayout} key={i} data={object} allTabsData={this.state.tabs} getApp={this.props.getApp} />
         })}
-        <Motion style={{
-          left: this.state.dividerLeft,
-          width: this.state.dividerWidth
-        }}>
-          {value => <div className='indicator' style={{
-            backgroundColor: this.props.indicatorColor,
-            width: value.width,
-            left: value.left
-          }} />}
-        </Motion>
+        <div className='indicator' ref='indicator' style={indicatorStyle} />
         {this.props.children}
       </div>
     )

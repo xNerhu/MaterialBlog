@@ -1,5 +1,4 @@
 import React from 'react'
-import {Motion} from 'react-motion'
 
 export default class LessonsPlanTab extends React.Component {
   constructor () {
@@ -10,8 +9,6 @@ export default class LessonsPlanTab extends React.Component {
       display: 'none',
       defaultLeft: 0
     }
-
-    this.isVisible = false
 
     this.root = null
 
@@ -109,21 +106,18 @@ export default class LessonsPlanTab extends React.Component {
     }
 
     return (
-      <Motion onRest={onRest} style={{left: this.state.left}}>
-        {value =>
-          <div className='lesson-plan-tab tab-page' ref={(t) => { this.root = t }} style={{left: value.left, display: this.state.display}}>
-            <table className='material-table'>
-              <thead>
-                <tr>
-                <th>Dzień tygodnia</th>
-                <th>Godzina lekcyjna</th>
-                <th>Przedmiot</th>
-                </tr>
-              </thead>
-              <tbody ref={(t) => { this.tbody = t }} />
-            </table>
-          </div>}
-      </Motion>
+      <div className='lesson-plan-tab tab-page' ref={(t) => { this.root = t }}>
+        <table className='material-table'>
+          <thead>
+            <tr>
+            <th>Dzień tygodnia</th>
+            <th>Godzina lekcyjna</th>
+            <th>Przedmiot</th>
+            </tr>
+          </thead>
+          <tbody ref={(t) => { this.tbody = t }} />
+        </table>
+      </div>
     )
   }
 }

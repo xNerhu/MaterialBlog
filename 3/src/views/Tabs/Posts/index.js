@@ -1,5 +1,4 @@
 import React from 'react'
-import {Motion} from 'react-motion'
 
 import Post from './components/Post'
 
@@ -14,10 +13,12 @@ export default class PostsTab extends React.Component {
       posts: []
     }
 
-    this.isVisible = false
     this.root = null
+
     this.postsObjects = []
+
     this.isFullScreen = false
+
     this.focusedPost = null
   }
 
@@ -294,19 +295,16 @@ export default class PostsTab extends React.Component {
     // Styles.
     var index = -1
     return (
-      <Motion onRest={onRest} style={{left: this.state.left}}>
-        {value =>
-          <div className='posts-tab tab-page' ref={(t) => { this.root = t }} style={{left: value.left, display: this.state.display}}>
-            <div className='posts'>
-              {
-                this.state.posts.map((data, i) => {
-                  index++
-                  return <Post key={i} data={data} index={index} getApp={this.props.getApp} isLikes={this.isLikes} getPostsTab={this.getPostsTab} enterFullScreen={this.enterFullScreen}>{data.content}</Post>
-                })
-              }
-            </div>
-        </div>}
-      </Motion>
+      <div className='posts-tab tab-page' ref={(t) => { this.root = t }}>
+        <div className='posts'>
+          {
+            this.state.posts.map((data, i) => {
+              index++
+              return <Post key={i} data={data} index={index} getApp={this.props.getApp} isLikes={this.isLikes} getPostsTab={this.getPostsTab} enterFullScreen={this.enterFullScreen}>{data.content}</Post>
+            })
+          }
+        </div>
+      </div>
     )
   }
 }

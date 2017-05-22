@@ -12,6 +12,7 @@
   height: 2px;
   bottom: 0;
   position: absolute;
+  transition: 0.25s left ease;
 }
 
 .tab-page {
@@ -22,4 +23,7 @@
   max-height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+  left: 100%;
+  display: none;
+  transition: 0.25s left ease;
 }

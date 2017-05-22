@@ -1,14 +1,11 @@
 import React from 'react'
-import {Motion, spring} from 'react-motion'
 
 import Url from '../../../../../../helpers/Url'
 
 export default class Tab extends React.Component {
   constructor () {
     super()
-    this.state = {
-      color: '#fff'
-    }
+
     this.selected = false
   }
 
@@ -70,9 +67,9 @@ export default class Tab extends React.Component {
    */
   deselect = () => {
     var tabLayout = this.props.getTabLayout()
-    this.setState({color: tabLayout.props.defaultColor})
+
+    this.refs.title.style.color = tabLayout.props.defaultColor
     tabLayout.lastSelectedIndex = tabLayout.tabs.indexOf(this)
-    var page = this.getPage()
 
     this.selected = false
   }
@@ -81,21 +78,26 @@ export default class Tab extends React.Component {
    * Selects tab.
    */
   select = () => {
-    //this.props.data.onSelect()
     if (typeof this.props.data.onSelect === 'function') {
       this.props.data.onSelect()
     }
     this.selected = true
-    var tabLayout = this.props.getTabLayout()
-    this.setState({color: tabLayout.props.color})
-    tabLayout.setState({
-      dividerWidth: spring(this.refs.tab.offsetWidth, tabLayoutAnimationData.tabsDividerSpring),
-      dividerLeft: spring(this.refs.tab.offsetLeft, tabLayoutAnimationData.tabsDividerSpring)
-    })
-    var page = this.getPage()
 
-    page.isVisible = true
-    page.setState({display: 'block'})
+    const tabLayout = this.props.getTabLayout()
+
+    this.refs.title.style.color = tabLayout.props.color
+
+    const indicator = tabLayout.refs.indicator
+    indicator.style.width = this.refs.tab.offsetWidth + 'px'
+    indicator.style.left = this.refs.tab.offsetLeft + 'px'
+
+    const page = this.getPage()
+    const root = page.getRoot()
+
+    root.style.display = 'block'
+    setTimeout(function () {
+      root.style.left = '0%'
+    }, 10)
 
     if (page != null) {
       if (tabLayout.lastSelectedIndex === -1 || tabLayout.lastSelectedIndex2 === tabLayout.tabs.indexOf(this)) {
@@ -103,23 +105,21 @@ export default class Tab extends React.Component {
       }
       tabLayout.lastSelectedIndex2 = tabLayout.tabs.indexOf(this)
 
-      var lastTab = tabLayout.tabs[tabLayout.lastSelectedIndex]
+      const lastTab = tabLayout.tabs[tabLayout.lastSelectedIndex]
+      const lastPageRoot = lastTab.getPage().getRoot()
+
       if (tabLayout.tabs.indexOf(this) > tabLayout.lastSelectedIndex) {
-        page.setState({left: window.innerWidth}, function () {
-          page.setState({left: spring(0, tabLayoutAnimationData.pageMoveSpring)})
-        })
         if (lastTab.getPage() != null) {
-          lastTab.getPage().setState({left: spring(-window.innerWidth, tabLayoutAnimationData.pageMoveSpring)})
-          lastTab.getPage().isVisible = false
+          lastPageRoot.style.left = '-100%'
+          setTimeout(function () {
+            lastPageRoot.style.display = 'none'
+          }, 250)
         }
       } else {
-        page.setState({left: -window.innerWidth}, function () {
-          page.setState({left: spring(0, tabLayoutAnimationData.pageMoveSpring)})
-        })
-        if (lastTab.getPage() != null) {
-          lastTab.getPage().setState({left: spring(window.innerWidth, tabLayoutAnimationData.pageMoveSpring)})
-          lastTab.getPage().isVisible = false
-        }
+        lastPageRoot.style.left = '100%'
+        setTimeout(function () {
+          lastPageRoot.style.display = 'none'
+        }, 250)
       }
     }
   }
@@ -133,14 +133,9 @@ export default class Tab extends React.Component {
   }
 
   render () {
-    // Styles.
-    const tabTitleStyle = {
-      color: this.state.color
-    }
-
     return (
       <div ref='tab' onClick={this.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart} style={this.props.style} className='tab ripple'>
-        <div style={tabTitleStyle} className='tab-title'>
+        <div ref='title' className='tab-title'>
           {this.props.data.title}
         </div>
       </div>
