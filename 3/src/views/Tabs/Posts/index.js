@@ -2,6 +2,8 @@ import React from 'react'
 
 import Post from './components/Post'
 
+import MaterialButton from '../../../imports/materialdesign/components/MaterialButton'
+
 export default class PostsTab extends React.Component {
   constructor () {
     super()
@@ -20,6 +22,14 @@ export default class PostsTab extends React.Component {
     this.isFullScreen = false
 
     this.focusedPost = null
+
+    this.loadPostsButton = null
+  }
+
+  componentDidMount () {
+    this.root.addEventListener('scroll', this.onScroll)
+    this.loadPostsButton = this.refs.loadPostsButton.refs.button
+    this.loadPostsButton.style.display = 'block'
   }
 
   /**
@@ -193,6 +203,8 @@ export default class PostsTab extends React.Component {
         }
       }
 
+      this.loadPostsButton.style.display = 'none'
+
       toolbar.refs.menuIcon.changeToArrow()
 
       var toolBarItems = app.state.toolbarItems
@@ -252,6 +264,7 @@ export default class PostsTab extends React.Component {
                   block: 'end',
                   behavior: 'smooth'
                 })
+                self.loadPostsButton.style.display = 'block'
               }, 200)
             }, 10)
           } else {
@@ -289,6 +302,13 @@ export default class PostsTab extends React.Component {
     }
   }
 
+  /**
+   * On posts tab scroll event.
+   */
+  onScroll = () => {
+    console.log(isVisible(this.loadPostsButton))
+  }
+
   render () {
     var self = this
     function onRest () {
@@ -309,6 +329,9 @@ export default class PostsTab extends React.Component {
             })
           }
         </div>
+        <MaterialButton ref='loadPostsButton' className='loadPosts'>
+          ZAŁADUJ WIĘCEJ
+        </MaterialButton>
       </div>
     )
   }

@@ -41,8 +41,10 @@ export default class MaterialButton extends React.Component {
       }, this.props.style
     )
 
+    var className = 'material-button ripple '
+    if (this.props.className) className += this.props.className
     return (
-      <div className='material-button ripple' style={style} ref='button' onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart} onClick={this.props.onClick}>
+      <div className={className} style={style} ref='button' onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart} onClick={this.props.onClick}>
         {this.props.children}
       </div>
     )
