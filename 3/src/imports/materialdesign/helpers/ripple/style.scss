@@ -25,4 +25,7 @@
     opacity: 0.3;
     -webkit-transform: translate3d(-50.1%, -50.1%, 0);
     -webkit-font-smoothing: subpixel-antialiased;
+    transition: 1.5s width, 1.5s height, 0.4s opacity;
+    width: 0px;
+    height: 0px;
 }

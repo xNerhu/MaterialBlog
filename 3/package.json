@@ -20,19 +20,16 @@
     "eslint-plugin-react": "latest",
     "node-sass": "latest",
     "sass-loader": "latest",
-    "standard": "latest",
     "style-loader": "latest",
     "url-loader": "latest",
     "webpack": "latest",
     "webpack-dev-server": "latest"
   },
   "dependencies": {
-    "gsap": "latest",
     "babel-preset-es2015": "latest",
     "babel-preset-react": "latest",
     "react": "latest",
-    "react-dom": "latest",
-    "react-motion": "latest"
+    "react-dom": "latest"
   },
   "standard": {
     "parser": "babel-eslint"

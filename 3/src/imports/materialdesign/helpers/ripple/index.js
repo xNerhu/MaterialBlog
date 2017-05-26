@@ -43,17 +43,20 @@ var Ripple = class Ripple {
 
     var animateSize = parseInt(Math.max(scale, scaleY) * Math.PI)
 
-    TweenMax.to(rippleElement, time, {
-      width: animateSize,
-      height: animateSize
-    })
+    rippleElement.style.transition = time + 's width, ' + time + 's height, 0.4s opacity'
+
+    setTimeout(function () {
+      rippleElement.style.width = animateSize + 'px'
+      rippleElement.style.height = animateSize + 'px'
+    }, 1)
+
     function removeRipple () {
-      TweenMax.to(rippleElement, 0.4, {
-        opacity: 0,
-        onComplete: function () {
-          if (rippleElement.parentNode != null) { rippleElement.parentNode.removeChild(rippleElement) }
+      rippleElement.style.opacity = '0'
+      setTimeout(function () {
+        if (rippleElement.parentNode != null) {
+          rippleElement.parentNode.removeChild(rippleElement)
         }
-      })
+      }, 400)
     }
 
     rippleElement.element.addEventListener('mouseout', removeRipple)

@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {TweenMax, CSSPlugin} from 'gsap'
 
 import LoginDialog from './components/LoginDialog'
 import InfoDialog from './components/InfoDialog'
