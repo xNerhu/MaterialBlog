@@ -164,6 +164,8 @@ export default class PostsTab extends React.Component {
     var toolbar = app.getToolBar()
     const posts = this.postsObjects
 
+    this.focusedPost = post
+
     if (this.isFullScreen === false) {
       this.isFullScreen = null
       for (var p = 0; p < posts.length; p++) {
@@ -186,7 +188,6 @@ export default class PostsTab extends React.Component {
             }, 250)
           }, 10)
         } else {
-          this.focusedPost = post
           main.refs.content.style.userSelect = 'auto'
           main.ripple = false
         }
@@ -244,10 +245,14 @@ export default class PostsTab extends React.Component {
               object.style.height = object.scrollHeight + 'px'
               post.style.marginTop = '32px'
 
+              self.isFullScreen = false
               setTimeout(function () {
                 object.style.height = 'auto'
-                self.isFullScreen = false
-              }, 250)
+                self.focusedPost.scrollIntoView({
+                  block: 'end',
+                  behavior: 'smooth'
+                })
+              }, 200)
             }, 10)
           } else {
             main.ripple = true
