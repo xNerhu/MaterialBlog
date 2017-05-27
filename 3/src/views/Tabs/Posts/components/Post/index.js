@@ -39,7 +39,15 @@ export default class Post extends React.Component {
     // for tags support, but you can make in div {this.props.data.content}
     this.refs.text.innerHTML = this.props.data.content
 
-    const until = ((this.props.index + 1) * 0.1) * 1000
+    const postsTab = this.props.getPostsTab()
+    const page = postsTab.page
+    var index = this.props.index
+
+    if (page >= 2) {
+      index -= postsTab.state.posts.length
+    }
+    const until = ((index + 1) * 0.1) * 1000
+
     setTimeout(function () {
       self.refs.post.style.opacity = '1'
       self.refs.post.style.marginTop = '32px'

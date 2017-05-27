@@ -3,6 +3,7 @@ import React from 'react'
 import Post from './components/Post'
 
 import MaterialButton from '../../../imports/materialdesign/components/MaterialButton'
+import Preloader from '../../../imports/materialdesign/components/Preloader'
 
 export default class PostsTab extends React.Component {
   constructor () {
@@ -12,7 +13,8 @@ export default class PostsTab extends React.Component {
       left: 0,
       display: 'none',
       defaultLeft: 0,
-      posts: []
+      posts: [],
+      isPreloaderVisible: false
     }
 
     this.root = null
@@ -24,6 +26,9 @@ export default class PostsTab extends React.Component {
     this.focusedPost = null
 
     this.loadPostsButton = null
+
+    this.page = 1
+    this.postsPerPage = 5
   }
 
   componentDidMount () {
@@ -64,7 +69,6 @@ export default class PostsTab extends React.Component {
       this.canSelectTab = false
       setTimeout(function () {
         self.setState({
-          postsOpacity: 1,
           posts: [
             {
               id: 10,
@@ -134,6 +138,16 @@ export default class PostsTab extends React.Component {
               avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
               likes: [],
               comments: []
+            },
+            {
+              id: 5,
+              title: 'Test 2',
+              author: 'Mikołaj Palkiewicz',
+              content: '6',
+              date: '14.04.2017 10:38',
+              avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+              likes: [],
+              comments: []
             }
           ]
         })
@@ -159,6 +173,10 @@ export default class PostsTab extends React.Component {
     return false
   }
 
+  /**
+   * Get posts tab.
+   * @return {PostsTab}
+   */
   getPostsTab = () => {
     return this
   }
@@ -176,7 +194,7 @@ export default class PostsTab extends React.Component {
 
     this.focusedPost = post
 
-    if (this.isFullScreen === false) {
+    if (this.isFullScreen === false && !this.state.isPreloaderVisible) {
       this.isFullScreen = null
       for (var p = 0; p < posts.length; p++) {
         const main = posts[p]
@@ -303,10 +321,69 @@ export default class PostsTab extends React.Component {
   }
 
   /**
-   * On posts tab scroll event.
+   * On posts tab scroll event (infinity scroll).
    */
   onScroll = () => {
-    console.log(isVisible(this.loadPostsButton))
+    if (isVisible(this.loadPostsButton)) {
+      this.loadMorePosts()
+    }
+  }
+
+  /**
+   * On load posts button click event.
+   */
+  onLoadsPostsButtonClick = () => {
+    this.loadMorePosts()
+  }
+
+  /**
+   * Loads more posts.
+   */
+  loadMorePosts = () => {
+    const self = this
+
+    this.loadPostsButton.style.display = 'none'
+    this.setState({
+      isPreloaderVisible: true
+    })
+
+    // TODO: Make request
+    const posts = this.state.posts
+    const newPosts = [
+      {
+        id: this.page + 2,
+        title: 'aha.png',
+        author: 'Mikołaj Palkiewicz',
+        content: this.page + 1,
+        date: '32.14.-1600 25:70',
+        avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+        likes: [],
+        comments: []
+      },
+      {
+        id: this.page + 3,
+        title: 'warto_wiedzieć.exe',
+        author: 'Mikołaj Palkiewicz',
+        content: this.page + 1,
+        date: '64.32.16 8:4',
+        avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+        likes: [],
+        comments: []
+      }
+    ]
+
+    this.page++
+
+    setTimeout(function () {
+      for (var i = 0; i < newPosts.length; i++) {
+        posts.push(newPosts[i])
+      }
+
+      self.loadPostsButton.style.display = 'block'
+      self.setState({
+        isPreloaderVisible: false
+      })
+    }, 1000)
   }
 
   render () {
@@ -318,7 +395,12 @@ export default class PostsTab extends React.Component {
     }
 
     // Styles.
+    const preloaderStyle = {
+      display: (!this.state.isPreloaderVisible) ? 'none' : 'block'
+    }
+
     var index = -1
+
     return (
       <div className='posts-tab tab-page' ref={(t) => { this.root = t }}>
         <div className='posts'>
@@ -329,9 +411,10 @@ export default class PostsTab extends React.Component {
             })
           }
         </div>
-        <MaterialButton ref='loadPostsButton' className='loadPosts'>
+        <MaterialButton ref='loadPostsButton' className='load-posts-button' onClick={this.onLoadsPostsButtonClick}>
           ZAŁADUJ WIĘCEJ
         </MaterialButton>
+        <Preloader ref='preloader' className='load-posts-preloader' style={preloaderStyle} strokeColor='#2196f3' strokeWidth={4} />
       </div>
     )
   }
