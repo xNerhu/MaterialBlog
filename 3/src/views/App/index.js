@@ -16,6 +16,8 @@ import LessonsPlanTab from '../Tabs/LessonsPlan'
 import Tooltip from '../../imports/materialdesign/components/Tooltip'
 import Preloader from '../../imports/materialdesign/components/Preloader'
 
+import SearchResults from './components/SearchResults'
+
 import Url from '../../helpers/Url'
 import Cookies from '../../helpers/Cookies'
 
@@ -33,6 +35,7 @@ export default class App extends React.Component {
       menuOpacity: 1,
       postFullScreen: false,
       dataPreloaderVisible: false,
+      tabPagesVisible: true,
       tooltipsData: {
         like: {
           text: '...',
@@ -74,8 +77,12 @@ export default class App extends React.Component {
       var postsTab = self.getPostsTab()
       var galleryTab = self.getGalleryTab()
 
-      if (searchIcon.state.toggled) {
+      const searchResults = self.refs.searchResults
+
+      if (searchIcon.state.toggled && searchIcon.state.fullWidth) {
         searchIcon.hide()
+      } else if (searchResults.state.toggled) {
+        searchResults.hide()
       } else if (postsTab.isFullScreen) {
         postsTab.exitFullScreen()
       } else if (galleryTab.toggledPictures) {
@@ -138,8 +145,8 @@ export default class App extends React.Component {
           subType: 'Search',
           position: 'Right',
           image: 'src/images/Toolbar/search.png',
-          onSearch: function (value) {
-            console.log(value)
+          onSearch: function (query) {
+            if (query.length >= 1) self.refs.searchResults.search(query)
           }
         }
       ]
@@ -265,8 +272,8 @@ export default class App extends React.Component {
     }
 
     const tabPagesStyle = {
-      height: 'calc(100% - ' + ((!this.state.tabLayoutHidden) ? '136px' : '64px') + ')',
-      opacity: (!this.state.dataPreloaderVisible) ? 1 : 0
+      height: 'calc(100% - ' + ((!this.state.tabLayoutHidden) ? '128px' : '64px') + ')',
+      opacity: (!this.state.dataPreloaderVisible && this.state.tabPagesVisible) ? 1 : 0
     }
 
     const dataPreloaderStyle = {
@@ -295,6 +302,7 @@ export default class App extends React.Component {
             <AboutClassTab ref='aboutClassTab' />
             <LessonsPlanTab ref='lessonsPlanTab' getApp={this.getApp} />
           </div>
+          <SearchResults ref='searchResults' getApp={this.getApp} />
         </div>
         <LoginDialog ref='loginDialog' />
         <InfoDialog ref='infoDialog' />

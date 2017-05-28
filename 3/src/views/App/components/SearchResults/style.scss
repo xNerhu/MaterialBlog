@@ -1,0 +1,63 @@
+.search-results {
+  z-index: 8;
+  position: absolute;
+  top: 64px;
+  left: 0;
+  height: calc(100% - 64px);
+  width: 100%;
+  overflow: auto;
+  display: none;
+}
+
+.search-results-item {
+  width: 100%;
+  max-width: 500px;
+  margin-top: 32px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  user-select: auto;
+  opacity: 0;
+  transition: 0.25s opacity;
+
+  &:first-child {
+    margin-top: 8px;
+    border-top: none;
+  }
+
+  &:last-child {
+    margin-bottom: 8px;
+  }
+}
+
+.search-results-item-title {
+  font-size: 22px;
+  color: #2196f3;
+  text-decoration: none;
+  cursor: pointer;
+  margin-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.search-results-item-content {
+  margin-top: 4px;
+  font-size: 16px;
+  color: #444;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.search-results-item-info {
+  margin-top: 12px;
+  font-size: 16px;
+  color: #444;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.search-results-item-info-author {
+  @include Roboto-Medium;
+}
