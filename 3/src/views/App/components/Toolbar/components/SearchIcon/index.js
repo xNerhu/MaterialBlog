@@ -95,27 +95,39 @@ export default class SearchIcon extends React.Component {
   }
 
   /**
-   * Hides search input.
+   * Hides search input or search icon.
+   * @param {Boolean} hide input or search icon.
    */
-  hide = () => {
-    var self = this
+  hide = (flag = false) => {
+    const self = this
 
-    this.setState({
-      toggled: false,
-      fullWidth: false
-    })
-
-    setTimeout(function () {
-      self.setState({
-        overflow: 'hidden'
+    if (!flag) {
+      this.setState({
+        toggled: false,
+        fullWidth: false
       })
-    }, 250)
 
-    if (this.props.getApp().getToolBar().refs.menuIcon.isExit) {
-      this.backMenu()
-      this.toolBarItems(true)
+      setTimeout(function () {
+        self.setState({
+          overflow: 'hidden'
+        })
+      }, 250)
+
+      if (this.props.getApp().getToolBar().refs.menuIcon.isExit) {
+        this.backMenu()
+        this.toolBarItems(true)
+      }
+      window.removeEventListener('resize', this.onWindowResize)
+    } else {
+      this.refs.searchIcon.style.top = '64px'
     }
-    window.removeEventListener('resize', this.onWindowResize)
+  }
+
+  /**
+   * Shows search icon.
+   */
+  show = () => {
+    this.refs.searchIcon.style.top = '0px'
   }
 
   /**

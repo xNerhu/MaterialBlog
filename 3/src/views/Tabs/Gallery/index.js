@@ -129,6 +129,9 @@ export default class GalleryTab extends React.Component {
     var self = this
     var app = this.props.getApp()
     var toolbar = app.getToolBar()
+    const searchIcon = toolbar.refs.searchIcon
+
+    searchIcon.hide(true)
 
     // Change menu to arrow.
     toolbar.refs.menuIcon.changeToArrow()
@@ -183,6 +186,9 @@ export default class GalleryTab extends React.Component {
     var self = this
     var app = this.props.getApp()
     var toolbar = app.getToolBar()
+    const searchIcon = toolbar.refs.searchIcon
+
+    searchIcon.show()
 
     // Change menu to default.
     toolbar.refs.menuIcon.changeToDefault()

@@ -2,7 +2,8 @@
   -webkit-filter: none;
   position: relative;
   height: 100%;
-  transition: 0.3s width ease-in-out;
+  top: 0px;
+  transition: 0.3s width ease-in-out, 0.3s top;
 }
 
 .search-icon-button {
