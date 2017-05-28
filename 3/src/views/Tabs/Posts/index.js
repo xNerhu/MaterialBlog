@@ -188,6 +188,9 @@ export default class PostsTab extends React.Component {
     const app = this.props.getApp()
     const toolbar = app.getToolBar()
     const posts = this.postsObjects
+    const searchIcon = toolbar.refs.searchIcon
+
+    searchIcon.hide(true)
 
     this.focusedPost = post
 
@@ -237,6 +240,9 @@ export default class PostsTab extends React.Component {
     var toolbar = app.getToolBar()
     const posts = this.postsObjects
     const post = this.focusedPost
+    const searchIcon = toolbar.refs.searchIcon
+
+    searchIcon.show()
 
     if (this.isFullScreen === true) {
       this.isFullScreen = null

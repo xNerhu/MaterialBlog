@@ -143,7 +143,10 @@ export default class App extends React.Component {
           position: 'Right',
           image: 'src/images/Toolbar/search.png',
           onSearch: function (query) {
-            if (query.length >= 1) self.refs.searchResults.search(query)
+            if (query.length >= 1) {
+              self.refs.searchResults.search(query)
+              if (navigationDrawer.toggled) navigationDrawer.hide()
+            }
           }
         }
       ]

@@ -21,9 +21,7 @@ html, body {
 }
 
 .app-content {
-  top: 0;
-  right: 0;
-  position: absolute;
+  position: fixed;
   background-color: #FFFFFF;
   transition: width 0.3s;
   height: 100%;
