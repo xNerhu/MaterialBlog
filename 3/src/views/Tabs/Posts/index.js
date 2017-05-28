@@ -10,14 +10,9 @@ export default class PostsTab extends React.Component {
     super()
 
     this.state = {
-      left: 0,
-      display: 'none',
-      defaultLeft: 0,
       posts: [],
-      isPreloaderVisible: false
+      toggledPreloader: false
     }
-
-    this.root = null
 
     this.postsObjects = []
 
@@ -32,9 +27,10 @@ export default class PostsTab extends React.Component {
   }
 
   componentDidMount () {
-    this.root.addEventListener('scroll', this.onScroll)
+    this.refs.root.addEventListener('scroll', this.onScroll)
+
     this.loadPostsButton = this.refs.loadPostsButton.refs.button
-    this.loadPostsButton.style.display = 'block'
+    this.loadPostsButton.style.display = 'none'
   }
 
   /**
@@ -42,31 +38,30 @@ export default class PostsTab extends React.Component {
    * @param {DomElement}
    */
   getRoot = () => {
-    return this.root
+    return this.refs.root
   }
 
   /**
    * Loads posts.
    */
   loadPosts = () => {
-    var self = this
+    const self = this
+    const app = this.props.getApp()
 
-    this.props.getApp().setState({
-      dataPreloaderVisible: true
-    })
-    this.props.getApp().selected.posts = true
+    app.togglePreloader(true)
+
+    app.selected.posts = true
 
     setTimeout(function () {
-      self.props.getApp().canSelectTab = false
+      app.canSelectTab = false
     }, 50)
 
     // TODO: make request
     setTimeout(function () {
-      self.props.getApp().setState({
-        dataPreloaderVisible: false
-      })
-      self.props.getApp().canSelectTab = true
-      this.canSelectTab = false
+      app.togglePreloader(false)
+
+      app.canSelectTab = true
+
       setTimeout(function () {
         self.setState({
           posts: [
@@ -151,12 +146,14 @@ export default class PostsTab extends React.Component {
             }
           ]
         })
+
+        self.loadPostsButton.style.display = 'block'
       }, 1)
     }, 1000)
   }
 
   /**
-   * Chechs that logged user likes the post
+   * Checks that logged user likes the post
    * @param {Object} post likes data.
    * @return {Boolean}
    */
@@ -189,12 +186,12 @@ export default class PostsTab extends React.Component {
   enterFullScreen = (post, data) => {
     const self = this
     const app = this.props.getApp()
-    var toolbar = app.getToolBar()
+    const toolbar = app.getToolBar()
     const posts = this.postsObjects
 
     this.focusedPost = post
 
-    if (this.isFullScreen === false && !this.state.isPreloaderVisible) {
+    if (this.isFullScreen === false && !this.state.toggledPreloader) {
       this.isFullScreen = null
       for (var p = 0; p < posts.length; p++) {
         const main = posts[p]
@@ -225,28 +222,9 @@ export default class PostsTab extends React.Component {
 
       toolbar.refs.menuIcon.changeToArrow()
 
-      var toolBarItems = app.state.toolbarItems
-      var toolBarTitleIndex = 0
+      app.setToolBarTitle(data.title)
 
-      // Get title index.
-      for (var i = 0; i < toolBarItems.length; i++) {
-        if (toolBarItems[i].type === 'Title') {
-          toolBarTitleIndex = i
-          break
-        }
-      }
-
-      // Change title.
-      toolBarItems[toolBarTitleIndex].title = data.title
-      app.setState({
-        toolbarItems: toolBarItems,
-        tabLayoutHidden: true
-      })
-
-      // Hide tabbar.
-      toolbar.setState({
-        height: 64
-      })
+      app.hideTabLayout()
     }
   }
 
@@ -294,29 +272,9 @@ export default class PostsTab extends React.Component {
 
       toolbar.refs.menuIcon.changeToDefault()
 
-      var toolBarItems = app.state.toolbarItems
-      var toolBarTitleIndex = 0
+      app.setToolBarTitle(app.props.toolbarTitle)
 
-      // Get title index.
-      for (var i = 0; i < toolBarItems.length; i++) {
-        if (toolBarItems[i].type === 'Title') {
-          toolBarTitleIndex = i
-          break
-        }
-      }
-
-      // Change title.
-      toolBarItems[toolBarTitleIndex].title = app.props.toolbarTitle
-
-      app.setState({
-        toolbarItems: toolBarItems,
-        tabLayoutHidden: false
-      })
-
-      // Hide tabbar.
-      toolbar.setState({
-        height: 128
-      })
+      app.showTabLayout()
     }
   }
 
@@ -324,9 +282,7 @@ export default class PostsTab extends React.Component {
    * On posts tab scroll event (infinity scroll).
    */
   onScroll = () => {
-    if (isVisible(this.loadPostsButton)) {
-      this.loadMorePosts()
-    }
+    if (isVisible(this.loadPostsButton)) this.loadMorePosts()
   }
 
   /**
@@ -343,8 +299,9 @@ export default class PostsTab extends React.Component {
     const self = this
 
     this.loadPostsButton.style.display = 'none'
+
     this.setState({
-      isPreloaderVisible: true
+      toggledPreloader: true
     })
 
     // TODO: Make request
@@ -380,29 +337,23 @@ export default class PostsTab extends React.Component {
       }
 
       self.loadPostsButton.style.display = 'block'
+
       self.setState({
-        isPreloaderVisible: false
+        toggledPreloader: false
       })
     }, 1000)
   }
 
   render () {
-    var self = this
-    function onRest () {
-      if (!self.isVisible) {
-        self.setState({display: 'none'})
-      }
-    }
-
     // Styles.
     const preloaderStyle = {
-      display: (!this.state.isPreloaderVisible) ? 'none' : 'block'
+      display: (!this.state.toggledPreloader) ? 'none' : 'block'
     }
 
     var index = -1
 
     return (
-      <div className='posts-tab tab-page' ref={(t) => { this.root = t }}>
+      <div className='posts-tab tab-page' ref='root'>
         <div className='posts'>
           {
             this.state.posts.map((data, i) => {

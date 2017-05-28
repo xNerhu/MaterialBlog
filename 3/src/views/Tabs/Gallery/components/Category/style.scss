@@ -31,6 +31,7 @@
   height: 22px;
   @include center-vertical-important;
   @include image-center(22px, 22px);
+  background-image: url(images/NavigationDrawer/info.png);
   @include invert-colors;
   cursor: pointer;
 }

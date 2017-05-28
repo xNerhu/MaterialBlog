@@ -27,15 +27,12 @@ export default class App extends React.Component {
 
     this.state = ({
       toolbarItems: [],
-      toolbarBackgroundColor: '#2196F3',
       toolbarShadow: true,
       tabLayoutLeft: 48,
       contentWidth: '100%',
       tabLayoutHidden: false,
-      menuOpacity: 1,
-      postFullScreen: false,
-      dataPreloaderVisible: false,
-      tabPagesVisible: true,
+      toggledPreloader: false,
+      toggledTabPages: true,
       tooltipsData: {
         like: {
           text: '...',
@@ -92,7 +89,7 @@ export default class App extends React.Component {
           galleryTab.hidePictures()
         }
       } else {
-        if (!navigationDrawer.state.toggled) {
+        if (!navigationDrawer.toggled) {
           self.getToolBar().refs.menuIcon.changeToExit()
           navigationDrawer.show()
         } else {
@@ -198,8 +195,6 @@ export default class App extends React.Component {
         self.refs.infoDialog.show()
       }
     }, 1)
-
-  //  this.getPostsTab().loadPosts()
   }
 
   /**
@@ -258,6 +253,71 @@ export default class App extends React.Component {
     return this.refs.lessonsPlanTab
   }
 
+  /**
+   * Sets toolbar color.
+   * @param {String} color.
+   */
+  setToolBarColor = (color) => {
+    const toolbar = this.getToolBar()
+
+    toolbar.refs.root.style.backgroundColor = color
+  }
+
+  /**
+   * Shows tabs.
+   */
+  showTabLayout = () => {
+    const toolbar = this.getToolBar()
+
+    this.setState({
+      tabLayoutHidden: false
+    })
+
+    toolbar.refs.root.style.height = '128px'
+  }
+
+  /**
+   * Hides tabs.
+   */
+  hideTabLayout = () => {
+    const toolbar = this.getToolBar()
+
+    this.setState({
+      tabLayoutHidden: true
+    })
+
+    toolbar.refs.root.style.height = '64px'
+  }
+
+  /**
+   * Sets toolbar title.
+   * @param {String} title.
+   */
+  setToolBarTitle = (title) => {
+    const items = this.state.toolbarItems
+    var index = 0
+
+    // Get title index.
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].type === 'Title') {
+        index = i
+        break
+      }
+    }
+
+    items[index].title = title
+  }
+
+  /**
+   * Toggles preloader.
+   * @param {Boolean} true shows preloader false hides preloader.
+   */
+  togglePreloader = (flag) => {
+    this.setState({
+      toggledPreloader: flag
+    })
+  }
+
   render () {
     // Styles.
     const tabLayoutStyle = {
@@ -273,27 +333,19 @@ export default class App extends React.Component {
 
     const tabPagesStyle = {
       height: 'calc(100% - ' + ((!this.state.tabLayoutHidden) ? '128px' : '64px') + ')',
-      opacity: (!this.state.dataPreloaderVisible && this.state.tabPagesVisible) ? 1 : 0
+      opacity: (!this.state.toggledTabPages) ? 0 : 1
     }
 
-    const dataPreloaderStyle = {
+    const preloaderStyle = {
       height: 54,
       width: 54,
-      visibility: (this.state.dataPreloaderVisible) ? 'visible' : 'hidden'
+      visibility: (!this.state.toggledPreloader) ? 'hidden' : 'visible'
     }
-
-    // Tooltips contents.
-    const tooltipLikeText = this.state.tooltipsData.like.text // Like text is when you don't likes post: Like it! or you have already like post: Don't like it!.
-    const tooltipLikeList = this.state.tooltipsData.like.list // Likes list is a list of people who liked post.
-    const tooltipShowComments = 'Pokaż komentarze' // Show comments.
-    const tooltipHideComments = 'Ukryj komentarze' // Hide comments.
-    const tooltipCategoryInfo = 'Data utworzenia: ' + this.state.tooltipsData.category.date + '\n Ilość zdjęć: ' + this.state.tooltipsData.category.picturesCount // Category info: create category date and number of pictures.
-    const tooltipAddComment = 'Dodaj komentarz' // Add comment.
 
     return (
       <div>
         <div className='app-content' ref='appContent' style={appContentStyle}>
-          <Toolbar ref='toolbar' items={this.state.toolbarItems} getApp={this.getApp} backgroundColor={this.state.toolbarBackgroundColor} shadow={this.state.toolbarShadow}>
+          <Toolbar ref='toolbar' items={this.state.toolbarItems} getApp={this.getApp} shadow={this.state.toolbarShadow}>
             <TabLayout ref='tabLayout' className='tab-layout-1' style={tabLayoutStyle} getApp={this.getApp} />
           </Toolbar>
           <div className='tab-pages' style={tabPagesStyle}>
@@ -306,18 +358,33 @@ export default class App extends React.Component {
         </div>
         <LoginDialog ref='loginDialog' />
         <InfoDialog ref='infoDialog' />
-        <Preloader ref='preloader' className='data-preloader' style={dataPreloaderStyle} strokeColor='#2196f3' strokeWidth={4} />
+        <Preloader ref='preloader' className='data-preloader' style={preloaderStyle} strokeColor='#2196f3' strokeWidth={4} />
         <NavigationDrawer ref='navigationDrawer' getApp={this.getApp} />
-        <Tooltip ref='tooltipLike'>{tooltipLikeText}</Tooltip>
-        <Tooltip ref='tooltipLikesList'>{tooltipLikeList}</Tooltip>
-        <Tooltip ref='tooltipShowComments'>{tooltipShowComments}</Tooltip>
-        <Tooltip ref='tooltipHideComments'>{tooltipHideComments}</Tooltip>
-        <Tooltip ref='tooltipCategoryInfo'>{tooltipCategoryInfo}</Tooltip>
-        <Tooltip ref='tooltipAddComment'>{tooltipAddComment}</Tooltip>
+        <Tooltip ref='tooltipLike'>
+          {this.state.tooltipsData.like.text}
+        </Tooltip>
+        <Tooltip ref='tooltipLikesList'>
+          {this.state.tooltipsData.like.list}
+        </Tooltip>
+        <Tooltip ref='tooltipShowComments'>
+          Pokaż komentarze
+        </Tooltip>
+        <Tooltip ref='tooltipHideComments'>
+          Ukryj komentarze
+        </Tooltip>
+        <Tooltip ref='tooltipCategoryInfo'>
+          {
+            'Data utworzenia: ' + this.state.tooltipsData.category.date + '\n Ilość zdjęć: ' + this.state.tooltipsData.category.picturesCount
+          }
+        </Tooltip>
+        <Tooltip ref='tooltipAddComment'>
+          Dodaj komentarz
+        </Tooltip>
       </div>
     )
   }
 }
+
 App.defaultProps = {
   toolbarTitle: 'Blog klasy 3B',
   toolbarBackgroundColor: '#2196F3'

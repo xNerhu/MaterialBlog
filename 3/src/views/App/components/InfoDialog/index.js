@@ -4,28 +4,10 @@ import Dialog from '../../../../imports/materialdesign/components/Dialog'
 import Url from '../../../../helpers/Url'
 
 export default class LoginDialog extends React.Component {
-  /**
-   * Shows dialog.
-   */
-  show = () => {
-    this.refs.dialog.show()
-    const param = '?tab=' + Url.getUrlParameter('tab') + '&action=info'
-    window.history.pushState('', '', param)
-  }
+  constructor () {
+    super()
 
-  /**
-   * Hides dialog.
-   */
-  hide = () => {
-    this.refs.dialog.hide()
-    const param = '?tab=' + Url.getUrlParameter('tab')
-    window.history.pushState('', '', param)
-  }
-
-  render () {
-    var self = this
-
-    const actionButtons = [
+    this.actionButtons = [
       {
         text: 'ZAMKNIJ',
         shadow: false,
@@ -35,13 +17,35 @@ export default class LoginDialog extends React.Component {
         },
         foreground: '#2196f3',
         backgroundColor: 'transparent',
-        onClick: self.hide
+        onClick: this.hide
       }
     ]
+  }
 
+  /**
+   * Shows dialog.
+   */
+  show = () => {
+    this.refs.dialog.show()
+
+    const param = '?tab=' + Url.getUrlParameter('tab') + '&action=info'
+    window.history.pushState('', '', param)
+  }
+
+  /**
+   * Hides dialog.
+   */
+  hide = () => {
+    this.refs.dialog.hide()
+
+    const param = '?tab=' + Url.getUrlParameter('tab')
+    window.history.pushState('', '', param)
+  }
+
+  render () {
     return (
       <div>
-        <Dialog ref='dialog' title='Informacje' className='info-dialog' actionButtons={actionButtons}>
+        <Dialog ref='dialog' title='Informacje' className='info-dialog' actionButtons={this.actionButtons}>
           Blog jest wzorowany na specjalnym stylu <a href='https://material.io/guidelines/' target='_blank'>Material Design</a>
           <br />
           Strona została napisana w nowej technologii Node.JS oraz ReactJS dzięki czemu szybko działa

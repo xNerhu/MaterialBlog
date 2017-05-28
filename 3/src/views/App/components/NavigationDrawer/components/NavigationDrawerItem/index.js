@@ -29,9 +29,12 @@ export default class NavigationDrawerItem extends React.Component {
   }
 
   render () {
+    var className = 'navigation-drawer-item ripple '
+    if (this.props.className !== undefined) className += this.props.className
+
     return (
-      <div className='navigation-drawer-item ripple' ref='item' style={this.props.style} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart} onClick={this.props.onClick}>
-        <div className='navigation-drawer-item-icon' style={this.props.iconStyle} />
+      <div className={className} ref='item' style={this.props.style} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart} onClick={this.props.onClick}>
+        <div className='icon' style={this.props.iconStyle} />
         {this.props.children}
       </div>
     )

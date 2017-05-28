@@ -4,14 +4,6 @@ export default class LessonsPlanTab extends React.Component {
   constructor () {
     super()
 
-    this.state = {
-      left: 0,
-      display: 'none',
-      defaultLeft: 0
-    }
-
-    this.root = null
-
     this.lessonsStart = [
       '8.00',
       '8.50',
@@ -35,22 +27,23 @@ export default class LessonsPlanTab extends React.Component {
     ]
   }
 
+  /**
+   * Loads lessons plan.
+   */
   loadPlan = () => {
-    var self = this
+    const self = this
+    const app = this.props.getApp()
 
-    this.props.getApp().setState({
-      dataPreloaderVisible: true
-    })
-    this.props.getApp().selected.lessonsPlan = true
-    this.props.getApp().canSelectTab = false
+    app.togglePreloader(true)
+    app.selected.lessonsPlan = true
+    app.canSelectTab = false
 
     // TODO: make request
     setTimeout(function () {
-      self.props.getApp().setState({
-        dataPreloaderVisible: false
-      })
-      self.props.getApp().canSelectTab = true
-      var plan = [
+      app.togglePreloader(false)
+      app.canSelectTab = true
+
+      const plan = [
         {
           day: 'Poniedziałek',
           subjects: [
@@ -68,25 +61,36 @@ export default class LessonsPlanTab extends React.Component {
         }
       ]
 
-      var html = ''
-      for (var p = 0; p < plan.length; p++) {
-        var hours = ''
-        for (var i = 0; i < plan[p].subjects.length; i++) {
-          hours += '<span class="bold">' + (i + 1) + '.</span> ' + self.lessonsStart[i] + '-' + self.lessonsFinish[i] + ((i < plan[p].subjects.length) ? '<br />' : '')
-        }
+      self.refs.tbody.innerHTML = self.parsePlan(plan)
+      self.refs.table.style.opacity = '1'
+    }, 1000)
+  }
 
-        var subjects = ''
-        for (var i = 0; i < plan[p].subjects.length; i++) {
-          subjects += plan[p].subjects[i] + ((i < plan[p].subjects.length) ? '<br />' : '')
-        }
+  /**
+   * Parses plan into html string.
+   * @param {Object} plan.
+   * @return {String} html string.
+   */
+  parsePlan = (plan) => {
+    var html = ''
 
-        const border = (p > 0) ? 'class="border"' : ''
-
-        html += '<tr ' + border + '><td>' + plan[p].day + '</td><td>' + hours + '</td><td>' + subjects + '</td></tr>'
+    for (var p = 0; p < plan.length; p++) {
+      var hours = ''
+      for (let i = 0; i < plan[p].subjects.length; i++) {
+        hours += '<span class="bold">' + (i + 1) + '.</span> ' + this.lessonsStart[i] + '-' + this.lessonsFinish[i] + ((i < plan[p].subjects.length) ? '<br />' : '')
       }
 
-      self.tbody.innerHTML = html
-    }, 1000)
+      var subjects = ''
+      for (let i = 0; i < plan[p].subjects.length; i++) {
+        subjects += plan[p].subjects[i] + ((i < plan[p].subjects.length) ? '<br />' : '')
+      }
+
+      const border = (p > 0) ? 'class="border"' : ''
+
+      html += '<tr ' + border + '><td>' + plan[p].day + '</td><td>' + hours + '</td><td>' + subjects + '</td></tr>'
+    }
+
+    return html
   }
 
   /**
@@ -94,28 +98,21 @@ export default class LessonsPlanTab extends React.Component {
    * @param {DomElement}
    */
   getRoot = () => {
-    return this.root
+    return this.refs.root
   }
 
   render () {
-    var self = this
-    function onRest () {
-      if (!self.isVisible) {
-        self.setState({display: 'none'})
-      }
-    }
-
     return (
-      <div className='lesson-plan-tab tab-page' ref={(t) => { this.root = t }}>
-        <table className='material-table'>
+      <div className='lesson-plan-tab tab-page' ref='root'>
+        <table className='material-table' ref='table'>
           <thead>
             <tr>
-            <th>Dzień tygodnia</th>
-            <th>Godzina lekcyjna</th>
-            <th>Przedmiot</th>
+              <th>Dzień tygodnia</th>
+              <th>Godzina lekcyjna</th>
+              <th>Przedmiot</th>
             </tr>
           </thead>
-          <tbody ref={(t) => { this.tbody = t }} />
+          <tbody ref='tbody' />
         </table>
       </div>
     )

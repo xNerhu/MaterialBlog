@@ -8,14 +8,9 @@ export default class GalleryTab extends React.Component {
     super()
 
     this.state = {
-      left: 0,
-      display: 'none',
-      defaultLeft: 0,
       categories: [],
       pictures: []
     }
-
-    this.root = null
 
     this.loadedCategories = 0
 
@@ -27,14 +22,16 @@ export default class GalleryTab extends React.Component {
    * Loads categories.
    */
   loadCategories = () => {
-    var self = this
+    const self = this
+    const app = this.props.getApp()
 
-    this.props.getApp().setState({
-      dataPreloaderVisible: true
-    })
-    this.props.getApp().selected.gallery = true
+    app.togglePreloader(true)
+    app.selected.gallery = true
+    app.canSelectTab = false
+
     setTimeout(function () {
-      self.props.getApp().canSelectTab = false
+      app.canSelectTab = false
+
       self.setState({
         categories: [
           {
@@ -103,12 +100,13 @@ export default class GalleryTab extends React.Component {
    * On category load event.
    */
   onCategoryLoad = () => {
+    const app = this.props.getApp()
+
     this.loadedCategories++
+
     if (this.loadedCategories >= this.state.categories.length) {
-      this.props.getApp().setState({
-        dataPreloaderVisible: false
-      })
-      this.props.getApp().canSelectTab = true
+      app.togglePreloader(false)
+      app.canSelectTab = true
     }
   }
 
@@ -126,52 +124,33 @@ export default class GalleryTab extends React.Component {
    * @param {Object} category data.
    */
   showPictures = (data) => {
-    var self = this
-    var app = this.props.getApp()
-    var toolbar = app.getToolBar()
+    const self = this
+    const app = this.props.getApp()
+    const toolbar = app.getToolBar()
     const searchIcon = toolbar.refs.searchIcon
+    const categories = this.refs.categories
+    const pictures = this.refs.pictures
 
     searchIcon.hide(true)
 
-    // Change menu to arrow.
     toolbar.refs.menuIcon.changeToArrow()
 
-    var toolBarItems = app.state.toolbarItems
-    var toolBarTitleIndex = 0
+    app.setToolBarTitle(data.name)
+    app.hideTabLayout()
 
-    // Get title index.
-    for (var i = 0; i < toolBarItems.length; i++) {
-      if (toolBarItems[i].type === 'Title') {
-        toolBarTitleIndex = i
-        break
-      }
-    }
-
-    // Change title.
-    toolBarItems[toolBarTitleIndex].title = data.name
-    app.setState({
-      toolbarItems: toolBarItems
-    })
-
-    // Hide tabbar.
-    toolbar.setState({
-      height: 64
-    })
-    app.setState({
-      tabLayoutHidden: true
-    })
-
-    this.categories.style.opacity = '0'
+    categories.style.opacity = '0'
 
     setTimeout(function () {
-      self.categories.style.display = 'none'
-      self.pictures.style.opacity = '1'
+      categories.style.display = 'none'
+      pictures.style.opacity = '1'
+
       setTimeout(function () {
         self.setState({
           pictures: data.pictures
         })
+
         setTimeout(function () {
-          self.pictures.style.display = 'block'
+          pictures.style.display = 'block'
         }, 10)
       }, 10)
     }, 100)
@@ -183,46 +162,28 @@ export default class GalleryTab extends React.Component {
    * Hides pictures.
    */
   hidePictures = () => {
-    var self = this
-    var app = this.props.getApp()
-    var toolbar = app.getToolBar()
+    const self = this
+    const app = this.props.getApp()
+    const toolbar = app.getToolBar()
     const searchIcon = toolbar.refs.searchIcon
+    const categories = this.refs.categories
+    const pictures = this.refs.pictures
 
     searchIcon.show()
 
-    // Change menu to default.
     toolbar.refs.menuIcon.changeToDefault()
 
-    var toolBarItems = app.state.toolbarItems
-    var toolBarTitleIndex = 0
+    app.setToolBarTitle(app.props.toolbarTitle)
+    app.showTabLayout()
 
-    // Get title index.
-    for (var i = 0; i < toolBarItems.length; i++) {
-      if (toolBarItems[i].type === 'Title') {
-        toolBarTitleIndex = i
-        break
-      }
-    }
+    pictures.style.opacity = '0'
 
-    // Change title.
-    toolBarItems[toolBarTitleIndex].title = app.props.toolbarTitle
-    app.setState({
-      toolbarItems: toolBarItems
-    })
-
-    // Hide tabbar.
-    toolbar.setState({
-      height: 128
-    })
-    app.setState({
-      tabLayoutHidden: false
-    })
-
-    this.pictures.style.opacity = '0'
     setTimeout(function () {
-      self.categories.style.display = 'block'
+      categories.style.display = 'block'
+
       setTimeout(function () {
-        self.categories.style.opacity = '1'
+        categories.style.opacity = '1'
+
         setTimeout(function () {
           self.setState({
             pictures: []
@@ -247,20 +208,27 @@ export default class GalleryTab extends React.Component {
    * @param {String} image url.
    */
   showFullScreen = (e, img) => {
-    var self = this
+    const self = this
+    const app = this.props.getApp()
+    const fullScreen = this.refs.fullScreen
+    const fullScreenBlur = this.refs.fullScreenBlur
+    const fullScreenPicture = this.refs.fullScreenPicture
+    const gradient = this.refs.gradient
 
-    this.props.getApp().setState({
-      toolbarBackgroundColor: 'transparent',
+    app.setState({
       toolbarShadow: false
     })
 
-    this.fullScreenBlur.style.backgroundImage = 'url(' + img + ')'
-    this.fullScreenPicture.style.backgroundImage = 'url(' + img + ')'
+    app.setToolBarColor('transparent')
 
-    this.fullScreen.style.display = 'block'
-    this.gradient.style.display = 'block'
+    fullScreenBlur.style.backgroundImage = 'url(' + img + ')'
+    fullScreenPicture.style.backgroundImage = 'url(' + img + ')'
+
+    fullScreen.style.display = 'block'
+    gradient.style.display = 'block'
+
     setTimeout(function () {
-      self.fullScreen.style.opacity = '1'
+      fullScreen.style.opacity = '1'
     }, 10)
 
     this.toggledFullScreen = true
@@ -270,60 +238,60 @@ export default class GalleryTab extends React.Component {
    * Hides full screen picture.
    */
    hideFullScreen = (img) => {
-     var self = this
-     var app = this.props.getApp()
+     const app = this.props.getApp()
+     const fullScreen = this.refs.fullScreen
+     const gradient = this.refs.gradient
 
      app.setState({
-       toolbarBackgroundColor: app.props.toolbarBackgroundColor,
        toolbarShadow: true
      })
 
-     this.fullScreen.style.opacity = '0'
-     this.gradient.style.display = 'none'
+     app.setToolBarColor(app.props.toolbarBackgroundColor)
+
+     fullScreen.style.opacity = '0'
+     gradient.style.display = 'none'
+
      setTimeout(function () {
-       self.fullScreen.style.display = 'none'
+       fullScreen.style.display = 'none'
      }, 300)
 
      this.toggledFullScreen = false
    }
 
+   /**
+    * Gets root.
+    * @param {DomElement}
+    */
    getRoot = () => {
-     return this.root
+     return this.refs.root
    }
 
   render () {
-    var self = this
-    function onRest () {
-      if (!self.isVisible) {
-        self.setState({display: 'none'})
-      }
-    }
-
     var picturesClass = 'gallery-pictures'
     if (this.state.pictures.length > 4) picturesClass += ' gallery-pictures-many'
     else if (this.state.pictures.length <= 2) picturesClass += ' gallery-pictures-' + this.state.pictures.length
 
     return (
-      <div className='gallery-tab tab-page' ref={(t) => { this.root = t }}>
-        <div className='gallery-categories' ref={(t) => { this.categories = t }}>
+      <div className='gallery-tab tab-page' ref='root'>
+        <div className='gallery-categories' ref='categories'>
           {
             this.state.categories.map((data, i) => {
               return <Category key={i} data={data} getApp={this.props.getApp} onClick={this.onCategoryClick} onLoad={this.onCategoryLoad}>{data.name}</Category>
             })
           }
         </div>
-        <div className={picturesClass} ref={(t) => { this.pictures = t }}>
+        <div className={picturesClass} ref='pictures'>
           {
             this.state.pictures.map((data, i) => {
               return <Picture onClick={this.onPictureClick} key={i} image={data.url} />
             })
           }
         </div>
-        <div className='gallery-picture-full-screen' ref={(t) => { this.fullScreen = t }}>
-          <div className='gallery-picture-full-screen-blur' ref={(t) => { this.fullScreenBlur = t }} />
-          <div className='gallery-picture-full-screen-pic' ref={(t) => { this.fullScreenPicture = t }} />
+        <div className='gallery-picture-full-screen' ref='fullScreen'>
+          <div className='gallery-picture-full-screen-blur' ref='fullScreenBlur' />
+          <div className='gallery-picture-full-screen-pic' ref='fullScreenPicture' />
         </div>
-        <div className='gallery-gradient' ref={(t) => { this.gradient = t }} />
+        <div className='gallery-gradient' ref='gradient' />
       </div>
     )
   }

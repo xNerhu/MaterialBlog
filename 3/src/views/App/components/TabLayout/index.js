@@ -10,11 +10,9 @@ export default class TabLayout extends React.Component {
     super()
 
     this.state = {
-      tabs: [],
-      width: 0,
-      dividerLeft: 0,
-      dividerWidth: 0
+      tabs: []
     }
+
     this.tabs = []
 
     this.lastSelectedIndex = -1
@@ -61,17 +59,12 @@ export default class TabLayout extends React.Component {
   }
 
   render () {
-    // Styles.
-    const indicatorStyle = {
-      backgroundColor: this.props.indicatorColor
-    }
-
     return (
       <div ref='tabLayout' style={this.props.style} className={'tab-layout ' + this.props.className} onMouseDown={this.onMouseDown}>
         {this.state.tabs.map((object, i) => {
           return <Tab getTabLayout={this.getTabLayout} key={i} data={object} allTabsData={this.state.tabs} getApp={this.props.getApp} />
         })}
-        <div className='indicator' ref='indicator' style={indicatorStyle} />
+        <div className='indicator' ref='indicator' />
         {this.props.children}
       </div>
     )
@@ -80,6 +73,5 @@ export default class TabLayout extends React.Component {
 
 TabLayout.defaultProps = {
   color: '#fff',
-  defaultColor: 'rgba(255, 255, 255, 0.54)',
-  indicatorColor: '#fff'
+  defaultColor: 'rgba(255, 255, 255, 0.54)'
 }

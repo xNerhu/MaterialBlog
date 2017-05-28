@@ -1,5 +1,7 @@
 .material-table {
   width: 100%;
+  opacity: 0;
+  transition: 0.3s opacity;
 
   & thead tr th {
     @include Roboto-Regular;

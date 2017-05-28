@@ -14,14 +14,38 @@
     transition: all 0.3s;
     background-color: #eee;
   }
+
+  & .icon {
+    height: 26px;
+    width: 26px;
+    opacity: 0.6;
+    @include image-center(24px, 24px);
+    position: absolute;
+    left: 16px;
+    @include center-vertical;
+  }
 }
 
-.navigation-drawer-item-icon {
-  height: 26px;
-  width: 26px;
-  opacity: 0.6;
-  @include image-center(24px, 24px);
-  position: absolute;
-  left: 16px;
-  @include center-vertical;
+.navigation-drawer-info {
+  & .icon {
+    background-image: url(images/NavigationDrawer/info.png);
+  }
+}
+
+.navigation-drawer-github {
+  & .icon {
+    background-image: url(images/NavigationDrawer/github.png);
+  }
+}
+
+.navigation-drawer-panel {
+  & .icon {
+    background-image: url(images/NavigationDrawer/settings.png);
+  }
+}
+
+.navigation-drawer-login {
+  & .icon {
+    background-image: url(images/NavigationDrawer/login.png);
+  }
 }

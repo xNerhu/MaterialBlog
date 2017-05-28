@@ -46,6 +46,7 @@ export default class Post extends React.Component {
     if (page >= 2) {
       index -= postsTab.state.posts.length
     }
+
     const until = ((index + 1) * 0.1) * 1000
 
     setTimeout(function () {
@@ -183,9 +184,7 @@ export default class Post extends React.Component {
    * @param {Object} event data.
    */
   onLikeButtonMouseLeave = (e) => {
-    const app = this.props.getApp()
-
-    app.refs.tooltipLike.hide()
+    this.props.getApp().refs.tooltipLike.hide()
   }
 
   /**
@@ -195,7 +194,7 @@ export default class Post extends React.Component {
    */
   onLikesListMouseEnter = (e) => {
     const app = this.props.getApp()
-    var tooltipsData = app.state.tooltipsData
+    const tooltipsData = app.state.tooltipsData
 
     var list = ''
     if (this.props.data.likes.length >= 1) {
@@ -207,6 +206,7 @@ export default class Post extends React.Component {
     }
 
     tooltipsData.like.list = list
+
     app.setState({
       tooltipsData: tooltipsData
     })
@@ -220,9 +220,7 @@ export default class Post extends React.Component {
    * @param {Object} event data.
    */
   onLikesListMouseLeave = (e) => {
-    const app = this.props.getApp()
-
-    app.refs.tooltipLikesList.hide()
+    this.props.getApp().refs.tooltipLikesList.hide()
   }
 
   /**

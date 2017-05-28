@@ -35,37 +35,19 @@ export default class SearchResults extends React.Component {
 
       root.style.display = 'block'
 
-      const toolBarItems = app.state.toolbarItems
-      var toolBarTitleIndex = 0
-
-      // Get title index.
-      for (var i = 0; i < toolBarItems.length; i++) {
-        if (toolBarItems[i].type === 'Title') {
-          toolBarTitleIndex = i
-          break
-        }
-      }
-
-      // Change title.
-      toolBarItems[toolBarTitleIndex].title = 'Wyniki wyszykiwania dla: ' + query
-
+      app.setToolBarTitle('Wyniki wyszykiwania dla: ' + query)
+      app.hideTabLayout()
+      app.togglePreloader(true)
       app.setState({
-        tabLayoutHidden: true,
-        dataPreloaderVisible: true,
-        tabPagesVisible: false
-      })
-
-      // Hide tabbar.
-      toolbar.setState({
-        height: 64
+        toggledTabPages: false
       })
 
       toolbar.refs.menuIcon.changeToArrow(false)
 
+      // TODO: Make request
       setTimeout(function () {
-        app.setState({
-          dataPreloaderVisible: false
-        })
+        app.togglePreloader(false)
+
         var result = []
         for (var i = 0; i < query.length; i++) {
           const r = {
@@ -77,6 +59,7 @@ export default class SearchResults extends React.Component {
           }
           result.push(r)
         }
+
         self.setState({
           result: result
         })
@@ -90,14 +73,11 @@ export default class SearchResults extends React.Component {
    * Hides results.
    */
   hide = () => {
-    const self = this
     const root = this.refs.root
     const app = this.props.getApp()
     const toolbar = app.getToolBar()
     const menuIcon = toolbar.refs.menuIcon
     const state = menuIcon.actualState
-
-    //root.style.display = 'none'
 
     this.setState({
       toggled: false
@@ -117,28 +97,10 @@ export default class SearchResults extends React.Component {
       root.style.display = 'none'
     }, 300)
 
-    const toolBarItems = app.state.toolbarItems
-    var toolBarTitleIndex = 0
-
-    // Get title index.
-    for (var i = 0; i < toolBarItems.length; i++) {
-      if (toolBarItems[i].type === 'Title') {
-        toolBarTitleIndex = i
-        break
-      }
-    }
-
-    // Change title.
-    toolBarItems[toolBarTitleIndex].title = app.props.toolbarTitle
-
+    app.setToolBarTitle(app.props.toolbarTitle)
+    app.showTabLayout()
     app.setState({
-      tabLayoutHidden: false,
-      tabPagesVisible: true
-    })
-
-    // Hide tabbar.
-    toolbar.setState({
-      height: 128
+      toggledTabPages: true
     })
 
     this.lastQuery = ''

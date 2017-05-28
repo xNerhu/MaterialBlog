@@ -4,6 +4,10 @@
   transition: 0.3s all;
   transition-property: left, width;
   z-index: 10;
+  background-color: #fff;
+  height: 100%;
+  width: 240px;
+  left: -240px;
 }
 
 .navigation-drawer-header {
@@ -11,12 +15,14 @@
   height: 128px;
   background-color: $navigationDrawerHeader;
   @include image-center(128px, auto);
+  background-image: url(images/NavigationDrawer/header.png);
 }
 
 .navigation-drawer-content {
   width: 100%;
   height: calc(100% - 128px);
   padding-top: 10px;
+  border-right: 1px solid rgba(0,0,0,0.12);
 }
 
 .navigation-drawer-divider {
@@ -32,4 +38,7 @@
   @include set(0, 0, 0, 0);
   transition: 0.3s opacity;
   z-index: 9;
+  background-color: #000;
+  display: none;
+  opacity: 0;
 }

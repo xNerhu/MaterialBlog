@@ -4,14 +4,6 @@ import MultiIcon from './components/MultiIcon'
 import SearchIcon from './components/SearchIcon'
 
 export default class Toolbar extends React.Component {
-  constructor () {
-    super()
-
-    this.state = {
-      height: 128
-    }
-  }
-
   /**
    * On tab icon mouse down event.
    * @param {object} event data
@@ -42,17 +34,12 @@ export default class Toolbar extends React.Component {
     // Styles.
     const toolbarClass = (this.props.shadow) ? 'toolbar toolbar-shadow' : 'toolbar'
 
-    const toolbarStyle = {
-      backgroundColor: this.props.backgroundColor,
-      height: this.state.height
-    }
-
     var first = true
     var _first = true
     var hasLeftIcon = false
 
     return (
-      <div style={toolbarStyle} className={toolbarClass}>
+      <div ref='root' className={toolbarClass}>
         <div className='toolbar-content'>
           {this.props.items.map((data, key) => {
             if (data.type === 'Icon') { // Check if type of child is icon.
@@ -109,7 +96,5 @@ export default class Toolbar extends React.Component {
 }
 
 Toolbar.defaultProps = {
-  backgroundColor: '#2196F3',
-  height: 64,
   shadow: true
 }
