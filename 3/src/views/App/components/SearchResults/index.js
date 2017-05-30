@@ -88,7 +88,8 @@ export default class SearchResults extends React.Component {
     const state = menuIcon.actualState
 
     this.setState({
-      toggled: false
+      toggled: false,
+      result: []
     })
 
     if (state === 'default') {
