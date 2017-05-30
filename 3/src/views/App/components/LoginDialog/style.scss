@@ -1,3 +1,8 @@
+.login-dialog-content {
+  opacity: 1;
+  transition: 0.3s opacity;
+}
+
 .login-dialog-forgot-password {
   @include Roboto-Regular;
   color: #2196f3;
@@ -7,29 +12,44 @@
   clear:both;
 }
 
-.login-dialog-content {
-  width: 100%;
-  transition: 0.3s opacity, 0.3s visibility, 0.3s margin-left;
+.login-dialog-password {
+  margin-top: 48px;
+
+  & .material-text-field-input {
+    width: calc(100% - 26px);
+  }
+
+  & .material-text-field-action-icon {
+    top: 4px;
+  }
 }
 
 .login-dialog-message {
-  width: 100%;
-  margin-left: 80%;
-  transition: 0.3s opacity, 0.3s visibility, 0.3s margin-left;
   opacity: 0;
+  transition: 0.3s opacity;
   display: none;
 }
 
 .login-dialog-message-avatar {
-  width: 0px;
-  height: 0px;
-  background-color: red;
+  width: 96px;
+  height: 96px;
+  margin-top: -7px;
+  margin-bottom: 18px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 18px;
+  position: relative;
   border-radius: 100%;
-  transition: 0.5s width ease-in-out, 0.5s height ease-in-out;
+}
+
+.login-dialog-message-avatar-pic {
+  width: 0px;
+  height: 0px;
+  background-color: blue;
+  position: absolute;
+  border-radius: 100%;
+  @include center;
   @include image-center(100%, 100%);
+  transition: 0.3s width, 0.3s height;
 }
 
 .login-dialog-preloader {

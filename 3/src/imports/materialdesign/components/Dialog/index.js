@@ -68,7 +68,7 @@ export default class Dialog extends React.Component {
       maxHeight: this.props.maxHeight
     }
 
-    const className = 'material-dialog ' + ((!this.props.buttonsList) ? 'material-dialog-action-side-by-side' : 'material-dialog-action-list')
+    const className = 'material-dialog ' + ((!this.props.buttonsList) ? 'material-dialog-action-side-by-side ' : 'material-dialog-action-list ') + ((this.props.className) ? this.props.className : '')
 
     return (
       <div className={this.props.className}>
