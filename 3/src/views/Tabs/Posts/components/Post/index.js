@@ -285,7 +285,7 @@ export default class Post extends React.Component {
               return <Comment key={i} data={data} />
             })
           }
-          <CommentInput />
+          <CommentInput getApp={this.props.getApp} />
         </div>
       </div>
     )

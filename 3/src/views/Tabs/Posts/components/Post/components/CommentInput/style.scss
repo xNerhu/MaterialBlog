@@ -13,24 +13,17 @@
   background-color: transparent;
 }
 
-@mixin post-comment-textarea-placeholder {
+.post-comment-input-textarea::placeholder {
   opacity: 0.7;
 }
 
-.post-comment-input-textarea::-webkit-input-placeholder {
-  @include post-comment-textarea-placeholder;
+.post-comment-input-textarea-not-logged {
+  cursor: pointer;
 }
 
-.post-comment-input-textarea::-moz-placeholder {
-  @include post-comment-textarea-placeholder;
-}
-
-.post-comment-input-textarea:-ms-input-placeholder {
-  @include post-comment-textarea-placeholder;
-}
-
-.post-comment-input-textarea:-moz-placeholder {
-  @include post-comment-textarea-placeholder;
+.post-comment-input-textarea-not-logged::placeholder {
+  color: #2196f3;
+  @include Roboto-Medium;
 }
 
 .post-comments-input-action {

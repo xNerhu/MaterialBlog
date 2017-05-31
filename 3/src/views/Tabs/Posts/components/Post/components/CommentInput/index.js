@@ -11,6 +11,28 @@ export default class CommentInput extends React.Component {
     }
   }
 
+  componentDidMount () {
+    const app = this.props.getApp()
+
+    if (!app.accountInfo) {
+      this.refs.textarea.disabled = true
+    } else {
+      this.userLogs()
+    }
+    app.elementsToChange.push(this)
+  }
+
+  /**
+   * When user logs event.
+   */
+  userLogs = () => {
+    const textArea = this.refs.textarea
+
+    textArea.disabled = false
+    textArea.placeholder = 'Dodaj komentarz'
+    textArea.classList.remove('post-comment-input-textarea-not-logged')
+  }
+
   /**
    * On textarea input event.
    * Hides or shows add comment button.
@@ -20,12 +42,29 @@ export default class CommentInput extends React.Component {
     const length = textArea.value.length
     const inputAction = this.refs.inputAction
 
-    textArea.style.height = 'auto'
-    textArea.style.height = textArea.scrollHeight + 'px'
-    if (length > 0) {
-      inputAction.style.height = inputAction.scrollHeight + 'px'
+    if (this.props.getApp().accountInfo) {
+      textArea.style.height = 'auto'
+      textArea.style.height = textArea.scrollHeight + 'px'
+      if (length > 0) {
+        inputAction.style.height = inputAction.scrollHeight + 'px'
+      } else {
+        inputAction.style.height = '0px'
+      }
     } else {
       inputAction.style.height = '0px'
+    }
+  }
+
+  /**
+   * On textarea click event.
+   * @param {Object} event data.
+   */
+  onClick = (e) => {
+    const app = this.props.getApp()
+    const loginDialog = app.refs.loginDialog
+
+    if (!app.accountInfo) {
+      loginDialog.show()
     }
   }
 
@@ -37,7 +76,7 @@ export default class CommentInput extends React.Component {
 
     return (
       <div className='post-comment-input'>
-        <textarea ref='textarea' className='post-comment-input-textarea' placeholder='Dodaj komentarz' onInput={this.onInput} />
+        <textarea ref='textarea' className='post-comment-input-textarea post-comment-input-textarea-not-logged' placeholder='Zaloguj się, by móc dodawać komentarze' onClick={this.onClick} onInput={this.onInput} />
         <div className='post-comments-input-action' ref='inputAction'>
           <MaterialButton shadow={false} backgroundColor='transparent' color='#2196f3' rippleStyle={materialButtonRippleStyle}>
             DODAJ

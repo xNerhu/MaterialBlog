@@ -51,6 +51,8 @@ export default class App extends React.Component {
       avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
     }
 
+    this.accountInfo = false
+
     this.selected = {
       posts: false,
       gallery: false,
@@ -60,6 +62,8 @@ export default class App extends React.Component {
 
     this.blockMouseDownEvent = false
     this.canSelectTab = true
+
+    this.elementsToChange = []
   }
 
   componentDidMount () {
@@ -198,6 +202,28 @@ export default class App extends React.Component {
         self.refs.infoDialog.show()
       }
     }, 1)
+
+    this.logUser()
+  }
+
+  /**
+   * Logs user.
+   * @param {String} login.
+   * @param {String} password.
+   * @return {Boolean} data is correct.
+   */
+  logUser = (login, password) => {
+    this.accountInfo = {
+      userID: 1,
+      userName: 'Mikołaj Palkiewicz',
+      avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+      email: 'xnerhu22@onet.pl'
+    }
+
+    for (var i = 0; i < this.elementsToChange.length; i++) {
+      this.elementsToChange[i].userLogs()
+    }
+    return true
   }
 
   /**
@@ -359,7 +385,7 @@ export default class App extends React.Component {
           </div>
           <SearchResults ref='searchResults' getApp={this.getApp} />
         </div>
-        <LoginDialog ref='loginDialog' />
+        <LoginDialog ref='loginDialog' getApp={this.getApp} />
         <InfoDialog ref='infoDialog' />
         <Preloader ref='preloader' className='data-preloader' style={preloaderStyle} strokeColor='#2196f3' strokeWidth={4} />
         <NavigationDrawer ref='navigationDrawer' getApp={this.getApp} />

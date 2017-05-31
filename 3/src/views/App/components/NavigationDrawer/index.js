@@ -13,7 +13,8 @@ export default class NavigationDrawer extends React.Component {
       darkOpacity: 0,
       darkVisible: false,
       persistent: true,
-      toggled: false
+      toggled: false,
+      loginItemText: 'Zaloguj się'
     }
 
     this.persistent = true
@@ -22,6 +23,11 @@ export default class NavigationDrawer extends React.Component {
 
   componentDidMount () {
     const self = this
+    const app = this.props.getApp()
+    const header = this.refs.header
+    const avatar = this.refs.avatar
+    const username = this.refs.username
+    const email = this.refs.email
 
     // Add on window resize event listener.
     // If window width is less than 768 pixels and navigation drawer is toggled, then show temporary navigation drawer.
@@ -34,6 +40,33 @@ export default class NavigationDrawer extends React.Component {
         self.hideDark()
         self.showPersistent()
       }
+    })
+
+    header.style.backgroundImage = 'url(src/images/NavigationDrawer/header.png)'
+
+    app.elementsToChange.push(this)
+  }
+
+  /**
+   * When user logs event.
+   */
+  userLogs = () => {
+    const app = this.props.getApp()
+    const header = this.refs.header
+    const avatar = this.refs.avatar
+    const username = this.refs.username
+    const email = this.refs.email
+
+    header.style.backgroundImage = 'none'
+
+    avatar.style.backgroundImage = 'url(' + app.accountInfo.avatar + ')'
+
+    username.innerHTML = app.accountInfo.userName
+
+    email.innerHTML = app.accountInfo.email
+
+    this.setState({
+      loginItemText: 'Wyloguj się'
     })
   }
 
@@ -187,10 +220,12 @@ export default class NavigationDrawer extends React.Component {
   onLoginClick = () => {
     const app = this.props.getApp()
 
-    app.getToolBar().refs.menuIcon.changeToDefault()
-    this.hide()
+    if (!app.accountInfo) {
+      app.getToolBar().refs.menuIcon.changeToDefault()
+      this.hide()
 
-    app.refs.loginDialog.show()
+      app.refs.loginDialog.show()
+    }
   }
 
   /**
@@ -212,7 +247,11 @@ export default class NavigationDrawer extends React.Component {
     return (
       <div>
         <div className='navigation-drawer' ref='root'>
-          <div className='navigation-drawer-header' />
+          <div className='navigation-drawer-header' ref='header'>
+            <div className='navigation-drawer-header-avatar' ref='avatar' />
+            <div className='navigation-drawer-header-username' ref='username'></div>
+            <div className='navigation-drawer-header-email' ref='email'></div>
+          </div>
           <div className='navigation-drawer-content'>
             <NavigationDrawerItem
               onClick={this.onInfoClick}
@@ -240,7 +279,7 @@ export default class NavigationDrawer extends React.Component {
               getApp={this.props.getApp}
               className='navigation-drawer-login'
             >
-              Zaloguj
+              {this.state.loginItemText}
             </NavigationDrawerItem>
           </div>
         </div>

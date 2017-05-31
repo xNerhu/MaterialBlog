@@ -15,7 +15,33 @@
   height: 128px;
   background-color: $navigationDrawerHeader;
   @include image-center(128px, auto);
-  background-image: url(images/NavigationDrawer/header.png);
+  //background-image: url(images/NavigationDrawer/header.png);
+  position: relative;
+  overflow: hidden;
+}
+
+.navigation-drawer-header-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 100%;
+  @include image-center(100%, 100%);
+  margin-left: 16px;
+  margin-top: 16px;
+}
+
+.navigation-drawer-header-username {
+  margin-top: 8px;
+  margin-left: 16px;
+  font-size: 16px;
+  color: #fff;
+}
+
+.navigation-drawer-header-email {
+  margin-top: 2px;
+  margin-left: 16px;
+  font-size: 16px;
+  color: #fff;
+  @include Roboto-Light;
 }
 
 .navigation-drawer-content {

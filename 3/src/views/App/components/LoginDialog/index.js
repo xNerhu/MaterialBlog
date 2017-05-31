@@ -91,6 +91,14 @@ export default class LoginDialog extends React.Component {
     if (this.refs.password.state.error && this.refs.password.state.focusedDivider) this.toggleError(this.refs.password, false)
     this.refs.login.setValue('')
     this.refs.password.setValue('')*/
+    const app = this.props.getApp()
+    const toolbar = app.getToolBar()
+    const navigationDrawer = app.refs.navigationDrawer
+
+    if (navigationDrawer.toggled) {
+      navigationDrawer.hide()
+      toolbar.refs.menuIcon.changeToDefault()
+    }
     this.refs.dialog.show()
   }
 
@@ -105,65 +113,68 @@ export default class LoginDialog extends React.Component {
     const p = this.checkForError(password)
 
     if (l && p) {
-      this.login()
+      this.login(login, password)
     }
   }
 
   /**
    * Logs user.
    */
-  login = () => {
+  login = (login, password) => {
     const self = this
+    const app = this.props.getApp()
     const content = this.refs.content
 
-    content.style.opacity = '0'
+    if (app.logUser(login, password)) {
+      content.style.opacity = '0'
 
-    this.setState({
-      toggledPreloader: true,
-      dialogTitle: this.titles.loggin
-    })
-
-    // TODO: Make request
-    const timer = setTimeout(function () {
-      self.setState({
-        toggledPreloader: false,
-        dialogTitle: self.titles.logged,
-        actionButtons: self.buttons.logged
+      this.setState({
+        toggledPreloader: true,
+        dialogTitle: this.titles.loggin
       })
 
-      self.showMessage()
-    }, 1000)
+      // TODO: Make request
+      const timer = setTimeout(function () {
+        self.setState({
+          toggledPreloader: false,
+          dialogTitle: self.titles.logged,
+          actionButtons: self.buttons.logged
+        })
 
-    function cancel () {
-      clearTimeout(timer)
-      self.setState({
-        toggledPreloader: false,
-        dialogTitle: self.titles.default,
-        actionButtons: self.buttons.default
-      })
-      content.style.display = 'block'
-      setTimeout(function () {
-        content.style.opacity = '1'
-      }, 1)
-    }
+        self.showMessage()
+      }, 1000)
 
-    this.setState({
-      actionButtons: [
-        {
-          text: 'ANULUJ',
-          shadow: false,
-          style: {},
-          rippleStyle: {
-            backgroundColor: '#2196f3'
-          },
-          foreground: '#2196f3',
-          backgroundColor: 'transparent',
-          onClick: function () {
-            cancel()
+      function cancel () {
+        clearTimeout(timer)
+        self.setState({
+          toggledPreloader: false,
+          dialogTitle: self.titles.default,
+          actionButtons: self.buttons.default
+        })
+        content.style.display = 'block'
+        setTimeout(function () {
+          content.style.opacity = '1'
+        }, 1)
+      }
+
+      this.setState({
+        actionButtons: [
+          {
+            text: 'ANULUJ',
+            shadow: false,
+            style: {},
+            rippleStyle: {
+              backgroundColor: '#2196f3'
+            },
+            foreground: '#2196f3',
+            backgroundColor: 'transparent',
+            onClick: function () {
+              cancel()
+            }
           }
-        }
-      ]
-    })
+        ]
+      })
+    }
   }
 
   /**
