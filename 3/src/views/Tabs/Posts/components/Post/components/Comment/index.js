@@ -42,6 +42,8 @@ export default class Comment extends React.Component {
     } else if (hours > 0) {
       if (hours === 1) {
         result = 'godzinę temu'
+      } else if (hours >= 2 && hours <= 4) {
+        result = hours + ' godziny temu'
       } else {
         result = hours + ' godzin temu'
       }

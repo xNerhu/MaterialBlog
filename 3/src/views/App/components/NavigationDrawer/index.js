@@ -275,6 +275,12 @@ export default class NavigationDrawer extends React.Component {
               Panel
             </NavigationDrawerItem>
             <NavigationDrawerItem
+              getApp={this.props.getApp}
+              className='navigation-drawer-register'
+            >
+              Zarejestruj się
+            </NavigationDrawerItem>
+            <NavigationDrawerItem
               onClick={this.onLoginClick}
               getApp={this.props.getApp}
               className='navigation-drawer-login'

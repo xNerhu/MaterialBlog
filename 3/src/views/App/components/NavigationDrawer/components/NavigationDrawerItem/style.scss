@@ -44,6 +44,12 @@
   }
 }
 
+.navigation-drawer-register {
+  & .icon {
+    background-image: url(images/NavigationDrawer/register.png);
+  }
+}
+
 .navigation-drawer-login {
   & .icon {
     background-image: url(images/NavigationDrawer/login.png);
