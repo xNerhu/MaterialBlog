@@ -280,7 +280,11 @@ export default class Post extends React.Component {
           </div>
         </div>
         <div className='post-comments' ref='comments'>
-          <Comment />
+          {
+            this.props.data.comments.map((data, i) => {
+              return <Comment key={i} data={data} />
+            })
+          }
           <CommentInput />
         </div>
       </div>
