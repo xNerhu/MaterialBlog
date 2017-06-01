@@ -16,6 +16,30 @@ export default class GalleryTab extends React.Component {
 
     this.toggledPictures = false
     this.toggledFullScreen = false
+
+    this.fullScreenPictureWidth = 0
+  }
+
+  componentDidMount () {
+    window.addEventListener('resize', this.changeFullScreenPictureSize)
+  }
+
+  /**
+   * Changes full screen picture size by window width.
+   */
+  changeFullScreenPictureSize = () => {
+    const fullScreenPicture = this.refs.fullScreenPicture
+
+    if (this.fullScreenPictureWidth <= 0) {
+      this.fullScreenPictureWidth = fullScreenPicture.width
+    }
+
+    if (window.innerWidth < this.fullScreenPictureWidth) {
+      fullScreenPicture.classList.add('gallery-picture-full-screen-pic-small')
+    } else {
+      this.fullScreenPictureWidth = fullScreenPicture.width
+      fullScreenPicture.classList.remove('gallery-picture-full-screen-pic-small')
+    }
   }
 
   /**
@@ -107,6 +131,7 @@ export default class GalleryTab extends React.Component {
     if (this.loadedCategories >= this.state.categories.length) {
       app.togglePreloader(false)
       app.canSelectTab = true
+      this.refs.root.style.opacity = '1'
     }
   }
 
@@ -127,13 +152,23 @@ export default class GalleryTab extends React.Component {
     const self = this
     const app = this.props.getApp()
     const toolbar = app.getToolBar()
+    const navigationDrawer = app.refs.navigationDrawer
+    const menuIcon = toolbar.refs.menuIcon
     const searchIcon = toolbar.refs.searchIcon
     const categories = this.refs.categories
     const pictures = this.refs.pictures
 
     searchIcon.hide(true)
 
-    toolbar.refs.menuIcon.changeToArrow()
+    if (!navigationDrawer.toggled) {
+      menuIcon.changeToArrow()
+    } else {
+      navigationDrawer.hide()
+      menuIcon.changeToDefault()
+      setTimeout(function () {
+        menuIcon.changeToArrow()
+      }, 200)
+    }
 
     app.setToolBarTitle(data.name)
     app.hideTabLayout()
@@ -222,7 +257,7 @@ export default class GalleryTab extends React.Component {
     app.setToolBarColor('transparent')
 
     fullScreenBlur.style.backgroundImage = 'url(' + img + ')'
-    fullScreenPicture.style.backgroundImage = 'url(' + img + ')'
+    fullScreenPicture.src = img
 
     fullScreen.style.display = 'block'
     gradient.style.display = 'block'
@@ -231,40 +266,42 @@ export default class GalleryTab extends React.Component {
       fullScreen.style.opacity = '1'
     }, 10)
 
+    this.changeFullScreenPictureSize()
+
     this.toggledFullScreen = true
   }
 
   /**
    * Hides full screen picture.
    */
-   hideFullScreen = (img) => {
-     const app = this.props.getApp()
-     const fullScreen = this.refs.fullScreen
-     const gradient = this.refs.gradient
+  hideFullScreen = (img) => {
+    const app = this.props.getApp()
+    const fullScreen = this.refs.fullScreen
+    const gradient = this.refs.gradient
 
-     app.setState({
-       toolbarShadow: true
-     })
+    app.setState({
+      toolbarShadow: true
+    })
 
-     app.setToolBarColor(app.props.toolbarBackgroundColor)
+    app.setToolBarColor(app.props.toolbarBackgroundColor)
 
-     fullScreen.style.opacity = '0'
-     gradient.style.display = 'none'
+    fullScreen.style.opacity = '0'
+    gradient.style.display = 'none'
 
-     setTimeout(function () {
-       fullScreen.style.display = 'none'
-     }, 300)
+    setTimeout(function () {
+      fullScreen.style.display = 'none'
+    }, 300)
 
-     this.toggledFullScreen = false
-   }
+    this.toggledFullScreen = false
+  }
 
-   /**
+  /**
     * Gets root.
     * @param {DomElement}
     */
-   getRoot = () => {
-     return this.refs.root
-   }
+  getRoot = () => {
+    return this.refs.root
+  }
 
   render () {
     var picturesClass = 'gallery-pictures'
@@ -289,7 +326,7 @@ export default class GalleryTab extends React.Component {
         </div>
         <div className='gallery-picture-full-screen' ref='fullScreen'>
           <div className='gallery-picture-full-screen-blur' ref='fullScreenBlur' />
-          <div className='gallery-picture-full-screen-pic' ref='fullScreenPicture' />
+          <img className='gallery-picture-full-screen-pic' ref='fullScreenPicture' />
         </div>
         <div className='gallery-gradient' ref='gradient' />
       </div>
