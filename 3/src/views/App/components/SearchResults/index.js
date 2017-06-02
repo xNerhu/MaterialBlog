@@ -26,6 +26,7 @@ export default class SearchResults extends React.Component {
     const app = this.props.getApp()
     const toolbar = app.getToolBar()
     const menuIcon = toolbar.refs.menuIcon
+    const searchIcon = toolbar.refs.searchIcon
 
     if (this.lastQuery !== query) {
       this.items = []
@@ -43,13 +44,15 @@ export default class SearchResults extends React.Component {
         toggledTabPages: false
       })
 
-      if (menuIcon.isExit) {
-        menuIcon.changeToDefault()
-        setTimeout(function () {
+      if (!searchIcon.state.toggled || !searchIcon.state.fullWidth) {
+        if (menuIcon.isExit) {
+          menuIcon.changeToDefault()
+          setTimeout(function () {
+            menuIcon.changeToArrow(false)
+          }, 200)
+        } else {
           menuIcon.changeToArrow(false)
-        }, 150)
-      } else {
-        menuIcon.changeToArrow(false)
+        }
       }
 
       // TODO: Make request

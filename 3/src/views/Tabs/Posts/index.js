@@ -187,8 +187,20 @@ export default class PostsTab extends React.Component {
     const self = this
     const app = this.props.getApp()
     const toolbar = app.getToolBar()
+    const navigationDrawer = app.refs.navigationDrawer
     const posts = this.postsObjects
     const searchIcon = toolbar.refs.searchIcon
+    const menuIcon = toolbar.refs.menuIcon
+
+    if (navigationDrawer.toggled) {
+      navigationDrawer.hide()
+      menuIcon.changeToDefault()
+      setTimeout(function () {
+        menuIcon.changeToArrow()
+      }, 200)
+    } else {
+      menuIcon.changeToArrow()
+    }
 
     searchIcon.hide(true)
 
@@ -222,8 +234,6 @@ export default class PostsTab extends React.Component {
       }
 
       this.loadPostsButton.style.display = 'none'
-
-      toolbar.refs.menuIcon.changeToArrow()
 
       app.setToolBarTitle(data.title)
 

@@ -113,7 +113,7 @@ export default class SearchIcon extends React.Component {
         })
       }, 250)
 
-      if (this.props.getApp().getToolBar().refs.menuIcon.isExit) {
+      if (this.state.toggled) {
         this.backMenu()
         this.toolBarItems(true)
       }
@@ -131,7 +131,7 @@ export default class SearchIcon extends React.Component {
   }
 
   /**
-   * Backs menu state.
+   * Backs menu to default state.
    */
   backMenu = () => {
     const app = this.props.getApp()
@@ -141,11 +141,11 @@ export default class SearchIcon extends React.Component {
     if (menuIcon.actualState) {
       if (menuIcon.actualState === 'default' && !searchResults.state.toggled) {
         menuIcon.changeToDefault(false)
-      } else if (menuIcon.actualState === 'arrow' || searchResults.state.toggled) {
+      } else if (menuIcon.actualState === 'arrow' || searchResults.state.toggled || menuIcon.isExit) {
         menuIcon.changeToDefault(false)
         setTimeout(function () {
           menuIcon.changeToArrow(false)
-        }, 500)
+        }, 200)
       }
     }
   }

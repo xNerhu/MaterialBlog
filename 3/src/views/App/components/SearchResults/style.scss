@@ -40,6 +40,8 @@
   margin-top: 4px;
   padding-left: 8px;
   padding-right: 8px;
+  overflow: hidden;
+  max-width: calc(100% - 164px);
 }
 
 .search-results-item-content {
