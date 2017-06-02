@@ -32,7 +32,9 @@ export default class TabLayout extends React.Component {
    * Selects and deselects tabs.
    */
   selectTab = (tab) => {
-    if (this.props.getApp().canSelectTab) {
+    const app = this.props.getApp()
+
+    if (app.canSelectTab) {
       for (var i = 0; i < this.tabs.length; i++) {
         if (this.tabs[i] !== tab && this.tabs[i].selected) {
           this.tabs[i].deselect()
@@ -47,6 +49,12 @@ export default class TabLayout extends React.Component {
       const action = Url.getUrlParameter('action')
       const param = (action === undefined) ? '?tab=' + tab.props.data.url : '?tab=' + tab.props.data.url + '&action=' + action
       window.history.pushState('', '', param)
+
+      app.canSelectTab = false
+
+      setTimeout(function () {
+        app.canSelectTab = true
+      }, 250)
     }
   }
 

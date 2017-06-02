@@ -12,7 +12,7 @@ export default class AboutClassTab extends React.Component {
   render () {
     return (
       <div className='about-class-tab tab-page' ref='root'>
-        O Klasie
+
       </div>
     )
   }

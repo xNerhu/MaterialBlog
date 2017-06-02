@@ -13,6 +13,7 @@ import GalleryTab from '../Tabs/Gallery'
 import AboutClassTab from '../Tabs/AboutClass'
 import LessonsPlanTab from '../Tabs/LessonsPlan'
 
+import Snackbar from '../../imports/materialdesign/components/Snackbar'
 import Tooltip from '../../imports/materialdesign/components/Tooltip'
 import Preloader from '../../imports/materialdesign/components/Preloader'
 
@@ -218,6 +219,15 @@ export default class App extends React.Component {
     }, 1)
 
     this.logUser()
+
+    const was = Cookies.getCookie('was')
+    if (was !== 'true') {
+      Cookies.setCookie('was', 'true', 90)
+
+      setTimeout(function () {
+        self.refs.snackbar.show()
+      }, 1)
+    }
   }
 
   /**
@@ -286,6 +296,14 @@ export default class App extends React.Component {
    */
   getGalleryTab = () => {
     return this.refs.galleryTab
+  }
+
+  /**
+   * Gets about class tab.
+   * @return {AboutClass}
+   */
+  getAboutClassTab = () => {
+    return this.refs.aboutClassTab
   }
 
   /**
@@ -361,6 +379,14 @@ export default class App extends React.Component {
     })
   }
 
+  /**
+   * On snackbar action button click event.
+   * Opens new tab with all informations about cookies.
+   */
+  onSnackbarActionClick = () => {
+    window.open('http://wszystkoociasteczkach.pl/po-co-sa-ciasteczka/', '_blank')
+  }
+
   render () {
     // Styles.
     const tabLayoutStyle = {
@@ -394,7 +420,7 @@ export default class App extends React.Component {
           <div className='tab-pages' style={tabPagesStyle}>
             <PostsTab ref='postsTab' getApp={this.getApp} />
             <GalleryTab ref='galleryTab' getApp={this.getApp} />
-            <AboutClassTab ref='aboutClassTab' />
+            <AboutClassTab ref='aboutClassTab' getApp={this.getApp} />
             <LessonsPlanTab ref='lessonsPlanTab' getApp={this.getApp} />
           </div>
           <SearchResults ref='searchResults' getApp={this.getApp} />
@@ -423,6 +449,9 @@ export default class App extends React.Component {
         <Tooltip ref='tooltipAddComment'>
           Dodaj komentarz
         </Tooltip>
+        <Snackbar ref='snackbar' actionText='ZOBACZ' timeout={7500} onActionClick={this.onSnackbarActionClick}>
+          Strona wykorzystuje pliki cookies.
+        </Snackbar>
       </div>
     )
   }

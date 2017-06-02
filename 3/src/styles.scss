@@ -25,6 +25,8 @@ $pictureBlur: 10px;
 @import 'views/App/components/LoginDialog/style.scss';
 @import 'views/App/components/InfoDialog/style.scss';
 
+@import 'views/Tabs/AboutClass/style.scss';
+
 @import 'views/Tabs/Posts/style.scss';
 @import 'views/Tabs/Posts/components/Post/style.scss';
 @import 'views/Tabs/Posts/components/Post/components/Comment/style.scss';
@@ -42,4 +44,5 @@ $pictureBlur: 10px;
 @import 'src/imports/materialdesign/components/TextField/style.scss';
 @import 'src/imports/materialdesign/components/Tooltip/style.scss';
 @import 'src/imports/materialdesign/components/FAB/style.scss';
+@import 'src/imports/materialdesign/components/Snackbar/style.scss';
 @import 'src/imports/materialdesign/helpers/ripple/style.scss';
