@@ -71,6 +71,10 @@ export default class Tab extends React.Component {
     this.refs.title.style.color = tabLayout.props.defaultColor
     tabLayout.lastSelectedIndex = tabLayout.tabs.indexOf(this)
 
+    if (typeof this.props.data.onDeselect === 'function') {
+      this.props.data.onDeselect()
+    }
+
     this.selected = false
   }
 

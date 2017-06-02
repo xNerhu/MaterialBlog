@@ -104,7 +104,20 @@ export default class App extends React.Component {
     }
 
     function onPostsSelect () {
-      if (!self.selected.posts) self.getPostsTab().loadPosts()
+      const postsTab = self.getPostsTab()
+
+      if (!self.selected.posts) postsTab.loadPosts()
+
+      if (postsTab.isFABToggled) {
+        postsTab.isFABToggled = false
+        postsTab.toggleFAB(true)
+      }
+    }
+
+    function onPostsDeselect () {
+      const postsTab = self.getPostsTab()
+
+      if (postsTab.isFABToggled) postsTab.toggleFAB(false, false)
     }
 
     function onGalleryTabSelect () {
@@ -163,7 +176,8 @@ export default class App extends React.Component {
           title: 'POSTY',
           url: 'posts',
           page: this.refs.postsTab,
-          onSelect: onPostsSelect
+          onSelect: onPostsSelect,
+          onDeselect: onPostsDeselect
         },
         {
           title: 'GALERIA',

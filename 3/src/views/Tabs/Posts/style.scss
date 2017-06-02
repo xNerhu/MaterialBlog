@@ -1,5 +1,6 @@
 .posts {
   transition: 0.3s opacity;
+  z-index: 6;
 }
 
 .fullscreen-post {
@@ -30,6 +31,33 @@
   max-width: 164px;
   margin: 24px auto;
   display: none;
+}
+
+.posts-fab-container {
+  width: 56px;
+  height: 56px;
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  z-index: 8;
+  display: none;
+}
+
+.posts-fab {
+  background-color: #2196f3;
+  width: 0px;
+  height: 0px;
+  z-index: 8;
+  transition: 0.3s width, 0.3s height;
+  position: absolute !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+
+  & .material-fab-icon {
+    background-image: url(images/Post/expand_less.png);
+    @include invert-colors;
+  }
 }
 
 .load-posts-preloader {

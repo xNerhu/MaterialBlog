@@ -2,6 +2,7 @@ import React from 'react'
 
 import Post from './components/Post'
 
+import FAB from '../../../imports/materialdesign/components/FAB'
 import MaterialButton from '../../../imports/materialdesign/components/MaterialButton'
 import Preloader from '../../../imports/materialdesign/components/Preloader'
 
@@ -24,6 +25,8 @@ export default class PostsTab extends React.Component {
 
     this.page = 1
     this.postsPerPage = 5
+
+    this.isFABToggled = false
   }
 
   componentDidMount () {
@@ -297,8 +300,45 @@ export default class PostsTab extends React.Component {
   /**
    * On posts tab scroll event (infinity scroll).
    */
-  onScroll = () => {
+  onScroll = (e) => {
+    const root = this.refs.root
+
     if (isVisible(this.loadPostsButton)) this.loadMorePosts()
+
+    this.toggleFAB((root.scrollTop > window.innerHeight))
+  }
+
+  /**
+   * Shows or hides floating action button.
+   * @param {Boolean} hide or show.
+   * @param {Boolean} can change toggled variable.
+   */
+  toggleFAB = (flag, change = true) => {
+    const self = this
+    const fabContainer = this.refs.fabContainer
+    const fab = this.refs.fab.refs.root
+
+    const size = (flag) ? '56px' : '0px'
+
+    if (flag && !this.isFABToggled) {
+      fabContainer.style.display = 'block'
+
+      setTimeout(function () {
+        fab.style.width = size
+        fab.style.height = size
+      }, 10)
+
+      if (change) this.isFABToggled = true
+    } else if (!flag && this.isFABToggled) {
+      fab.style.width = size
+      fab.style.height = size
+
+      setTimeout(function () {
+        fabContainer.style.display = 'none'
+
+        if (change) self.isFABToggled = false
+      }, 300)
+    }
   }
 
   /**
@@ -360,6 +400,18 @@ export default class PostsTab extends React.Component {
     }, 1000)
   }
 
+  /**
+   * On floating action button click event.
+   * Scrolls to top.
+   * @param {Object} event data.
+   */
+  onFABClick = (e) => {
+    this.postsObjects[0].refs.post.scrollIntoView({
+      block: 'end',
+      behavior: 'smooth'
+    })
+  }
+
   render () {
     // Styles.
     const preloaderStyle = {
@@ -381,6 +433,9 @@ export default class PostsTab extends React.Component {
         <MaterialButton ref='loadPostsButton' className='load-posts-button' onClick={this.onLoadsPostsButtonClick}>
           ZAŁADUJ WIĘCEJ
         </MaterialButton>
+        <div className='posts-fab-container' ref='fabContainer'>
+          <FAB ref='fab' className='posts-fab' onClick={this.onFABClick} />
+        </div>
         <Preloader ref='preloader' className='load-posts-preloader' style={preloaderStyle} strokeColor='#2196f3' strokeWidth={4} />
       </div>
     )
