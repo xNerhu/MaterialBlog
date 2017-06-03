@@ -1,0 +1,12 @@
+.page {
+  width: 100%;
+  height: calc(100% - 64px);
+  opacity: 1;
+  display: block;
+  position: absolute;
+  top: 64px;
+  left: 0;
+  display: none;
+  opacity: 0;
+  transition: 0.3s opacity;
+}

@@ -6,17 +6,6 @@ export default class NavigationDrawer extends React.Component {
   constructor () {
     super()
 
-    this.state = {
-      left: -240,
-      width: 240,
-      height: '100%',
-      darkOpacity: 0,
-      darkVisible: false,
-      persistent: true,
-      toggled: false,
-      loginItemText: 'Zaloguj się'
-    }
-
     this.persistent = true
     this.toggled = false
   }
@@ -48,46 +37,35 @@ export default class NavigationDrawer extends React.Component {
   }
 
   /**
-   * When user logs event.
-   */
-  userLogs = () => {
-    const app = this.props.getApp()
-    const header = this.refs.header
-    const avatar = this.refs.avatar
-    const username = this.refs.username
-    const email = this.refs.email
-
-    header.style.backgroundImage = 'none'
-
-    avatar.style.backgroundImage = 'url(' + app.accountInfo.avatar + ')'
-
-    username.innerHTML = app.accountInfo.userName
-
-    email.innerHTML = app.accountInfo.email
-
-    this.setState({
-      loginItemText: 'Wyloguj się'
-    })
-  }
-
-  /**
    * Show navigation drawer.
    */
   show = () => {
+    const app = this.props.getApp()
+    const toolbar = app.getToolBar()
+    const menuIcon = toolbar.refs.menuIcon
+
     // If window width is less than 768, then show temporary navigation drawer.
     if (window.innerWidth <= 768) this.showTemporary()
     // Otherwise show persistent navigation drawer.
     else this.showPersistent()
+
+    menuIcon.changeToExit()
   }
 
   /**
    * Hide navigation drawer.
    */
   hide = () => {
+    const app = this.props.getApp()
+    const toolbar = app.getToolBar()
+    const menuIcon = toolbar.refs.menuIcon
+
     // If window width is more than 768, then hide temporary navigation drawer.
     if (window.innerWidth <= 768) this.hideTemporary()
     // Otherwise hide persistent navigation drawer.
     else this.hidePersistent()
+
+    menuIcon.changeToDefault()
   }
 
   /**
@@ -195,46 +173,50 @@ export default class NavigationDrawer extends React.Component {
   }
 
   /**
-   * On info item click event.
-   * Shows info dialog.
-   */
-  onInfoClick = () => {
-    const app = this.props.getApp()
-
-    app.getToolBar().refs.menuIcon.changeToDefault()
-    this.hide()
-
-    app.refs.infoDialog.show()
-  }
-
-  /**
-   * On login item click event.
-   * Show login dialog.
-   */
-  onLoginClick = () => {
-    const app = this.props.getApp()
-
-    if (!app.accountInfo) {
-      app.getToolBar().refs.menuIcon.changeToDefault()
-      this.hide()
-
-      app.refs.loginDialog.show()
-    }
-  }
-
-  /**
-   * On github item click event.
-   */
-  onGitHubClick = () => {
-    window.open('https://github.com/xNerhu22/MyClassBlog', '_blank')
-  }
-
-  /**
    * Gets root.
    * @return {DOMElement}
    */
   getRoot = () => {
     return this.refs.root
+  }
+
+  /**
+   * On posts item click event.
+   * Selects posts page.
+   * @param {Object} event data.
+   */
+  onPostsClick = (e) => {
+    const app = this.props.getApp()
+
+    app.selectPage(app.getPostsPage())
+
+    this.hide()
+  }
+
+  /**
+   * On gallery item click event.
+   * Selects gallery page.
+   * @param {Object} event data.
+   */
+  onGalleryClick = (e) => {
+    const app = this.props.getApp()
+
+    app.selectPage(app.getGalleryPage())
+
+    this.hide()
+  }
+
+  /**
+   * On about class item click event.
+   * Selects about class page.
+   * @param {Object} event data.
+   */
+  onAboutClassClick = (e) => {
+    const app = this.props.getApp()
+
+    app.selectPage(app.getAboutClassPage())
+
+    this.hide()
   }
 
   render () {
@@ -243,43 +225,30 @@ export default class NavigationDrawer extends React.Component {
         <div className='navigation-drawer' ref='root'>
           <div className='navigation-drawer-header' ref='header'>
             <div className='navigation-drawer-header-avatar' ref='avatar' />
-            <div className='navigation-drawer-header-username' ref='username'></div>
-            <div className='navigation-drawer-header-email' ref='email'></div>
+            <div className='navigation-drawer-header-username' ref='username' />
+            <div className='navigation-drawer-header-email' ref='email' />
           </div>
           <div className='navigation-drawer-content'>
             <NavigationDrawerItem
-              onClick={this.onInfoClick}
               getApp={this.props.getApp}
-              className='navigation-drawer-info'
+              onClick={this.onPostsClick}
+              className='navigation-drawer-posts'
             >
-              Informacje
-            </NavigationDrawerItem>
-            <NavigationDrawerItem
-              onClick={this.onGitHubClick}
-              getApp={this.props.getApp}
-              className='navigation-drawer-github'
-            >
-              GitHub
-            </NavigationDrawerItem>
-            <div className='navigation-drawer-divider' />
-            <NavigationDrawerItem
-              getApp={this.props.getApp}
-              className='navigation-drawer-panel'
-            >
-              Panel
+              Posty
             </NavigationDrawerItem>
             <NavigationDrawerItem
               getApp={this.props.getApp}
-              className='navigation-drawer-register'
+              onClick={this.onGalleryClick}
+              className='navigation-drawer-gallery'
             >
-              Zarejestruj się
+              Galeria
             </NavigationDrawerItem>
             <NavigationDrawerItem
-              onClick={this.onLoginClick}
               getApp={this.props.getApp}
-              className='navigation-drawer-login'
+              onClick={this.onAboutClassClick}
+              className='navigation-drawer-about-class'
             >
-              {this.state.loginItemText}
+              O klasie
             </NavigationDrawerItem>
           </div>
         </div>

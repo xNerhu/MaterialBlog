@@ -26,32 +26,20 @@
   }
 }
 
-.navigation-drawer-info {
+.navigation-drawer-posts {
   & .icon {
-    background-image: url(images/NavigationDrawer/info.png);
+    background-image: url(images/NavigationDrawer/posts.png);
   }
 }
 
-.navigation-drawer-github {
+.navigation-drawer-gallery {
   & .icon {
-    background-image: url(images/NavigationDrawer/github.png);
+    background-image: url(images/NavigationDrawer/gallery.png);
   }
 }
 
-.navigation-drawer-panel {
+.navigation-drawer-about-class {
   & .icon {
-    background-image: url(images/NavigationDrawer/settings.png);
-  }
-}
-
-.navigation-drawer-register {
-  & .icon {
-    background-image: url(images/NavigationDrawer/register.png);
-  }
-}
-
-.navigation-drawer-login {
-  & .icon {
-    background-image: url(images/NavigationDrawer/login.png);
+    background-image: url(images/NavigationDrawer/aboutclass.png);
   }
 }

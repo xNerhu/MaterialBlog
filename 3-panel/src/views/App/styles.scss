@@ -15,4 +15,12 @@ html, body {
   right: 0;
   top: 0;
   transition: width 0.3s;
+  overflow: hidden;
+}
+
+.preloader {
+  width: 54px;
+  height: 54px;
+  position: absolute;
+  @include center;
 }

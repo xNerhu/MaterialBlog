@@ -18,4 +18,7 @@ $pictureBlur: 10px;
 @import 'views/App/components/NavigationDrawer/style.scss';
 @import 'views/App/components/NavigationDrawer/components/NavigationDrawerItem/style.scss';
 
+@import 'views/Pages/style.scss';
+
+@import 'src/imports/materialdesign/components/Preloader/style.scss';
 @import 'src/imports/materialdesign/helpers/ripple/style.scss';
