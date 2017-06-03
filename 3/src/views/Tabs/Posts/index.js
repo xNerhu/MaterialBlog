@@ -69,6 +69,38 @@ export default class PostsTab extends React.Component {
         self.setState({
           posts: [
             {
+              id: 11,
+              title: 'Test',
+              author: 'Mikołaj Palkiewicz',
+              content: 'Post with style',
+              date: '14.04.2017 20:38',
+              avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+              likes: [
+                {
+                  userName: 'Mikołaj Palkiewicz',
+                  userID: 1
+                },
+                {
+                  userName: 'Eryk Rakowsky',
+                  userID: 15
+                }
+              ],
+              comments: [
+                {
+                  author: 'Mikołaj Palkiewicz',
+                  userID: 1,
+                  content: 'Lorem ipsum dolor sit amet',
+                  date: '31.05.2017 18:14',
+                  avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
+                }
+              ],
+              style: {
+                background: '#2196f3',
+                foreground: '#fff',
+                whiteIcons: true
+              }
+            },
+            {
               id: 10,
               title: 'Test',
               author: 'Mikołaj Palkiewicz',

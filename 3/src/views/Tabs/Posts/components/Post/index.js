@@ -3,6 +3,8 @@ import React from 'react'
 import Comment from './components/Comment'
 import CommentInput from './components/CommentInput'
 
+import Colors from '../../../../../helpers/Colors'
+
 export default class Post extends React.Component {
   constructor () {
     super()
@@ -14,6 +16,7 @@ export default class Post extends React.Component {
 
   componentDidMount () {
     const self = this
+    const postContent = this.refs.content
 
     if (this.props.data.media) {
       var img = new Image()
@@ -55,6 +58,30 @@ export default class Post extends React.Component {
     }, until)
 
     this.props.getPostsTab().postsObjects.push(this)
+
+    const postStyle = this.props.data.style
+
+    if (postStyle !== undefined) {
+      var white = false
+
+      if (postStyle.background) {
+        postContent.style.backgroundColor = postStyle.background
+
+        white = (Colors.getForegroundColor(postStyle.background) === 'white')
+      }
+
+      if (postStyle.foreground) {
+        postContent.style.color = postStyle.foreground
+      } else if (white) {
+        postContent.style.color = '#fff'
+      }
+
+      if (postStyle.whiteIcons || white) {
+        this.refs.showCommentsButton.style.filter = 'invert(100%)'
+        this.refs.likeButton.style.filter = 'invert(100%)'
+        this.refs.subTitle.style.opacity = '1'
+      }
+    }
   }
 
   /**
@@ -235,12 +262,31 @@ export default class Post extends React.Component {
 
   onMouseDown = (e) => {
     if (e.target !== this.refs.showCommentsButton && e.target !== this.refs.commentsCount && e.target !== this.refs.likeButton && e.target !== this.refs.likesList && this.ripple) {
-      var ripple = Ripple.createRipple(this.refs.content, {
-        backgroundColor: '#444',
-        opacity: 0.3
-      }, createRippleMouse(this.refs.content, e, 2))
+      var ripple = Ripple.createRipple(this.refs.content, this.getRippleStyle(), createRippleMouse(this.refs.content, e, 2))
       Ripple.makeRipple(ripple)
     }
+  }
+
+  /**
+   * Gets ripple style to mouse down touch start event.
+   * @return {Object} ripple style.
+   */
+  getRippleStyle = () => {
+    const postStyle = this.props.data.style
+    var style = {
+      backgroundColor: '#444',
+      opacity: 0.3
+    }
+
+    if (postStyle !== undefined) {
+      if (postStyle.background !== undefined) {
+        if (Colors.getForegroundColor(postStyle.background) === 'white' || postStyle.whiteIcons) {
+          style.backgroundColor = '#fff'
+        }
+      }
+    }
+
+    return style
   }
 
   render () {
@@ -262,7 +308,7 @@ export default class Post extends React.Component {
               <div className='post-title'>
                 {this.props.data.title}
               </div>
-              <div className='post-sub-title'>
+              <div className='post-sub-title' ref='subTitle'>
                 {this.props.data.author}, {this.props.data.date}
               </div>
             </div>

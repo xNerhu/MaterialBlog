@@ -2,6 +2,10 @@
   position: relative;
   padding-bottom: 24px;
   user-select: auto;
+
+  &:first-child {
+    margin-top: 16px;
+  }
 }
 
 .post-comment-avatar {
