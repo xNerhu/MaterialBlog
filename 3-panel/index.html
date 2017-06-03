@@ -6,7 +6,7 @@
         <meta name="keywords" content="tagi" />
         <meta name="theme-color" content="#2196f3">
         <link rel="icon" href="src/images/logo.ico">
-        <title>Blog klasy 3B</title>
+        <title>Panel bloga</title>
     </head>
     <body>
         <div id="app">
@@ -21,12 +21,11 @@
           }
           const isLocalHost = (window.location.href.includes('C:/') || window.location.href.includes('localhost')) ? true : false;
           if (isLocalHost) {
-            loadScripts(['http://localhost:1811/build/entry.bundle.js', 'http://localhost:1811/webpack-dev-server.js']);
+            loadScripts(['http://localhost:2002/build/entry.bundle.js', 'http://localhost:2002/webpack-dev-server.js']);
           } else {
             loadScripts(['build/entry.bundle.js']);
           }
         </script>
-        <script src="src/helpers/global.js"></script>
         <script src="src/imports/materialdesign/helpers/ripple/index.js"></script>
     </body>
 </html>

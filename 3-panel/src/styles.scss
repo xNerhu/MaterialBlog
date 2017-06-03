@@ -1,0 +1,21 @@
+$backgroundColor: #F5F5F5;
+$indicator-color: #fff;
+$navigationDrawerHeader: #1E88E5;
+$pictureBlur: 10px;
+
+@import 'mixins/positioning.scss';
+@import 'mixins/fonts.scss';
+@import 'mixins/icons.scss';
+@import 'mixins/cursors.scss';
+@import 'mixins/backgrounds.scss';
+@import 'mixins/shadows.scss';
+@import 'mixins/text.scss';
+
+@import 'views/App/styles.scss';
+@import 'views/App/components/Toolbar/style.scss';
+@import 'views/App/components/Toolbar/components/MultiIcon/style.scss';
+
+@import 'views/App/components/NavigationDrawer/style.scss';
+@import 'views/App/components/NavigationDrawer/components/NavigationDrawerItem/style.scss';
+
+@import 'src/imports/materialdesign/helpers/ripple/style.scss';

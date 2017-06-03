@@ -68,16 +68,16 @@ export default class App extends React.Component {
   }
 
   componentDidMount () {
-    var self = this
+    const self = this
     const navigationDrawer = this.refs.navigationDrawer
 
     // Events.
     function onClickMenu (event) {
-      var toolbar = self.getToolBar()
-      var searchIcon = toolbar.refs.searchIcon
+      const toolbar = self.getToolBar()
+      const searchIcon = toolbar.refs.searchIcon
 
-      var postsTab = self.getPostsTab()
-      var galleryTab = self.getGalleryTab()
+      const postsTab = self.getPostsTab()
+      const galleryTab = self.getGalleryTab()
 
       const searchResults = self.refs.searchResults
 

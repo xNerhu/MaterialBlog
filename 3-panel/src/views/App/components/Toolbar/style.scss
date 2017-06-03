@@ -1,0 +1,53 @@
+.toolbar {
+  position: relative;
+  width: 100%;
+  transition: 0.3s height, 0.3s background-color, 0.3s box-shadow;
+  z-index: 8;
+  height: 64px;
+  background-color: #2196F3;
+}
+
+.toolbar-content {
+  height: 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.toolbar-shadow {
+  box-shadow: 0 2px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.toolbar-icon {
+  position: relative;
+  @include toolbar-icon;
+  @include invert-colors
+  cursor: pointer;
+  transition: 0.3s top, 0.3s opacity;
+}
+
+.toolbar-left {
+  float: left;
+  margin-left: 2px;
+
+  &:first-child {
+    margin-left: 16px;
+  }
+}
+
+.toolbar-right {
+  float: right;
+  margin-right: 4px;
+}
+
+.toolbar-right-first {
+  margin-right: 20px;
+}
+
+.toolbar-title {
+  @include Roboto-Medium;
+  @include center-vertical;
+  position: absolute;
+  left: 80px;
+  font-size: 18px;
+  transition: 0.3s top, 0.3s opacity;
+}
