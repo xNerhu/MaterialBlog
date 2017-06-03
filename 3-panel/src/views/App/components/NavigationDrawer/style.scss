@@ -1,8 +1,7 @@
 .navigation-drawer {
   position: absolute;
   bottom: 0;
-  transition: 0.3s all;
-  transition-property: left, width;
+  transition: 0.3s width, 0.3s left;
   z-index: 10;
   background-color: #fff;
   height: 100%;

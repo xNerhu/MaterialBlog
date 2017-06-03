@@ -33,7 +33,7 @@ export default class App extends React.Component {
     this.pageIsLoading = false
 
     this.selected = {
-      posts: false,
+      posts: true,
       gallery: false,
       aboutClass: false
     }

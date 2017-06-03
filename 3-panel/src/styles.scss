@@ -20,5 +20,10 @@ $pictureBlur: 10px;
 
 @import 'views/Pages/style.scss';
 
+@import 'views/Pages/Posts/style.scss';
+@import 'views/Pages/Posts/components/PostsMobile/style.scss';
+
 @import 'src/imports/materialdesign/components/Preloader/style.scss';
+@import 'src/imports/materialdesign/components/Checkbox/style.scss';
+
 @import 'src/imports/materialdesign/helpers/ripple/style.scss';
