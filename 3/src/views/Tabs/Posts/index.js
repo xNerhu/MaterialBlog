@@ -93,12 +93,7 @@ export default class PostsTab extends React.Component {
                   date: '31.05.2017 18:14',
                   avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
                 }
-              ],
-              style: {
-                background: '#2196f3',
-                foreground: '#fff',
-                whiteIcons: true
-              }
+              ]
             },
             {
               id: 10,

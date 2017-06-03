@@ -3,8 +3,6 @@ import React from 'react'
 import Comment from './components/Comment'
 import CommentInput from './components/CommentInput'
 
-import Colors from '../../../../../helpers/Colors'
-
 export default class Post extends React.Component {
   constructor () {
     super()
@@ -58,30 +56,6 @@ export default class Post extends React.Component {
     }, until)
 
     this.props.getPostsTab().postsObjects.push(this)
-
-    const postStyle = this.props.data.style
-
-    if (postStyle !== undefined) {
-      var white = false
-
-      if (postStyle.background) {
-        postContent.style.backgroundColor = postStyle.background
-
-        white = (Colors.getForegroundColor(postStyle.background) === 'white')
-      }
-
-      if (postStyle.foreground) {
-        postContent.style.color = postStyle.foreground
-      } else if (white) {
-        postContent.style.color = '#fff'
-      }
-
-      if (postStyle.whiteIcons || white) {
-        this.refs.showCommentsButton.style.filter = 'invert(100%)'
-        this.refs.likeButton.style.filter = 'invert(100%)'
-        this.refs.subTitle.style.opacity = '1'
-      }
-    }
   }
 
   /**
@@ -138,6 +112,20 @@ export default class Post extends React.Component {
   }
 
   /**
+   * On show comments button touch start event.
+   * Makes ripple.
+   * @param {Object} event data.
+   */
+  onShowCommentsButtonTouchStart = (e) => {
+    var ripple = Ripple.createRipple(this.refs.showCommentsButton, {
+      backgroundColor: '#000',
+      opacity: 0.4
+    }, createRippleCenter(this.refs.showCommentsButton, 14, 0.4, true))
+    Ripple.makeRipple(ripple)
+    this.props.getApp().blockMouseDownEvent = true
+  }
+
+  /**
    * On show comments button mouse enter event.
    * Shows tooltip.
    * @param {Object} event data.
@@ -185,6 +173,20 @@ export default class Post extends React.Component {
       }, createRippleCenter(this.refs.likeButton, 14))
       Ripple.makeRipple(ripple)
     }
+  }
+
+  /**
+   * On like button touch start event.
+   * Makes ripple.
+   * @param {Object} event data.
+   */
+  onLikeButtonTouchStart = (e) => {
+    var ripple = Ripple.createRipple(this.refs.likeButton, {
+      backgroundColor: '#000',
+      opacity: 0.4
+    }, createRippleCenter(this.refs.likeButton, 14, 0.4, true))
+    Ripple.makeRipple(ripple)
+    this.props.getApp().blockMouseDownEvent = true
   }
 
   /**
@@ -260,10 +262,28 @@ export default class Post extends React.Component {
     }
   }
 
+  /**
+   * On mouse down event.
+   * Makes ripple.
+   * @param {Object} event data.
+   */
   onMouseDown = (e) => {
-    if (e.target !== this.refs.showCommentsButton && e.target !== this.refs.commentsCount && e.target !== this.refs.likeButton && e.target !== this.refs.likesList && this.ripple) {
+    if (e.target !== this.refs.showCommentsButton && e.target !== this.refs.commentsCount && e.target !== this.refs.likeButton && e.target !== this.refs.likesList && this.ripple && !this.props.getApp().blockMouseDownEvent) {
       var ripple = Ripple.createRipple(this.refs.content, this.getRippleStyle(), createRippleMouse(this.refs.content, e, 2))
       Ripple.makeRipple(ripple)
+    }
+  }
+
+  /**
+   * On touch start event.
+   * Makes ripple.
+   * @param {Object} event.
+   */
+  onTouchStart = (e) => {
+    if (e.target !== this.refs.showCommentsButton && e.target !== this.refs.commentsCount && e.target !== this.refs.likeButton && e.target !== this.refs.likesList && this.ripple) {
+      var ripple = Ripple.createRipple(this.refs.content, this.getRippleStyle(), createRippleMouse(this.refs.content, e, 2, true))
+      Ripple.makeRipple(ripple)
+      this.props.getApp().blockMouseDownEvent = true
     }
   }
 
@@ -272,18 +292,9 @@ export default class Post extends React.Component {
    * @return {Object} ripple style.
    */
   getRippleStyle = () => {
-    const postStyle = this.props.data.style
     var style = {
       backgroundColor: '#444',
       opacity: 0.3
-    }
-
-    if (postStyle !== undefined) {
-      if (postStyle.background !== undefined) {
-        if (Colors.getForegroundColor(postStyle.background) === 'white' || postStyle.whiteIcons) {
-          style.backgroundColor = '#fff'
-        }
-      }
     }
 
     return style
@@ -301,7 +312,7 @@ export default class Post extends React.Component {
           <div className='post-media-blur' ref='blurPic' />
           <img className='post-media-pic' ref='pic' />
         </div>
-        <div className='post-content ripple' ref='content' onClick={this.onClick} onMouseDown={this.onMouseDown}>
+        <div className='post-content ripple' ref='content' onClick={this.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>
           <div className='post-info'>
             <div className='post-avatar' />
             <div className='post-primary'>
@@ -315,11 +326,11 @@ export default class Post extends React.Component {
           </div>
           <div className='post-text' ref='text' />
           <div className='post-action'>
-            <div className='post-action-item post-action-show-comments ripple-icon' ref='showCommentsButton' onClick={this.onShowCommentsButtonClick} onMouseDown={this.onShowCommentsButtonMouseDown} onMouseEnter={this.onShowCommentsButtonMouseEnter} onMouseLeave={this.onShowCommentsButtonMouseLeave} />
+            <div className='post-action-item post-action-show-comments ripple-icon' ref='showCommentsButton' onClick={this.onShowCommentsButtonClick} onTouchStart={this.onShowCommentsButtonTouchStart} onMouseDown={this.onShowCommentsButtonMouseDown} onMouseEnter={this.onShowCommentsButtonMouseEnter} onMouseLeave={this.onShowCommentsButtonMouseLeave} />
             <div className='post-action-item-count' ref='commentsCount'>
               {this.props.data.comments.length}
             </div>
-            <div className='post-action-item post-action-like ripple-icon' ref='likeButton' style={likeButtonStyle} onClick={this.onLikeButtonClick} onMouseDown={this.onLikeButtonMouseDown} onMouseEnter={this.onLikeButtonMouseEnter} onMouseLeave={this.onLikeButtonMouseLeave} />
+            <div className='post-action-item post-action-like ripple-icon' ref='likeButton' style={likeButtonStyle} onClick={this.onLikeButtonClick} onTouchStart={this.onLikeButtonTouchStart} onMouseDown={this.onLikeButtonMouseDown} onMouseEnter={this.onLikeButtonMouseEnter} onMouseLeave={this.onLikeButtonMouseLeave} />
             <div className='post-action-item-count' ref='likesList' onMouseEnter={this.onLikesListMouseEnter} onMouseLeave={this.onLikesListMouseLeave}>
               {this.props.data.likes.length}
             </div>

@@ -135,13 +135,14 @@ export default class SearchIcon extends React.Component {
    */
   backMenu = () => {
     const app = this.props.getApp()
+    const navigationDrawer = app.refs.navigationDrawer
     const menuIcon = app.getToolBar().refs.menuIcon
     const searchResults = app.refs.searchResults
 
-    if (menuIcon.actualState) {
+    if (menuIcon.actualState && !navigationDrawer.toggled) {
       if (menuIcon.actualState === 'default' && !searchResults.state.toggled) {
         menuIcon.changeToDefault(false)
-      } else if (menuIcon.actualState === 'arrow' || searchResults.state.toggled || menuIcon.isExit) {
+      } else if (menuIcon.actualState === 'arrow' || !searchResults.state.toggled || menuIcon.isExit) {
         menuIcon.changeToDefault(false)
         setTimeout(function () {
           menuIcon.changeToArrow(false)
