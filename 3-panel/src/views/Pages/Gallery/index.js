@@ -9,3 +9,8 @@ export default class Gallery extends React.Component {
     )
   }
 }
+
+Gallery.defaultProps = {
+  title: 'Galeria',
+  url: 'gallery'
+}

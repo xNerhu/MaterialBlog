@@ -65,7 +65,11 @@ export default class NavigationDrawer extends React.Component {
     // Otherwise hide persistent navigation drawer.
     else this.hidePersistent()
 
-    menuIcon.changeToDefault()
+    menuIcon.isExit = true
+
+    setTimeout(function () {
+      menuIcon.changeToDefault()
+    }, 10)
   }
 
   /**

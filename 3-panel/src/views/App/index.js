@@ -10,6 +10,8 @@ import AboutClass from '../Pages/AboutClass'
 
 import Preloader from '../../imports/materialdesign/components/Preloader'
 
+import Url from '../../helpers/Url'
+
 export default class App extends React.Component {
   constructor () {
     super()
@@ -29,6 +31,12 @@ export default class App extends React.Component {
 
     this.lastPage = null
     this.pageIsLoading = false
+
+    this.selected = {
+      posts: false,
+      gallery: false,
+      aboutClass: false
+    }
   }
 
   componentDidMount () {
@@ -66,7 +74,7 @@ export default class App extends React.Component {
         },
         {
           type: 'Title',
-          title: this.props.toolbarTitle,
+          title: 'Posty',
           id: 'toolbar-title',
           style: {
             color: '#fff'
@@ -76,7 +84,14 @@ export default class App extends React.Component {
     })
 
     setTimeout(function () {
-      self.selectPage(self.refs.posts)
+      const pageParameter = Url.getUrlParameter('page')
+      const page = self.getPage(pageParameter)
+
+      if (page) {
+        self.selectPage(page)
+      } else {
+        self.selectPage(self.getPostsPage())
+      }
     }, 10)
   }
 
@@ -94,6 +109,29 @@ export default class App extends React.Component {
    */
   getToolBar = () => {
     return this.refs.toolbar
+  }
+
+  /**
+   * Sets toolbar title.
+   * @param {String} title.
+   */
+  setToolBarTitle = (title) => {
+    const items = this.state.toolbarItems
+    var index = 0
+
+    // Get title index.
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].type === 'Title') {
+        index = i
+        break
+      }
+    }
+
+    items[index].title = title
+
+    this.setState({
+      toolbarItems: items
+    })
   }
 
   /**
@@ -123,14 +161,14 @@ export default class App extends React.Component {
   }
 
   /**
-    * Selects page.
-    * @param {DOMElement} page.
-    */
+   * Selects page.
+   * @param {DOMElement} page.
+   */
   selectPage = (page) => {
     const self = this
-    const navigationDrawer = this.getNavigationDrawer()
     const lastPage = this.lastPage
     const root = page.refs.root
+    const selected = this.pageWasSelected(page)
 
     if (lastPage !== null && lastPage !== page) {
       const lastPageRoot = lastPage.refs.root
@@ -143,24 +181,89 @@ export default class App extends React.Component {
     }
 
     if (lastPage !== page) {
-      this.togglePreloader(true)
-
-      this.pageIsLoading = true
-
-      // TODO: Make request
-      setTimeout(function () {
-        root.style.display = 'block'
-
-        setTimeout(function () {
-          root.style.opacity = '1'
-        }, 10)
-
-        self.togglePreloader(false)
-        self.pageIsLoading = false
-      }, 1000)
+      this.setToolBarTitle(page.props.title)
 
       this.lastPage = page
+
+      // TODO: Make request
+      if (!selected) {
+        this.togglePreloader(true)
+
+        this.pageIsLoading = true
+
+        this.setSelectedPage(page)
+
+        setTimeout(function () {
+          self.showPage(page)
+          self.togglePreloader(false)
+          self.pageIsLoading = false
+        }, 500)
+      } else {
+        this.showPage(page)
+      }
+
+      const param = '?page=' + page.props.url
+      window.history.pushState('', '', param)
     }
+  }
+
+  /**
+   * Shows page.
+   * @param {Object}
+   */
+  showPage = (page) => {
+    const root = page.refs.root
+
+    root.style.display = 'block'
+
+    setTimeout(function () {
+      root.style.opacity = '1'
+    }, 10)
+  }
+
+  /**
+   * Gets page from name.
+   * @param {String} name of page (from url).
+   * @return {Object}
+   */
+  getPage = (str) => {
+    const posts = this.getPostsPage()
+    const gallery = this.getGalleryPage()
+    const aboutClass = this.getAboutClassPage()
+
+    if (str === posts.props.url) return posts
+    else if (str === gallery.props.url) return gallery
+    else if (str === aboutClass.props.url) return aboutClass
+    else return null
+  }
+
+  /**
+   * Checks that page wasa selected.
+   * @param {Object} page.
+   * @return {Boolean} selected.
+   */
+  pageWasSelected = (page) => {
+    const posts = this.getPostsPage()
+    const gallery = this.getGalleryPage()
+    const aboutClass = this.getAboutClassPage()
+
+    if (page === posts) return this.selected.posts
+    else if (page === gallery) return this.selected.gallery
+    else if (page === aboutClass) return this.selected.aboutClass
+  }
+
+  /**
+   * Sets page selected.
+   * @param {Boolean}
+   */
+  setSelectedPage = (page) => {
+    const posts = this.getPostsPage()
+    const gallery = this.getGalleryPage()
+    const aboutClass = this.getAboutClassPage()
+
+    if (page === posts) this.selected.posts = true
+    else if (page === gallery) this.selected.gallery = true
+    else if (page === aboutClass) this.selected.aboutClass = true
   }
 
   /**
@@ -206,9 +309,4 @@ export default class App extends React.Component {
       </div>
     )
   }
-}
-
-App.defaultProps = {
-  toolbarTitle: 'Blog klasy 3B',
-  toolbarBackgroundColor: '#2196F3'
 }

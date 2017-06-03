@@ -9,3 +9,8 @@ export default class AboutClass extends React.Component {
     )
   }
 }
+
+AboutClass.defaultProps = {
+  title: 'O klasie',
+  url: 'aboutclass'
+}

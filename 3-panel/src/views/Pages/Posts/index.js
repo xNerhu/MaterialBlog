@@ -9,3 +9,8 @@ export default class Posts extends React.Component {
     )
   }
 }
+
+Posts.defaultProps = {
+  title: 'Posty',
+  url: 'posts'
+}
