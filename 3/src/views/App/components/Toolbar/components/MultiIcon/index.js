@@ -1,15 +1,54 @@
-import React from 'react'
-
-export default class MultiIcon extends React.Component {
+export default class MultiIcon {
   constructor () {
-    super()
+    this.onClick = this.onClick.bind(this)
 
     this.isArrow = false
     this.isExit = false
-
     this.canClick = true
 
-    this.actualState = 'default'
+    this.elements = {}
+
+    this.render()
+  }
+
+  /**
+   * Gets root.
+   * @return {DOMElement} root.
+   */
+  getRoot = () => {
+    return this.elements.root
+  }
+
+  /**
+   * On click
+   * @param {Object} event data
+   */
+  onClick = (e) => {
+    // If click mouse event has't been blocked.
+    if (this.canClick && typeof this.canClick === 'function') {
+      this.onClick(e)
+    }
+  }
+
+  /**
+   * Change to exit (X) version
+   * @param {Boolean} update actual state.
+   */
+  changeToExit = (update = true) => {
+    const self = this
+    const root = this.elements.root
+
+    if (!this.isArrow && !this.isExit) {
+      this.blockClick()
+      root.className += ' multiIcon-exit multiIcon-exit-change'
+      this.isExit = null
+      // Wait until end of animation.
+      setTimeout(function () {
+        self.isExit = true
+      }, 500)
+
+      if (update) this.actualState = 'exit'
+    }
   }
 
   /**
@@ -18,7 +57,7 @@ export default class MultiIcon extends React.Component {
    */
   changeToArrow = (update = true) => {
     const self = this
-    const root = this.refs.root
+    const root = this.elements.root
 
     if (!this.isArrow && !this.isExit) {
       this.blockClick()
@@ -35,33 +74,12 @@ export default class MultiIcon extends React.Component {
   }
 
   /**
-   * Change to exit (X) version
-   * @param {Boolean} update actual state.
-   */
-  changeToExit = (update = true) => {
-    const self = this
-    const root = this.refs.root
-
-    if (!this.isArrow && !this.isExit) {
-      this.blockClick()
-      root.className += ' multiIcon-exit multiIcon-exit-change'
-      this.isExit = null
-      // Wait until end of animation.
-      setTimeout(function () {
-        self.isExit = true
-      }, 500)
-
-      if (update) this.actualState = 'exit'
-    }
-  }
-
-  /**
    * Change to normal menu.
    * @param {Boolean} update last state.
    */
   changeToDefault = (update = true) => {
     const self = this
-    const root = this.refs.root
+    const root = this.elements.root
 
     if (this.isArrow && !this.isExit) {
       this.blockClick()
@@ -95,7 +113,8 @@ export default class MultiIcon extends React.Component {
    * Blocks click mouse event.
    */
   blockClick = () => {
-    var self = this
+    const self = this
+
     // Block click mouse event.
     this.canClick = false
     // Wait 1.5 second then unlock click mouse event.
@@ -104,26 +123,31 @@ export default class MultiIcon extends React.Component {
     }, 1500)
   }
 
-  /**
-   * On click
-   * @param {Object} event data
-   */
-  onClick = (e) => {
-    // If click mouse event has't been blocked.
-    if (this.canClick) {
-      this.props.onClick(e)
-    }
-  }
+  render = () => {
+    this.elements.root = document.createElement('div')
+    this.elements.root.setAttributes({
+      class: 'multiIcon'
+    })
 
-  render () {
-    return (
-      <div style={this.props.style} className={this.props.className} onMouseDown={this.props.onMouseDown} onClick={this.onClick} onTouchStart={this.props.onTouchStart} id={this.props.id}>
-        <div className='multiIcon' ref='root'>
-          <div className='multiIcon-grid multiIcon-grid-1' />
-          <div className='multiIcon-grid multiIcon-grid-2' />
-          <div className='multiIcon-grid multiIcon-grid-3' />
-        </div>
-      </div>
-    )
+    this.elements.grid1 = document.createElement('div')
+    this.elements.grid1.setAttributes({
+      class: 'multiIcon-grid multiIcon-grid-1'
+    })
+
+    this.elements.grid2 = document.createElement('div')
+    this.elements.grid2.setAttributes({
+      class: 'multiIcon-grid multiIcon-grid-2'
+    })
+
+    this.elements.grid3 = document.createElement('div')
+    this.elements.grid3.setAttributes({
+      class: 'multiIcon-grid multiIcon-grid-3'
+    })
+
+    this.elements.root.appendChild(this.elements.grid1)
+    this.elements.root.appendChild(this.elements.grid2)
+    this.elements.root.appendChild(this.elements.grid3)
+
+    this.elements.root.addEventListener('click', this.onClick)
   }
 }
