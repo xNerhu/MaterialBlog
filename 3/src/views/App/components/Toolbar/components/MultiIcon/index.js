@@ -5,6 +5,7 @@ export default class MultiIcon {
     this.isArrow = false
     this.isExit = false
     this.canClick = true
+    this.actualState = 'default'
 
     this.elements = {}
 

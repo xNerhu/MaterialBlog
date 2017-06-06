@@ -1,18 +1,73 @@
-import React from 'react'
-
 import TextField from '../../../../../../imports/materialdesign/components/TextField'
 
-export default class SearchIcon extends React.Component {
-  constructor () {
-    super()
+export default class SearchIcon {
+  constructor (parent) {
+    this.toggled = false
+    this.fullWidth = false
+    this.maxWidth = 700
+    this.touched = false
 
-    this.state = {
-      toggled: false,
-      overflow: 'hidden',
-      fullWidth: false
+    this.elements = {}
+
+    this.actionIconRippleStyle = {
+      backgroundColor: '#000',
+      opacity: 0.2
     }
 
-    this.maxWidth = 700
+    this.parent = parent
+
+    this.render()
+  }
+
+  /**
+   * Gets root.
+   * @return {DOMElement} root.
+   */
+  getRoot = () => {
+    return this.elements.root
+  }
+
+  /**
+   * On search icon click event.
+   * @param {Event}
+   */
+  onClick = (e) => {
+    this.elements.root.classList.add('toggled')
+    this.toggled = true
+    this.elements.textField.elements.actionIcon.style.display = 'block'
+  }
+
+  /**
+   * On search icon mouse down event.
+   * Makes ripple.
+   * @param {Event}
+   */
+  onMouseDown = (e) => {
+    if (!this.touched) {
+      let ripple = Ripple.createRipple(this.elements.button, this.actionIconRippleStyle, createRippleCenter(this.elements.button, 14))
+      Ripple.makeRipple(ripple)
+    }
+  }
+
+  /**
+   * On search icon touch start event.
+   * Makes ripple.
+   * @param {Event}
+   */
+  onTouchStart = (e) => {
+    let ripple = Ripple.createRipple(this.elements.button, this.actionIconRippleStyle, createRippleCenter(this.elements.button, 14, 0.4, true))
+    Ripple.makeRipple(ripple)
+    this.touched = true
+  }
+
+  /**
+   * On text field action icon click event.
+   * @param {Event}
+   */
+  onActionIconClick = (e) => {
+    this.elements.root.classList.remove('toggled')
+    this.toggled = false
+    this.elements.textField.elements.actionIcon.style.display = 'none'
   }
 
   /**
@@ -20,121 +75,53 @@ export default class SearchIcon extends React.Component {
    * @param {Object} event data.
    */
   onWindowResize = (e) => {
-    var self = this
-
-    if (this.state.toggled && !this.state.fullWidth && window.innerWidth <= this.maxWidth) {
-      this.showFullWidth()
-    } else if (this.state.toggled && this.state.fullWidth && window.innerWidth > this.maxWidth) {
-      this.showNormal()
-      this.backMenu()
-    }
-  }
-
-  /**
-   * Shows normal-width search input.
-   */
-  showNormal = () => {
-    const menuIcon = this.props.getApp().getToolBar().refs.menuIcon
-
-    this.setState({
-      overflow: 'visible',
-      toggled: true,
-      fullWidth: false
-    })
-
-    this.toolBarItems(true)
-  }
-
-  /**
-   * Shows full-width search input.
-   */
-  showFullWidth = () => {
-    const menuIcon = this.props.getApp().getToolBar().refs.menuIcon
-
-    if (!menuIcon.isExit) {
-      if (menuIcon.isArrow) {
-        menuIcon.changeToDefault(false)
-        setTimeout(function () {
-          menuIcon.changeToExit(false)
-        }, 500)
-      } else {
-        menuIcon.changeToExit(false)
-      }
-    }
-
-    this.setState({
-      overflow: 'hidden',
-      fullWidth: true,
-      toggled: true
-    })
-
-    this.toolBarItems(false)
-  }
-
-  toolBarItems = (flag) => {
-    var toolbarItems = this.props.getApp().state.toolbarItems
-    var indexies = []
-    var searchIconIndex = 0
-
-    for (var i = 0; i < toolbarItems.length; i++) {
-      if (toolbarItems[i].subType !== 'Menu' && toolbarItems[i].subType !== 'Search') {
-        indexies.push(i)
-      } else {
-        searchIconIndex = i
-      }
-    }
-    for (var i = 0; i < indexies.length; i++) {
-      var itemStyle = toolbarItems[indexies[i]].style
-      var style = Object.assign({}, itemStyle)
-      style.top = (!flag) ? '96px' : '50%'
-      toolbarItems[indexies[i]].style = style
-    }
-    this.props.getApp().setState({
-      toolbarItems: toolbarItems
-    })
-  }
-
-  /**
-   * Hides search input or search icon.
-   * @param {Boolean} hide input or search icon.
-   */
-  hide = (flag = false) => {
     const self = this
+    const toolbar = this.getToolbar()
+    const multiIcon = toolbar.getMultiIcon()
 
-    if (!flag) {
-      this.setState({
-        toggled: false,
-        fullWidth: false
-      })
-
+    if (this.toggled && !this.fullWidth && window.innerWidth <= this.maxWidth) {
+      this.elements.root.classList.add('full-width')
+      this.fullWidth = true
+      this.parent.style.width = 'calc(100% - 96px)'
+      this.elements.textField.elements.actionIcon.style.opacity = '0'
       setTimeout(function () {
-        self.setState({
-          overflow: 'hidden'
-        })
-      }, 250)
+        self.elements.textField.elements.actionIcon.style.display = 'none'
+      }, 300)
 
-      if (this.state.toggled) {
-        this.backMenu()
-        this.toolBarItems(true)
+      if (!multiIcon.isExit) {
+        if (multiIcon.isArrow) {
+          multiIcon.changeToDefault(false)
+          setTimeout(function () {
+            multiIcon.changeToExit(false)
+          }, 500)
+        } else {
+          multiIcon.changeToExit(false)
+        }
       }
-      window.removeEventListener('resize', this.onWindowResize)
-    } else {
-      this.refs.searchIcon.style.top = '64px'
+
+      toolbar.hideItems(false, false)
+    } else if (this.toggled && this.fullWidth && window.innerWidth > this.maxWidth) {
+      this.elements.root.classList.remove('full-width')
+      this.fullWidth = false
+      setTimeout(function () {
+        self.parent.style.width = '64px'
+      }, 350)
+      this.backMultiIconState()
+
+      this.elements.textField.elements.actionIcon.style.display = 'block'
+      setTimeout(function () {
+        self.elements.textField.elements.actionIcon.style.opacity = '0.7'
+      }, 10)
+
+      toolbar.showItems()
     }
   }
 
   /**
-   * Shows search icon.
+   * Backs multi icon state to default.
    */
-  show = () => {
-    this.refs.searchIcon.style.top = '0px'
-  }
-
-  /**
-   * Backs menu to default state.
-   */
-  backMenu = () => {
-    const app = this.props.getApp()
+  backMultiIconState = () => {
+    /*const app = this.props.getApp()
     const navigationDrawer = app.refs.navigationDrawer
     const menuIcon = app.getToolBar().refs.menuIcon
     const searchResults = app.refs.searchResults
@@ -148,95 +135,42 @@ export default class SearchIcon extends React.Component {
           menuIcon.changeToArrow(false)
         }, 200)
       }
-    }
-  }
+    }*/
+    const multiIcon = this.getToolbar().getMultiIcon()
 
-  /**
-   * On action icon click event.
-   */
-  onActionIconClick = () => {
-    this.hide()
-  }
-
-  /**
-   * On search button click event.
-   */
-  onSearchButtonClick = () => {
-    if (!this.state.toggled) {
-      if (window.innerWidth <= this.maxWidth) this.showFullWidth()
-      else this.showNormal()
-
-      window.removeEventListener('resize', this.onWindowResize)
-      window.addEventListener('resize', this.onWindowResize)
-    } else {
-      if (typeof this.props.onSearch === 'function') {
-        const value = this.refs.textField.getValue()
-        this.props.onSearch(value)
+    if (multiIcon.actualState) {
+      if (multiIcon.actualState === 'default') {
+        multiIcon.changeToDefault(false)
+      } else if (multiIcon.actualState === 'arrow') {
+        multiIcon.changeToDefault(false)
+        setTimeout(function () {
+          multiIcon.changeToArrow(false)
+        }, 200)
       }
     }
   }
 
-  /**
-   * On text field key press event.
-   * @param {Object} event data.
-   */
-  onKeyPress = (e) => {
-    if (e.key.toLowerCase() === 'enter') {
-      if (typeof this.props.onSearch === 'function') {
-        const value = this.refs.textField.getValue()
-        this.props.onSearch(value)
-      }
-    }
-  }
+  render = () => {
+    this.elements.root = document.createElement('div')
+    this.elements.root.className = 'search-icon-container'
 
-  render () {
-    // Styles.
-    const style = {
-      width: (!this.state.toggled) ? 64 : ((!this.state.fullWidth) ? 400 : 'calc(100% - 96px)')
-    }
+    this.elements.button = document.createElement('div')
+    this.elements.button.className = 'search-icon-button ripple-icon'
+    this.elements.button.setStyle({
+      backgroundImage: 'url(src/images/Toolbar/search.png)'
+    })
+    this.elements.button.addEventListener('click', this.onClick)
+    this.elements.button.addEventListener('mousedown', this.onMouseDown)
+    this.elements.button.addEventListener('touchstart', this.onTouchStart)
 
-    const textFieldStyle = {
-      width: (!this.state.fullWidth) ? 'calc(100% - 64px)' : '100%',
-      overflow: this.state.overflow
-    }
+    this.elements.textField = new TextField()
+    this.elements.textField.setPlaceholder('Wyszukaj')
+    this.elements.textField.getRoot().classList.add('search-icon-text-field')
+    this.elements.textField.elements.actionIcon.addEventListener('click', this.onActionIconClick)
 
-    const textFieldInputStyle = {
-      width: (!this.state.fullWidth) ? 'calc(100% - 24px)' : '100%'
-    }
+    this.elements.root.appendChild(this.elements.button)
+    this.elements.root.appendChild(this.elements.textField.getRoot())
 
-    const searchButtonStyle = {
-      backgroundImage: 'url(' + this.props.image + ')',
-      display: (!this.state.fullWidth) ? 'block' : 'none'
-    }
-
-    const actionIcon = 'src/images/Toolbar/close.png'
-
-    const actionIconStyle = {
-      opacity: (!this.state.fullWidth) ? 0.7 : 0,
-      visibility: (!this.state.fullWidth) ? 'visible' : 'hidden'
-    }
-
-    const className = 'search-icon ' + this.props.className
-
-    return (
-      <div className={className} ref='searchIcon' style={style}>
-        <div className='search-icon-button' ref='searchButton' style={searchButtonStyle} onClick={this.onSearchButtonClick} onMouseDown={this.props.onMouseDown} onTouchStart={this.onTouchStart} />
-        <TextField
-          ref='textField'
-          style={textFieldStyle}
-          className='search-icon-textfield'
-          hint={false}
-          placeHolder='Wyszukaj'
-          placeHolderAlwaysVisible={true}
-          focusColor='#fff'
-          textColor='#fff'
-          actionIcon={actionIcon}
-          onActionIconClick={this.onActionIconClick}
-          actionIconStyle={actionIconStyle}
-          inputStyle={textFieldInputStyle}
-          onKeyPress={this.onKeyPress}
-        />
-      </div>
-    )
+    window.addEventListener('resize', this.onWindowResize)
   }
 }

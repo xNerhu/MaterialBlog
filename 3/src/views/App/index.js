@@ -19,7 +19,7 @@ export default class App {
 
     this.parent.innerHTML = this.elements.preloader.getRoot().outerHTML*/
 
-    /*this.elements.toolbar = new Toolbar()
+    this.elements.toolbar = new Toolbar()
 
     function onMenuClick () {
       console.log('wrwr')
@@ -28,11 +28,10 @@ export default class App {
     const items = [
       {
         type: 'Icon',
-        subType: 'Menu',
+        subType: 'MultiIcon',
         position: 'Left',
-        image: 'src/images/Toolbar/menu.png',
         onClick: onMenuClick(),
-        id: 'toolbar-icon-menu',
+        id: 'toolbar-icon-multi-icon',
         style: {
           width: '24px',
           height: '18px',
@@ -47,16 +46,30 @@ export default class App {
         style: {
           color: '#fff'
         }
+      },
+      {
+        type: 'Icon',
+        subType: 'Search',
+        id: 'toolbar-icon-search',
+        position: 'Right',
+        image: 'src/images/Toolbar/search.png',
+        onSearch: function (query) {
+          if (query.length >= 1) {
+            /*self.refs.searchResults.search(query)
+            if (navigationDrawer.toggled) navigationDrawer.hide()*/
+            console.log(query)
+          }
+        }
       }
     ]
 
     this.elements.toolbar.setItems(items)
 
-    this.parent.appendChild(this.elements.toolbar.elements.root)*/
+    this.parent.appendChild(this.elements.toolbar.elements.root)
 
-    this.elements.textField = new TextField('Hint', 'Placeholder', 'Helper text', 10)
+/*    this.elements.textField = new TextField('Hint', 'Placeholder', 'Helper text', 10)
 
-    this.parent.appendChild(this.elements.textField.getRoot())
+    this.parent.appendChild(this.elements.textField.getRoot())*/
   }
 }
 /*

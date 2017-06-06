@@ -1,12 +1,53 @@
 import MultiIcon from './components/MultiIcon'
+import SearchIcon from './components/SearchIcon'
 
 export default class Toolbar {
   constructor () {
+    this.touched = false
+    this.items = []
+    this.hiddenItems = []
+
     this.elements = {}
+
+    this.actionIconRippleStyle = {
+      backgroundColor: '#000',
+      opacity: 0.2
+    }
 
     this.render()
   }
 
+  /**
+   * On item mouse down event.
+   * Makes ripple.
+   * @param {Event}
+   */
+  onItemMouseDown = (e) => {
+    if (!this.touched) {
+      const target = e.target
+
+      let ripple = Ripple.createRipple(target, this.actionIconRippleStyle, createRippleCenter(target, 14))
+      Ripple.makeRipple(ripple)
+    }
+  }
+
+  /**
+   * On item touch start event.
+   * Makes ripple.
+   * @param {Event}
+   */
+  onItemTouchStart = (e) => {
+    const target = e.target
+
+    let ripple = Ripple.createRipple(target, this.actionIconRippleStyle, createRippleCenter(target, 14, 0.4, true))
+    Ripple.makeRipple(ripple)
+    this.touched = true
+  }
+
+  /**
+   * Sets items.
+   * @param {Object} items.
+   */
   setItems = (items) => {
     let first = true
     let hasLeftIcon = false
@@ -15,17 +56,21 @@ export default class Toolbar {
     for (let i = 0; i < items.length; i++) {
       const item = items[i]
       const type = item.type
+      const subType = item.subType
       const position = item.position
-      const style = item.style
+      let style = item.style
+      const image = item.image
 
       if (type === 'Icon') {
-        let _style = Object.assign(
-          {
-            backgroundImage: 'url(' + item.image + ')'
-          }, style
-        )
+        if (image && subType !== 'Menu' && subType !== 'Search') {
+          style = Object.assign(
+            {
+              backgroundImage: 'url(' + image + ')'
+            }, style
+          )
+        }
 
-        let className = ' toolbar-icon ripple-icon toolbar-' + position.toLowerCase()
+        let className = 'toolbar-icon ripple-icon toolbar-' + position.toLowerCase()
 
         if (first) {
           if (position === 'Right') {
@@ -44,12 +89,25 @@ export default class Toolbar {
         if (id) element.id = id
         if (style) element.setStyle(style)
 
-        if (item.subType === 'Menu') {
-          this.MultiIcon = new MultiIcon()
-          const multiIconRoot = this.MultiIcon.getRoot()
+        if (subType === 'MultiIcon') {
+          this.multiIcon = new MultiIcon()
+          const multiIconRoot = this.multiIcon.getRoot()
+
+          element.addEventListener('mousedown', this.onItemMouseDown)
+          element.addEventListener('touchstart', this.onItemTouchStart)
 
           element.appendChild(multiIconRoot)
+        } else if (subType === 'Search') {
+          element.classList.add('search-icon')
+
+          this.searchIcon = new SearchIcon(element)
+          this.searchIcon.getToolbar = this.getToolbar
+          const searchIconRoot = this.searchIcon.getRoot()
+
+          element.appendChild(searchIconRoot)
         }
+
+        this.items.push(element)
 
         this.elements.content.appendChild(element)
       } else if (type === 'Title') {
@@ -66,8 +124,55 @@ export default class Toolbar {
 
         if (style) this.title.setStyle(style)
 
+        this.items.push(this.title)
+
         this.elements.content.appendChild(this.title)
       }
+    }
+  }
+
+  /**
+   * Gets toolbar.
+   * @return {Toolbar}
+   */
+  getToolbar = () => {
+    return this
+  }
+
+  /**
+   * Gets mutlti icon.
+   * @return {MultiIcon}
+   */
+  getMultiIcon = () => {
+    return this.multiIcon
+  }
+
+  /**
+   * Hides items.
+   * @param {Boolean} hide multi icon.
+   * @param {Boolean} hide search icon.
+   */
+  hideItems = (multiIcon = false, search = true) => {
+    for (let i = 0; i < this.items.length; i++) {
+      const item = this.items[i]
+      const id = item.id
+
+      if (multiIcon && id === 'toolbar-icon-multi-icon' || search && id === 'toolbar-icon-search' || id === '') {
+        item.style.top = '96px'
+        this.hiddenItems.push(item)
+      }
+    }
+  }
+
+  /**
+   * Shows hidden items.
+   */
+  showItems = () => {
+    for (let i = 0; i < this.hiddenItems.length; i++) {
+      const item = this.hiddenItems[i]
+      const top = (!item === this.searchIcon) ? '0px' : '50%'
+
+      item.style.top = top
     }
   }
 
