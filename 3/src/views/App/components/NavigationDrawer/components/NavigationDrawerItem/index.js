@@ -1,42 +1,79 @@
-import React from 'react'
+export default class NavigationDrawerItem {
+  constructor () {
+    this.touched = false
 
-export default class NavigationDrawerItem extends React.Component {
+    this.props = {}
+    this.elements = {}
+
+    this.rippleStyle = {
+      backgroundColor: '#000',
+      opacity: 0.2
+    }
+
+    this.render()
+  }
+
   /**
-    * On mouse down event.
-    * @param {object} event data
-    */
+   * Gets root.
+   * @return {DOMElement} root.
+   */
+  getRoot = () => {
+    return this.elements.root
+  }
+
+  /**
+   * On click event.
+   * @param {Event}
+   */
+   onClick = (e) => {
+     const onClick = this.props.onClick
+
+     if (typeof onClick === 'function') onClick(e)
+   }
+
+  /**
+   * On mouse down event.
+   * @param {Event}
+   */
   onMouseDown = (e) => {
-    if (!this.props.getApp().blockMouseDownEvent) {
-      var ripple = Ripple.createRipple(this.refs.item, {
-        backgroundColor: '#000',
-        opacity: 0.2
-      }, createRippleMouse(this.refs.item, e, 1.5))
+    if (!this.touched) {
+      let ripple = Ripple.createRipple(this.elements.root, this.rippleStyle, createRippleMouse(this.elements.root, e, 1.5))
       Ripple.makeRipple(ripple)
     }
   }
 
   /**
    * On touch event (on mobile).
-   * @param {Object} event data
+   * @param {Event}
    */
   onTouchStart = (e) => {
-    var ripple = Ripple.createRipple(this.refs.item, {
-      backgroundColor: '#000',
-      opacity: 0.2
-    }, createRippleMouse(this.refs.item, e, 1.5, true))
+    let ripple = Ripple.createRipple(this.elements.root, this.rippleStyle, createRippleMouse(this.elements.root, e, 1.5, true))
     Ripple.makeRipple(ripple)
-    this.props.getApp().blockMouseDownEvent = true
+    this.touched = true
   }
 
-  render () {
-    var className = 'navigation-drawer-item ripple '
-    if (this.props.className !== undefined) className += this.props.className
+  /**
+   * Sets text.
+   * @param {String} text.
+   */
+  setText = (str) => {
+    this.elements.text.innerHTML = str
+  }
 
-    return (
-      <div className={className} ref='item' style={this.props.style} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart} onClick={this.props.onClick}>
-        <div className='icon' style={this.props.iconStyle} />
-        {this.props.children}
-      </div>
-    )
+  render = () => {
+    this.elements.root = document.createElement('div')
+    this.elements.root.className = 'navigation-drawer-item ripple'
+    this.elements.root.addEventListener('click', this.onClick)
+    this.elements.root.addEventListener('mousedown', this.onMouseDown)
+    this.elements.root.addEventListener('touchstart', this.onTouchStart)
+
+    this.elements.icon = document.createElement('div')
+    this.elements.icon.className = 'icon'
+
+    this.elements.text = document.createElement('div')
+    this.elements.text.className = 'text'
+
+    this.elements.root.appendChild(this.elements.icon)
+    this.elements.root.appendChild(this.elements.text)
   }
 }

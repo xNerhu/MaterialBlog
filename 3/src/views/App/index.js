@@ -1,6 +1,8 @@
 import Preloader from '../../imports/materialdesign/components/Preloader'
 import TextField from '../../imports/materialdesign/components/TextField'
 
+import NavigationDrawer from './components/NavigationDrawer'
+
 import Toolbar from './components/Toolbar'
 import TabLayout from './components/TabLayout'
 
@@ -18,22 +20,44 @@ export default class App {
     this.render()
   }
 
-  render = () => {
-    /*this.elements.preloader = new Preloader('#00ff00')
+  /**
+   * On multi icon click event.
+   * Important event for navigation.
+   * @param {Event}
+   */
+  onMultiIconClick = (e) => {
+    const toolbar = this.elements.toolbar
+    const multiIcon = toolbar.getMultiIcon()
+    const navigationDrawer = this.elements.navigationDrawer
 
-    this.parent.innerHTML = this.elements.preloader.getRoot().outerHTML*/
+    if (multiIcon.canClick) {
+      if (!navigationDrawer.toggled) {
+        navigationDrawer.show()
+        multiIcon.changeToExit()
+      } else {
+        navigationDrawer.hide()
+        multiIcon.changeToDefault()
+      }
 
-
-    function onMenuClick () {
-      console.log('wrwr')
+      multiIcon.blockClick()
     }
+  }
 
+  /**
+   * Gets toolbar.
+   * @return {Toolbar}
+   */
+  getToolbar = () => {
+    return this.elements.toolbar
+  }
+
+  render = () => {
     const items = [
       {
         type: 'Icon',
         subType: 'MultiIcon',
         position: 'Left',
-        onClick: onMenuClick,
+        onClick: this.onMultiIconClick,
         id: 'toolbar-icon-multi-icon',
         style: {
           width: '24px',
@@ -69,6 +93,48 @@ export default class App {
     // APP CONTENT
     this.elements.appContent = document.createElement('div')
     this.elements.appContent.className = 'app-content'
+
+    // NAVIGATION DRAWER
+    const navigationDrawerItems = [
+      {
+        text: 'Informacje',
+        className: 'navigation-drawer-info',
+        onClick: function (e) {
+          console.log(e)
+        }
+      },
+      {
+        text: 'GitHub',
+        className: 'navigation-drawer-github',
+        onClick: function (e) {
+          window.open('https://github.com/xNerhu22/MyClassBlog', '_blank')
+        }
+      },
+      {
+        text: 'Panel',
+        className: 'navigation-drawer-panel',
+        onClick: function (e) {
+          console.log(e)
+        }
+      },
+      {
+        text: 'Zarejestruj się',
+        className: 'navigation-drawer-register',
+        onClick: function (e) {
+          console.log(e)
+        }
+      },
+      {
+        text: 'Zaloguj się',
+        className: 'navigation-drawer-login',
+        onClick: function (e) {
+          console.log(e)
+        }
+      }
+    ]
+
+    this.elements.navigationDrawer = new NavigationDrawer()
+    this.elements.navigationDrawer.setItems(navigationDrawerItems)
 
     // TOOLBAR
     this.elements.toolbar = new Toolbar()
@@ -122,10 +188,7 @@ export default class App {
 
     // PARENT
     this.parent.appendChild(this.elements.appContent)
-
-/*    this.elements.textField = new TextField('Hint', 'Placeholder', 'Helper text', 10)
-
-    this.parent.appendChild(this.elements.textField.getRoot())*/
+    this.parent.appendChild(this.elements.navigationDrawer.getRoot())
   }
 }
 /*

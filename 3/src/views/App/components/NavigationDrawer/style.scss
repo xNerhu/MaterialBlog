@@ -1,8 +1,7 @@
 .navigation-drawer {
   position: absolute;
   bottom: 0;
-  transition: 0.3s all;
-  transition-property: left, width;
+  transition: 0.3s left ease, 0.3s width;
   z-index: 10;
   background-color: #fff;
   height: 100%;
@@ -15,7 +14,7 @@
   height: 128px;
   background-color: $navigationDrawerHeader;
   @include image-center(128px, auto);
-  //background-image: url(images/NavigationDrawer/header.png);
+  background-image: url(images/NavigationDrawer/header.png);
   position: relative;
   overflow: hidden;
 }

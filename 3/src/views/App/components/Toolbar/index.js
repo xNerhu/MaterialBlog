@@ -68,6 +68,7 @@ export default class Toolbar {
       const position = item.position
       let style = item.style
       const image = item.image
+      const onClick = item.onClick
 
       if (type === 'Icon') {
         if (image && subType !== 'Menu' && subType !== 'Search') {
@@ -92,8 +93,11 @@ export default class Toolbar {
 
         const element = document.createElement('div')
         const id = item.id
+        const isOnClickEvent = (typeof onClick === 'function')
+        if (isOnClickEvent) element.addEventListener('click', onClick)
 
         element.className = className
+
         if (id) element.id = id
         if (style) element.setStyle(style)
 
