@@ -5,8 +5,13 @@ export default class Tab {
     this.elements = {}
 
     this.selected = false
-
     this.defaultOpacity = 0.54
+
+    this.touched = false
+    this.ripple = {
+      backgroundColor: '#fff',
+      opacity: 0.2
+    }
   }
 
   /**
@@ -23,6 +28,29 @@ export default class Tab {
    */
   onClick = (e) => {
     this.getTabLayout.selectTab(this)
+  }
+
+  /**
+   * On tab mouse down event.
+   * Makes ripple.
+   * @param {Event}
+   */
+  onMouseDown = (e) => {
+    if (!this.touched) {
+      let ripple = Ripple.createRipple(this.elements.root, this.ripple, createRippleMouse(this.elements.root, e, 1.5))
+      Ripple.makeRipple(ripple)
+    }
+  }
+
+  /**
+   * On tab touch start event.
+   * Makes ripple.
+   * @param {Event}
+   */
+  onTouchStart = (e) => {
+    let ripple = Ripple.createRipple(this.elements.root, this.ripple, createRippleMouse(this.elements.root, e, 1.5, true))
+    Ripple.makeRipple(ripple)
+    this.touched = true
   }
 
   /**
@@ -110,6 +138,8 @@ export default class Tab {
     this.elements.root = document.createElement('div')
     this.elements.root.className = 'tab ripple'
     this.elements.root.addEventListener('click', this.onClick)
+    this.elements.root.addEventListener('mousedown', this.onMouseDown)
+    this.elements.root.addEventListener('touchstart', this.onTouchStart)
 
     this.elements.title = document.createElement('div')
     this.elements.title.className = 'tab-title'
@@ -122,7 +152,7 @@ export default class Tab {
     const urlTab = Url.getUrlParameter('tab')
     const url = this.url
 
-    if (urlTab === this.url) {
+    if (urlTab === url) {
       setTimeout(function () {
         self.select()
       }, 10)

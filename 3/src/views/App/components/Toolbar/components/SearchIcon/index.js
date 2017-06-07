@@ -32,9 +32,11 @@ export default class SearchIcon {
    * @param {Event}
    */
   onClick = (e) => {
-    this.elements.root.classList.add('toggled')
-    this.toggled = true
-    this.elements.textField.elements.actionIcon.style.display = 'block'
+    if (window.innerWidth <= this.maxWidth) {
+      this.showFullWidth()
+    } else {
+      this.toggle(true)
+    }
   }
 
   /**
@@ -65,9 +67,7 @@ export default class SearchIcon {
    * @param {Event}
    */
   onActionIconClick = (e) => {
-    this.elements.root.classList.remove('toggled')
-    this.toggled = false
-    this.elements.textField.elements.actionIcon.style.display = 'none'
+    this.toggle(false)
   }
 
   /**
@@ -80,6 +80,38 @@ export default class SearchIcon {
     const multiIcon = toolbar.getMultiIcon()
 
     if (this.toggled && !this.fullWidth && window.innerWidth <= this.maxWidth) {
+      this.changeToFullWidth(true)
+    } else if (this.toggled && this.fullWidth && window.innerWidth > this.maxWidth) {
+      this.changeToFullWidth(false)
+    }
+  }
+
+  /**
+   * Toggle search icon.
+   * @param {Boolean}
+   */
+  toggle = (flag) => {
+    if (flag) {
+      this.elements.root.classList.add('toggled')
+    } else {
+      this.elements.root.classList.remove('toggled')
+    }
+
+    this.elements.textField.elements.actionIcon.style.display = (flag) ? 'block' : 'none'
+
+    this.toggled = flag
+  }
+
+  /**
+   * Changes to full width.
+   * @param {Boolean} change or back to normal.
+   */
+  changeToFullWidth = (flag) => {
+    const self = this
+    const toolbar = this.getToolbar()
+    const multiIcon = toolbar.getMultiIcon()
+
+    if (flag) {
       this.elements.root.classList.add('full-width')
       this.fullWidth = true
       this.parent.style.width = 'calc(100% - 96px)'
@@ -100,7 +132,7 @@ export default class SearchIcon {
       }
 
       toolbar.hideItems(false, false)
-    } else if (this.toggled && this.fullWidth && window.innerWidth > this.maxWidth) {
+    } else {
       this.elements.root.classList.remove('full-width')
       this.fullWidth = false
       setTimeout(function () {
@@ -115,6 +147,8 @@ export default class SearchIcon {
 
       toolbar.showItems()
     }
+
+    this.fullWidth = flag
   }
 
   /**
