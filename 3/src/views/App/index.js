@@ -2,6 +2,10 @@ import Preloader from '../../imports/materialdesign/components/Preloader'
 import TextField from '../../imports/materialdesign/components/TextField'
 
 import Toolbar from './components/Toolbar'
+import TabLayout from './components/TabLayout'
+
+import PostsTab from '../Tabs/Posts'
+import GalleryTab from '../Tabs/Gallery'
 
 export default class App {
   constructor (parent) {
@@ -19,7 +23,6 @@ export default class App {
 
     this.parent.innerHTML = this.elements.preloader.getRoot().outerHTML*/
 
-    this.elements.toolbar = new Toolbar()
 
     function onMenuClick () {
       console.log('wrwr')
@@ -30,7 +33,7 @@ export default class App {
         type: 'Icon',
         subType: 'MultiIcon',
         position: 'Left',
-        onClick: onMenuClick(),
+        onClick: onMenuClick,
         id: 'toolbar-icon-multi-icon',
         style: {
           width: '24px',
@@ -63,9 +66,62 @@ export default class App {
       }
     ]
 
+    // APP CONTENT
+    this.elements.appContent = document.createElement('div')
+    this.elements.appContent.className = 'app-content'
+
+    // TOOLBAR
+    this.elements.toolbar = new Toolbar()
     this.elements.toolbar.setItems(items)
 
-    this.parent.appendChild(this.elements.toolbar.elements.root)
+    // TAB LAYOUT
+
+    this.elements.tabLayout = new TabLayout()
+    this.elements.toolbar.getRoot().appendChild(this.elements.tabLayout.getRoot())
+
+    this.elements.appContent.appendChild(this.elements.toolbar.getRoot())
+
+    // TAB PAGES
+    this.elements.tabPages = document.createElement('div')
+    this.elements.tabPages.className = 'tab-pages'
+
+    this.elements.postsTab = new PostsTab()
+    this.elements.tabPages.appendChild(this.elements.postsTab.getRoot())
+
+    this.elements.galleryTab = new GalleryTab()
+    this.elements.tabPages.appendChild(this.elements.galleryTab.getRoot())
+
+    this.elements.appContent.appendChild(this.elements.tabPages)
+
+    const tabs = [
+      {
+        title: 'POSTY',
+        url: 'posts',
+        page: this.elements.postsTab,
+        onSelect: function () {
+          console.log('onselect')
+        },
+        onDeselect: function () {
+          console.log('ondeselect')
+        }
+      },
+      {
+        title: 'GALERIA',
+        url: 'gallery',
+        page: this.elements.galleryTab,
+        onSelect: function () {
+          console.log('onselect')
+        },
+        onDeselect: function () {
+          console.log('ondeselect')
+        }
+      }
+    ]
+
+    this.elements.tabLayout.setTabs(tabs)
+
+    // PARENT
+    this.parent.appendChild(this.elements.appContent)
 
 /*    this.elements.textField = new TextField('Hint', 'Placeholder', 'Helper text', 10)
 

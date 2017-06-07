@@ -1,109 +1,58 @@
-import React from 'react'
-
 import Url from '../../../../../../helpers/Url'
 
-export default class Tab extends React.Component {
+export default class Tab {
   constructor () {
-    super()
+    this.elements = {}
 
     this.selected = false
-  }
 
-  componentDidMount () {
-    var self = this
-    var tabLayout = this.props.getTabLayout()
-    this.setState({color: tabLayout.props.defaultColor})
-    tabLayout.tabs.push(this)
-
-    setTimeout(function () {
-      const urlTab = Url.getUrlParameter('tab')
-      var tabIndex = 0
-      if (urlTab !== '') {
-        for (var i = 0; i < self.props.allTabsData.length; i++) {
-          if (self.props.allTabsData[i].url === urlTab) {
-            tabIndex = i
-            break
-          }
-        }
-      }
-      tabLayout.selectTab(tabLayout.tabs[tabIndex])
-    }, 10)
+    this.defaultOpacity = 0.54
   }
 
   /**
-   * On click event.
+   * Gets root.
+   * @return {DOMElement} root.
    */
-  onClick = () => {
-    this.props.getTabLayout().selectTab(this)
+  getRoot = () => {
+    return this.elements.root
   }
 
   /**
-   * On mouse down event.
-   * @param {object} event data
+   * On tab click event.
+   * @param {Event}
    */
-  onMouseDown = (e) => {
-    if (!this.props.getApp().blockMouseDownEvent) {
-      var ripple = Ripple.createRipple(this.refs.tab, {
-        backgroundColor: '#fff'
-      }, createRippleMouse(this.refs.tab, e, 1.5))
-      Ripple.makeRipple(ripple)
-    }
-  }
-
-  /**
-   * On touch event (on mobile).
-   * @param {Object} event data
-   */
-  onTouchStart = (e) => {
-    var ripple = Ripple.createRipple(this.refs.tab, {
-      backgroundColor: '#fff'
-    }, createRippleMouse(this.refs.tab, e, 1.5, true))
-    Ripple.makeRipple(ripple)
-    this.props.getApp().blockMouseDownEvent = true
-  }
-
-  /**
-   * Deselects tab.
-   */
-  deselect = () => {
-    var tabLayout = this.props.getTabLayout()
-
-    this.refs.title.style.color = tabLayout.props.defaultColor
-    tabLayout.lastSelectedIndex = tabLayout.tabs.indexOf(this)
-
-    if (typeof this.props.data.onDeselect === 'function') {
-      this.props.data.onDeselect()
-    }
-
-    this.selected = false
+  onClick = (e) => {
+    this.getTabLayout.selectTab(this)
   }
 
   /**
    * Selects tab.
    */
   select = () => {
-    if (typeof this.props.data.onSelect === 'function') {
-      this.props.data.onSelect()
-    }
     this.selected = true
 
-    const tabLayout = this.props.getTabLayout()
+    const select = this.onSelect
+    if (typeof select === 'function') select()
 
-    this.refs.title.style.color = tabLayout.props.color
+    const tabLayout = this.getTabLayout
 
-    const indicator = tabLayout.refs.indicator
-    indicator.style.width = this.refs.tab.offsetWidth + 'px'
-    indicator.style.left = this.refs.tab.offsetLeft + 'px'
+    this.elements.title.style.opacity = '1'
+
+    const indicator = tabLayout.elements.indicator
+    indicator.style.width = this.elements.root.offsetWidth + 'px'
+    indicator.style.left = this.elements.root.offsetLeft + 'px'
 
     const page = this.getPage()
-    const root = page.getRoot()
-
-    root.style.display = 'block'
-    setTimeout(function () {
-      root.style.left = '0%'
-    }, 10)
+    const pageRoot = page.getRoot()
 
     if (page != null) {
+      pageRoot.style.display = 'block'
+      setTimeout(function () {
+        pageRoot.style.left = '0%'
+      }, 10)
+
+      tabLayout.selectedIndex = tabLayout.tabs.indexOf(this)
+
       if (tabLayout.lastSelectedIndex === -1 || tabLayout.lastSelectedIndex2 === tabLayout.tabs.indexOf(this)) {
         return
       }
@@ -117,15 +66,34 @@ export default class Tab extends React.Component {
           lastPageRoot.style.left = '-100%'
           setTimeout(function () {
             lastPageRoot.style.display = 'none'
-          }, 250)
+          }, 150)
         }
       } else {
         lastPageRoot.style.left = '100%'
         setTimeout(function () {
           lastPageRoot.style.display = 'none'
-        }, 250)
+        }, 150)
       }
     }
+
+    const action = Url.getUrlParameter('action')
+    const param = (action === undefined) ? '?tab=' + this.url : '?tab=' + this.url + '&action=' + action
+    window.history.pushState('', '', param)
+  }
+
+  /**
+   * Deselects tab.
+   */
+  deselect = () => {
+    const tabLayout = this.getTabLayout
+
+    this.elements.title.style.opacity = this.defaultOpacity
+    tabLayout.lastSelectedIndex = tabLayout.tabs.indexOf(this)
+
+    const deselect = this.onDeselect
+    if (typeof deselect === 'function') deselect()
+
+    this.selected = false
   }
 
   /**
@@ -133,16 +101,31 @@ export default class Tab extends React.Component {
    * @return {DomElement}
    */
   getPage = () => {
-    return this.props.data.page
+    return this.page
   }
 
-  render () {
-    return (
-      <div ref='tab' onClick={this.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart} style={this.props.style} className='tab ripple'>
-        <div ref='title' className='tab-title'>
-          {this.props.data.title}
-        </div>
-      </div>
-    )
+  render = (title = 'TITLE') => {
+    const self = this
+
+    this.elements.root = document.createElement('div')
+    this.elements.root.className = 'tab ripple'
+    this.elements.root.addEventListener('click', this.onClick)
+
+    this.elements.title = document.createElement('div')
+    this.elements.title.className = 'tab-title'
+    this.elements.title.innerHTML = title
+
+    this.elements.root.appendChild(this.elements.title)
+
+    this.getTabLayout.tabs.push(this)
+
+    const urlTab = Url.getUrlParameter('tab')
+    const url = this.url
+
+    if (urlTab === this.url) {
+      setTimeout(function () {
+        self.select()
+      }, 10)
+    }
   }
 }

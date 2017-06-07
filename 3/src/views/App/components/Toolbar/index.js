@@ -18,6 +18,14 @@ export default class Toolbar {
   }
 
   /**
+   * Gets root.
+   * @return {DOMElement} root.
+   */
+  getRoot = () => {
+    return this.elements.root
+  }
+
+  /**
    * On item mouse down event.
    * Makes ripple.
    * @param {Event}
