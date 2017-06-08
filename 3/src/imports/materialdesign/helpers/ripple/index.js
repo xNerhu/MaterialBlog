@@ -48,7 +48,7 @@ var Ripple = class Ripple {
     setTimeout(function () {
       rippleElement.style.width = animateSize + 'px'
       rippleElement.style.height = animateSize + 'px'
-    }, 1)
+    }, 10)
 
     function removeRipple () {
       rippleElement.style.opacity = '0'
@@ -59,10 +59,11 @@ var Ripple = class Ripple {
       }, 400)
     }
 
-    rippleElement.element.addEventListener('mouseout', removeRipple)
-    rippleElement.element.addEventListener('mouseup', removeRipple)
     if (touch) {
       rippleElement.element.addEventListener('touchend', removeRipple)
+    } else {
+      rippleElement.element.addEventListener('mouseout', removeRipple)
+      rippleElement.element.addEventListener('mouseup', removeRipple)
     }
   }
 }

@@ -1,36 +1,18 @@
-import React from 'react'
+export default class CommentInput {
+  constructor (data) {
+    this.elements = {}
 
-import MaterialButton from '../../../../../../../imports/materialdesign/components/MaterialButton'
+    this.touched = false
 
-export default class CommentInput extends React.Component {
-  constructor () {
-    super()
-
-    this.state = {
-      toggledButton: false
-    }
-  }
-
-  componentDidMount () {
-    const app = this.props.getApp()
-
-    if (!app.accountInfo) {
-      this.refs.textarea.disabled = true
-    } else {
-      this.userLogs()
-    }
-    app.elementsToChange.push(this)
+    this.render()
   }
 
   /**
-   * When user logs event.
+   * Gets root.
+   * @return {DOMElement} root.
    */
-  userLogs = () => {
-    const textArea = this.refs.textarea
-
-    textArea.disabled = false
-    textArea.placeholder = 'Dodaj komentarz'
-    textArea.classList.remove('post-comment-input-textarea-not-logged')
+  getRoot = () => {
+    return this.elements.root
   }
 
   /**
@@ -38,51 +20,32 @@ export default class CommentInput extends React.Component {
    * Hides or shows add comment button.
    */
   onInput = () => {
-    const textArea = this.refs.textarea
+    const textArea = this.elements.textarea
     const length = textArea.value.length
-    const inputAction = this.refs.inputAction
+  //  const inputAction = this.refs.inputAction
 
-    if (this.props.getApp().accountInfo) {
+    if (true) { //this.props.getApp().accountInfo
       textArea.style.height = 'auto'
       textArea.style.height = textArea.scrollHeight + 'px'
-      if (length > 0) {
+      /*if (length > 0) {
         inputAction.style.height = inputAction.scrollHeight + 'px'
       } else {
         inputAction.style.height = '0px'
-      }
+      }*/
     } else {
-      inputAction.style.height = '0px'
+    //  inputAction.style.height = '0px'
     }
   }
 
-  /**
-   * On textarea click event.
-   * @param {Object} event data.
-   */
-  onClick = (e) => {
-    const app = this.props.getApp()
-    const loginDialog = app.refs.loginDialog
+  render = () => {
+    this.elements.root = document.createElement('div')
+    this.elements.root.className = 'post-comment-input'
 
-    if (!app.accountInfo) {
-      loginDialog.show()
-    }
-  }
-
-  render () {
-    // Styles.
-    const materialButtonRippleStyle = {
-      backgroundColor: '#2196f3'
-    }
-
-    return (
-      <div className='post-comment-input'>
-        <textarea ref='textarea' className='post-comment-input-textarea post-comment-input-textarea-not-logged' placeholder='Zaloguj się, by móc dodawać komentarze' onClick={this.onClick} onInput={this.onInput} />
-        <div className='post-comments-input-action' ref='inputAction'>
-          <MaterialButton shadow={false} backgroundColor='transparent' color='#2196f3' rippleStyle={materialButtonRippleStyle}>
-            DODAJ
-          </MaterialButton>
-        </div>
-      </div>
-    )
+    // TEXT AREA
+    this.elements.textarea = document.createElement('textarea')
+    this.elements.textarea.className = 'post-comment-input-textarea'
+    this.elements.textarea.setAttribute('placeholder', 'Zaloguj się, by móc dodawać komentarze')
+    this.elements.textarea.addEventListener('input', this.onInput)
+    this.elements.root.appendChild(this.elements.textarea)
   }
 }

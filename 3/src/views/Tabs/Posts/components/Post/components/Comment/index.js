@@ -1,7 +1,28 @@
-import React from 'react'
+export default class Comment {
+  constructor (data) {
+    this.elements = {}
 
-export default class Comment extends React.Component {
-  componentDidMount () {
+    this.touched = false
+
+    this.props = {
+      data: data
+    }
+
+    this.render()
+  }
+
+  /**
+   * Gets root.
+   * @return {DOMElement} root.
+   */
+  getRoot = () => {
+    return this.elements.root
+  }
+
+  /**
+   * Sets date.
+   */
+  setDate = () => {
     const date = new Date()
     const year = date.getFullYear()
     const month = date.getMonth() + 1
@@ -17,7 +38,7 @@ export default class Comment extends React.Component {
     const months = month - commentDate.month
     const years = year - commentDate.year
 
-    var result = ''
+    let result = ''
 
     if (years > 0) {
       if (years === 1) {
@@ -61,7 +82,7 @@ export default class Comment extends React.Component {
       result = 'Error (Component: Comment/index.js)'
     }
 
-    this.refs.date.innerHTML = result
+    this.elements.date.innerHTML = result
   }
 
   /**
@@ -88,23 +109,43 @@ export default class Comment extends React.Component {
     }
   }
 
-  render () {
-    return (
-      <div className='post-comment'>
-        <div className='post-comment-avatar' />
-        <div className='post-comment-info'>
-          <div className='post-comment-author'>
-            {this.props.data.author}
-          </div>
-          <div className='post-comment-content'>
-            {this.props.data.content}
-          </div>
-          <div className='post-comment-date' ref='date'>
-            1d
-          </div>
-        </div>
-        <div className='post-comment-clear' />
-      </div>
-    )
+  render = () => {
+    this.elements.root = document.createElement('div')
+    this.elements.root.className = 'post-comment'
+
+    // AVATAR
+    this.elements.avatar = document.createElement('div')
+    this.elements.avatar.className = 'post-comment-avatar'
+    this.elements.avatar.style.backgroundImage = 'url(' + this.props.data.avatar + ')'
+    this.elements.root.appendChild(this.elements.avatar)
+
+    // INFO
+    this.elements.info = document.createElement('div')
+    this.elements.info.className = 'post-comment-info'
+    this.elements.root.appendChild(this.elements.info)
+
+    // AUTHOR
+    this.elements.author = document.createElement('div')
+    this.elements.author.className = 'post-comment-author'
+    this.elements.author.innerHTML = this.props.data.author
+    this.elements.info.appendChild(this.elements.author)
+
+    // TEXT
+    this.elements.text = document.createElement('div')
+    this.elements.text.className = 'post-comment-content'
+    this.elements.text.innerHTML = this.props.data.content
+    this.elements.info.appendChild(this.elements.text)
+
+    // DATE
+    this.elements.date = document.createElement('div')
+    this.elements.date.className = 'post-comment-date'
+    this.elements.info.appendChild(this.elements.date)
+
+    // CLEAR
+    this.elements.clear = document.createElement('div')
+    this.elements.clear.className = 'post-comment-clear'
+    this.elements.root.appendChild(this.elements.clear)
+
+    this.setDate()
   }
 }

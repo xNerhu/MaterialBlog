@@ -1,350 +1,260 @@
-import React from 'react'
-
 import Comment from './components/Comment'
 import CommentInput from './components/CommentInput'
 
-export default class Post extends React.Component {
-  constructor () {
-    super()
+export default class Post {
+  constructor (data, index) {
+    this.elements = {}
+    this.props = {
+      ripple: true,
+      rippleStyle: {
+        backgroundColor: '#000',
+        opacity: 0.2
+      },
+      actionIconRippleStyle: {
+        backgroundColor: '#000',
+        opacity: 0.4
+      },
+      data: data,
+      index: index
+    }
 
+    this.touched = false
     this.toggledComments = false
-    this.canClickShowCommentsButton = true
-    this.ripple = true
-  }
 
-  componentDidMount () {
-    const self = this
-    const postContent = this.refs.content
-
-    if (this.props.data.media) {
-      var img = new Image()
-
-      /**
-       * On img load event.
-       */
-      img.onload = function () {
-        const height = this.height
-        const width = this.width
-
-        self.refs.pic.src = this.src
-        if (height !== width) {
-          self.refs.blurPic.style.backgroundImage = 'url(' + this.src + ')'
-        } else {
-          self.refs.pic.style.maxHeight = '96px'
-        }
-      }
-
-      img.src = this.props.data.media
-    }
-
-    // for tags support, but you can make in div {this.props.data.content}
-    this.refs.text.innerHTML = this.props.data.content
-
-    const postsTab = this.props.getPostsTab()
-    const page = postsTab.page
-    var index = this.props.index
-
-    if (page >= 2) {
-      index -= postsTab.state.posts.length
-    }
-
-    const until = ((index + 1) * 0.1) * 1000
-
-    setTimeout(function () {
-      self.refs.post.style.opacity = '1'
-      self.refs.post.style.marginTop = '32px'
-    }, until)
-
-    this.props.getPostsTab().postsObjects.push(this)
+    this.render()
   }
 
   /**
-    * On show comments button click event.
-    * Shows or hides comments.
-    * @param {Object} event data.
-    */
-  onShowCommentsButtonClick = (e) => {
-    if (this.canClickShowCommentsButton) {
-      const self = this
-      const app = this.props.getApp()
-      const comments = this.refs.comments
-      const showCommentsButton = this.refs.showCommentsButton
-
-      this.toggledComments = !this.toggledComments
-      this.canClickShowCommentsButton = false
-
-      if (this.toggledComments) {
-        showCommentsButton.style.transform = 'rotate(180deg)'
-        comments.style.height = comments.scrollHeight + 'px'
-
-        setTimeout(function () {
-          comments.style.height = 'auto'
-          self.canClickShowCommentsButton = true
-        }, 350)
-      } else {
-        showCommentsButton.style.transform = 'rotate(0deg)'
-
-        comments.style.height = comments.scrollHeight + 'px'
-        setTimeout(function () {
-          comments.style.height = '0px'
-          self.canClickShowCommentsButton = true
-        }, 10)
-      }
-
-      if (this.toggledComments) app.refs.tooltipShowComments.hide()
-      else app.refs.tooltipHideComments.hide()
-    }
-  }
-
-  /**
-   * On show comments button mouse down event.
-   * Makes ripple.
-   * @param {Object} event data.
+   * Gets root.
+   * @return {DOMElement} root.
    */
-  onShowCommentsButtonMouseDown = (e) => {
-    if (!this.props.getApp().blockMouseDownEvent) {
-      var ripple = Ripple.createRipple(this.refs.showCommentsButton, {
-        backgroundColor: '#000',
-        opacity: 0.4
-      }, createRippleCenter(this.refs.showCommentsButton, 14))
-      Ripple.makeRipple(ripple)
-    }
-  }
-
-  /**
-   * On show comments button touch start event.
-   * Makes ripple.
-   * @param {Object} event data.
-   */
-  onShowCommentsButtonTouchStart = (e) => {
-    var ripple = Ripple.createRipple(this.refs.showCommentsButton, {
-      backgroundColor: '#000',
-      opacity: 0.4
-    }, createRippleCenter(this.refs.showCommentsButton, 14, 0.4, true))
-    Ripple.makeRipple(ripple)
-    this.props.getApp().blockMouseDownEvent = true
-  }
-
-  /**
-   * On show comments button mouse enter event.
-   * Shows tooltip.
-   * @param {Object} event data.
-   */
-  onShowCommentsButtonMouseEnter = (e) => {
-    const app = this.props.getApp()
-
-    if (this.toggledComments) {
-      app.refs.tooltipHideComments.show(this.refs.showCommentsButton)
-    } else {
-      app.refs.tooltipShowComments.show(this.refs.showCommentsButton)
-    }
-  }
-
-  /**
-   * On show comments button mouse leave event.
-   * hides tooltip.
-   * @param {Object} event data.
-   */
-  onShowCommentsButtonMouseLeave = (e) => {
-    const app = this.props.getApp()
-
-    if (this.toggledComments) app.refs.tooltipHideComments.hide()
-    else app.refs.tooltipShowComments.hide()
-  }
-
-  /**
-   * On like button click event.
-   * @param {Object} event data.
-   */
-  onLikeButtonClick = (e) => {
-
-  }
-
-  /**
-   * On like button mouse down event.
-   * Makes ripple.
-   * @param {Object} event data.
-   */
-  onLikeButtonMouseDown = (e) => {
-    if (!this.props.getApp().blockMouseDownEvent) {
-      var ripple = Ripple.createRipple(this.refs.likeButton, {
-        backgroundColor: '#000',
-        opacity: 0.4
-      }, createRippleCenter(this.refs.likeButton, 14))
-      Ripple.makeRipple(ripple)
-    }
-  }
-
-  /**
-   * On like button touch start event.
-   * Makes ripple.
-   * @param {Object} event data.
-   */
-  onLikeButtonTouchStart = (e) => {
-    var ripple = Ripple.createRipple(this.refs.likeButton, {
-      backgroundColor: '#000',
-      opacity: 0.4
-    }, createRippleCenter(this.refs.likeButton, 14, 0.4, true))
-    Ripple.makeRipple(ripple)
-    this.props.getApp().blockMouseDownEvent = true
-  }
-
-  /**
-   * On like button mouse enter event.
-   * Shows tooltip.
-   * @param {Object} event data.
-   */
-  onLikeButtonMouseEnter = (e) => {
-    const app = this.props.getApp()
-    const tooltipsData = app.state.tooltipsData
-
-    const text = (this.props.isLikes(this.props.data.likes) ? 'Lubię to!' : 'Polub to!')
-    tooltipsData.like.text = text
-    app.setState({
-      tooltipsData: tooltipsData
-    })
-
-    app.refs.tooltipLike.show(this.refs.likeButton)
-  }
-
-  /**
-   * On like button mouse leave event.
-   * hides tooltip.
-   * @param {Object} event data.
-   */
-  onLikeButtonMouseLeave = (e) => {
-    this.props.getApp().refs.tooltipLike.hide()
-  }
-
-  /**
-   * On likes list mouse enter event.
-   * Shows tooltip.
-   * @param {Object} event data.
-   */
-  onLikesListMouseEnter = (e) => {
-    const app = this.props.getApp()
-    const tooltipsData = app.state.tooltipsData
-
-    var list = ''
-    if (this.props.data.likes.length >= 1) {
-      for (var i = 0; i < this.props.data.likes.length; i++) {
-        list += this.props.data.likes[i].userName + ((i < this.props.data.likes.length - 1) ? '\n' : '')
-      }
-    } else {
-      list = '...'
-    }
-
-    tooltipsData.like.list = list
-
-    app.setState({
-      tooltipsData: tooltipsData
-    })
-
-    app.refs.tooltipLikesList.show(this.refs.likesList)
-  }
-
-  /**
-   * On likes list mouse enter leave.
-   * Hides tooltip.
-   * @param {Object} event data.
-   */
-  onLikesListMouseLeave = (e) => {
-    this.props.getApp().refs.tooltipLikesList.hide()
-  }
-
-  /**
-   * On post click event.
-   * @param {Object} event data.
-   */
-  onClick = (e) => {
-    if (e.target !== this.refs.showCommentsButton && e.target !== this.refs.commentsCount && e.target !== this.refs.likeButton && e.target !== this.refs.likesList && this.ripple) {
-      this.props.enterFullScreen(this.refs.post, this.props.data)
-    }
+  getRoot = () => {
+    return this.elements.root
   }
 
   /**
    * On mouse down event.
    * Makes ripple.
-   * @param {Object} event data.
+   * @param {Event}
    */
   onMouseDown = (e) => {
-    if (e.target !== this.refs.showCommentsButton && e.target !== this.refs.commentsCount && e.target !== this.refs.likeButton && e.target !== this.refs.likesList && this.ripple && !this.props.getApp().blockMouseDownEvent) {
-      var ripple = Ripple.createRipple(this.refs.content, this.getRippleStyle(), createRippleMouse(this.refs.content, e, 2))
+    if (!this.touched && e.target !== this.elements.showCommentsButton && e.target !== this.elements.commentsCount && e.target !== this.elements.likeButton && e.target !== this.elements.likesCount && this.props.ripple) {
+      let ripple = Ripple.createRipple(this.elements.content, this.props.rippleStyle, createRippleMouse(this.elements.content, e, 2))
       Ripple.makeRipple(ripple)
     }
   }
 
   /**
-   * On touch start event.
+   * On touch start event (on mobile).
    * Makes ripple.
-   * @param {Object} event.
+   * @param {Event}
    */
   onTouchStart = (e) => {
-    if (e.target !== this.refs.showCommentsButton && e.target !== this.refs.commentsCount && e.target !== this.refs.likeButton && e.target !== this.refs.likesList && this.ripple) {
-      var ripple = Ripple.createRipple(this.refs.content, this.getRippleStyle(), createRippleMouse(this.refs.content, e, 2, true))
+    if (e.target !== this.elements.showCommentsButton && e.target !== this.elements.commentsCount && e.target !== this.elements.likeButton && e.target !== this.elements.likesCount && this.props.ripple) {
+      let ripple = Ripple.createRipple(this.elements.content, this.props.rippleStyle, createRippleMouse(this.elements.content, e, 2, true))
       Ripple.makeRipple(ripple)
-      this.props.getApp().blockMouseDownEvent = true
+
+      this.touched = true
     }
   }
 
   /**
-   * Gets ripple style to mouse down touch start event.
-   * @return {Object} ripple style.
+   * On action icon mouse down event.
+   * Makes ripple.
+   * @param {Event}
    */
-  getRippleStyle = () => {
-    var style = {
-      backgroundColor: '#444',
-      opacity: 0.3
+  onActionIconMouseDown = (e) => {
+    if (!this.touched) {
+      let ripple = Ripple.createRipple(e.target, this.props.actionIconRippleStyle, createRippleCenter(e.target, 14))
+      Ripple.makeRipple(ripple)
     }
-
-    return style
   }
 
-  render () {
-    // Styles.
-    const likeButtonStyle = {
-      backgroundImage: (this.props.isLikes(this.props.data.likes)) ? 'url(src/images/Post/favorite_full.png)' : 'url(src/images/Post/favorite_border.png)'
+  /**
+   * On action icon touch start event (on mobile).
+   * Makes ripple.
+   * @param {Event}
+   */
+  onActionIconTouchStart = (e) => {
+    let ripple = Ripple.createRipple(e.target, this.props.actionIconRippleStyle, createRippleCenter(e.target, 14, 0.4, true))
+    Ripple.makeRipple(ripple)
+    this.touched = true
+  }
+
+  /**
+   * On show comments button click event.
+   * @param {Event}
+   */
+  onShowCommentsButtonClick = (e) => {
+    if (this.toggledComments !== null) this.toggleComments(!this.toggledComments)
+  }
+
+  /**
+   * Toggle comments.
+   * @param {Boolean}
+   */
+  toggleComments = (flag) => {
+    const self = this
+    const button = this.elements.showCommentsButton
+    const comments = this.elements.comments
+
+    this.toggledComments = null
+    button.style.transform = 'rotate(' + ((flag) ? 180 : 0) + 'deg)'
+    comments.style.height = comments.scrollHeight + 'px'
+
+    if (flag) {
+      setTimeout(function () {
+        comments.style.height = 'auto'
+        self.toggledComments = true
+      }, 300)
+    } else {
+      setTimeout(function () {
+        comments.style.height = '0px'
+        self.toggledComments = false
+      }, 10)
+    }
+  }
+
+  /**
+   * Adds comments.
+   */
+  loadComments = () => {
+    const comments = this.elements.comments
+
+    for (let i = 0; i < this.props.data.comments.length; i++) {
+      const comment = new Comment(this.props.data.comments[i])
+
+      comments.appendChild(comment.getRoot())
     }
 
-    return (
-      <div className='post' ref='post'>
-        <div className='post-media'>
-          <div className='post-media-blur' ref='blurPic' />
-          <img className='post-media-pic' ref='pic' />
-        </div>
-        <div className='post-content ripple' ref='content' onClick={this.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>
-          <div className='post-info'>
-            <div className='post-avatar' />
-            <div className='post-primary'>
-              <div className='post-title'>
-                {this.props.data.title}
-              </div>
-              <div className='post-sub-title' ref='subTitle'>
-                {this.props.data.author}, {this.props.data.date}
-              </div>
-            </div>
-          </div>
-          <div className='post-text' ref='text' />
-          <div className='post-action'>
-            <div className='post-action-item post-action-show-comments ripple-icon' ref='showCommentsButton' onClick={this.onShowCommentsButtonClick} onTouchStart={this.onShowCommentsButtonTouchStart} onMouseDown={this.onShowCommentsButtonMouseDown} onMouseEnter={this.onShowCommentsButtonMouseEnter} onMouseLeave={this.onShowCommentsButtonMouseLeave} />
-            <div className='post-action-item-count' ref='commentsCount'>
-              {this.props.data.comments.length}
-            </div>
-            <div className='post-action-item post-action-like ripple-icon' ref='likeButton' style={likeButtonStyle} onClick={this.onLikeButtonClick} onTouchStart={this.onLikeButtonTouchStart} onMouseDown={this.onLikeButtonMouseDown} onMouseEnter={this.onLikeButtonMouseEnter} onMouseLeave={this.onLikeButtonMouseLeave} />
-            <div className='post-action-item-count' ref='likesList' onMouseEnter={this.onLikesListMouseEnter} onMouseLeave={this.onLikesListMouseLeave}>
-              {this.props.data.likes.length}
-            </div>
-          </div>
-        </div>
-        <div className='post-comments' ref='comments'>
-          {
-            this.props.data.comments.map((data, i) => {
-              return <Comment key={i} data={data} />
-            })
-          }
-          <CommentInput getApp={this.props.getApp} />
-        </div>
-      </div>
-    )
+    this.commentInput = new CommentInput()
+    comments.appendChild(this.commentInput.getRoot())
+  }
+
+  /**
+   * Sets media.
+   */
+  setMedia = () => {
+    const pic = this.props.data.media
+    const mediaBlur = this.elements.mediaBlur
+    const mediaPic = this.elements.mediaPic
+
+    mediaBlur.style.backgroundImage = 'url(' + pic + ')'
+    mediaPic.src = pic
+  }
+
+  /**
+   * Animates post.
+   */
+  animate = () => {
+    const self = this
+    const root = this.getRoot()
+    const index = this.props.index
+
+    const until = ((index + 1) * 0.1) * 1000
+
+    setTimeout(function () {
+      root.style.opacity = '1'
+      root.style.marginTop = '32px'
+    }, until + 100)
+  }
+
+  render = () => {
+    this.elements.root = document.createElement('div')
+    this.elements.root.className = 'post'
+
+    // MEDIA
+    this.elements.media = document.createElement('div')
+    this.elements.media.className = 'post-media'
+    this.elements.root.appendChild(this.elements.media)
+
+    this.elements.mediaBlur = document.createElement('div')
+    this.elements.mediaBlur.className = 'post-media-blur'
+    this.elements.media.appendChild(this.elements.mediaBlur)
+
+    this.elements.mediaPic = document.createElement('img')
+    this.elements.mediaPic.className = 'post-media-pic'
+    this.elements.media.appendChild(this.elements.mediaPic)
+
+    // CONTENT
+    this.elements.content = document.createElement('div')
+    this.elements.content.className = 'post-content ripple'
+    this.elements.content.addEventListener('mousedown', this.onMouseDown)
+    this.elements.content.addEventListener('touchstart', this.onTouchStart)
+    this.elements.root.appendChild(this.elements.content)
+
+    // INFO
+    this.elements.info = document.createElement('div')
+    this.elements.info.className = 'post-info'
+    this.elements.content.appendChild(this.elements.info)
+
+    // AVATAR
+    this.elements.avatar = document.createElement('div')
+    this.elements.avatar.className = 'post-avatar'
+    this.elements.info.appendChild(this.elements.avatar)
+
+    // PRIMARY
+    this.elements.primary = document.createElement('div')
+    this.elements.primary.className = 'post-primary'
+    this.elements.info.appendChild(this.elements.primary)
+
+    // TITLE
+    this.elements.title = document.createElement('div')
+    this.elements.title.className = 'post-title'
+    this.elements.title.innerHTML = this.props.data.title
+    this.elements.primary.appendChild(this.elements.title)
+
+    // SUB TITLE
+    this.elements.subTitle = document.createElement('div')
+    this.elements.subTitle.className = 'post-sub-title'
+    this.elements.subTitle.innerHTML = this.props.data.author + ', ' + this.props.data.date
+    this.elements.primary.appendChild(this.elements.subTitle)
+
+    // TEXT
+    this.elements.text = document.createElement('div')
+    this.elements.text.className = 'post-text'
+    this.elements.text.innerHTML = this.props.data.content
+    this.elements.content.appendChild(this.elements.text)
+
+    // ACTION
+    this.elements.action = document.createElement('div')
+    this.elements.action.className = 'post-action'
+    this.elements.content.appendChild(this.elements.action)
+
+    // SHOW COMMENTS BUTTON
+    this.elements.showCommentsButton = document.createElement('div')
+    this.elements.showCommentsButton.className = 'post-action-item post-action-show-comments ripple-icon'
+    this.elements.showCommentsButton.addEventListener('click', this.onShowCommentsButtonClick)
+    this.elements.showCommentsButton.addEventListener('mousedown', this.onActionIconMouseDown)
+    this.elements.showCommentsButton.addEventListener('touchstart', this.onActionIconTouchStart)
+    this.elements.action.appendChild(this.elements.showCommentsButton)
+
+    // COMMENTS COUNT
+    this.elements.commentsCount = document.createElement('div')
+    this.elements.commentsCount.className = 'post-action-item-count'
+    this.elements.commentsCount.innerHTML = this.props.data.comments.length
+    this.elements.action.appendChild(this.elements.commentsCount)
+
+    // LIKE BUTTON
+    this.elements.likeButton = document.createElement('div')
+    this.elements.likeButton.className = 'post-action-item post-action-like ripple-icon'
+    this.elements.likeButton.addEventListener('mousedown', this.onActionIconMouseDown)
+    this.elements.likeButton.addEventListener('touchstart', this.onActionIconTouchStart)
+    this.elements.action.appendChild(this.elements.likeButton)
+
+    // LIKES COUNT
+    this.elements.likesCount = document.createElement('div')
+    this.elements.likesCount.className = 'post-action-item-count'
+    this.elements.likesCount.innerHTML = this.props.data.likes.length
+    this.elements.action.appendChild(this.elements.likesCount)
+
+    // COMMENTS
+    this.elements.comments = document.createElement('div')
+    this.elements.comments.className = 'post-comments'
+    this.elements.root.appendChild(this.elements.comments)
+
+    this.loadComments()
+    if (this.props.data.media) this.setMedia()
+    this.animate()
   }
 }

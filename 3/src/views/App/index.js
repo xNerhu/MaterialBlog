@@ -69,7 +69,7 @@ export default class App {
       },
       {
         type: 'Title',
-        title: 'Posty',
+        title: 'Blog klasy 3B',
         style: {
           color: '#fff'
         }
