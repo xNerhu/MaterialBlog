@@ -106,6 +106,10 @@
 }
 
 .post-action-like {
+  background-image: url(images/Post/favorite_border.png);
+}
+
+.post-action-like.likes {
   background-image: url(images/Post/favorite_full.png);
 }
 

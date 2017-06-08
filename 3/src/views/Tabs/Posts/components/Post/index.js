@@ -20,6 +20,7 @@ export default class Post {
 
     this.touched = false
     this.toggledComments = false
+    this.likes = false
 
     this.render()
   }
@@ -90,13 +91,112 @@ export default class Post {
   }
 
   /**
+   * On show comments button mouse enter event.
+   * Shows tooltip.
+   * @param {Event}
+   */
+  onShowCommentsButtonMouseEnter = (e) => {
+    const app = window.app
+    const tooltip = app.elements.tooltipShowCommentsButton
+
+    if (!this.toggledComments) {
+      tooltip.setText('Pokaż komentarze')
+    } else {
+      tooltip.setText('Ukryj komentarze')
+    }
+
+    tooltip.toggle(true, e.target)
+  }
+
+  /**
+   * On show comments button mouse leave event.
+   * Hides tooltip.
+   * @param {Event}
+   */
+  onShowCommentsButtonMouseLeave = (e) => {
+    const app = window.app
+    const tooltip = app.elements.tooltipShowCommentsButton
+
+    tooltip.toggle(false)
+  }
+
+  /**
+   * On like button mouse enter event.
+   * Shows tooltip.
+   * @param {Event}
+   */
+  onLikeButtonMouseEnter = (e) => {
+    const app = window.app
+    const tooltip = app.elements.tooltipLikeButton
+
+    if (!this.isLikes) {
+      tooltip.setText('Polub to!')
+    } else {
+      tooltip.setText('Lubię to!')
+    }
+
+    tooltip.toggle(true, e.target)
+  }
+
+  /**
+   * On like button mouse leave event.
+   * Hides tooltip.
+   * @param {Event}
+   */
+  onLikeButtonMouseLeave = (e) => {
+    const app = window.app
+    const tooltip = app.elements.tooltipLikeButton
+
+    tooltip.toggle(false)
+  }
+
+  /**
+   * On likes count mouse enter event.
+   * Shows tooltip.
+   * @param {Event}
+   */
+  onLikesCountMouseEnter = (e) => {
+    const app = window.app
+    const tooltip = app.elements.tooltipLikesList
+
+    let list = ''
+    if (this.props.data.likes.length >= 1) {
+      for (let i = 0; i < this.props.data.likes.length; i++) {
+        list += this.props.data.likes[i].userName + ((i < this.props.data.likes.length - 1) ? '<br />' : '')
+      }
+    } else {
+      list = '...'
+    }
+
+    tooltip.setText(list)
+
+    tooltip.toggle(true, e.target)
+  }
+
+  /**
+   * On likes list mouse leave event.
+   * Hides tooltip.
+   * @param {Event}
+   */
+  onLikesCountMouseLeave = (e) => {
+    const app = window.app
+    const tooltip = app.elements.tooltipLikesList
+
+    tooltip.toggle(false)
+  }
+
+  /**
    * Toggle comments.
    * @param {Boolean}
    */
   toggleComments = (flag) => {
     const self = this
+    const app = window.app
+    const tooltip = app.elements.tooltipShowCommentsButton
     const button = this.elements.showCommentsButton
     const comments = this.elements.comments
+
+    tooltip.toggle(false)
 
     this.toggledComments = null
     button.style.transform = 'rotate(' + ((flag) ? 180 : 0) + 'deg)'
@@ -147,7 +247,6 @@ export default class Post {
    * Animates post.
    */
   animate = () => {
-    const self = this
     const root = this.getRoot()
     const index = this.props.index
 
@@ -157,6 +256,23 @@ export default class Post {
       root.style.opacity = '1'
       root.style.marginTop = '32px'
     }, until + 100)
+  }
+
+  /**
+   * Checks that logged user likes the post.
+   * @return {Boolean}
+   */
+  isLikes = () => {
+    const app = window.app
+
+    if (app.accountInfo) {
+      for (let i = 0; i < this.props.data.likes.length; i++) {
+        if (this.props.data.likes[i].userID === app.accountInfo.userID) {
+          return true
+        }
+      }
+    }
+    return false
   }
 
   render = () => {
@@ -227,6 +343,8 @@ export default class Post {
     this.elements.showCommentsButton.addEventListener('click', this.onShowCommentsButtonClick)
     this.elements.showCommentsButton.addEventListener('mousedown', this.onActionIconMouseDown)
     this.elements.showCommentsButton.addEventListener('touchstart', this.onActionIconTouchStart)
+    this.elements.showCommentsButton.addEventListener('mouseenter', this.onShowCommentsButtonMouseEnter)
+    this.elements.showCommentsButton.addEventListener('mouseleave', this.onShowCommentsButtonMouseLeave)
     this.elements.action.appendChild(this.elements.showCommentsButton)
 
     // COMMENTS COUNT
@@ -238,14 +356,25 @@ export default class Post {
     // LIKE BUTTON
     this.elements.likeButton = document.createElement('div')
     this.elements.likeButton.className = 'post-action-item post-action-like ripple-icon'
+
+    this.isLikes = this.isLikes()
+
+    if (this.isLikes) {
+      this.elements.likeButton.classList.add('likes')
+    }
+
     this.elements.likeButton.addEventListener('mousedown', this.onActionIconMouseDown)
     this.elements.likeButton.addEventListener('touchstart', this.onActionIconTouchStart)
+    this.elements.likeButton.addEventListener('mouseenter', this.onLikeButtonMouseEnter)
+    this.elements.likeButton.addEventListener('mouseleave', this.onLikeButtonMouseLeave)
     this.elements.action.appendChild(this.elements.likeButton)
 
     // LIKES COUNT
     this.elements.likesCount = document.createElement('div')
     this.elements.likesCount.className = 'post-action-item-count'
     this.elements.likesCount.innerHTML = this.props.data.likes.length
+    this.elements.likesCount.addEventListener('mouseenter', this.onLikesCountMouseEnter)
+    this.elements.likesCount.addEventListener('mouseleave', this.onLikesCountMouseLeave)
     this.elements.action.appendChild(this.elements.likesCount)
 
     // COMMENTS

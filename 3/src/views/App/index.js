@@ -1,5 +1,6 @@
 import Preloader from '../../imports/materialdesign/components/Preloader'
 import TextField from '../../imports/materialdesign/components/TextField'
+import Tooltip from '../../imports/materialdesign/components/Tooltip'
 
 import NavigationDrawer from './components/NavigationDrawer'
 
@@ -12,10 +13,15 @@ import GalleryTab from '../Tabs/Gallery'
 export default class App {
   constructor (parent) {
     window.app = this
-
     this.parent = parent
 
     this.elements = {}
+
+    this.accountInfo = {
+      userID: 1,
+      userName: 'Mikołaj Palkiewicz',
+      avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
+    }
 
     this.render()
   }
@@ -93,6 +99,7 @@ export default class App {
     // APP CONTENT
     this.elements.appContent = document.createElement('div')
     this.elements.appContent.className = 'app-content'
+    this.parent.appendChild(this.elements.appContent)
 
     // NAVIGATION DRAWER
     const navigationDrawerItems = [
@@ -135,6 +142,7 @@ export default class App {
 
     this.elements.navigationDrawer = new NavigationDrawer()
     this.elements.navigationDrawer.setItems(navigationDrawerItems)
+    this.parent.appendChild(this.elements.navigationDrawer.getRoot())
 
     // TOOLBAR
     this.elements.toolbar = new Toolbar()
@@ -186,9 +194,15 @@ export default class App {
 
     this.elements.tabLayout.setTabs(tabs)
 
-    // PARENT
-    this.parent.appendChild(this.elements.appContent)
-    this.parent.appendChild(this.elements.navigationDrawer.getRoot())
+    // TOOLTIPS
+    this.elements.tooltipShowCommentsButton = new Tooltip('Pokaż komentarze')
+    this.parent.appendChild(this.elements.tooltipShowCommentsButton.getRoot())
+
+    this.elements.tooltipLikeButton = new Tooltip('Polub to!')
+    this.parent.appendChild(this.elements.tooltipLikeButton.getRoot())
+
+    this.elements.tooltipLikesList = new Tooltip('...')
+    this.parent.appendChild(this.elements.tooltipLikesList.getRoot())
   }
 }
 /*
