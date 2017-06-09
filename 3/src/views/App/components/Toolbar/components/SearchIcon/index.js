@@ -33,7 +33,7 @@ export default class SearchIcon {
    */
   onClick = (e) => {
     if (window.innerWidth <= this.maxWidth) {
-      this.showFullWidth()
+      this.changeToFullWidth(true)
     } else {
       this.toggle(true)
     }
@@ -75,10 +75,6 @@ export default class SearchIcon {
    * @param {Object} event data.
    */
   onWindowResize = (e) => {
-    const self = this
-    const toolbar = this.getToolbar()
-    const multiIcon = toolbar.getMultiIcon()
-
     if (this.toggled && !this.fullWidth && window.innerWidth <= this.maxWidth) {
       this.changeToFullWidth(true)
     } else if (this.toggled && this.fullWidth && window.innerWidth > this.maxWidth) {
@@ -108,11 +104,13 @@ export default class SearchIcon {
    */
   changeToFullWidth = (flag) => {
     const self = this
+    const root = this.getRoot()
     const toolbar = this.getToolbar()
     const multiIcon = toolbar.getMultiIcon()
 
     if (flag) {
-      this.elements.root.classList.add('full-width')
+      root.classList.add('toggled')
+      root.classList.add('full-width')
       this.fullWidth = true
       this.parent.style.width = 'calc(100% - 96px)'
       this.elements.textField.elements.actionIcon.style.opacity = '0'
@@ -132,6 +130,7 @@ export default class SearchIcon {
       }
 
       toolbar.hideItems(false, false)
+      this.toggled = true
     } else {
       this.elements.root.classList.remove('full-width')
       this.fullWidth = false

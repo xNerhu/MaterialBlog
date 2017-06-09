@@ -1,3 +1,5 @@
+import MaterialButton from '../../../../../../../imports/materialdesign/components/MaterialButton'
+
 export default class CommentInput {
   constructor (data) {
     this.elements = {}
@@ -20,20 +22,22 @@ export default class CommentInput {
    * Hides or shows add comment button.
    */
   onInput = () => {
-    const textArea = this.elements.textarea
-    const length = textArea.value.length
-  //  const inputAction = this.refs.inputAction
+    const app = window.app
+    const textarea = this.elements.textarea
+    const length = textarea.value.length
+    const action = this.elements.action
 
-    if (true) { //this.props.getApp().accountInfo
-      textArea.style.height = 'auto'
-      textArea.style.height = textArea.scrollHeight + 'px'
-      /*if (length > 0) {
-        inputAction.style.height = inputAction.scrollHeight + 'px'
+    if (app.accountInfo) {
+      textarea.style.height = 'auto'
+      textarea.style.height = textarea.scrollHeight + 'px'
+
+      if (length > 0) {
+        action.style.height = action.scrollHeight + 'px'
       } else {
-        inputAction.style.height = '0px'
-      }*/
+        action.style.height = '0px'
+      }
     } else {
-    //  inputAction.style.height = '0px'
+      action.style.height = '0px'
     }
   }
 
@@ -47,5 +51,19 @@ export default class CommentInput {
     this.elements.textarea.setAttribute('placeholder', 'Zaloguj się, by móc dodawać komentarze')
     this.elements.textarea.addEventListener('input', this.onInput)
     this.elements.root.appendChild(this.elements.textarea)
+
+    // ACTION
+    this.elements.action = document.createElement('div')
+    this.elements.action.className = 'post-comments-input-action'
+    this.elements.root.appendChild(this.elements.action)
+
+    // BUTTON
+    this.elements.button = new MaterialButton('DODAJ', false, 'post-comments-input-action-button')
+    this.elements.button.props.rippleStyle = {
+      backgroundColor: '#2196f3',
+      opacity: 0.3
+    }
+
+    this.elements.action.appendChild(this.elements.button.getRoot())
   }
 }
