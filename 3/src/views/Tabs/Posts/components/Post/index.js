@@ -38,9 +38,11 @@ export default class Post {
    * @param {Event}
    */
   onClick = (e) => {
-    const postsTab = this.props.getPostsTab()
+    if (e.target !== this.elements.showCommentsButton && e.target !== this.elements.commentsCount && e.target !== this.elements.likeButton && e.target !== this.elements.likesCount) {
+      const postsTab = this.props.getPostsTab()
 
-    postsTab.toggleFullScreen(true, this)
+      postsTab.toggleFullScreen(true, this)
+    }
   }
 
   /**
@@ -265,7 +267,7 @@ export default class Post {
     setTimeout(function () {
       root.style.opacity = '1'
       root.style.marginTop = '32px'
-    }, until + 100)
+    }, until)
   }
 
   /**

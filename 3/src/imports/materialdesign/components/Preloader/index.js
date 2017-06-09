@@ -1,8 +1,12 @@
 export default class Preloader {
-  constructor (strokeColor, strokeWidth) {
+  constructor (strokeColor = '#03a9f4', strokeWidth = 4) {
     this.elements = {}
+    this.props = {
+      strokeColor: strokeColor,
+      strokeWidth: strokeWidth
+    }
 
-    this.render(strokeColor, strokeWidth)
+    this.render()
   }
 
   /**
@@ -13,22 +17,20 @@ export default class Preloader {
     return this.elements.root
   }
 
-  /**
-   * Adds elements.
-   * @param {String} stroke color.
-   * @param {Int} stroke width.
-   */
-  render = (strokeColor = '#03a9f4', strokeWidth = 4) => {
-    this.elements.root = document.createElement('svg')
-    this.elements.root.setAttributes({
+  render = () => {
+    this.elements.root = document.createElement('div')
+    this.elements.root.className = 'material-preloader'
+
+    this.elements.svg = document.createElement('svg')
+    this.elements.svg.setAttributes({
       class: 'preloader-determinate',
       viewBox: '25 25 50 50'
     })
 
     this.elements.circle = document.createElement('circle')
     this.elements.circle.className = 'path'
-    this.elements.circle.style.stroke = strokeColor
-    this.elements.circle.style.strokeWidth = strokeWidth
+    this.elements.circle.style.stroke = this.props.strokeColor
+    this.elements.circle.style.strokeWidth = this.props.strokeWidth
 
     this.elements.circle.setAttributes({
       class: 'path',
@@ -39,6 +41,7 @@ export default class Preloader {
       'stroke-miterlimit': '10'
     })
 
-    this.elements.root.appendChild(this.elements.circle)
+    this.elements.svg.appendChild(this.elements.circle)
+    this.elements.root.innerHTML = this.elements.svg.outerHTML
   }
 }

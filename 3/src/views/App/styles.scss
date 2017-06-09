@@ -31,8 +31,10 @@ html, body {
 }
 
 .data-preloader {
+  width: 54px;
+  height: 54px;
   position: fixed;
   @include center;
   z-index: 8;
-  visibility: hidden;
+  display: none;
 }

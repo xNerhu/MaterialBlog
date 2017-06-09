@@ -77,7 +77,45 @@ export default class App {
     return this.elements.postsTab
   }
 
+  /**
+   * Gets gallery tab.
+   * @return {GalleryTab}
+   */
+  getGalleryTab = () => {
+    return this.elements.galleryTab
+  }
+
+  /**
+   * Gets preloader.
+   * @return {Preloader}
+   */
+  getPreloader = () => {
+    return this.elements.preloader
+  }
+
+  /**
+   * Shows or hides preloader.
+   * @param {Boolean}
+   */
+  togglePreloader = (flag) => {
+    const preloader = this.getPreloader().getRoot()
+
+    preloader.style.display = (!flag) ? 'none' : 'block'
+  }
+
+  /**
+   * On tab select event.
+   * @param {PostsTab | GalleryTab | AboutClassTab | LessonsPlanTab}
+   */
+  onTabSelect = (tab) => {
+    this.togglePreloader(true)
+
+    tab.load()
+  }
+
   render = () => {
+    const self = this
+
     const items = [
       {
         type: 'Icon',
@@ -120,6 +158,13 @@ export default class App {
     this.elements.appContent = document.createElement('div')
     this.elements.appContent.className = 'app-content'
     this.parent.appendChild(this.elements.appContent)
+
+    // PRELOADER
+    this.elements.preloader = new Preloader()
+    this.elements.preloader.getRoot().classList.add('data-preloader')
+    setTimeout(function () {
+      self.parent.appendChild(self.elements.preloader.getRoot())
+    }, 10)
 
     // NAVIGATION DRAWER
     const navigationDrawerItems = [
@@ -193,7 +238,7 @@ export default class App {
         url: 'posts',
         page: this.elements.postsTab,
         onSelect: function () {
-          console.log('onselect')
+          self.onTabSelect(self.getPostsTab())
         },
         onDeselect: function () {
           console.log('ondeselect')
@@ -204,7 +249,7 @@ export default class App {
         url: 'gallery',
         page: this.elements.galleryTab,
         onSelect: function () {
-          console.log('onselect')
+          self.onTabSelect(self.getGalleryTab())
         },
         onDeselect: function () {
           console.log('ondeselect')

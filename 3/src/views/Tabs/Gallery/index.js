@@ -13,6 +13,13 @@ export default class GalleryTab {
     return this.elements.root
   }
 
+  /**
+   * Loads categories.
+   */
+  load = () => {
+    console.log('wrwr')
+  }
+
   render = () => {
     this.elements.root = document.createElement('div')
     this.elements.root.className = 'gallery-tab tab-page'
