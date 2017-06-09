@@ -188,6 +188,22 @@ export default class Toolbar {
     }
   }
 
+  /**
+   * Show or hides tabs.
+   * @param {Boolean}
+   */
+  toggleTabs = (flag) => {
+    const app = window.app
+    const tabLayout = app.elements.tabLayout
+    const tabPages = app.elements.tabPages
+    const indicator = tabLayout.elements.indicator
+    const root = this.getRoot()
+
+    root.style.height = (!flag) ? '64px' : '128px'
+    tabPages.style.height = 'calc(100% - ' + root.style.height + ')'
+    indicator.style.opacity = (!flag) ? '0' : '1'
+  }
+
   render = () => {
     this.elements.root = document.createElement('div')
     this.elements.root.setAttributes({

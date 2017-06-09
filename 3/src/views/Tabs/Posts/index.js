@@ -5,6 +5,12 @@ export default class PostsTab {
     this.elements = {}
 
     this.postsData = []
+    this.posts = []
+
+    this.fullScreen = {
+      flag: false,
+      post: null
+    }
 
     this.render()
   }
@@ -17,6 +23,17 @@ export default class PostsTab {
     return this.elements.root
   }
 
+  /**
+   * Gets posts tab.
+   * @return {PostsTAB}
+   */
+  getPostsTab = () => {
+    return this
+  }
+
+  /**
+   * loads posts.
+   */
   load = () => {
     const root = this.getRoot()
     const posts = this.elements.posts
@@ -105,8 +122,103 @@ export default class PostsTab {
 
     for (let i = 0; i < this.postsData.length; i++) {
       const post = new Post(this.postsData[i], i)
+      post.props.getPostsTab = this.getPostsTab
 
+      this.posts.push(post)
       posts.appendChild(post.getRoot())
+    }
+  }
+
+  /**
+   * Enter or exit full screen post.
+   * @param {Boolean} full screen.
+   * @param {Post} post.
+   */
+  toggleFullScreen = (flag, post) => {
+    const app = window.app
+    const toolbar = app.elements.toolbar
+    const multiIcon = toolbar.getMultiIcon()
+    const posts = this.posts
+
+    toolbar.toggleTabs(!flag)
+    this.fullScreen.flag = flag
+
+    if (flag) {
+      const navigationDrawer = app.getNavigationDrawer()
+      const root = post.getRoot()
+
+      if (navigationDrawer.toggled) {
+        navigationDrawer.hide()
+
+        setTimeout(function () {
+          multiIcon.changeToDefault()
+          setTimeout(function () {
+            multiIcon.changeToArrow()
+          }, 250)
+        }, 250)
+      } else {
+        multiIcon.changeToArrow()
+      }
+      multiIcon.blockClick()
+
+      this.fullScreen.post = post
+      post.props.ripple = false
+
+      for (let i = 0; i < posts.length; i++) {
+        const _post = posts[i]
+        const _postRoot = _post.getRoot()
+
+        if (_postRoot !== root) {
+          _postRoot.style.height = _postRoot.scrollHeight + 'px'
+
+          setTimeout(function () {
+            root.style.maxWidth = '100%'
+            root.style.marginTop = '0px'
+          }, 50)
+
+          setTimeout(function () {
+            _postRoot.style.height = '0px'
+
+            setTimeout(function () {
+              _postRoot.style.display = 'none'
+            }, 250)
+          }, 10)
+        }
+      }
+    } else {
+      const post = this.fullScreen.post
+      const root = post.getRoot()
+
+      post.props.ripple = true
+
+      root.style.maxWidth = '550px'
+      root.style.marginTop = '32px'
+
+      setTimeout(function () {
+        for (let i = 0; i < posts.length; i++) {
+          const _post = posts[i]
+          const _postRoot = _post.getRoot()
+
+          if (_postRoot !== root) {
+            _postRoot.style.display = 'block'
+
+            setTimeout(function () {
+              _postRoot.style.height = _postRoot.scrollHeight + 'px'
+
+              setTimeout(function () {
+                _postRoot.style.height = 'auto'
+              }, 250)
+            }, 10)
+          }
+        }
+
+        setTimeout(function () {
+          root.scrollIntoView({
+            block: 'end',
+            behavior: 'smooth'
+          })
+        }, 250)
+      }, 150)
     }
   }
 

@@ -34,6 +34,16 @@ export default class Post {
   }
 
   /**
+   * On click event.
+   * @param {Event}
+   */
+  onClick = (e) => {
+    const postsTab = this.props.getPostsTab()
+
+    postsTab.toggleFullScreen(true, this)
+  }
+
+  /**
    * On mouse down event.
    * Makes ripple.
    * @param {Event}
@@ -295,6 +305,7 @@ export default class Post {
     // CONTENT
     this.elements.content = document.createElement('div')
     this.elements.content.className = 'post-content ripple'
+    this.elements.content.addEventListener('click', this.onClick)
     this.elements.content.addEventListener('mousedown', this.onMouseDown)
     this.elements.content.addEventListener('touchstart', this.onTouchStart)
     this.elements.root.appendChild(this.elements.content)

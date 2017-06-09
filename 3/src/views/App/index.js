@@ -34,13 +34,17 @@ export default class App {
   onMultiIconClick = (e) => {
     const toolbar = this.elements.toolbar
     const multiIcon = toolbar.getMultiIcon()
-    const navigationDrawer = this.elements.navigationDrawer
+    const navigationDrawer = this.getNavigationDrawer()
+    const postsTab = this.getPostsTab()
 
     if (multiIcon.canClick) {
-      if (!navigationDrawer.toggled) {
+      if (postsTab.fullScreen.flag) {
+        postsTab.toggleFullScreen(false)
+        multiIcon.changeToDefault()
+      } else if (!navigationDrawer.toggled) {
         navigationDrawer.show()
         multiIcon.changeToExit()
-      } else {
+      } else if (navigationDrawer.toggled) {
         navigationDrawer.hide()
         multiIcon.changeToDefault()
       }
@@ -55,6 +59,22 @@ export default class App {
    */
   getToolbar = () => {
     return this.elements.toolbar
+  }
+
+  /**
+   * Gets navigation drawer.
+   * @return {NavigationDrawer}
+   */
+  getNavigationDrawer = () => {
+    return this.elements.navigationDrawer
+  }
+
+  /**
+   * Gets posts tab.
+   * @return {PostsTab}
+   */
+  getPostsTab = () => {
+    return this.elements.postsTab
   }
 
   render = () => {
