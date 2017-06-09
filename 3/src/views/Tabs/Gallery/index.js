@@ -17,7 +17,16 @@ export default class GalleryTab {
    * Loads categories.
    */
   load = () => {
-    console.log('wrwr')
+    const app = window.app
+    app.tabsLoaded.gallery = true
+
+    // TODO: Make request
+    setTimeout(function () {
+      app.togglePreloader(false)
+      app.isLoading = false
+
+      console.log('load categories')
+    }, 500)
   }
 
   render = () => {

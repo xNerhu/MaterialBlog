@@ -23,6 +23,15 @@ export default class App {
       avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
     }
 
+    this.tabsLoaded = {
+      posts: false,
+      gallery: false,
+      aboutClass: false,
+      lessonsPlan: false
+    }
+
+    this.isLoading = false
+
     this.render()
   }
 
@@ -108,9 +117,27 @@ export default class App {
    * @param {PostsTab | GalleryTab | AboutClassTab | LessonsPlanTab}
    */
   onTabSelect = (tab) => {
-    this.togglePreloader(true)
+    const name = this.getTabName(tab)
 
-    tab.load()
+    if (name === 'posts' && !this.tabsLoaded.posts || name === 'gallery' && !this.tabsLoaded.gallery) {
+      this.togglePreloader(true)
+      this.isLoading = true
+
+      tab.load()
+    }
+  }
+
+  /**
+   * Gets tab name.
+   * @param {PostsTab | GalleryTab | AboutClassTab | LessonsPlanTab}
+   * @return {String} tab name.
+   */
+  getTabName = (tab) => {
+    const postsTab = this.getPostsTab()
+    const galleryTab = this.getGalleryTab()
+
+    if (tab === postsTab) return 'posts'
+    else if (tab === galleryTab) return 'gallery'
   }
 
   render = () => {

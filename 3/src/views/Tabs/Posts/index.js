@@ -40,9 +40,12 @@ export default class PostsTab {
     const root = this.getRoot()
     const posts = this.elements.posts
 
+    app.tabsLoaded.posts = true
+
     // TODO: Make request
     setTimeout(function () {
       app.togglePreloader(false)
+      app.isLoading = false
 
       self.postsData = [
         {
@@ -237,7 +240,5 @@ export default class PostsTab {
     this.elements.posts.className = 'posts'
 
     this.elements.root.appendChild(this.elements.posts)
-
-    this.load()
   }
 }

@@ -64,13 +64,17 @@ export default class TabLayout {
    * Selects and deselects tabs.
    */
   selectTab = (tab) => {
-    for (var i = 0; i < this.tabs.length; i++) {
-      if (this.tabs[i] !== tab && this.tabs[i].selected) {
-        this.tabs[i].deselect()
-      }
-    }
+    const app = window.app
 
-    tab.select()
+    if (!app.isLoading) {
+      for (var i = 0; i < this.tabs.length; i++) {
+        if (this.tabs[i] !== tab && this.tabs[i].selected) {
+          this.tabs[i].deselect()
+        }
+      }
+
+      tab.select()
+    }
   }
 
   render = () => {
