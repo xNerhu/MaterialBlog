@@ -16,6 +16,9 @@ export default class App {
     this.parent = parent
 
     this.elements = {}
+    this.props = {
+      defaultTitle: 'Blog klasy 3B'
+    }
 
     this.accountInfo = {
       userID: 1,
@@ -46,6 +49,7 @@ export default class App {
     const searchIcon = toolbar.getSearchIcon()
     const navigationDrawer = this.getNavigationDrawer()
     const postsTab = this.getPostsTab()
+    const galleryTab = this.getGalleryTab()
 
     if (multiIcon.canClick) {
       if (searchIcon.toggled && searchIcon.fullWidth) {
@@ -54,6 +58,8 @@ export default class App {
       } else if (postsTab.fullScreen.flag) {
         postsTab.toggleFullScreen(false)
         multiIcon.changeToDefault()
+      } else if (galleryTab.fullScreenPictures) {
+        galleryTab.toggleFullScreenPictures(false)
       } else if (!navigationDrawer.toggled) {
         navigationDrawer.show()
         multiIcon.changeToExit()
@@ -174,7 +180,7 @@ export default class App {
       },
       {
         type: 'Title',
-        title: 'Blog klasy 3B',
+        title: this.props.defaultTitle,
         style: {
           color: '#fff'
         }

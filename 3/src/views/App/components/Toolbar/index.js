@@ -219,6 +219,14 @@ export default class Toolbar {
     indicator.style.opacity = (!flag) ? '0' : '1'
   }
 
+  /**
+   * Sets title.
+   * @param {String} title.
+   */
+  setTitle = (str) => {
+    this.title.innerHTML = str
+  }
+
   render = () => {
     this.elements.root = document.createElement('div')
     this.elements.root.setAttributes({

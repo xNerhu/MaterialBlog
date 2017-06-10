@@ -1,32 +1,28 @@
-import React from 'react'
-
-export default class Picture extends React.Component {
-  componentDidMount () {
-    var self = this
-    var img = new Image()
-
-    /**
-     * On img load event.
-     */
-    img.onload = function () {
-      self.refs.pic.src = this.src
-      self.refs.pic.style.opacity = '1'
+export default class Picture {
+  constructor (url) {
+    this.elements = {}
+    this.props = {
+      url: url
     }
 
-    /**
-     * On img error event.
-     * @param {Object} error data.
-     */
-    img.onerror = function (err) {
-      console.log('Component: Picture')
-    }
-
-    img.src = this.props.image
+    this.render()
   }
 
-  render () {
-    return (
-      <img onClick={(e) => this.props.onClick(e, this.props.image)} ref='pic' className='picture' onMouseDown={this.onMouseDown} />
-    )
+  /**
+   * Gets root.
+   * @return {DOMElement} root.
+   */
+  getRoot = () => {
+    return this.elements.root
+  }
+
+  render = () => {
+    this.elements.root = document.createElement('img')
+    this.elements.root.className = 'picture'
+    this.elements.root.setAttribute('draggable', 'false')
+    this.elements.root.onload = function () {
+      this.style.opacity = '1'
+    }
+    this.elements.root.src = this.props.url
   }
 }

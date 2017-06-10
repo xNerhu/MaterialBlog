@@ -1,4 +1,5 @@
 import Category from './components/Category'
+import Picture from './components/Picture'
 
 export default class GalleryTab {
   constructor () {
@@ -6,6 +7,7 @@ export default class GalleryTab {
 
     this.categoriesData = []
     this.categoryIndex = 0
+    this.fullScreenPictures = false
 
     this.render()
   }
@@ -42,7 +44,10 @@ export default class GalleryTab {
             'http://s1.picswalls.com/thumbs2/2016/06/10/4k-pictures_065316401_309.jpg',
             'http://s1.picswalls.com/thumbs2/2016/06/10/4k-wallpaper_06531428_309.jpg',
             'http://s1.picswalls.com/thumbs2/2016/06/10/beautiful-4k-background_065309630_309.jpg',
-            'http://s1.picswalls.com/thumbs2/2016/06/10/best-4k-wallpaper_065306859_309.jpg'
+            'http://s1.picswalls.com/thumbs2/2016/06/10/best-4k-wallpaper_065306859_309.jpg',
+            'https://static.pexels.com/photos/33109/fall-autumn-red-season.jpg',
+            'http://www.wallpaperup.com/uploads/wallpapers/2016/06/24/991974/big_thumb_417501ac9b21edf40b5b4ffea1107041.jpg',
+            'http://www.wallpaperup.com/uploads/wallpapers/2016/06/24/991972/big_thumb_6f203f6e57350091415a7db5c2d93241.jpg'
           ]
         },
         {
@@ -86,7 +91,7 @@ export default class GalleryTab {
       ]
 
       for (let i = 0; i < self.categoriesData.length; i++) {
-        const category = new Category(self.categoriesData[i], self.onCategoryLoad)
+        const category = new Category(self.categoriesData[i], self.onCategoryClick, self.onCategoryLoad)
         const categoryRoot = category.getRoot()
 
         categories.appendChild(categoryRoot)
@@ -114,6 +119,76 @@ export default class GalleryTab {
     }
   }
 
+  /**
+   * On category click event.
+   * @param {Event}
+   * @param {Category}
+   */
+  onCategoryClick = (e, category) => {
+    this.toggleFullScreenPictures(true, category)
+  }
+
+  /**
+   * Toggle full screen pictures.
+   * @param {Boolean}
+   * @param {Category}
+   */
+  toggleFullScreenPictures = (flag, category) => {
+    const app = window.app
+    const toolbar = app.getToolbar()
+    const multiIcon = toolbar.getMultiIcon()
+    const categories = this.elements.categories
+    const pictures = this.elements.pictures
+
+    toolbar.toggleTabs(!flag)
+
+    if (flag) {
+      const data = category.props.data
+      const picturesLength = data.pictures.length
+
+      pictures.className = 'gallery-pictures'
+      if (picturesLength > 4) pictures.classList.add('gallery-pictures-many')
+      else if (picturesLength <= 2) pictures.classList.add('gallery-pictures-' + picturesLength)
+
+      categories.style.opacity = '0'
+      setTimeout(function () {
+        categories.style.display = 'none'
+
+        pictures.style.display = 'block'
+        setTimeout(function () {
+          pictures.style.opacity = '1'
+        }, 10)
+
+        for (let i = 0; i < data.pictures.length; i++) {
+          const picture = new Picture(data.pictures[i])
+          pictures.appendChild(picture.getRoot())
+        }
+      }, 200)
+
+      toolbar.hideItems(false, true, false)
+      toolbar.setTitle(data.name)
+      multiIcon.changeToArrow()
+    } else {
+      pictures.style.opacity = '0'
+      setTimeout(function () {
+        pictures.style.display = 'none'
+        pictures.innerHTML = ''
+
+        categories.style.display = 'block'
+        setTimeout(function () {
+          categories.style.opacity = '1'
+        }, 10)
+      }, 150)
+
+      toolbar.showItems()
+      toolbar.setTitle(app.props.defaultTitle)
+      multiIcon.changeToDefault()
+    }
+
+    this.fullScreenPictures = flag
+    multiIcon.blockClick()
+  }
+
   render = () => {
     this.elements.root = document.createElement('div')
     this.elements.root.className = 'gallery-tab tab-page'
@@ -123,19 +198,9 @@ export default class GalleryTab {
     this.elements.categories.className = 'gallery-categories'
     this.elements.root.appendChild(this.elements.categories)
 
-    /*const x = new Category(
-      {
-        name: 'Test',
-        date: '29.04.2017',
-        pictures: [
-          'http://s1.picswalls.com/wallpapers/2016/06/10/4k-background-wallpaper_065216608_309.jpg',
-          'http://s1.picswalls.com/thumbs2/2016/06/10/4k-background_065335972_309.jpg',
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWvnQ3zWCida1iD-z2jY0J2yQLE5PcdT84l2ObicCjk3daxVJ4YA',
-          'https://i.ytimg.com/vi/uSJSPRQdLd8/maxresdefault.jpg'
-        ]
-      },
-      this.onCategoryLoad
-    )
-    this.elements.categories.appendChild(x.getRoot())*/
+    // PICTURES
+    this.elements.pictures = document.createElement('div')
+    this.elements.pictures.className = 'gallery-pictures'
+    this.elements.root.appendChild(this.elements.pictures)
   }
 }

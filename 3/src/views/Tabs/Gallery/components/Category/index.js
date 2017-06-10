@@ -1,5 +1,5 @@
 export default class Category {
-  constructor (data, onLoad) {
+  constructor (data, onClick, onLoad) {
     this.elements = {}
     this.props = {
       ripple: true,
@@ -12,6 +12,7 @@ export default class Category {
         opacity: 0.2
       },
       data: data,
+      onClick: onClick,
       onLoad: onLoad
     }
 
@@ -33,14 +34,13 @@ export default class Category {
    * @param {Event}
    */
   onClick = (e) => {
-    const app = window.app
-    const toolbar = app.getToolbar()
-    const multiIcon = toolbar.getMultiIcon()
+    const root = this.getRoot()
+    const target = e.target
+    const title = this.elements.title
+    const info = this.elements.info
 
-    if (e.target !== this.elements.showCommentsButton && e.target !== this.elements.commentsCount && e.target !== this.elements.likeButton && e.target !== this.elements.likesCount && multiIcon.canClick) {
-      const postsTab = this.props.getPostsTab()
-
-      postsTab.toggleFullScreen(true, this)
+    if (target !== title && info !== target && !this.touched) {
+      if (typeof this.props.onClick === 'function') this.props.onClick(e, this)
     }
   }
 
@@ -166,6 +166,7 @@ export default class Category {
   render = () => {
     this.elements.root = document.createElement('div')
     this.elements.root.className = 'category ripple'
+    this.elements.root.addEventListener('click', this.onClick)
     this.elements.root.addEventListener('mousedown', this.onMouseDown)
     this.elements.root.addEventListener('touchstart', this.onTouchStart)
 
