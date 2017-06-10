@@ -146,8 +146,10 @@ export default class NavigationDrawer {
   onDarkClick = () => {
     const multiIcon = window.app.getToolbar().getMultiIcon()
 
-    multiIcon.changeToDefault()
-    this.hide()
+    if (multiIcon.canClick) {
+      multiIcon.changeToDefault()
+      this.hide()
+    }
   }
 
   /**

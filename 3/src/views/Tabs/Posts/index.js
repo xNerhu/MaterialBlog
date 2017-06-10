@@ -1,5 +1,7 @@
 import Post from './components/Post'
 
+import FAB from '../../../imports/materialdesign/components/FAB'
+
 export default class PostsTab {
   constructor () {
     this.elements = {}
@@ -11,6 +13,10 @@ export default class PostsTab {
       flag: false,
       post: null
     }
+
+    this.toggledFAB = false
+    this.fab = false
+    this.fabTimer = null
 
     this.render()
   }
@@ -29,6 +35,14 @@ export default class PostsTab {
    */
   getPostsTab = () => {
     return this
+  }
+
+  /**
+   * Gets floating action button.
+   * @return {FAB}
+   */
+  getFAB = () => {
+    return this.elements.fab
   }
 
   /**
@@ -140,6 +154,32 @@ export default class PostsTab {
   }
 
   /**
+   * On select this tab event.
+   * Shows fab if fab was hidden.
+   */
+  onSelect = () => {
+    if (this.fab) {
+      this.toggleFAB(true)
+
+      this.fab = false
+    }
+  }
+
+  /**
+   * On deselect this tab event.
+   * Hides fab.
+   */
+  onDeselect = () => {
+    if (this.toggledFAB) {
+      this.toggleFAB(false)
+
+      this.fab = true
+    } else {
+      this.fab = false
+    }
+  }
+
+  /**
    * Enter or exit full screen post.
    * @param {Boolean} full screen.
    * @param {Post} post.
@@ -232,13 +272,80 @@ export default class PostsTab {
     }
   }
 
+  /**
+   * On posts tab scroll event.
+   * Shows or hides flaoting action button.
+   * Loads more posts.
+   * @param {Event}
+   */
+  onScroll = (e) => {
+    const root = this.getRoot()
+
+    //if (isVisible(this.loadPostsButton)) this.loadMorePosts()
+
+    this.toggleFAB(root.scrollTop > window.innerHeight && !this.fullScreen.flag)
+  }
+
+  /**
+   * Shows or hides floating action button.
+   * @param {Boolean} show or hide.
+   */
+  toggleFAB = (flag) => {
+    const fabContainer = this.elements.fabContainer
+    const fab = this.getFAB().getRoot()
+
+    if (flag && !this.toggledFAB) {
+      if (this.fabTimer !== null) {
+        clearTimeout(this.fabTimer)
+      }
+
+      fabContainer.style.display = 'block'
+
+      setTimeout(function () {
+        fab.style.height = '56px'
+        fab.style.width = '56px'
+      }, 10)
+    } else if (!flag && this.toggledFAB) {
+      fab.style.height = '0px'
+      fab.style.width = '0px'
+
+      this.fabTimer = setTimeout(function () {
+        fabContainer.style.display = 'none'
+      }, 300)
+    }
+
+    this.toggledFAB = flag
+  }
+
+  /**
+   * On floating action button click event.
+   * Scrolls to top.
+   * @param {Event}
+   */
+  onFABClick = (e) => {
+    this.posts[0].getRoot().scrollIntoView({
+      block: 'end',
+      behavior: 'smooth'
+    })
+  }
+
   render = () => {
     this.elements.root = document.createElement('div')
     this.elements.root.className = 'posts-tab tab-page'
+    this.elements.root.addEventListener('scroll', this.onScroll)
 
+    // POSTS
     this.elements.posts = document.createElement('div')
     this.elements.posts.className = 'posts'
-
     this.elements.root.appendChild(this.elements.posts)
+
+    // FLOATING ACTION BUTTON
+    this.elements.fabContainer = document.createElement('div')
+    this.elements.fabContainer.className = 'posts-fab-container'
+    this.elements.root.appendChild(this.elements.fabContainer)
+
+    this.elements.fab = new FAB('posts-fab')
+    this.elements.fab.getRoot().addEventListener('click', this.onFABClick)
+    this.elements.fabContainer.appendChild(this.elements.fab.getRoot())
   }
 }

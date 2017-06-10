@@ -1,52 +1,66 @@
-import React from 'react'
+export default class FAB {
+  constructor (className) {
+    this.elements = {}
+    this.props = {
+      className: className,
+      rippleStyle: {
+        backgroundColor: '#fff',
+        opacity: 0.2
+      }
+    }
 
-export default class FAB extends React.Component {
-  constructor () {
-    super()
+    this.touched = false
 
-    this.isTouchRipple = false
+    this.render()
+  }
+
+  /**
+   * Gets root.
+   * @return {DOMElement} root.
+   */
+  getRoot = () => {
+    return this.elements.root
   }
 
   /**
    * On mouse down event.
-   * @param {Object} event data
+   * Makes ripple.
+   * @param {Event}
    */
   onMouseDown = (e) => {
-    if (this.props.rippleMouseDown && !this.isTouchRipple) {
-      var ripple = Ripple.createRipple(this.refs.root, this.props.rippleStyle, createRippleMouse(this.refs.root, e, this.props.rippleTime))
+    if (!this.touched) {
+      const root = this.getRoot()
+
+      let ripple = Ripple.createRipple(root, this.props.rippleStyle, createRippleMouse(root, e, 1.5))
       Ripple.makeRipple(ripple)
     }
   }
 
   /**
    * On touch start event. (on mobile)
-   * @param {Object} event data
+   * Makes ripple.
+   * @param {Event}
    */
   onTouchStart = (e) => {
-    if (this.props.rippleTouch) {
-      var ripple = Ripple.createRipple(this.refs.root, this.props.rippleStyle, createRippleMouse(this.refs.root, e, this.props.rippleTime, true))
-      Ripple.makeRipple(ripple)
-      this.isTouchRipple = true
-    }
+    const root = this.getRoot()
+
+    let ripple = Ripple.createRipple(root, this.props.rippleStyle, createRippleMouse(root, e, 1.5, true))
+    Ripple.makeRipple(ripple)
+
+    this.touched = true
   }
 
   render () {
-    var className = 'material-fab ripple '
-    if (this.props.className) className += this.props.className
+    this.elements.root = document.createElement('div')
+    this.elements.root.className = 'material-fab ripple'
 
-    return (
-      <div className={className} ref='root' onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart} onClick={this.props.onClick}>
-        <div className='material-fab-icon' />
-      </div>
-    )
-  }
-}
+    if (this.props.className !== undefined) this.elements.root.classList.add(this.props.className)
 
-FAB.defaultProps = {
-  rippleMouseDown: true,
-  rippleTouch: true,
-  rippleStyle: {
-    backgroundColor: '#fff',
-    opacity: 0.2
+    this.elements.root.addEventListener('mousedown', this.onMouseDown)
+    this.elements.root.addEventListener('touchstart', this.onTouchStart)
+
+    this.elements.icon = document.createElement('div')
+    this.elements.icon.className = 'material-fab-icon'
+    this.elements.root.appendChild(this.elements.icon)
   }
 }

@@ -125,6 +125,16 @@ export default class App {
 
       tab.load()
     }
+
+    if (typeof tab.onSelect === 'function') tab.onSelect()
+  }
+
+  /**
+   * On tab deselect event.
+   * @param {PostsTab | GalleryTab | AboutClassTab | LessonsPlanTab}
+   */
+  onTabDeselect = (tab) => {
+    if (typeof tab.onDeselect === 'function') tab.onDeselect()
   }
 
   /**
@@ -268,7 +278,7 @@ export default class App {
           self.onTabSelect(self.getPostsTab())
         },
         onDeselect: function () {
-          console.log('ondeselect')
+          self.onTabDeselect(self.getPostsTab())
         }
       },
       {
@@ -279,7 +289,7 @@ export default class App {
           self.onTabSelect(self.getGalleryTab())
         },
         onDeselect: function () {
-          console.log('ondeselect')
+          self.onTabDeselect(self.getGalleryTab())
         }
       }
     ]

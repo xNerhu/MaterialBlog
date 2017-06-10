@@ -38,7 +38,11 @@ export default class Post {
    * @param {Event}
    */
   onClick = (e) => {
-    if (e.target !== this.elements.showCommentsButton && e.target !== this.elements.commentsCount && e.target !== this.elements.likeButton && e.target !== this.elements.likesCount) {
+    const app = window.app
+    const toolbar = app.getToolbar()
+    const multiIcon = toolbar.getMultiIcon()
+
+    if (e.target !== this.elements.showCommentsButton && e.target !== this.elements.commentsCount && e.target !== this.elements.likeButton && e.target !== this.elements.likesCount && multiIcon.canClick) {
       const postsTab = this.props.getPostsTab()
 
       postsTab.toggleFullScreen(true, this)

@@ -36,19 +36,17 @@
 .posts-fab-container {
   width: 56px;
   height: 56px;
+  transition: 0.3s width, 0.3s height;
   position: fixed;
   right: 32px;
   bottom: 32px;
-  z-index: 8;
   display: none;
 }
 
 .posts-fab {
-  background-color: #2196f3;
   width: 0px;
   height: 0px;
-  z-index: 8;
-  transition: 0.3s width, 0.3s height;
+  transition: 0.3s width ease, 0.3s height ease;
   position: absolute !important;
   top: 50%;
   left: 50%;
