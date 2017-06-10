@@ -55,20 +55,24 @@ export default class App {
       if (searchIcon.toggled && searchIcon.fullWidth) {
         searchIcon.changeToFullWidth(false)
         searchIcon.toggle(false)
+        multiIcon.blockClick()
       } else if (postsTab.fullScreen.flag) {
         postsTab.toggleFullScreen(false)
         multiIcon.changeToDefault()
+        multiIcon.blockClick()
+      } else if (galleryTab.fullScreenPicture) {
+        galleryTab.togglePictureFullScreen(false)
       } else if (galleryTab.fullScreenPictures) {
-        galleryTab.toggleFullScreenPictures(false)
+        galleryTab.togglePicturesFullScreen(false)
       } else if (!navigationDrawer.toggled) {
         navigationDrawer.show()
         multiIcon.changeToExit()
+        multiIcon.blockClick()
       } else if (navigationDrawer.toggled) {
         navigationDrawer.hide()
         multiIcon.changeToDefault()
+        multiIcon.blockClick()
       }
-
-      multiIcon.blockClick()
     }
   }
 

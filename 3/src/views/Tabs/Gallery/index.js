@@ -8,6 +8,12 @@ export default class GalleryTab {
     this.categoriesData = []
     this.categoryIndex = 0
     this.fullScreenPictures = false
+    this.fullScreenPicture = false
+
+    this.fullScrenPictureSize = {
+      width: 0,
+      height: 0
+    }
 
     this.render()
   }
@@ -125,15 +131,29 @@ export default class GalleryTab {
    * @param {Category}
    */
   onCategoryClick = (e, category) => {
-    this.toggleFullScreenPictures(true, category)
+    const app = window.app
+    const toolbar = app.getToolbar()
+    const navigationDrawer = app.getNavigationDrawer()
+    const multiIcon = toolbar.getMultiIcon()
+
+    if (multiIcon.canClick) {
+      if (navigationDrawer.toggled) {
+        navigationDrawer.hide()
+        multiIcon.changeToDefault()
+      }
+
+      this.togglePicturesFullScreen(true, category)
+      multiIcon.blockClick()
+    }
   }
 
   /**
-   * Toggle full screen pictures.
+   * Toggle pictures full screen.
    * @param {Boolean}
    * @param {Category}
    */
-  toggleFullScreenPictures = (flag, category) => {
+  togglePicturesFullScreen = (flag, category) => {
+    const self = this
     const app = window.app
     const toolbar = app.getToolbar()
     const multiIcon = toolbar.getMultiIcon()
@@ -160,7 +180,7 @@ export default class GalleryTab {
         }, 10)
 
         for (let i = 0; i < data.pictures.length; i++) {
-          const picture = new Picture(data.pictures[i])
+          const picture = new Picture(data.pictures[i], self.onPictureClick)
           pictures.appendChild(picture.getRoot())
         }
       }, 200)
@@ -186,7 +206,96 @@ export default class GalleryTab {
     }
 
     this.fullScreenPictures = flag
-    multiIcon.blockClick()
+  }
+
+  /**
+   * On picture click event.
+   * @param {Event}
+   * @param {Picture}
+   */
+  onPictureClick = (e, pic) => {
+    this.togglePictureFullScreen(true, pic)
+  }
+
+  /**
+   * Shows or hides full screen picture.
+   * @param {Boolean} show or hide.
+   * @param {Picture}
+   */
+  togglePictureFullScreen = (flag, pic) => {
+    const self = this
+    const app = window.app
+    const toolbar = app.getToolbar()
+    const toolbarRoot = toolbar.getRoot()
+
+    const pictureFullScreenContainer = this.elements.pictureFullScreenContainer
+    const pictureFullScreenBlur = this.elements.pictureFullScreenBlur
+    const pictureFullScreen = this.elements.pictureFullScreen
+    const gradient = this.elements.gradient
+
+    if (flag) {
+      const url = pic.props.url
+
+      toolbarRoot.classList.add('transparent')
+
+      pictureFullScreenBlur.style.backgroundImage = 'url(' + url + ')'
+      pictureFullScreen.src = url
+
+      gradient.style.display = 'block'
+      setTimeout(function () {
+        gradient.style.opacity = '1'
+
+        pictureFullScreenContainer.style.display = 'block'
+
+        setTimeout(function () {
+          pictureFullScreenContainer.style.opacity = '1'
+          self.fullScrenPictureSize.width = pic.naturalWidth
+          self.fullScrenPictureSize.height = pic.naturalHeight
+        }, 10)
+      }, 10)
+
+      window.addEventListener('resize', this.onWindowResize)
+    } else {
+      toolbarRoot.classList.remove('transparent')
+
+      gradient.style.opacity = '0'
+      setTimeout(function () {
+        gradient.style.display = 'none'
+      }, 300)
+
+      pictureFullScreenContainer.style.opacity = '0'
+
+      setTimeout(function () {
+        pictureFullScreenContainer.style.display = 'none'
+      }, 300)
+
+      window.removeEventListener('resize', this.onWindowResize)
+    }
+
+    this.fullScreenPicture = flag
+  }
+
+  /**
+   * On window resize event.
+   * @param {Event}
+   */
+  onWindowResize = (e) => {
+    const pictureFullScreen = this.elements.pictureFullScreen
+
+    const naturalWidth = this.fullScrenPictureSize.width
+    const naturalHeight = this.fullScrenPictureSize.height
+    const windowHeight = window.innerHeight
+    const windowWidth = window.innerWidth
+
+    const width = naturalWidth * windowHeight / naturalHeight
+
+    if (width > windowWidth && pictureFullScreen.style.width !== '100%') {
+      pictureFullScreen.style.width = '100%'
+      pictureFullScreen.style.height = 'auto'
+    } else if (width < windowWidth && pictureFullScreen.style.width === '100%') {
+      pictureFullScreen.style.width = 'auto'
+      pictureFullScreen.style.height = '100%'
+    }
   }
 
   render = () => {
@@ -202,5 +311,25 @@ export default class GalleryTab {
     this.elements.pictures = document.createElement('div')
     this.elements.pictures.className = 'gallery-pictures'
     this.elements.root.appendChild(this.elements.pictures)
+
+    // PICTURE FULL SCREEN CONTAINER
+    this.elements.pictureFullScreenContainer = document.createElement('div')
+    this.elements.pictureFullScreenContainer.className = 'gallery-picture-full-screen-container'
+    this.elements.root.appendChild(this.elements.pictureFullScreenContainer)
+
+    // PICTURE FULL SCREEN BLUR
+    this.elements.pictureFullScreenBlur = document.createElement('div')
+    this.elements.pictureFullScreenBlur.className = 'gallery-picture-full-screen-blur'
+    this.elements.pictureFullScreenContainer.appendChild(this.elements.pictureFullScreenBlur)
+
+    // PICTURE FULL SCREEN
+    this.elements.pictureFullScreen = document.createElement('img')
+    this.elements.pictureFullScreen.className = 'gallery-picture-full-screen'
+    this.elements.pictureFullScreenContainer.appendChild(this.elements.pictureFullScreen)
+
+    // GRADIENT
+    this.elements.gradient = document.createElement('div')
+    this.elements.gradient.className = 'gallery-gradient'
+    this.elements.root.appendChild(this.elements.gradient)
   }
 }

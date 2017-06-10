@@ -28,10 +28,10 @@ export default class MultiIcon {
 
     // Block click mouse event.
     this.canClick = false
-    // Wait 1.5 second then unlock click mouse event.
+    // Wait a second then unlock click mouse event.
     setTimeout(function () {
       self.canClick = true
-    }, 1500)
+    }, 1000)
   }
 
   /**
