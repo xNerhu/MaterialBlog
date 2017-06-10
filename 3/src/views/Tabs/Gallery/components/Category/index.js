@@ -1,15 +1,153 @@
-import React from 'react'
+export default class Category {
+  constructor (data, onLoad) {
+    this.elements = {}
+    this.props = {
+      ripple: true,
+      rippleStyle: {
+        backgroundColor: '#fff',
+        opacity: 0.2
+      },
+      infoRippleStyle: {
+        backgroundColor: '#000',
+        opacity: 0.2
+      },
+      data: data,
+      onLoad: onLoad
+    }
 
-export default class Category extends React.Component {
-  componentDidMount () {
-    var self = this
-    var img = new Image()
+    this.touched = false
 
+    this.render()
+  }
+
+  /**
+   * Gets root.
+   * @return {DOMElement} root.
+   */
+  getRoot = () => {
+    return this.elements.root
+  }
+
+  /**
+   * On click event.
+   * @param {Event}
+   */
+  onClick = (e) => {
+    const app = window.app
+    const toolbar = app.getToolbar()
+    const multiIcon = toolbar.getMultiIcon()
+
+    if (e.target !== this.elements.showCommentsButton && e.target !== this.elements.commentsCount && e.target !== this.elements.likeButton && e.target !== this.elements.likesCount && multiIcon.canClick) {
+      const postsTab = this.props.getPostsTab()
+
+      postsTab.toggleFullScreen(true, this)
+    }
+  }
+
+  /**
+   * On mouse down event.
+   * Makes ripple.
+   * @param {Event}
+   */
+  onMouseDown = (e) => {
+    const root = this.getRoot()
+    const target = e.target
+    const title = this.elements.title
+    const info = this.elements.info
+
+    if (target !== title && info !== target && !this.touched) {
+      let ripple = Ripple.createRipple(root, this.props.rippleStyle, createRippleMouse(root, e, 1.5))
+      Ripple.makeRipple(ripple)
+    }
+  }
+
+  /**
+   * On touch start event (on mobile).
+   * Makes ripple.
+   * @param {Event}
+   */
+  onTouchStart = (e) => {
+    const root = this.getRoot()
+    const target = e.target
+    const title = this.elements.title
+    const info = this.elements.info
+
+    if (target !== title && info !== target) {
+      let ripple = Ripple.createRipple(root, this.props.rippleStyle, createRippleMouse(root, e, 1.5, true))
+      Ripple.makeRipple(ripple)
+
+      this.touched = true
+    }
+  }
+
+  /**
+   * On info mouse down event.
+   * Makes ripple.
+   * @param {Event}
+   */
+  onInfoMouseDown = (e) => {
+    const info = this.elements.info
+
+    if (!this.touched) {
+      let ripple = Ripple.createRipple(info, this.props.infoRippleStyle, createRippleCenter(info, 14))
+      Ripple.makeRipple(ripple)
+    }
+  }
+
+  /**
+   * On info touch start event (on mobile).
+   * Makes ripple.
+   * @param {Event}
+   */
+  onInfoTouchStart = (e) => {
+    const info = this.elements.info
+
+    let ripple = Ripple.createRipple(info, this.props.infoRippleStyle, createRippleCenter(info, 14, 0.4, true))
+    Ripple.makeRipple(ripple)
+
+    this.touched = true
+  }
+
+  /**
+   * On info mouse enter event.
+   * Shows tooltip.
+   * @param {Event}
+   */
+  onInfoMouseEnter = (e) => {
+    const app = window.app
+    const tooltip = app.elements.tooltipCategoryInfo
+    const text = 'Data utworzenia: ' + this.props.data.date + '<br>Ilość zdjęc: ' + this.props.data.pictures.length
+
+    tooltip.setText(text)
+    tooltip.toggle(true, this.elements.info)
+  }
+
+  /**
+   * On info mouse leave event.
+   * Hides tooltip.
+   * @param {Event}
+   */
+  onInfoMouseLeave = (e) => {
+    const app = window.app
+    const tooltip = app.elements.tooltipCategoryInfo
+
+    tooltip.toggle(false)
+  }
+
+  /**
+   * Loads image.
+   */
+  loadImage = () => {
+    const self = this
+    const root = this.getRoot()
+    const picture = this.props.data.pictures[0]
+    const img = new Image()
     /**
      * On img load event.
      */
     img.onload = function () {
-      self.refs.category.style.backgroundImage = 'url(' + this.src + ')'
+      root.style.backgroundImage = 'url(' + this.src + ')'
+
       if (typeof self.props.onLoad === 'function') self.props.onLoad()
     }
 
@@ -22,116 +160,30 @@ export default class Category extends React.Component {
       if (typeof self.props.onLoad === 'function') self.props.onLoad()
     }
 
-    img.src = this.props.data.pictures[0].url
+    img.src = picture
   }
 
-  /**
-   * On mouse down event.
-   * @param {Object} event data
-   */
-  onMouseDown = (e) => {
-    if (!this.props.getApp().blockMouseDownEvent) {
-      if (e.target !== this.refs.title && e.target.parentNode !== this.refs.title) {
-        var ripple = Ripple.createRipple(this.refs.category, {
-          backgroundColor: '#fff',
-          opacity: 0.3
-        }, createRippleMouse(this.refs.category, e, 1.5))
-        Ripple.makeRipple(ripple)
-      }
-    }
-  }
+  render = () => {
+    this.elements.root = document.createElement('div')
+    this.elements.root.className = 'category ripple'
+    this.elements.root.addEventListener('mousedown', this.onMouseDown)
+    this.elements.root.addEventListener('touchstart', this.onTouchStart)
 
-  /**
-   * On info mouse down event.
-   * @param {Object} event data
-   */
-  onInfoMouseDown = (e) => {
-    if (!this.props.getApp().blockMouseDownEvent) {
-      var ripple = Ripple.createRipple(this.refs.info, {
-        backgroundColor: '#000',
-        opacity: 0.2
-      }, createRippleCenter(this.refs.info, 14))
-      Ripple.makeRipple(ripple)
-    }
-  }
+    // TITLE
+    this.elements.title = document.createElement('div')
+    this.elements.title.className = 'category-title'
+    this.elements.title.innerHTML = this.props.data.name
+    this.elements.root.appendChild(this.elements.title)
 
-  /**
-   * On info touch start event.
-   * @param {object} event data
-   */
-  onInfoTouchStart = (e) => {
-    var ripple = Ripple.createRipple(this.refs.info, {
-      backgroundColor: '#000',
-      opacity: 0.2
-    }, createRippleCenter(this.refs.info, 14, 0.4, true))
-    Ripple.makeRipple(ripple)
-    this.props.getApp().blockMouseDownEvent = true
-  }
+    // INFO BUTTON
+    this.elements.info = document.createElement('div')
+    this.elements.info.className = 'category-info ripple-icon'
+    this.elements.info.addEventListener('mouseenter', this.onInfoMouseEnter)
+    this.elements.info.addEventListener('mouseleave', this.onInfoMouseLeave)
+    this.elements.info.addEventListener('mousedown', this.onInfoMouseDown)
+    this.elements.info.addEventListener('touchstart', this.onInfoTouchStart)
+    this.elements.title.appendChild(this.elements.info)
 
-  /**
-   * On info mouse enter event.
-   * @param {Object} event data
-   */
-  onInfoMouseEnter = (e) => {
-    const app = this.props.getApp()
-    const tooltipsData = app.state.tooltipsData
-    const tooltip = app.refs.tooltipCategoryInfo
-
-    const info = {
-      date: this.props.data.date,
-      picturesCount: this.props.data.pictures.length
-    }
-
-    tooltipsData.category = info
-
-    app.setState({
-      tooltipsData: tooltipsData
-    })
-
-    if (!tooltip.state.toggled) tooltip.show(this.refs.info)
-  }
-
-  /**
-   * On info mouse leave event.
-   * @param {Object} event data
-   */
-  onInfoMouseLeave = (e) => {
-    this.props.getApp().refs.tooltipCategoryInfo.hide()
-  }
-
-  /**
-   * On click event
-   * @param {Object} event data
-   */
-  onClick = (e) => {
-    if (e.target !== this.refs.title && e.target !== this.refs.info) {
-      this.props.onClick(e, this.props.data)
-    }
-  }
-
-  /**
-   * On touch event (on mobile).
-   * @param {Object} event data
-   */
-  onTouchStart = (e) => {
-    if (e.target !== this.refs.title && e.target.parentNode !== this.refs.title) {
-      var ripple = Ripple.createRipple(this.refs.category, {
-        backgroundColor: '#fff',
-        opacity: 0.3
-      }, createRippleMouse(this.refs.category, e, 1.5, true))
-      Ripple.makeRipple(ripple)
-      this.props.getApp().blockMouseDownEvent = true
-    }
-  }
-
-  render () {
-    return (
-      <div className='category ripple' ref='category' onMouseDown={this.onMouseDown} onClick={this.onClick} onTouchStart={this.onTouchStart}>
-        <div className='category-title' ref='title'>
-          {this.props.children}
-          <div className='category-info ripple-icon' ref='info' onMouseDown={this.onInfoMouseDown} onMouseEnter={this.onInfoMouseEnter} onMouseLeave={this.onInfoMouseLeave} onTouchStart={this.onInfoTouchStart} />
-        </div>
-      </div>
-    )
+    this.loadImage()
   }
 }

@@ -309,6 +309,9 @@ export default class App {
 
     this.elements.tooltipLikesList = new Tooltip('...')
     this.parent.appendChild(this.elements.tooltipLikesList.getRoot())
+
+    this.elements.tooltipCategoryInfo = new Tooltip('Data utworzenia:<br>Ilość zdjęc:')
+    this.parent.appendChild(this.elements.tooltipCategoryInfo.getRoot())
   }
 }
 /*
