@@ -115,6 +115,7 @@ export default class Toolbar {
         } else if (subType === 'Search') {
           element.classList.add('search-icon')
 
+          this.searchIconParent = element
           this.searchIcon = new SearchIcon(element)
           this.searchIcon.getToolbar = this.getToolbar
           const searchIconRoot = this.searchIcon.getRoot()
@@ -175,12 +176,15 @@ export default class Toolbar {
    * @param {Boolean} hide multi icon.
    * @param {Boolean} hide search icon.
    */
-  hideItems = (multiIcon = false, search = true) => {
+  hideItems = (multiIcon = false, search = true, title = true) => {
+    this.hiddenItems = []
+
     for (let i = 0; i < this.items.length; i++) {
       const item = this.items[i]
       const id = item.id
+      const classList = item.classList
 
-      if (multiIcon && id === 'toolbar-icon-multi-icon' || search && id === 'toolbar-icon-search' || id === '') {
+      if (multiIcon && id === 'toolbar-icon-multi-icon' || search && id === 'toolbar-icon-search' || classList.contains('toolbar-title') && title) {
         item.style.top = '96px'
         this.hiddenItems.push(item)
       }
@@ -193,7 +197,7 @@ export default class Toolbar {
   showItems = () => {
     for (let i = 0; i < this.hiddenItems.length; i++) {
       const item = this.hiddenItems[i]
-      const top = (!item === this.searchIcon) ? '0px' : '50%'
+      const top = (item === this.searchIconParent) ? '0px' : '50%'
 
       item.style.top = top
     }

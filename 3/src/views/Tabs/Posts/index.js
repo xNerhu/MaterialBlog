@@ -188,12 +188,15 @@ export default class PostsTab {
     const app = window.app
     const toolbar = app.elements.toolbar
     const multiIcon = toolbar.getMultiIcon()
+    const searchIcon = toolbar.getSearchIcon()
     const posts = this.posts
 
-    toolbar.toggleTabs(!flag)
-    this.fullScreen.flag = flag
+    if (!searchIcon.fullWidth) {
+      toolbar.toggleTabs(!flag)
+      this.fullScreen.flag = flag
+    }
 
-    if (flag) {
+    if (flag && !searchIcon.fullWidth) {
       const navigationDrawer = app.getNavigationDrawer()
       const root = post.getRoot()
 
@@ -213,6 +216,7 @@ export default class PostsTab {
 
       this.fullScreen.post = post
       post.props.ripple = false
+      toolbar.hideItems(false, true, false)
 
       for (let i = 0; i < posts.length; i++) {
         const _post = posts[i]
@@ -235,9 +239,11 @@ export default class PostsTab {
           }, 10)
         }
       }
-    } else {
+    } else if (!flag) {
       const post = this.fullScreen.post
       const root = post.getRoot()
+
+      toolbar.showItems()
 
       post.props.ripple = true
 
