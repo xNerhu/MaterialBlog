@@ -43,11 +43,15 @@ export default class App {
   onMultiIconClick = (e) => {
     const toolbar = this.elements.toolbar
     const multiIcon = toolbar.getMultiIcon()
+    const searchIcon = toolbar.getSearchIcon()
     const navigationDrawer = this.getNavigationDrawer()
     const postsTab = this.getPostsTab()
 
     if (multiIcon.canClick) {
-      if (postsTab.fullScreen.flag) {
+      if (searchIcon.toggled && searchIcon.fullWidth) {
+        searchIcon.changeToFullWidth(false)
+        searchIcon.toggle(false)
+      } else if (postsTab.fullScreen.flag) {
         postsTab.toggleFullScreen(false)
         multiIcon.changeToDefault()
       } else if (!navigationDrawer.toggled) {

@@ -29,11 +29,10 @@ export default class Toolbar {
    * On item mouse down event.
    * Makes ripple.
    * @param {Event}
+   * @param {DOMElement} element.
    */
-  onItemMouseDown = (e) => {
+  onItemMouseDown = (e, target) => {
     if (!this.touched) {
-      const target = e.target
-
       let ripple = Ripple.createRipple(target, this.actionIconRippleStyle, createRippleCenter(target, 14))
       Ripple.makeRipple(ripple)
     }
@@ -43,10 +42,9 @@ export default class Toolbar {
    * On item touch start event.
    * Makes ripple.
    * @param {Event}
+   * @param {DOMElement} element.
    */
-  onItemTouchStart = (e) => {
-    const target = e.target
-
+  onItemTouchStart = (e, target) => {
     let ripple = Ripple.createRipple(target, this.actionIconRippleStyle, createRippleCenter(target, 14, 0.4, true))
     Ripple.makeRipple(ripple)
     this.touched = true
@@ -57,6 +55,7 @@ export default class Toolbar {
    * @param {Object} items.
    */
   setItems = (items) => {
+    const self = this
     let first = true
     let hasLeftIcon = false
     let left = 16
@@ -105,8 +104,12 @@ export default class Toolbar {
           this.multiIcon = new MultiIcon()
           const multiIconRoot = this.multiIcon.getRoot()
 
-          element.addEventListener('mousedown', this.onItemMouseDown)
-          element.addEventListener('touchstart', this.onItemTouchStart)
+          element.addEventListener('mousedown', function (e) {
+            self.onItemMouseDown(e, element)
+          })
+          element.addEventListener('touchstart', function (e) {
+            self.onItemTouchStart(e, element)
+          })
 
           element.appendChild(multiIconRoot)
         } else if (subType === 'Search') {
@@ -157,6 +160,14 @@ export default class Toolbar {
    */
   getMultiIcon = () => {
     return this.multiIcon
+  }
+
+  /**
+   * Gets search icon.
+   * @return {SearchIcon}
+   */
+  getSearchIcon = () => {
+    return this.searchIcon
   }
 
   /**
