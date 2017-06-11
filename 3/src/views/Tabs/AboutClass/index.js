@@ -1,19 +1,34 @@
-import React from 'react'
+export default class AboutClassTab {
+  constructor () {
+    this.elements = {}
 
-export default class AboutClassTab extends React.Component {
-  /**
-   * Gets root
-   * @param {DomElement}
-   */
-  getRoot = () => {
-    return this.refs.root
+    this.render()
   }
 
-  render () {
-    return (
-      <div className='about-class-tab tab-page' ref='root'>
+  /**
+   * Gets root
+   * @param {DOMElement}
+   */
+  getRoot = () => {
+    return this.elements.root
+  }
 
-      </div>
-    )
+  /**
+   * TODO
+   */
+  load = () => {
+    const app = window.app
+    const root = this.getRoot()
+
+    app.tabsLoaded.aboutClass = true
+    app.togglePreloader(false)
+    app.isLoading = false
+  }
+
+  render = () => {
+    this.elements.root = document.createElement('div')
+    this.elements.root.className = 'about-class-tab tab-page'
+
+    this.elements.root.innerHTML = 'O klasie'
   }
 }

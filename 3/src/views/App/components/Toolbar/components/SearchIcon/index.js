@@ -108,6 +108,8 @@ export default class SearchIcon {
     const toolbar = this.getToolbar()
     const multiIcon = toolbar.getMultiIcon()
 
+    multiIcon.blockClick()
+
     if (flag) {
       root.classList.add('toggled')
       root.classList.add('full-width')

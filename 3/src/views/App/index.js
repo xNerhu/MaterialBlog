@@ -1,5 +1,4 @@
 import Preloader from '../../imports/materialdesign/components/Preloader'
-import TextField from '../../imports/materialdesign/components/TextField'
 import Tooltip from '../../imports/materialdesign/components/Tooltip'
 
 import NavigationDrawer from './components/NavigationDrawer'
@@ -9,6 +8,8 @@ import TabLayout from './components/TabLayout'
 
 import PostsTab from '../Tabs/Posts'
 import GalleryTab from '../Tabs/Gallery'
+import AboutClassTab from '../Tabs/AboutClass'
+import LessonsPlanTab from '../Tabs/LessonsPlan'
 
 export default class App {
   constructor (parent) {
@@ -109,6 +110,22 @@ export default class App {
   }
 
   /**
+   * Gets about class tab.
+   * @return {AboutClassTab}
+   */
+  getAboutClassTab = () => {
+    return this.elements.aboutClassTab
+  }
+
+  /**
+   * Gets lessons plan tab.
+   * @return {LessonsPlanTab}
+   */
+  getLessonsPlanTab = () => {
+    return this.elements.lessonsPlanTab
+  }
+
+  /**
    * Gets preloader.
    * @return {Preloader}
    */
@@ -132,8 +149,10 @@ export default class App {
    */
   onTabSelect = (tab) => {
     const name = this.getTabName(tab)
+    let loaded = false
+    if ((name === 'posts' && this.tabsLoaded.posts) || (name === 'gallery' && this.tabsLoaded.gallery) || (name === 'lessonsPlan' && this.tabsLoaded.lessonsPlan)) loaded = true
 
-    if (name === 'posts' && !this.tabsLoaded.posts || name === 'gallery' && !this.tabsLoaded.gallery) {
+    if (!loaded) {
       this.togglePreloader(true)
       this.isLoading = true
 
@@ -159,9 +178,11 @@ export default class App {
   getTabName = (tab) => {
     const postsTab = this.getPostsTab()
     const galleryTab = this.getGalleryTab()
+    const lessonsPlanTab = this.getLessonsPlanTab()
 
     if (tab === postsTab) return 'posts'
     else if (tab === galleryTab) return 'gallery'
+    else if (tab === lessonsPlanTab) return 'lessonsPlan'
   }
 
   render = () => {
@@ -281,6 +302,12 @@ export default class App {
     this.elements.galleryTab = new GalleryTab()
     this.elements.tabPages.appendChild(this.elements.galleryTab.getRoot())
 
+    this.elements.aboutClassTab = new AboutClassTab()
+    this.elements.tabPages.appendChild(this.elements.aboutClassTab.getRoot())
+
+    this.elements.lessonsPlanTab = new LessonsPlanTab()
+    this.elements.tabPages.appendChild(this.elements.lessonsPlanTab.getRoot())
+
     this.elements.appContent.appendChild(this.elements.tabPages)
 
     const tabs = [
@@ -304,6 +331,28 @@ export default class App {
         },
         onDeselect: function () {
           self.onTabDeselect(self.getGalleryTab())
+        }
+      },
+      {
+        title: 'O KLASIE',
+        url: 'aboutclass',
+        page: this.elements.aboutClassTab,
+        onSelect: function () {
+          self.onTabSelect(self.getAboutClassTab())
+        },
+        onDeselect: function () {
+          self.onTabDeselect(self.getAboutClassTab())
+        }
+      },
+      {
+        title: 'PLAN LEKCJI',
+        url: 'lessonsplan',
+        page: this.elements.lessonsPlanTab,
+        onSelect: function () {
+          self.onTabSelect(self.getLessonsPlanTab())
+        },
+        onDeselect: function () {
+          self.onTabDeselect(self.getLessonsPlanTab())
         }
       }
     ]
