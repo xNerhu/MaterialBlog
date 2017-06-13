@@ -1,4 +1,5 @@
 import Component from '../../../helpers/Component'
+import Colors from '../../../helpers/Colors'
 
 import Category from './components/Category'
 import Picture from './components/Picture'

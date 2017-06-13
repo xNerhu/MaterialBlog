@@ -12,6 +12,7 @@ import LessonsPlanTab from '../Tabs/LessonsPlan'
 
 import Preloader from './../../imports/materialdesign/components/Preloader'
 import Tooltip from '../../imports/materialdesign/components/Tooltip'
+import Dialog from '../../imports/materialdesign/components/Dialog'
 
 export default class App extends Component {
   beforeRender () {
@@ -163,8 +164,11 @@ export default class App extends Component {
     const navigationDrawer = this.getNavigationDrawer()
     const postsTab = this.getPostsTab()
     const galleryTab = this.getGalleryTab()
+    const dialog = this.elements.d
 
-    if (multiIcon.canClick) {
+    dialog.toggle(true)
+
+    /*if (multiIcon.canClick) {
       if (searchIcon.toggled && searchIcon.fullWidth) {
         searchIcon.changeToFullWidth(false)
         searchIcon.toggle(false)
@@ -186,7 +190,7 @@ export default class App extends Component {
         multiIcon.changeToDefault()
         multiIcon.blockClick()
       }
-    }
+    }*/
   }
 
   render () {
@@ -209,6 +213,12 @@ export default class App extends Component {
         <Tooltip ref='tooltipLikeButton' text='Polub to!' />
         <Tooltip ref='tooltipLikesList' text='...' />
         <Tooltip ref='tooltipCategoryInfo' text='Data utworzenia:<br>Ilość zdjęc:' />
+        <Dialog ref='d' title='Title'>
+          Generalnie to test
+          <br />Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer velit orci, bibendum at pulvinar eget, bibendum sit amet nisi. Integer non nisi urna. Nulla sed fermentum dui, non mollis dolor. In hac habitasse platea dictumst. Sed placerat quam neque. Aenean sed aliquam augue. Curabitur nisi eros, dictum nec molestie in, ultricies quis elit. Donec tristique nisl vitae pharetra pretium. Cras pharetra ex ut elit ultrices suscipit. Pellentesque a auctor eros. Ut congue, arcu ornare vulputate blandit, lacus enim convallis lorem, a sollicitudin velit odio nec justo. Morbi ut porttitor enim. Duis eget pulvinar nunc.
+          xdd lorem lorem 
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer velit orci, bibendum at pulvinar eget, bibendum sit amet nisi. Integer non nisi urna. Nulla sed fermentum dui, non mollis dolor. In hac habitasse platea dictumst. Sed placerat quam neque. Aenean sed aliquam augue. Curabitur nisi eros, dictum nec molestie in, ultricies quis elit. Donec tristique nisl vitae pharetra pretium. Cras pharetra ex ut elit ultrices suscipit. Pellentesque a auctor eros. Ut congue, arcu ornare vulputate blandit, lacus enim convallis lorem, a sollicitudin velit odio nec justo. Morbi ut porttitor enim. Duis eget pulvinar nunc.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer velit orci, bibendum at pulvinar eget, bibendum sit amet nisi. Integer non nisi urna. Nulla sed fermentum dui, non mollis dolor. In hac habitasse platea dictumst. Sed placerat quam neque. Aenean sed aliquam augue. Curabitur nisi eros, dictum nec molestie in, ultricies quis elit. Donec tristique nisl vitae pharetra pretium. Cras pharetra ex ut elit ultrices suscipit. Pellentesque a auctor eros. Ut congue, arcu ornare vulputate blandit, lacus enim convallis lorem, a sollicitudin velit odio nec justo. Morbi ut porttitor enim. Duis eget pulvinar nunc.
+        </Dialog>
       </div>
     )
   }

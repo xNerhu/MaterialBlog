@@ -51,7 +51,7 @@ export default class MaterialButton extends Component {
 
   render () {
     return (
-      <div className='material-button ripple' ref='root' onMouseDown={this.onMouseDown} onMouseLeave={this.onMouseLeave} />
+      <div className='material-button ripple' ref='root' onClick={this.props.onClick} onMouseDown={this.onMouseDown} onMouseLeave={this.onMouseLeave} />
     )
   }
 
