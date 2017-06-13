@@ -1,8 +1,12 @@
 import Component from '../../../helpers/Component'
+import UI from '../../../helpers/UI'
+import Colors from '../../../helpers/Colors'
 
 import Post from './components/Post'
 
 import FAB from '../../../imports/materialdesign/components/FAB'
+import MaterialButton from '../../../imports/materialdesign/components/MaterialButton'
+import Preloader from '../../../imports/materialdesign/components/Preloader'
 
 export default class PostsTab extends Component {
   beforeRender () {
@@ -17,6 +21,9 @@ export default class PostsTab extends Component {
     this.toggledFAB = false
     this.fab = false
     this.fabTimer = null
+
+    this.loadingMorePosts = false
+    this.page = 0
   }
 
   /**
@@ -51,6 +58,7 @@ export default class PostsTab extends Component {
     const app = window.app
     const root = this.getRoot()
     const posts = this.elements.posts
+    const loadPostsButtonContainer = this.elements.loadPostsButtonContainer
 
     app.tabsLoaded.posts = true
 
@@ -148,7 +156,9 @@ export default class PostsTab extends Component {
 
         self.renderComponents(post, posts)
       }
-    }, 100)
+
+      loadPostsButtonContainer.style.display = 'block'
+    }, 1000)
   }
 
   /**
@@ -188,91 +198,98 @@ export default class PostsTab extends Component {
     const multiIcon = toolbar.getMultiIcon()
     const searchIcon = toolbar.getSearchIcon()
     const posts = this.posts
+    const loadPostsButtonContainer = this.elements.loadPostsButtonContainer
 
-    if (!searchIcon.fullWidth) {
-      toolbar.toggleTabs(!flag)
-      this.fullScreen.flag = flag
-    }
-
-    if (flag && !searchIcon.fullWidth) {
-      const navigationDrawer = app.getNavigationDrawer()
-      const root = post.getRoot()
-
-      if (navigationDrawer.toggled) {
-        navigationDrawer.hide()
-
-        setTimeout(function () {
-          multiIcon.changeToDefault()
-          setTimeout(function () {
-            multiIcon.changeToArrow()
-          }, 250)
-        }, 250)
-      } else {
-        multiIcon.changeToArrow()
+    if (!this.loadingMorePosts) {
+      if (!searchIcon.fullWidth) {
+        toolbar.toggleTabs(!flag)
+        this.fullScreen.flag = flag
       }
-      multiIcon.blockClick()
 
-      this.fullScreen.post = post
-      post.props.ripple = false
-      toolbar.hideItems(false, true, false)
+      if (flag && !searchIcon.fullWidth) {
+        const navigationDrawer = app.getNavigationDrawer()
+        const root = post.getRoot()
 
-      for (let i = 0; i < posts.length; i++) {
-        const _post = posts[i]
-        const _postRoot = _post.getRoot()
+        loadPostsButtonContainer.style.display = 'none'
 
-        if (_postRoot !== root) {
-          _postRoot.style.height = _postRoot.scrollHeight + 'px'
+        if (navigationDrawer.toggled) {
+          navigationDrawer.hide()
 
           setTimeout(function () {
-            root.style.maxWidth = '100%'
-            root.style.marginTop = '0px'
-          }, 50)
-
-          setTimeout(function () {
-            _postRoot.style.height = '0px'
-
+            multiIcon.changeToDefault()
             setTimeout(function () {
-              _postRoot.style.display = 'none'
+              multiIcon.changeToArrow()
             }, 250)
-          }, 10)
+          }, 250)
+        } else {
+          multiIcon.changeToArrow()
         }
-      }
-    } else if (!flag) {
-      const post = this.fullScreen.post
-      const root = post.getRoot()
+        multiIcon.blockClick()
 
-      toolbar.showItems()
+        this.fullScreen.post = post
+        post.props.ripple = false
+        toolbar.hideItems(false, true, false)
 
-      post.props.ripple = true
-
-      root.style.maxWidth = '550px'
-      root.style.marginTop = '32px'
-
-      setTimeout(function () {
         for (let i = 0; i < posts.length; i++) {
           const _post = posts[i]
           const _postRoot = _post.getRoot()
 
           if (_postRoot !== root) {
-            _postRoot.style.display = 'block'
+            _postRoot.style.height = _postRoot.scrollHeight + 'px'
 
             setTimeout(function () {
-              _postRoot.style.height = _postRoot.scrollHeight + 'px'
+              root.style.maxWidth = '100%'
+              root.style.marginTop = '0px'
+            }, 50)
+
+            setTimeout(function () {
+              _postRoot.style.height = '0px'
 
               setTimeout(function () {
-                _postRoot.style.height = 'auto'
+                _postRoot.style.display = 'none'
               }, 250)
             }, 10)
           }
         }
+      } else if (!flag) {
+        const post = this.fullScreen.post
+        const root = post.getRoot()
+
+        toolbar.showItems()
+
+        post.props.ripple = true
+
+        root.style.maxWidth = '550px'
+        root.style.marginTop = '32px'
 
         setTimeout(function () {
-          root.scrollIntoView({
-            block: 'end',
-            behavior: 'smooth'
-          })
-        }, 250)
-      }, 150)
+          for (let i = 0; i < posts.length; i++) {
+            const _post = posts[i]
+            const _postRoot = _post.getRoot()
+
+            if (_postRoot !== root) {
+              _postRoot.style.display = 'block'
+
+              setTimeout(function () {
+                _postRoot.style.height = _postRoot.scrollHeight + 'px'
+
+                setTimeout(function () {
+                  _postRoot.style.height = 'auto'
+                }, 250)
+              }, 10)
+            }
+          }
+
+          setTimeout(function () {
+            root.scrollIntoView({
+              block: 'end',
+              behavior: 'smooth'
+            })
+
+            loadPostsButtonContainer.style.display = 'block'
+          }, 250)
+        }, 150)
+      }
     }
   }
 
@@ -284,10 +301,73 @@ export default class PostsTab extends Component {
    */
   onScroll = (e) => {
     const root = this.getRoot()
+    const loadPostsButtonContainer = this.elements.loadPostsButtonContainer
 
-    //if (isVisible(this.loadPostsButton)) this.loadMorePosts()
+    if (UI.isVisible(loadPostsButtonContainer)) this.loadMorePosts()
 
     this.toggleFAB(root.scrollTop > window.innerHeight && !this.fullScreen.flag)
+  }
+
+  /**
+   * Loads more posts.
+   */
+  loadMorePosts = () => {
+    const self = this
+    const app = window.app
+    const container = this.elements.loadPostsButtonContainer
+    const preloader = this.elements.loadPostsPreloader
+    const preloaderRoot = preloader.getRoot()
+    const posts = this.elements.posts
+
+    if (this.page <= 10) {
+      container.style.display = 'none'
+      preloaderRoot.style.display = 'block'
+      app.isLoading = true
+      this.loadingMorePosts = true
+
+      // TODO: Make request
+      setTimeout(function () {
+        app.isLoading = false
+
+        const r = UI.getRandomInt(1, 255 - self.page)
+        const g = UI.getRandomInt(1, 255 - self.page)
+        const b = UI.getRandomInt(1, 255 - self.page)
+
+        const img = Colors.getColoredImage(r, g, b)
+        const color = Colors.rgbToHex(r, g, b)
+
+        self.postsData = [
+          {
+            media: img,
+            id: this.page + 10,
+            title: self.page,
+            author: 'Mikołaj Palkiewicz',
+            content: '<span id="test-' + color.substr(1, color.length) + '">' + color + '</span><style>#test-' + color.substr(1, color.length) + ' {color: ' + color + ';}</style>',
+            date: '14.04.2017 8:07',
+            avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+            likes: [],
+            comments: []
+          }
+        ]
+
+        for (let i = 0; i < self.postsData.length; i++) {
+          const post = (
+            <Post data={self.postsData[i]} getPostsTab={self.getPostsTab} index={i} />
+          )
+
+          self.renderComponents(post, posts)
+        }
+
+        if (self.page < 10) {
+          container.style.display = 'block'
+          self.page++
+        }
+
+        preloaderRoot.style.display = 'none'
+
+        self.loadingMorePosts = false
+      }, 200)
+    }
   }
 
   /**
@@ -340,6 +420,10 @@ export default class PostsTab extends Component {
         <div className='posts-fab-container' ref='fabContainer'>
           <FAB className='posts-fab' ref='fab' onClick={this.onFABClick} />
         </div>
+        <div className='load-posts-button-container' ref='loadPostsButtonContainer'>
+          <MaterialButton className='load-posts-button' ref='loadPostsButton' text='ZAŁADUJ WIĘCEJ' />
+        </div>
+        <Preloader className='load-posts-preloader' ref='loadPostsPreloader' />
       </div>
     )
   }

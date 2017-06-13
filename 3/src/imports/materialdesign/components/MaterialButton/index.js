@@ -66,7 +66,7 @@ export default class MaterialButton extends Component {
       }
     }
 
-    if (!props.shadow) root.classList.add('no-shadow')
+    if (props.shadow === false) root.classList.add('no-shadow')
     if (props.className != null) root.classList.add(props.className)
 
     this.setText(props.text)

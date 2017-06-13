@@ -1,6 +1,7 @@
 .posts {
   transition: 0.3s opacity;
   z-index: 6;
+  margin-bottom: 24px;
 }
 
 .fullscreen-post {
@@ -26,11 +27,17 @@
   }
 }
 
-.load-posts-button {
-  width: 100% !important;
+.load-posts-button-container {
+  width: 100%;
   max-width: 164px;
-  margin: 24px auto;
+  margin-bottom: 24px;
+  margin-left: auto;
+  margin-right: auto;
   display: none;
+}
+
+.load-posts-button {
+  display: block !important;
 }
 
 .posts-fab-container {
@@ -63,4 +70,5 @@
   width: 54px;
   height: 54px;
   margin: 24px auto;
+  display: none;
 }

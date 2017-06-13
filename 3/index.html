@@ -19,7 +19,8 @@
               document.body.appendChild(script);
             }
           }
-          const isLocalHost = (window.location.href.includes('C:/') || window.location.href.includes('localhost')) ? true : false;
+
+          const isLocalHost = (window.location.href.includes('C:/') || window.location.href.includes('localhost'));
           if (isLocalHost) {
             loadScripts(['http://localhost:1811/build/entry.bundle.js', 'http://localhost:1811/webpack-dev-server.js']);
           } else {
@@ -28,6 +29,5 @@
         </script>
         <script src="src/imports/materialdesign/helpers/ripple/index.js"></script>
         <script src="src/helpers/DOM/index.js"></script>
-        <script src="src/helpers/global.js"></script>
     </body>
 </html>

@@ -35,6 +35,6 @@ export default class Preloader extends Component {
 
     this.elements.root.innerHTML = this.elements.svg.outerHTML
 
-    if (this.props.className != null) this.getRoot().classList.add(this.props.className) 
+    if (this.props.className != null) this.getRoot().classList.add(this.props.className)
   }
 }
