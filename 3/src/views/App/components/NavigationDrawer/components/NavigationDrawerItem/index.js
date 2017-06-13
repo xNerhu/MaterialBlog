@@ -1,16 +1,13 @@
-export default class NavigationDrawerItem {
-  constructor () {
-    this.touched = false
+import Component from './../../../../../../helpers/Component/index'
 
-    this.props = {}
-    this.elements = {}
+export default class NavigationDrawerItem extends Component {
+  beforeComponent () {
+    this.touched = false
 
     this.rippleStyle = {
       backgroundColor: '#000',
       opacity: 0.2
     }
-
-    this.render()
   }
 
   /**
@@ -60,20 +57,18 @@ export default class NavigationDrawerItem {
     this.elements.text.innerHTML = str
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'navigation-drawer-item ripple'
-    this.elements.root.addEventListener('click', this.onClick)
-    this.elements.root.addEventListener('mousedown', this.onMouseDown)
-    this.elements.root.addEventListener('touchstart', this.onTouchStart)
+  render () {
+    return (
+      <div className='navigation-drawer-item ripple' ref='root' onClick={this.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>
+        <div className='icon' ref='icon' />
+        <div className='text' ref='text' />
+      </div>
+    )
+  }
 
-    this.elements.icon = document.createElement('div')
-    this.elements.icon.className = 'icon'
+  afterRender () {
+    if (this.props.className) this.getRoot().classList.add(this.props.className)
 
-    this.elements.text = document.createElement('div')
-    this.elements.text.className = 'text'
-
-    this.elements.root.appendChild(this.elements.icon)
-    this.elements.root.appendChild(this.elements.text)
+    this.setText(this.props.children)
   }
 }

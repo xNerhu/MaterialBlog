@@ -1,17 +1,15 @@
+import Component from '../../../../helpers/Component'
+
 import Url from '../../../../helpers/Url'
 
 import Tab from './components/Tab'
 
-export default class TabLayout {
-  constructor (parent) {
-    this.elements = {}
-
+export default class TabLayout extends Component {
+  beforeRender () {
     this.tabs = []
     this.lastSelectedIndex = -1
     this.lastSelectedIndex2 = -1
     this.selectedIndex = -1
-
-    this.render()
   }
 
   /**
@@ -28,23 +26,22 @@ export default class TabLayout {
    */
   setTabs = (tabs) => {
     const self = this
+    const root = this.getRoot()
 
-    for (let i = 0; i < tabs.length; i++) {
+    for (var i = 0; i < tabs.length; i++) {
       const tab = tabs[i]
-      const element = new Tab()
+      const element = (
+        <Tab getTabLayout={this.getTabLayout} page={tab.page} url={tab.url} onSelect={tab.onSelect} onDeselect={tab.onDeselect}>
+          {
+            tab.title
+          }
+        </Tab>
+      )
 
-      element.getTabLayout = this.getTabLayout()
-      element.page = tab.page
-      element.url = tab.url
-      element.onSelect = tab.onSelect
-      element.onDeselect = tab.onDeselect
-      element.render(tab.title)
-
-      this.elements.root.appendChild(element.getRoot())
+      this.renderComponents(element, root)
     }
 
     const urlTab = Url.getUrlParameter('tab')
-
     if (urlTab === undefined) {
       setTimeout(function () {
         self.tabs[0].select()
@@ -77,13 +74,11 @@ export default class TabLayout {
     }
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'tab-layout'
-
-    this.elements.indicator = document.createElement('div')
-    this.elements.indicator.className = 'indicator'
-
-    this.elements.root.appendChild(this.elements.indicator)
+  render () {
+    return (
+      <div className='tab-layout' ref='root'>
+        <div className='indicator' ref='indicator' />
+      </div>
+    )
   }
 }

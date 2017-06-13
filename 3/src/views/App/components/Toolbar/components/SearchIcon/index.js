@@ -1,22 +1,13 @@
+import Component from '../../../../../../helpers/Component'
+
 import TextField from '../../../../../../imports/materialdesign/components/TextField'
 
-export default class SearchIcon {
-  constructor (parent) {
+export default class SearchIcon extends Component {
+  beforeRender () {
     this.toggled = false
     this.fullWidth = false
     this.maxWidth = 700
     this.touched = false
-
-    this.elements = {}
-
-    this.actionIconRippleStyle = {
-      backgroundColor: '#000',
-      opacity: 0.2
-    }
-
-    this.parent = parent
-
-    this.render()
   }
 
   /**
@@ -46,7 +37,7 @@ export default class SearchIcon {
    */
   onMouseDown = (e) => {
     if (!this.touched) {
-      let ripple = Ripple.createRipple(this.elements.button, this.actionIconRippleStyle, createRippleCenter(this.elements.button, 14))
+      let ripple = Ripple.createRipple(this.elements.button, this.props.actionIconRippleStyle, createRippleCenter(this.elements.button, 14))
       Ripple.makeRipple(ripple)
     }
   }
@@ -57,7 +48,7 @@ export default class SearchIcon {
    * @param {Event}
    */
   onTouchStart = (e) => {
-    let ripple = Ripple.createRipple(this.elements.button, this.actionIconRippleStyle, createRippleCenter(this.elements.button, 14, 0.4, true))
+    let ripple = Ripple.createRipple(this.elements.button, this.props.actionIconRippleStyle, createRippleCenter(this.elements.button, 14, 0.4, true))
     Ripple.makeRipple(ripple)
     this.touched = true
   }
@@ -104,17 +95,18 @@ export default class SearchIcon {
    */
   changeToFullWidth = (flag) => {
     const self = this
-    const root = this.getRoot()
-    const toolbar = this.getToolbar()
+    const app = window.app
+    const toolbar = app.getToolbar()
     const multiIcon = toolbar.getMultiIcon()
-
+    const root = this.getRoot()
+    const parent = root.parentNode
     multiIcon.blockClick()
 
     if (flag) {
       root.classList.add('toggled')
       root.classList.add('full-width')
       this.fullWidth = true
-      this.parent.style.width = 'calc(100% - 96px)'
+      parent.style.width = 'calc(100% - 96px)'
       this.elements.textField.elements.actionIcon.style.opacity = '0'
       setTimeout(function () {
         self.elements.textField.elements.actionIcon.style.display = 'none'
@@ -137,7 +129,7 @@ export default class SearchIcon {
       this.elements.root.classList.remove('full-width')
       this.fullWidth = false
       setTimeout(function () {
-        self.parent.style.width = '64px'
+        parent.style.width = '64px'
       }, 350)
       this.backMultiIconState()
 
@@ -156,22 +148,9 @@ export default class SearchIcon {
    * Backs multi icon state to default.
    */
   backMultiIconState = () => {
-    /*const app = this.props.getApp()
-    const navigationDrawer = app.refs.navigationDrawer
-    const menuIcon = app.getToolBar().refs.menuIcon
-    const searchResults = app.refs.searchResults
-
-    if (menuIcon.actualState && !navigationDrawer.toggled) {
-      if (menuIcon.actualState === 'default' && !searchResults.state.toggled) {
-        menuIcon.changeToDefault(false)
-      } else if (menuIcon.actualState === 'arrow' || !searchResults.state.toggled || menuIcon.isExit) {
-        menuIcon.changeToDefault(false)
-        setTimeout(function () {
-          menuIcon.changeToArrow(false)
-        }, 200)
-      }
-    }*/
-    const multiIcon = this.getToolbar().getMultiIcon()
+    const app = window.app
+    const toolbar = app.getToolbar()
+    const multiIcon = toolbar.getMultiIcon()
 
     if (multiIcon.actualState) {
       if (multiIcon.actualState === 'default') {
@@ -185,26 +164,23 @@ export default class SearchIcon {
     }
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'search-icon-container'
+  render () {
+    return (
+      <div className='search-icon-container' ref='root'>
+        <div className='search-icon-button ripple-icon' ref='button' onClick={this.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart} />
+        <TextField placeholder='Wyszukaj' className='search-icon-text-field' ref='textField' />
+      </div>
+    )
+  }
 
-    this.elements.button = document.createElement('div')
-    this.elements.button.className = 'search-icon-button ripple-icon'
-    this.elements.button.setStyle({
-      backgroundImage: 'url(src/images/Toolbar/search.png)'
-    })
-    this.elements.button.addEventListener('click', this.onClick)
-    this.elements.button.addEventListener('mousedown', this.onMouseDown)
-    this.elements.button.addEventListener('touchstart', this.onTouchStart)
+  afterRender () {
+    const textField = this.elements.textField
+    textField.elements.actionIcon.addEventListener('click', this.onActionIconClick)
 
-    this.elements.textField = new TextField()
-    this.elements.textField.setPlaceholder('Wyszukaj')
-    this.elements.textField.getRoot().classList.add('search-icon-text-field')
-    this.elements.textField.elements.actionIcon.addEventListener('click', this.onActionIconClick)
-
-    this.elements.root.appendChild(this.elements.button)
-    this.elements.root.appendChild(this.elements.textField.getRoot())
+    this.props.actionIconRippleStyle = {
+      backgroundColor: '#000',
+      opacity: 0.2
+    }
 
     window.addEventListener('resize', this.onWindowResize)
   }

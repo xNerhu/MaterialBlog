@@ -1,15 +1,9 @@
-export default class Picture {
-  constructor (url, onClick) {
-    this.elements = {}
-    this.props = {
-      url: url,
-      onClick: onClick
-    }
+import Component from '../../../../../helpers/Component'
 
+export default class Picture extends Component {
+  beforeRender () {
     this.naturalWidth = 0
     this.naturalHeight = 0
-
-    this.render()
   }
 
   /**
@@ -28,14 +22,17 @@ export default class Picture {
     if (typeof this.props.onClick === 'function') this.props.onClick(e, this)
   }
 
-  render = () => {
-    const self = this
+  render () {
+    return (
+      <img className='picture' ref='root' draggable='false' onClick={this.onClick} />
+    )
+  }
 
-    this.elements.root = document.createElement('img')
-    this.elements.root.className = 'picture'
-    this.elements.root.setAttribute('draggable', 'false')
-    this.elements.root.addEventListener('click', this.onClick)
-    this.elements.root.onload = function () {
+  afterRender () {
+    const self = this
+    const root = this.getRoot()
+
+    root.onload = function () {
       this.style.opacity = '1'
       self.naturalWidth = this.naturalWidth
       self.naturalHeight = this.naturalHeight

@@ -1,11 +1,11 @@
+import Component from '../../../helpers/Component'
+
 import Post from './components/Post'
 
 import FAB from '../../../imports/materialdesign/components/FAB'
 
-export default class PostsTab {
-  constructor () {
-    this.elements = {}
-
+export default class PostsTab extends Component {
+  beforeRender () {
     this.postsData = []
     this.posts = []
 
@@ -17,8 +17,6 @@ export default class PostsTab {
     this.toggledFAB = false
     this.fab = false
     this.fabTimer = null
-
-    this.render()
   }
 
   /**
@@ -144,13 +142,13 @@ export default class PostsTab {
       ]
 
       for (let i = 0; i < self.postsData.length; i++) {
-        const post = new Post(self.postsData[i], i)
-        post.props.getPostsTab = self.getPostsTab
+        const post = (
+          <Post data={self.postsData[i]} getPostsTab={self.getPostsTab} index={i} />
+        )
 
-        self.posts.push(post)
-        posts.appendChild(post.getRoot())
+        self.renderComponents(post, posts)
       }
-    }, 1000)
+    }, 100)
   }
 
   /**
@@ -335,23 +333,20 @@ export default class PostsTab {
     })
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'posts-tab tab-page'
-    this.elements.root.addEventListener('scroll', this.onScroll)
+  render () {
+    return (
+      <div className='posts-tab tab-page' ref='root'>
+        <div className='posts' ref='posts' />
+        <div className='posts-fab-container' ref='fabContainer'>
+          <FAB className='posts-fab' ref='fab' onClick={this.onFABClick} />
+        </div>
+      </div>
+    )
+  }
 
-    // POSTS
-    this.elements.posts = document.createElement('div')
-    this.elements.posts.className = 'posts'
-    this.elements.root.appendChild(this.elements.posts)
+  afterRender () {
+    const root = this.getRoot()
 
-    // FLOATING ACTION BUTTON
-    this.elements.fabContainer = document.createElement('div')
-    this.elements.fabContainer.className = 'posts-fab-container'
-    this.elements.root.appendChild(this.elements.fabContainer)
-
-    this.elements.fab = new FAB('posts-fab')
-    this.elements.fab.getRoot().addEventListener('click', this.onFABClick)
-    this.elements.fabContainer.appendChild(this.elements.fab.getRoot())
+    root.addEventListener('scroll', this.onScroll)
   }
 }

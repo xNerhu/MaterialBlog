@@ -1,13 +1,9 @@
-export default class AboutClassTab {
-  constructor () {
-    this.elements = {}
+import Component from '../../../helpers/Component'
 
-    this.render()
-  }
-
+export default class AboutClassTab extends Component {
   /**
-   * Gets root
-   * @param {DOMElement}
+   * Gets root.
+   * @param {DOMElement} root.
    */
   getRoot = () => {
     return this.elements.root
@@ -17,18 +13,20 @@ export default class AboutClassTab {
    * TODO
    */
   load = () => {
+    const self = this
     const app = window.app
-    const root = this.getRoot()
+    const categories = this.elements.categories
 
     app.tabsLoaded.aboutClass = true
     app.togglePreloader(false)
     app.isLoading = false
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'about-class-tab tab-page'
-
-    this.elements.root.innerHTML = 'O klasie'
+  render () {
+    return (
+      <div className='about-class-tab tab-page' ref='root'>
+        About class
+      </div>
+    )
   }
 }

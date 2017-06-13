@@ -1,17 +1,8 @@
-export default class FAB {
-  constructor (className) {
-    this.elements = {}
-    this.props = {
-      className: className,
-      rippleStyle: {
-        backgroundColor: '#fff',
-        opacity: 0.2
-      }
-    }
+import Component from '../../../../helpers/Component'
 
+export default class FAB extends Component {
+  beforeRender () {
     this.touched = false
-
-    this.render()
   }
 
   /**
@@ -51,16 +42,24 @@ export default class FAB {
   }
 
   render () {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'material-fab ripple'
+    return (
+      <div className='material-fab ripple' ref='root' onClick={this.props.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>
+        <div className='material-fab-icon' ref='icon' />
+      </div>
+    )
+  }
 
-    if (this.props.className !== undefined) this.elements.root.classList.add(this.props.className)
+  afterRender () {
+    const props = this.props
+    const root = this.getRoot()
 
-    this.elements.root.addEventListener('mousedown', this.onMouseDown)
-    this.elements.root.addEventListener('touchstart', this.onTouchStart)
+    if (props.rippleStyle == null) {
+      props.rippleStyle = {
+        backgroundColor: '#fff',
+        opacity: 0.2
+      }
+    }
 
-    this.elements.icon = document.createElement('div')
-    this.elements.icon.className = 'material-fab-icon'
-    this.elements.root.appendChild(this.elements.icon)
+    if (props.className != null) root.classList.add(props.className)
   }
 }

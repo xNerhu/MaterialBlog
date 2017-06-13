@@ -1,20 +1,18 @@
+import Component from '../../../../helpers/Component'
+
 import MultiIcon from './components/MultiIcon'
 import SearchIcon from './components/SearchIcon'
 
-export default class Toolbar {
-  constructor () {
+export default class Toolbar extends Component {
+  beforeRender () {
     this.touched = false
     this.items = []
     this.hiddenItems = []
-
-    this.elements = {}
 
     this.actionIconRippleStyle = {
       backgroundColor: '#000',
       opacity: 0.2
     }
-
-    this.render()
   }
 
   /**
@@ -60,7 +58,7 @@ export default class Toolbar {
     let hasLeftIcon = false
     let left = 16
 
-    for (let i = 0; i < items.length; i++) {
+    for (var i = 0; i < items.length; i++) {
       const item = items[i]
       const type = item.type
       const subType = item.subType
@@ -101,8 +99,9 @@ export default class Toolbar {
         if (style) element.setStyle(style)
 
         if (subType === 'MultiIcon') {
-          this.multiIcon = new MultiIcon()
-          const multiIconRoot = this.multiIcon.getRoot()
+          const multiIcon = (
+            <MultiIcon ref='multiIcon' />
+          )
 
           element.addEventListener('mousedown', function (e) {
             self.onItemMouseDown(e, element)
@@ -111,16 +110,17 @@ export default class Toolbar {
             self.onItemTouchStart(e, element)
           })
 
-          element.appendChild(multiIconRoot)
+          this.renderComponents(multiIcon, element)
         } else if (subType === 'Search') {
           element.classList.add('search-icon')
 
-          this.searchIconParent = element
-          this.searchIcon = new SearchIcon(element)
-          this.searchIcon.getToolbar = this.getToolbar
-          const searchIconRoot = this.searchIcon.getRoot()
+          const searchIcon = (
+            <SearchIcon ref='searchIcon' />
+          )
 
-          element.appendChild(searchIconRoot)
+          this.renderComponents(searchIcon, element)
+
+          this.searchIconParent = element
         }
 
         this.items.push(element)
@@ -131,18 +131,14 @@ export default class Toolbar {
           left = 80
         }
 
-        this.title = document.createElement('div')
-        this.title.innerHTML += item.title
+        const element = (
+          <div className='toolbar-title' ref='title' style={style}>
+            {item.title}
+          </div>
+        )
 
-        this.title.setAttributes({
-          class: 'toolbar-title'
-        })
-
-        if (style) this.title.setStyle(style)
-
-        this.items.push(this.title)
-
-        this.elements.content.appendChild(this.title)
+        this.renderComponents(element, this.elements.content)
+        this.items.push(this.elements.title)
       }
     }
   }
@@ -160,7 +156,7 @@ export default class Toolbar {
    * @return {MultiIcon}
    */
   getMultiIcon = () => {
-    return this.multiIcon
+    return this.elements.multiIcon
   }
 
   /**
@@ -168,7 +164,7 @@ export default class Toolbar {
    * @return {SearchIcon}
    */
   getSearchIcon = () => {
-    return this.searchIcon
+    return this.elements.searchIcon
   }
 
   /**
@@ -179,7 +175,7 @@ export default class Toolbar {
   hideItems = (multiIcon = false, search = true, title = true) => {
     this.hiddenItems = []
 
-    for (let i = 0; i < this.items.length; i++) {
+    for (var i = 0; i < this.items.length; i++) {
       const item = this.items[i]
       const id = item.id
       const classList = item.classList
@@ -195,7 +191,7 @@ export default class Toolbar {
    * Shows hidden items.
    */
   showItems = () => {
-    for (let i = 0; i < this.hiddenItems.length; i++) {
+    for (var i = 0; i < this.hiddenItems.length; i++) {
       const item = this.hiddenItems[i]
       const top = (item === this.searchIconParent) ? '0px' : '50%'
 
@@ -224,20 +220,15 @@ export default class Toolbar {
    * @param {String} title.
    */
   setTitle = (str) => {
-    this.title.innerHTML = str
+    this.elements.title.innerHTML = str
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.setAttributes({
-      class: 'toolbar toolbar-shadow'
-    })
-
-    this.elements.content = document.createElement('div')
-    this.elements.content.setAttributes({
-      class: 'toolbar-content'
-    })
-
-    this.elements.root.appendChild(this.elements.content)
+  render () {
+    return (
+      <div className='toolbar toolbar-shadow' ref='root'>
+        <div className='toolbar-content' ref='content' />
+        {this.props.children}
+      </div>
+    )
   }
 }

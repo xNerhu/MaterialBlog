@@ -1,7 +1,6 @@
-import Preloader from '../../imports/materialdesign/components/Preloader'
-import Tooltip from '../../imports/materialdesign/components/Tooltip'
+import Component from '../../helpers/Component'
 
-import NavigationDrawer from './components/NavigationDrawer'
+import NavigationDrawer from './components/NavigationDrawer/index'
 
 import Toolbar from './components/Toolbar'
 import TabLayout from './components/TabLayout'
@@ -11,10 +10,13 @@ import GalleryTab from '../Tabs/Gallery'
 import AboutClassTab from '../Tabs/AboutClass'
 import LessonsPlanTab from '../Tabs/LessonsPlan'
 
-export default class App {
-  constructor (parent) {
+import Preloader from './../../imports/materialdesign/components/Preloader'
+import Tooltip from '../../imports/materialdesign/components/Tooltip'
+
+export default class App extends Component {
+  beforeRender () {
     window.app = this
-    this.parent = parent
+    this.cursor = {}
 
     this.elements = {}
     this.props = {
@@ -35,46 +37,10 @@ export default class App {
     }
 
     this.isLoading = false
-
-    this.render()
   }
 
-  /**
-   * On multi icon click event.
-   * Important event for navigation.
-   * @param {Event}
-   */
-  onMultiIconClick = (e) => {
-    const toolbar = this.elements.toolbar
-    const multiIcon = toolbar.getMultiIcon()
-    const searchIcon = toolbar.getSearchIcon()
-    const navigationDrawer = this.getNavigationDrawer()
-    const postsTab = this.getPostsTab()
-    const galleryTab = this.getGalleryTab()
-
-    if (multiIcon.canClick) {
-      if (searchIcon.toggled && searchIcon.fullWidth) {
-        searchIcon.changeToFullWidth(false)
-        searchIcon.toggle(false)
-        multiIcon.blockClick()
-      } else if (postsTab.fullScreen.flag) {
-        postsTab.toggleFullScreen(false)
-        multiIcon.changeToDefault()
-        multiIcon.blockClick()
-      } else if (galleryTab.fullScreenPicture) {
-        galleryTab.togglePictureFullScreen(false)
-      } else if (galleryTab.fullScreenPictures) {
-        galleryTab.togglePicturesFullScreen(false)
-      } else if (!navigationDrawer.toggled) {
-        navigationDrawer.show()
-        multiIcon.changeToExit()
-        multiIcon.blockClick()
-      } else if (navigationDrawer.toggled) {
-        navigationDrawer.hide()
-        multiIcon.changeToDefault()
-        multiIcon.blockClick()
-      }
-    }
+  getToolbar = () => {
+    return this.elements.toolbar
   }
 
   /**
@@ -149,10 +115,8 @@ export default class App {
    */
   onTabSelect = (tab) => {
     const name = this.getTabName(tab)
-    let loaded = false
-    if ((name === 'posts' && this.tabsLoaded.posts) || (name === 'gallery' && this.tabsLoaded.gallery) || (name === 'lessonsPlan' && this.tabsLoaded.lessonsPlan)) loaded = true
 
-    if (!loaded) {
+    if (name === 'posts' && !this.tabsLoaded.posts || name === 'gallery' && !this.tabsLoaded.gallery || name === 'aboutClass' && !this.tabsLoaded.aboutClass || name === 'lessonsPlan' && !this.tabsLoaded.lessonsPlan) {
       this.togglePreloader(true)
       this.isLoading = true
 
@@ -178,15 +142,82 @@ export default class App {
   getTabName = (tab) => {
     const postsTab = this.getPostsTab()
     const galleryTab = this.getGalleryTab()
+    const aboutClassTab = this.getAboutClassTab()
     const lessonsPlanTab = this.getLessonsPlanTab()
 
     if (tab === postsTab) return 'posts'
     else if (tab === galleryTab) return 'gallery'
+    else if (tab === aboutClassTab) return 'aboutClass'
     else if (tab === lessonsPlanTab) return 'lessonsPlan'
   }
 
-  render = () => {
+  /**
+   * On multi icon click event.
+   * Important event for navigation.
+   * @param {Event}
+   */
+  onMultiIconClick = (e) => {
+    const toolbar = this.elements.toolbar
+    const multiIcon = toolbar.getMultiIcon()
+    const searchIcon = toolbar.getSearchIcon()
+    const navigationDrawer = this.getNavigationDrawer()
+    const postsTab = this.getPostsTab()
+    const galleryTab = this.getGalleryTab()
+
+    if (multiIcon.canClick) {
+      if (searchIcon.toggled && searchIcon.fullWidth) {
+        searchIcon.changeToFullWidth(false)
+        searchIcon.toggle(false)
+        multiIcon.blockClick()
+      } else if (postsTab.fullScreen.flag) {
+        postsTab.toggleFullScreen(false)
+        multiIcon.changeToDefault()
+        multiIcon.blockClick()
+      } else if (galleryTab.fullScreenPicture) {
+        galleryTab.togglePictureFullScreen(false)
+      } else if (galleryTab.fullScreenPictures) {
+        galleryTab.togglePicturesFullScreen(false)
+      } else if (!navigationDrawer.toggled) {
+        navigationDrawer.show()
+        multiIcon.changeToExit()
+        multiIcon.blockClick()
+      } else if (navigationDrawer.toggled) {
+        navigationDrawer.hide()
+        multiIcon.changeToDefault()
+        multiIcon.blockClick()
+      }
+    }
+  }
+
+  render () {
+    return (
+      <div>
+        <div className='app-content' ref='appContent'>
+          <Toolbar ref='toolbar'>
+            <TabLayout ref={(r) => { this.elements.tabLayout = r }} />
+          </Toolbar>
+          <div className='tab-pages' ref='tabPages'>
+            <PostsTab ref='postsTab' />
+            <GalleryTab ref='galleryTab' />
+            <AboutClassTab ref='aboutClassTab' />
+            <LessonsPlanTab ref='lessonsPlanTab' />
+          </div>
+        </div>
+        <NavigationDrawer ref='navigationDrawer' />
+        <Preloader className='data-preloader' ref='preloader' />
+        <Tooltip ref='tooltipShowCommentsButton' text='Pokaż komentarze' />
+        <Tooltip ref='tooltipLikeButton' text='Polub to!' />
+        <Tooltip ref='tooltipLikesList' text='...' />
+        <Tooltip ref='tooltipCategoryInfo' text='Data utworzenia:<br>Ilość zdjęc:' />
+      </div>
+    )
+  }
+
+  afterRender () {
     const self = this
+    const toolbar = this.getToolbar()
+    const tabLayout = this.elements.tabLayout
+    const navigationDrawer = this.getNavigationDrawer()
 
     const items = [
       {
@@ -218,97 +249,15 @@ export default class App {
         image: 'src/images/Toolbar/search.png',
         onSearch: function (query) {
           if (query.length >= 1) {
-            /*self.refs.searchResults.search(query)
-            if (navigationDrawer.toggled) navigationDrawer.hide()*/
+            self.refs.searchResults.search(query)
+            if (navigationDrawer.toggled) navigationDrawer.hide()
             console.log(query)
           }
         }
       }
     ]
 
-    // APP CONTENT
-    this.elements.appContent = document.createElement('div')
-    this.elements.appContent.className = 'app-content'
-    this.parent.appendChild(this.elements.appContent)
-
-    // PRELOADER
-    this.elements.preloader = new Preloader()
-    this.elements.preloader.getRoot().classList.add('data-preloader')
-    setTimeout(function () {
-      self.parent.appendChild(self.elements.preloader.getRoot())
-    }, 10)
-
-    // NAVIGATION DRAWER
-    const navigationDrawerItems = [
-      {
-        text: 'Informacje',
-        className: 'navigation-drawer-info',
-        onClick: function (e) {
-          console.log(e)
-        }
-      },
-      {
-        text: 'GitHub',
-        className: 'navigation-drawer-github',
-        onClick: function (e) {
-          window.open('https://github.com/xNerhu22/MyClassBlog', '_blank')
-        }
-      },
-      {
-        text: 'Panel',
-        className: 'navigation-drawer-panel',
-        onClick: function (e) {
-          console.log(e)
-        }
-      },
-      {
-        text: 'Zarejestruj się',
-        className: 'navigation-drawer-register',
-        onClick: function (e) {
-          console.log(e)
-        }
-      },
-      {
-        text: 'Zaloguj się',
-        className: 'navigation-drawer-login',
-        onClick: function (e) {
-          console.log(e)
-        }
-      }
-    ]
-
-    this.elements.navigationDrawer = new NavigationDrawer()
-    this.elements.navigationDrawer.setItems(navigationDrawerItems)
-    this.parent.appendChild(this.elements.navigationDrawer.getRoot())
-
-    // TOOLBAR
-    this.elements.toolbar = new Toolbar()
-    this.elements.toolbar.setItems(items)
-
-    // TAB LAYOUT
-
-    this.elements.tabLayout = new TabLayout()
-    this.elements.toolbar.getRoot().appendChild(this.elements.tabLayout.getRoot())
-
-    this.elements.appContent.appendChild(this.elements.toolbar.getRoot())
-
-    // TAB PAGES
-    this.elements.tabPages = document.createElement('div')
-    this.elements.tabPages.className = 'tab-pages'
-
-    this.elements.postsTab = new PostsTab()
-    this.elements.tabPages.appendChild(this.elements.postsTab.getRoot())
-
-    this.elements.galleryTab = new GalleryTab()
-    this.elements.tabPages.appendChild(this.elements.galleryTab.getRoot())
-
-    this.elements.aboutClassTab = new AboutClassTab()
-    this.elements.tabPages.appendChild(this.elements.aboutClassTab.getRoot())
-
-    this.elements.lessonsPlanTab = new LessonsPlanTab()
-    this.elements.tabPages.appendChild(this.elements.lessonsPlanTab.getRoot())
-
-    this.elements.appContent.appendChild(this.elements.tabPages)
+    toolbar.setItems(items)
 
     const tabs = [
       {
@@ -357,70 +306,46 @@ export default class App {
       }
     ]
 
-    this.elements.tabLayout.setTabs(tabs)
+    tabLayout.setTabs(tabs)
 
-    // TOOLTIPS
-    this.elements.tooltipShowCommentsButton = new Tooltip('Pokaż komentarze')
-    this.parent.appendChild(this.elements.tooltipShowCommentsButton.getRoot())
+    const navigationDrawerItems = [
+      {
+        text: 'Informacje',
+        className: 'navigation-drawer-info',
+        onClick: function (e) {
+          console.log(e)
+        }
+      },
+      {
+        text: 'GitHub',
+        className: 'navigation-drawer-github',
+        onClick: function (e) {
+          window.open('https://github.com/xNerhu22/MyClassBlog', '_blank')
+        }
+      },
+      {
+        text: 'Panel',
+        className: 'navigation-drawer-panel',
+        onClick: function (e) {
+          console.log(e)
+        }
+      },
+      {
+        text: 'Zarejestruj się',
+        className: 'navigation-drawer-register',
+        onClick: function (e) {
+          console.log(e)
+        }
+      },
+      {
+        text: 'Zaloguj się',
+        className: 'navigation-drawer-login',
+        onClick: function (e) {
+          console.log(e)
+        }
+      }
+    ]
 
-    this.elements.tooltipLikeButton = new Tooltip('Polub to!')
-    this.parent.appendChild(this.elements.tooltipLikeButton.getRoot())
-
-    this.elements.tooltipLikesList = new Tooltip('...')
-    this.parent.appendChild(this.elements.tooltipLikesList.getRoot())
-
-    this.elements.tooltipCategoryInfo = new Tooltip('Data utworzenia:<br>Ilość zdjęc:')
-    this.parent.appendChild(this.elements.tooltipCategoryInfo.getRoot())
+    navigationDrawer.setItems(navigationDrawerItems)
   }
 }
-/*
-    return (
-      <div>
-        <div className='app-content' ref='appContent' style={appContentStyle}>
-          <Toolbar ref='toolbar' items={this.state.toolbarItems} getApp={this.getApp} shadow={this.state.toolbarShadow}>
-            <TabLayout ref='tabLayout' className='tab-layout-1' style={tabLayoutStyle} getApp={this.getApp} />
-          </Toolbar>
-          <div className='tab-pages' style={tabPagesStyle}>
-            <PostsTab ref='postsTab' getApp={this.getApp} />
-            <GalleryTab ref='galleryTab' getApp={this.getApp} />
-            <AboutClassTab ref='aboutClassTab' getApp={this.getApp} />
-            <LessonsPlanTab ref='lessonsPlanTab' getApp={this.getApp} />
-          </div>
-          <SearchResults ref='searchResults' getApp={this.getApp} />
-        </div>
-        <LoginDialog ref='loginDialog' getApp={this.getApp} />
-        <InfoDialog ref='infoDialog' />
-        <Preloader ref='preloader' className='data-preloader' style={preloaderStyle} strokeColor='#2196f3' strokeWidth={4} />
-        <NavigationDrawer ref='navigationDrawer' getApp={this.getApp} />
-        <Tooltip ref='tooltipLike'>
-          {this.state.tooltipsData.like.text}
-        </Tooltip>
-        <Tooltip ref='tooltipLikesList'>
-          {this.state.tooltipsData.like.list}
-        </Tooltip>
-        <Tooltip ref='tooltipShowComments'>
-          Pokaż komentarze
-        </Tooltip>
-        <Tooltip ref='tooltipHideComments'>
-          Ukryj komentarze
-        </Tooltip>
-        <Tooltip ref='tooltipCategoryInfo'>
-          {
-            'Data utworzenia: ' + this.state.tooltipsData.category.date + '\n Ilość zdjęć: ' + this.state.tooltipsData.category.picturesCount
-          }
-        </Tooltip>
-        <Tooltip ref='tooltipAddComment'>
-          Dodaj komentarz
-        </Tooltip>
-        <Snackbar ref='snackbar' actionText='ZOBACZ' timeout={7500} onActionClick={this.onSnackbarActionClick}>
-          Strona wykorzystuje pliki cookies.
-        </Snackbar>
-      </div>
-    )
-  }
-}
-
-App.defaultProps = {
-  toolbarTitle: 'Blog klasy 3B',
-  toolbarBackgroundColor: '#2196F3'
-}*/

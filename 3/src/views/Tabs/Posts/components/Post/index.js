@@ -1,28 +1,13 @@
+import Component from '../../../../../helpers/Component'
+
 import Comment from './components/Comment'
 import CommentInput from './components/CommentInput'
 
-export default class Post {
-  constructor (data, index) {
-    this.elements = {}
-    this.props = {
-      ripple: true,
-      rippleStyle: {
-        backgroundColor: '#000',
-        opacity: 0.2
-      },
-      actionIconRippleStyle: {
-        backgroundColor: '#000',
-        opacity: 0.4
-      },
-      data: data,
-      index: index
-    }
-
+export default class Post extends Component {
+  beforeRender () {
     this.touched = false
     this.toggledComments = false
     this.likes = false
-
-    this.render()
   }
 
   /**
@@ -238,25 +223,30 @@ export default class Post {
     const comments = this.elements.comments
 
     for (let i = 0; i < this.props.data.comments.length; i++) {
-      const comment = new Comment(this.props.data.comments[i])
+      const comment = (
+        <Comment data={this.props.data.comments[i]} />
+      )
 
-      comments.appendChild(comment.getRoot())
+      this.renderComponents(comment, comments)
     }
 
-    this.commentInput = new CommentInput()
-    comments.appendChild(this.commentInput.getRoot())
+    const commentInput = (
+      <CommentInput ref='commentInput' />
+    )
+
+    this.renderComponents(commentInput, comments)
   }
 
   /**
    * Sets media.
+   * @param {String} image url.
    */
-  setMedia = () => {
-    const pic = this.props.data.media
+  setMedia = (url) => {
     const mediaBlur = this.elements.mediaBlur
     const mediaPic = this.elements.mediaPic
 
-    mediaBlur.style.backgroundImage = 'url(' + pic + ')'
-    mediaPic.src = pic
+    mediaBlur.style.backgroundImage = 'url(' + url + ')'
+    mediaPic.src = url
   }
 
   /**
@@ -291,116 +281,97 @@ export default class Post {
     return false
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'post'
+  render () {
+    return (
+      <div className='post' ref='root'>
+        <div className='post-media' ref='media'>
+          <div className='post-media-blur' ref='mediaBlur' />
+          <img className='post-media-pic' ref='mediaPic' />
+        </div>
+        <div className='post-content ripple' ref='content' onClick={this.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>
+          <div className='post-info'>
+            <div className='post-avatar' ref='avatar' />
+            <div className='post-primary' ref='primary'>
+              <div className='post-title' ref='title' />
+              <div className='post-sub-title' ref='subTitle' />
+            </div>
+          </div>
+          <div className='post-text' ref='content' />
+          <div className='post-action' ref='action'>
+            <div
+              className='post-action-item post-action-show-comments ripple-icon'
+              ref='showCommentsButton'
+              onClick={this.onShowCommentsButtonClick}
+              onMouseDown={this.onActionIconMouseDown}
+              onTouchStart={this.onActionIconTouchStart}
+              onMouseEnter={this.onShowCommentsButtonMouseEnter}
+              onMouseLeave={this.onShowCommentsButtonMouseLeave} />
+            <div
+              className='post-action-item-count'
+              ref='commentsCount' />
+            <div
+              className='post-action-item post-action-like ripple-icon'
+              ref='likeButton'
+              onMouseDown={this.onActionIconMouseDown}
+              onTouchStart={this.onActionIconTouchStart}
+              onMouseEnter={this.onLikeButtonMouseEnter}
+              onMouseLeave={this.onLikeButtonMouseLeave} />
+            <div
+              className='post-action-item-count'
+              ref='likesCount'
+              onMouseEnter={this.onLikesCountMouseEnter}
+              onMouseLeave={this.onLikesCountMouseLeave} />
+          </div>
+        </div>
+        <div className='post-comments' ref='comments' />
+      </div>
+    )
+  }
 
-    // MEDIA
-    this.elements.media = document.createElement('div')
-    this.elements.media.className = 'post-media'
-    this.elements.root.appendChild(this.elements.media)
+  afterRender () {
+    const props = this.props
+    const data = props.data
+    const getPostsTab = props.getPostsTab()
 
-    this.elements.mediaBlur = document.createElement('div')
-    this.elements.mediaBlur.className = 'post-media-blur'
-    this.elements.media.appendChild(this.elements.mediaBlur)
+    const title = this.elements.title
+    const subTitle = this.elements.subTitle
+    const content = this.elements.content
 
-    this.elements.mediaPic = document.createElement('img')
-    this.elements.mediaPic.className = 'post-media-pic'
-    this.elements.media.appendChild(this.elements.mediaPic)
+    const likeButton = this.elements.likeButton
 
-    // CONTENT
-    this.elements.content = document.createElement('div')
-    this.elements.content.className = 'post-content ripple'
-    this.elements.content.addEventListener('click', this.onClick)
-    this.elements.content.addEventListener('mousedown', this.onMouseDown)
-    this.elements.content.addEventListener('touchstart', this.onTouchStart)
-    this.elements.root.appendChild(this.elements.content)
+    const commentsCount = this.elements.commentsCount
+    const likesCount = this.elements.likesCount
 
-    // INFO
-    this.elements.info = document.createElement('div')
-    this.elements.info.className = 'post-info'
-    this.elements.content.appendChild(this.elements.info)
+    title.innerHTML = data.title
+    subTitle.innerHTML = data.author + ', ' + data.date
+    content.innerHTML = data.content
 
-    // AVATAR
-    this.elements.avatar = document.createElement('div')
-    this.elements.avatar.className = 'post-avatar'
-    this.elements.info.appendChild(this.elements.avatar)
+    if (this.isLikes()) likeButton.classList.add('likes')
 
-    // PRIMARY
-    this.elements.primary = document.createElement('div')
-    this.elements.primary.className = 'post-primary'
-    this.elements.info.appendChild(this.elements.primary)
+    commentsCount.innerHTML = data.comments.length
+    likesCount.innerHTML = data.likes.length
 
-    // TITLE
-    this.elements.title = document.createElement('div')
-    this.elements.title.className = 'post-title'
-    this.elements.title.innerHTML = this.props.data.title
-    this.elements.primary.appendChild(this.elements.title)
+    if (props.ripple == null) props.ripple = true
 
-    // SUB TITLE
-    this.elements.subTitle = document.createElement('div')
-    this.elements.subTitle.className = 'post-sub-title'
-    this.elements.subTitle.innerHTML = this.props.data.author + ', ' + this.props.data.date
-    this.elements.primary.appendChild(this.elements.subTitle)
-
-    // TEXT
-    this.elements.text = document.createElement('div')
-    this.elements.text.className = 'post-text'
-    this.elements.text.innerHTML = this.props.data.content
-    this.elements.content.appendChild(this.elements.text)
-
-    // ACTION
-    this.elements.action = document.createElement('div')
-    this.elements.action.className = 'post-action'
-    this.elements.content.appendChild(this.elements.action)
-
-    // SHOW COMMENTS BUTTON
-    this.elements.showCommentsButton = document.createElement('div')
-    this.elements.showCommentsButton.className = 'post-action-item post-action-show-comments ripple-icon'
-    this.elements.showCommentsButton.addEventListener('click', this.onShowCommentsButtonClick)
-    this.elements.showCommentsButton.addEventListener('mousedown', this.onActionIconMouseDown)
-    this.elements.showCommentsButton.addEventListener('touchstart', this.onActionIconTouchStart)
-    this.elements.showCommentsButton.addEventListener('mouseenter', this.onShowCommentsButtonMouseEnter)
-    this.elements.showCommentsButton.addEventListener('mouseleave', this.onShowCommentsButtonMouseLeave)
-    this.elements.action.appendChild(this.elements.showCommentsButton)
-
-    // COMMENTS COUNT
-    this.elements.commentsCount = document.createElement('div')
-    this.elements.commentsCount.className = 'post-action-item-count'
-    this.elements.commentsCount.innerHTML = this.props.data.comments.length
-    this.elements.action.appendChild(this.elements.commentsCount)
-
-    // LIKE BUTTON
-    this.elements.likeButton = document.createElement('div')
-    this.elements.likeButton.className = 'post-action-item post-action-like ripple-icon'
-
-    this.isLikes = this.isLikes()
-
-    if (this.isLikes) {
-      this.elements.likeButton.classList.add('likes')
+    if (props.rippleStyle == null) {
+      props.rippleStyle = {
+        backgroundColor: '#000',
+        opacity: 0.2
+      }
     }
 
-    this.elements.likeButton.addEventListener('mousedown', this.onActionIconMouseDown)
-    this.elements.likeButton.addEventListener('touchstart', this.onActionIconTouchStart)
-    this.elements.likeButton.addEventListener('mouseenter', this.onLikeButtonMouseEnter)
-    this.elements.likeButton.addEventListener('mouseleave', this.onLikeButtonMouseLeave)
-    this.elements.action.appendChild(this.elements.likeButton)
+    if (props.actionIconRippleStyle == null) {
+      props.actionIconRippleStyle = {
+        backgroundColor: '#000',
+        opacity: 0.4
+      }
+    }
 
-    // LIKES COUNT
-    this.elements.likesCount = document.createElement('div')
-    this.elements.likesCount.className = 'post-action-item-count'
-    this.elements.likesCount.innerHTML = this.props.data.likes.length
-    this.elements.likesCount.addEventListener('mouseenter', this.onLikesCountMouseEnter)
-    this.elements.likesCount.addEventListener('mouseleave', this.onLikesCountMouseLeave)
-    this.elements.action.appendChild(this.elements.likesCount)
-
-    // COMMENTS
-    this.elements.comments = document.createElement('div')
-    this.elements.comments.className = 'post-comments'
-    this.elements.root.appendChild(this.elements.comments)
+    if (data.media != null) this.setMedia(data.media)
 
     this.loadComments()
-    if (this.props.data.media) this.setMedia()
     this.animate()
+
+    getPostsTab.posts.push(this)
   }
 }

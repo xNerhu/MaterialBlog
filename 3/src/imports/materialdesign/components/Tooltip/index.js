@@ -1,15 +1,9 @@
-export default class Tooltip {
-  constructor (text) {
-    this.elements = {}
-    this.props = {
-      text: text
-    }
+import Component from '../../../../helpers/Component'
 
+export default class Tooltip extends Component {
+  beforeRender () {
     this.timer = null
-
     this.toggled = false
-
-    this.render()
   }
 
   /**
@@ -65,10 +59,13 @@ export default class Tooltip {
     }
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'material-tooltip'
+  render () {
+    return (
+      <div className='material-tooltip' ref='root' />
+    )
+  }
 
-    if (this.props.text !== undefined) this.setText(this.props.text)
+  afterRender () {
+    this.setText(this.props.text)
   }
 }

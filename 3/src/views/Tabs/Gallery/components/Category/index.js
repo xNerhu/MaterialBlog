@@ -1,24 +1,8 @@
-export default class Category {
-  constructor (data, onClick, onLoad) {
-    this.elements = {}
-    this.props = {
-      ripple: true,
-      rippleStyle: {
-        backgroundColor: '#fff',
-        opacity: 0.2
-      },
-      infoRippleStyle: {
-        backgroundColor: '#000',
-        opacity: 0.2
-      },
-      data: data,
-      onClick: onClick,
-      onLoad: onLoad
-    }
+import Component from '../../../../../helpers/Component'
 
+export default class Category extends Component {
+  beforeRender () {
     this.touched = false
-
-    this.render()
   }
 
   /**
@@ -39,7 +23,7 @@ export default class Category {
     const title = this.elements.title
     const info = this.elements.info
 
-    if (target !== title && info !== target && !this.touched) {
+    if (target !== title && info !== target) {
       if (typeof this.props.onClick === 'function') this.props.onClick(e, this)
     }
   }
@@ -163,27 +147,40 @@ export default class Category {
     img.src = picture
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'category ripple'
-    this.elements.root.addEventListener('click', this.onClick)
-    this.elements.root.addEventListener('mousedown', this.onMouseDown)
-    this.elements.root.addEventListener('touchstart', this.onTouchStart)
+  render () {
+    return (
+      <div className='category ripple' ref='root' onClick={this.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>
+        <div className='category-title' ref='title'>
+          {this.props.data.name}
+          <div
+            className='category-info ripple-icon'
+            ref='info'
+            onMouseDown={this.onInfoMouseDown}
+            onMouseEnter={this.onInfoMouseEnter}
+            onMouseLeave={this.onInfoMouseLeave} />
+        </div>
+      </div>
+    )
+  }
 
-    // TITLE
-    this.elements.title = document.createElement('div')
-    this.elements.title.className = 'category-title'
-    this.elements.title.innerHTML = this.props.data.name
-    this.elements.root.appendChild(this.elements.title)
+  afterRender () {
+    const props = this.props
 
-    // INFO BUTTON
-    this.elements.info = document.createElement('div')
-    this.elements.info.className = 'category-info ripple-icon'
-    this.elements.info.addEventListener('mouseenter', this.onInfoMouseEnter)
-    this.elements.info.addEventListener('mouseleave', this.onInfoMouseLeave)
-    this.elements.info.addEventListener('mousedown', this.onInfoMouseDown)
-    this.elements.info.addEventListener('touchstart', this.onInfoTouchStart)
-    this.elements.title.appendChild(this.elements.info)
+    if (props.ripple == null) props.ripple = true
+
+    if (props.rippleStyle == null) {
+      props.rippleStyle = {
+        backgroundColor: '#fff',
+        opacity: 0.2
+      }
+    }
+
+    if (props.infoRippleStyle == null) {
+      props.infoRippleStyle = {
+        backgroundColor: '#000',
+        opacity: 0.2
+      }
+    }
 
     this.loadImage()
   }

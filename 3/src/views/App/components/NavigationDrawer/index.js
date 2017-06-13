@@ -1,19 +1,10 @@
 import NavigationDrawerItem from './components/NavigationDrawerItem'
+import Component from './../../../../helpers/Component/index'
 
-export default class NavigationDrawer {
-  constructor () {
+export default class NavigationDrawer extends Component {
+  beforeRender () {
     this.persistent = true
     this.toggled = false
-
-    this.props = {
-      persistentWidth: 240,
-      temporaryWidth: 260,
-      darkOpacity: 0.7
-    }
-
-    this.elements = {}
-
-    this.render()
   }
 
   /**
@@ -167,65 +158,48 @@ export default class NavigationDrawer {
     }
   }
 
+  /**
+   * Sets items.
+   * @param {Object} items.
+   */
   setItems = (items) => {
-    //NavigationDrawerItemthis.elements.
-    for (let i = 0; i < items.length; i++) {
+    for (var i = 0; i < items.length; i++) {
       const item = items[i]
       const text = item.text
       const className = item.className
       const onClick = item.onClick
 
-      const element = new NavigationDrawerItem()
+      const element = (
+        <NavigationDrawerItem className={className} onClick={onClick}>
+          {
+            text
+          }
+        </NavigationDrawerItem>
+      )
 
-      element.setText(text)
-      if (className !== undefined) element.getRoot().classList.add(className)
-      if (typeof onClick === 'function') element.props.onClick = onClick
-
-      this.elements.content.appendChild(element.getRoot())
+      this.renderComponents(element, this.elements.content)
     }
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
+  render () {
+    return (
+      <div ref='root'>
+        <div className='navigation-drawer' ref='container'>
+          <div className='navigation-drawer-header' ref='header'>
+            <div className='navigation-drawer-header-username' ref='headerUserName' />
+            <div className='navigation-drawer-header-email' ref='headerEmail' />
+          </div>
+          <div className='navigation-drawer-content' ref='content' />
+        </div>
+        <div className='dark' ref='dark' onClick={this.onDarkClick} />
+      </div>
+    )
+  }
 
-    // CONTAINER
-    this.elements.container = document.createElement('div')
-    this.elements.container.className = 'navigation-drawer'
-
-    // HEADER
-    this.elements.header = document.createElement('div')
-    this.elements.header.className = 'navigation-drawer-header'
-
-    // HEADER AVATAR
-    this.elements.headerAvatar = document.createElement('div')
-    this.elements.headerAvatar.className = 'navigation-drawer-header'
-    this.elements.header.appendChild(this.elements.headerAvatar)
-
-    // HEADER USERNAME
-    this.elements.headerUserName = document.createElement('div')
-    this.elements.headerUserName.className = 'navigation-drawer-header-username'
-    this.elements.header.appendChild(this.elements.headerUserName)
-
-    // HEADER EMAIL
-    this.elements.headerEmail = document.createElement('div')
-    this.elements.headerEmail.className = 'navigation-drawer-header-email'
-    this.elements.header.appendChild(this.elements.headerEmail)
-
-    // CONTENT
-    this.elements.content = document.createElement('div')
-    this.elements.content.className = 'navigation-drawer-content'
-
-    // DARK
-    this.elements.dark = document.createElement('div')
-    this.elements.dark.className = 'dark'
-    this.elements.dark.addEventListener('click', this.onDarkClick)
-
-    // ADD CHILDRENS
-    this.elements.container.appendChild(this.elements.header)
-    this.elements.container.appendChild(this.elements.content)
-
-    this.elements.root.appendChild(this.elements.container)
-    this.elements.root.appendChild(this.elements.dark)
+  afterRender () {
+    this.props.persistentWidth = 240
+    this.props.temporaryWidth = 260
+    this.props.darkOpacity = 0.7
 
     window.addEventListener('resize', this.onWindowResize)
   }

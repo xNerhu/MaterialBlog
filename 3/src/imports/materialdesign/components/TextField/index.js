@@ -1,25 +1,8 @@
-export default class TextField {
-  constructor (hint = null, placeholder = null, helperText = null, maxLength = null) {
-    this.toggled = false
+import Component from '../../../../helpers/Component'
 
+export default class TextField extends Component {
+  beforeRender () {
     this.counter = false
-    this.maxLength = 0
-    this.error = false
-    this.touched = false
-
-    this.elements = {}
-
-    this.actionIconRippleStyle = {
-      backgroundColor: '#000',
-      opacity: 0.4
-    }
-
-    this.render()
-
-    if (hint !== null) this.setHint(hint)
-    if (placeholder != null) this.setPlaceholder(placeholder)
-    if (helperText !== null) this.setHelperText(helperText)
-    if (maxLength !== null) this.setMaxLength(maxLength)
   }
 
   /**
@@ -64,13 +47,13 @@ export default class TextField {
     if (this.counter) {
       const value = this.elements.input.value
 
-      if (value.length > this.maxLength && !this.error && !this.elements.root.classList.contains('error')) {
+      if (value.length > this.props.maxLength && !this.error && !this.elements.root.classList.contains('error')) {
         this.toggleError(true)
-      } else if (value.length <= this.maxLength && this.error && this.elements.root.classList.contains('error')) {
+      } else if (value.length <= this.props.maxLength && this.error && this.elements.root.classList.contains('error')) {
         this.toggleError(false)
       }
 
-      this.setCounterText(value.length + '/' + this.maxLength)
+      this.setCounterText(value.length + '/' + this.props.maxLength)
     }
   }
 
@@ -96,6 +79,19 @@ export default class TextField {
    */
   setHelperText = (str = 'Helper text') => {
     this.elements.helperText.innerHTML = str
+  }
+
+  /**
+   * Sets counter.
+   * @param {Boolean}
+   */
+  setCounter = (flag) => {
+    this.counter = flag
+    if (flag) {
+      this.setCounterText(0 + '/' + this.props.maxLength)
+    } else {
+      this.setCounterText('')
+    }
   }
 
   /**
@@ -159,7 +155,7 @@ export default class TextField {
       Ripple.makeRipple(ripple)
     }*/
     if (!this.touched) {
-      let ripple = Ripple.createRipple(this.elements.actionIcon, this.actionIconRippleStyle, createRippleCenter(this.elements.actionIcon, 14))
+      let ripple = Ripple.createRipple(this.elements.actionIcon, this.props.actionIconRippleStyle, createRippleCenter(this.elements.actionIcon, 14))
       Ripple.makeRipple(ripple)
     }
   }
@@ -170,57 +166,38 @@ export default class TextField {
    * @param {Object} event data.
    */
   onActionIconTouchStart = (e) => {
-    let ripple = Ripple.createRipple(this.elements.actionIcon, this.actionIconRippleStyle, createRippleCenter(this.elements.actionIcon, 14, 0.4, true))
+    let ripple = Ripple.createRipple(this.elements.actionIcon, this.props.actionIconRippleStyle, createRippleCenter(this.elements.actionIcon, 14, 0.4, true))
     Ripple.makeRipple(ripple)
     this.touched = true
   }
 
-  /**
-   * Adds elements.
-   * @param {String} stroke color.
-   * @param {Int} stroke width.
-   */
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'material-text-field disabled'
+  render () {
+    return (
+      <div className='material-text-field disabled' ref='root'>
+        <input className='material-text-field-input' ref='input' onFocus={this.onFocus} onBlur={this.onBlur} onInput={this.onInput} />
+        <div className='material-text-field-hint' ref='hint' onClick={this.onFocus} />
+        <div className='material-text-field-divider' ref='divider' />
+        <div className='material-text-field-focus-divider' ref='focusDivider' />
+        <div className='material-text-field-helper-text' ref='helperText' />
+        <div className='material-text-field-counter' ref='counter' />
+        <div className='material-text-field-icon' ref='icon' />
+        <div className='material-text-field-action-icon ripple-icon' ref='actionIcon' onMouseDown={this.onActionIconMouseDown} onActionIconTouchStart={this.onActionIconTouchStart} />
+      </div>
+    )
+  }
 
-    this.elements.input = document.createElement('input')
-    this.elements.input.className = 'material-text-field-input'
-    this.elements.input.addEventListener('focus', this.onFocus)
-    this.elements.input.addEventListener('blur', this.onBlur)
-    this.elements.input.addEventListener('input', this.onInput)
+  afterRender () {
+    if (this.props.hint) this.setHint(this.props.hint)
+    if (this.props.placeholder) this.setPlaceholder(this.props.placeholder)
+    if (this.props.helperText) this.setHelperText(this.props.helperText)
+    if (this.props.maxLength) this.setCounter(true)
+    if (this.props.className) this.elements.root.classList.add(this.props.className)
 
-    this.elements.hint = document.createElement('div')
-    this.elements.hint.className = 'material-text-field-hint'
-    this.elements.hint.addEventListener('click', this.onFocus)
-
-    this.elements.divider = document.createElement('div')
-    this.elements.divider.className = 'material-text-field-divider'
-
-    this.elements.focusDivider = document.createElement('div')
-    this.elements.focusDivider.className = 'material-text-field-focus-divider'
-
-    this.elements.helperText = document.createElement('div')
-    this.elements.helperText.className = 'material-text-field-helper-text'
-
-    this.elements.counter = document.createElement('div')
-    this.elements.counter.className = 'material-text-field-counter'
-
-    this.elements.icon = document.createElement('div')
-    this.elements.icon.className = 'material-text-field-icon'
-
-    this.elements.actionIcon = document.createElement('div')
-    this.elements.actionIcon.className = 'material-text-field-action-icon ripple-icon'
-    this.elements.actionIcon.addEventListener('mousedown', this.onActionIconMouseDown)
-    this.elements.actionIcon.addEventListener('touchstart', this.onActionIconTouchStart)
-
-    this.elements.root.appendChild(this.elements.input)
-    this.elements.root.appendChild(this.elements.hint)
-    this.elements.root.appendChild(this.elements.divider)
-    this.elements.root.appendChild(this.elements.focusDivider)
-    this.elements.root.appendChild(this.elements.helperText)
-    this.elements.root.appendChild(this.elements.counter)
-    this.elements.root.appendChild(this.elements.icon)
-    this.elements.root.appendChild(this.elements.actionIcon)
+    if (!this.props.actionIconRippleStyle) {
+      this.props.actionIconRippleStyle = {
+        backgroundColor: '#000',
+        opacity: 0.3
+      }
+    }
   }
 }

@@ -1,10 +1,10 @@
+import Component from '../../../helpers/Component'
+
 import Category from './components/Category'
 import Picture from './components/Picture'
 
-export default class GalleryTab {
-  constructor () {
-    this.elements = {}
-
+export default class GalleryTab extends Component {
+  beforeRender () {
     this.categoriesData = []
     this.categoryIndex = 0
     this.fullScreenPictures = false
@@ -14,8 +14,6 @@ export default class GalleryTab {
       width: 0,
       height: 0
     }
-
-    this.render()
   }
 
   /**
@@ -97,12 +95,13 @@ export default class GalleryTab {
       ]
 
       for (let i = 0; i < self.categoriesData.length; i++) {
-        const category = new Category(self.categoriesData[i], self.onCategoryClick, self.onCategoryLoad)
-        const categoryRoot = category.getRoot()
+        const category = (
+          <Category data={self.categoriesData[i]} onLoad={self.onCategoryLoad} onClick={self.onCategoryClick} />
+        )
 
-        categories.appendChild(categoryRoot)
+        self.renderComponents(category, categories)
       }
-    }, 10)
+    }, 1000)
   }
 
   /**
@@ -180,8 +179,11 @@ export default class GalleryTab {
         }, 10)
 
         for (let i = 0; i < data.pictures.length; i++) {
-          const picture = new Picture(data.pictures[i], self.onPictureClick)
-          pictures.appendChild(picture.getRoot())
+          const picture = (
+            <Picture url={data.pictures[i]} onClick={self.onPictureClick} />
+          )
+
+          self.renderComponents(picture, pictures)
         }
       }, 200)
 
@@ -251,6 +253,7 @@ export default class GalleryTab {
           pictureFullScreenContainer.style.opacity = '1'
           self.fullScrenPictureSize.width = pic.naturalWidth
           self.fullScrenPictureSize.height = pic.naturalHeight
+          self.onWindowResize()
         }, 10)
       }, 10)
 
@@ -298,38 +301,17 @@ export default class GalleryTab {
     }
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'gallery-tab tab-page'
-
-    // CATEGORIES
-    this.elements.categories = document.createElement('div')
-    this.elements.categories.className = 'gallery-categories'
-    this.elements.root.appendChild(this.elements.categories)
-
-    // PICTURES
-    this.elements.pictures = document.createElement('div')
-    this.elements.pictures.className = 'gallery-pictures'
-    this.elements.root.appendChild(this.elements.pictures)
-
-    // PICTURE FULL SCREEN CONTAINER
-    this.elements.pictureFullScreenContainer = document.createElement('div')
-    this.elements.pictureFullScreenContainer.className = 'gallery-picture-full-screen-container'
-    this.elements.root.appendChild(this.elements.pictureFullScreenContainer)
-
-    // PICTURE FULL SCREEN BLUR
-    this.elements.pictureFullScreenBlur = document.createElement('div')
-    this.elements.pictureFullScreenBlur.className = 'gallery-picture-full-screen-blur'
-    this.elements.pictureFullScreenContainer.appendChild(this.elements.pictureFullScreenBlur)
-
-    // PICTURE FULL SCREEN
-    this.elements.pictureFullScreen = document.createElement('img')
-    this.elements.pictureFullScreen.className = 'gallery-picture-full-screen'
-    this.elements.pictureFullScreenContainer.appendChild(this.elements.pictureFullScreen)
-
-    // GRADIENT
-    this.elements.gradient = document.createElement('div')
-    this.elements.gradient.className = 'gallery-gradient'
-    this.elements.root.appendChild(this.elements.gradient)
+  render () {
+    return (
+      <div className='gallery-tab tab-page' ref='root'>
+        <div className='gallery-categories' ref='categories' />
+        <div className='gallery-pictures' ref='pictures' />
+        <div className='gallery-picture-full-screen-container' ref='pictureFullScreenContainer'>
+          <div className='gallery-picture-full-screen-blur' ref='pictureFullScreenBlur' />
+          <img className='gallery-picture-full-screen' ref='pictureFullScreen' />
+        </div>
+        <div className='gallery-gradient' ref='gradient' />
+      </div>
+    )
   }
 }

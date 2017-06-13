@@ -1,19 +1,8 @@
-export default class MaterialButton {
-  constructor (text, shadow = true, className) {
-    this.elements = {}
-    this.props = {
-      text: text,
-      shadow: shadow,
-      className: className,
-      rippleStyle: {
-        backgroundColor: '#fff',
-        opacity: 0.2
-      }
-    }
+import Component from '../../../../helpers/Component'
 
+export default class MaterialButton extends Component {
+  beforeRender () {
     this.touched = false
-
-    this.render()
   }
 
   /**
@@ -56,20 +45,30 @@ export default class MaterialButton {
    * Sets button text.
    * @param {String} text.
    */
-  setText = (str = this.props.text) => {
+  setText = (str) => {
     this.elements.root.innerHTML = str
   }
 
   render () {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'material-button ripple'
+    return (
+      <div className='material-button ripple' ref='root' onMouseDown={this.onMouseDown} onMouseLeave={this.onMouseLeave} />
+    )
+  }
 
-    if (!this.props.shadow) this.elements.root.classList.add('no-shadow')
-    if (this.props.className !== undefined) this.elements.root.classList.add(this.props.className)
+  afterRender () {
+    const props = this.props
+    const root = this.getRoot()
 
-    this.elements.root.addEventListener('mousedown', this.onMouseDown)
-    this.elements.root.addEventListener('touchstart', this.onTouchStart)
+    if (props.rippleStyle == null) {
+      props.rippleStyle = {
+        backgroundColor: '#fff',
+        opacity: 0.2
+      }
+    }
 
-    this.setText()
+    if (!props.shadow) root.classList.add('no-shadow')
+    if (props.className != null) root.classList.add(props.className)
+
+    this.setText(props.text)
   }
 }

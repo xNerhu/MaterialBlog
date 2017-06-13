@@ -96,6 +96,45 @@ Element.prototype.setStyle = function (data) {
   this.style = str
 }
 
+function parseStyleObjectToString (data) {
+  const keys = Object.keys(data)
+  let str = ''
+
+  for (let i = 0; i < keys.length; i++) {
+    let key = keys[i]
+    const value = data[key]
+    const split = [
+      'fontSize',
+      'marginTop',
+      'marginLeft',
+      'marginBottom',
+      'marginRight',
+      'backgroundColor',
+      'backgroundImage'
+    ]
+
+    for (let s = 0; s < split.length; s++) {
+      const _split = split[s]
+
+      if (_split === key) {
+        for (let l = 0; l < _split.length; l++) {
+          if (_split[l] === _split[l].toUpperCase()) {
+            key = key.splice(l, 0, '-')
+            break
+          }
+        }
+        break
+      }
+    }
+
+    key = key.toLowerCase()
+
+    str += key + ':' + value + ';'
+  }
+
+  return str
+}
+
 String.prototype.splice = function (idx, rem, str) {
   return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem))
 }

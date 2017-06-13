@@ -1,23 +1,12 @@
-export default class MultiIcon {
-  constructor () {
+import Component from '../../../../../../helpers/Component'
+
+export default class MultiIcon extends Component {
+  beforeRender () {
     this.isArrow = false
     this.isExit = false
 
     this.canClick = true
     this.actualState = 'default'
-
-    this.props = {}
-    this.elements = {}
-
-    this.render()
-  }
-
-  /**
-   * Gets root.
-   * @return {DOMElement} root.
-   */
-  getRoot = () => {
-    return this.elements.root
   }
 
   /**
@@ -109,21 +98,13 @@ export default class MultiIcon {
     }
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'multiIcon'
-
-    this.elements.grid1 = document.createElement('div')
-    this.elements.grid1.className = 'multiIcon-grid multiIcon-grid-1'
-
-    this.elements.grid2 = document.createElement('div')
-    this.elements.grid2.className = 'multiIcon-grid multiIcon-grid-2'
-
-    this.elements.grid3 = document.createElement('div')
-    this.elements.grid3.className = 'multiIcon-grid multiIcon-grid-3'
-
-    this.elements.root.appendChild(this.elements.grid1)
-    this.elements.root.appendChild(this.elements.grid2)
-    this.elements.root.appendChild(this.elements.grid3)
+  render () {
+    return (
+      <div className='multiIcon' ref='root' style={this.props.style}>
+        <div className='multiIcon-grid multiIcon-grid-1' ref='grid1' />
+        <div className='multiIcon-grid multiIcon-grid-2' ref='grid2' />
+        <div className='multiIcon-grid multiIcon-grid-3' ref='grid3' />
+      </div>
+    )
   }
 }

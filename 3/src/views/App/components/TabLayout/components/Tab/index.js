@@ -1,9 +1,9 @@
+import Component from '../../../../../../helpers/Component'
+
 import Url from '../../../../../../helpers/Url'
 
-export default class Tab {
-  constructor () {
-    this.elements = {}
-
+export default class Tab extends Component {
+  beforeRender () {
     this.selected = false
     this.defaultOpacity = 0.54
 
@@ -27,7 +27,7 @@ export default class Tab {
    * @param {Event}
    */
   onClick = (e) => {
-    this.getTabLayout.selectTab(this)
+    this.props.getTabLayout().selectTab(this)
   }
 
   /**
@@ -59,10 +59,10 @@ export default class Tab {
   select = () => {
     this.selected = true
 
-    const select = this.onSelect
+    const select = this.props.onSelect
     if (typeof select === 'function') select()
 
-    const tabLayout = this.getTabLayout
+    const tabLayout = this.props.getTabLayout()
 
     this.elements.title.style.opacity = '1'
 
@@ -70,7 +70,7 @@ export default class Tab {
     indicator.style.width = this.elements.root.offsetWidth + 'px'
     indicator.style.left = this.elements.root.offsetLeft + 'px'
 
-    const page = this.getPage()
+    const page = this.props.page
     const pageRoot = page.getRoot()
 
     if (page != null) {
@@ -87,10 +87,10 @@ export default class Tab {
       tabLayout.lastSelectedIndex2 = tabLayout.tabs.indexOf(this)
 
       const lastTab = tabLayout.tabs[tabLayout.lastSelectedIndex]
-      const lastPageRoot = lastTab.getPage().getRoot()
+      const lastPageRoot = lastTab.props.page.getRoot()
 
       if (tabLayout.tabs.indexOf(this) > tabLayout.lastSelectedIndex) {
-        if (lastTab.getPage() != null) {
+        if (lastPageRoot != null) {
           lastPageRoot.style.left = '-100%'
           setTimeout(function () {
             lastPageRoot.style.display = 'none'
@@ -105,7 +105,7 @@ export default class Tab {
     }
 
     const action = Url.getUrlParameter('action')
-    const param = (action === undefined) ? '?tab=' + this.url : '?tab=' + this.url + '&action=' + action
+    const param = (action === undefined) ? '?tab=' + this.props.url : '?tab=' + this.props.url + '&action=' + action
     window.history.pushState('', '', param)
   }
 
@@ -113,12 +113,13 @@ export default class Tab {
    * Deselects tab.
    */
   deselect = () => {
-    const tabLayout = this.getTabLayout
+    const tabLayout = this.props.getTabLayout()
 
     this.elements.title.style.opacity = this.defaultOpacity
     tabLayout.lastSelectedIndex = tabLayout.tabs.indexOf(this)
 
-    const deselect = this.onDeselect
+    const deselect = this.props.onDeselect
+
     if (typeof deselect === 'function') deselect()
 
     this.selected = false
@@ -132,25 +133,24 @@ export default class Tab {
     return this.page
   }
 
-  render = (title = 'TITLE') => {
+  render () {
+    return (
+      <div className='tab ripple' ref='root' onClick={this.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>
+        <div className='tab-title' ref='title'>
+          {this.props.children}
+        </div>
+      </div>
+    )
+  }
+
+  afterRender () {
     const self = this
+    const tabLayout = this.props.getTabLayout()
 
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'tab ripple'
-    this.elements.root.addEventListener('click', this.onClick)
-    this.elements.root.addEventListener('mousedown', this.onMouseDown)
-    this.elements.root.addEventListener('touchstart', this.onTouchStart)
-
-    this.elements.title = document.createElement('div')
-    this.elements.title.className = 'tab-title'
-    this.elements.title.innerHTML = title
-
-    this.elements.root.appendChild(this.elements.title)
-
-    this.getTabLayout.tabs.push(this)
+    tabLayout.tabs.push(this)
 
     const urlTab = Url.getUrlParameter('tab')
-    const url = this.url
+    const url = this.props.url
 
     if (urlTab === url) {
       setTimeout(function () {

@@ -1,14 +1,6 @@
-export default class Preloader {
-  constructor (strokeColor = '#03a9f4', strokeWidth = 4) {
-    this.elements = {}
-    this.props = {
-      strokeColor: strokeColor,
-      strokeWidth: strokeWidth
-    }
+import Component from './../../../../helpers/Component'
 
-    this.render()
-  }
-
+export default class Preloader extends Component {
   /**
    * Gets root.
    * @return {DOMElement} root.
@@ -17,23 +9,21 @@ export default class Preloader {
     return this.elements.root
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'material-preloader'
+  render () {
+    return (
+      <div className='material-preloader' ref='root' />
+    )
+  }
 
+  afterRender () {
+    // Must add svg manually.
     this.elements.svg = document.createElement('svg')
-    this.elements.svg.setAttributes({
-      class: 'preloader-determinate',
-      viewBox: '25 25 50 50'
-    })
+    this.elements.svg.className = 'preloader-determinate'
+    this.elements.svg.setAttribute('viewBox', '25 25 50 50')
 
     this.elements.circle = document.createElement('circle')
     this.elements.circle.className = 'path'
-    this.elements.circle.style.stroke = this.props.strokeColor
-    this.elements.circle.style.strokeWidth = this.props.strokeWidth
-
     this.elements.circle.setAttributes({
-      class: 'path',
       cx: '50',
       cy: '50',
       r: '20',
@@ -42,6 +32,9 @@ export default class Preloader {
     })
 
     this.elements.svg.appendChild(this.elements.circle)
+
     this.elements.root.innerHTML = this.elements.svg.outerHTML
+
+    if (this.props.className != null) this.getRoot().classList.add(this.props.className) 
   }
 }

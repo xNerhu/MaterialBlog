@@ -57,13 +57,20 @@ var Ripple = class Ripple {
           rippleElement.parentNode.removeChild(rippleElement)
         }
       }, 400)
+
+      if (touch) {
+        document.removeEventListener('touchend', removeRipple)
+      } else {
+        document.removeEventListener('mouseout', removeRipple)
+        document.removeEventListener('mouseup', removeRipple)
+      }
     }
 
     if (touch) {
-      rippleElement.element.addEventListener('touchend', removeRipple)
+      document.addEventListener('touchend', removeRipple)
     } else {
-      rippleElement.element.addEventListener('mouseout', removeRipple)
-      rippleElement.element.addEventListener('mouseup', removeRipple)
+      document.addEventListener('mouseout', removeRipple)
+      document.addEventListener('mouseup', removeRipple)
     }
   }
 }

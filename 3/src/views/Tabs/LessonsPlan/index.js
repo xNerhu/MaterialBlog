@@ -1,7 +1,7 @@
-export default class LessonsPlanTab {
-  constructor () {
-    this.elements = {}
+import Component from '../../../helpers/Component'
 
+export default class LessonsPlanTab extends Component {
+  beforeRender () {
     this.lessonsStart = [
       '8.00',
       '8.50',
@@ -25,55 +25,6 @@ export default class LessonsPlanTab {
     ]
 
     this.plan = []
-
-    this.render()
-  }
-
-  /**
-   * Gets root.
-   * @return {DOMElement} root.
-   */
-  getRoot = () => {
-    return this.elements.root
-  }
-
-  /**
-   * Loads lessons plan.
-   */
-  loadPlan = () => {
-    const self = this
-    const app = this.props.getApp()
-
-    app.togglePreloader(true)
-    app.selected.lessonsPlan = true
-    app.canSelectTab = false
-
-    // TODO: make request
-    setTimeout(function () {
-      app.togglePreloader(false)
-      app.canSelectTab = true
-
-      const plan = [
-        {
-          day: 'Poniedziałek',
-          subjects: [
-            'WOS',
-            'Niemiecki',
-            'Polski',
-            'Niemiecki'
-          ]
-        },
-        {
-          day: 'Wtorek',
-          subjects: [
-            'Fizyka'
-          ]
-        }
-      ]
-
-      self.refs.tbody.innerHTML = self.parsePlan(plan)
-      self.refs.table.style.opacity = '1'
-    }, 1000)
   }
 
   /**
@@ -85,7 +36,7 @@ export default class LessonsPlanTab {
   }
 
   /**
-   * Loads plan.
+   * Loads plan
    */
   load = () => {
     const self = this
@@ -186,50 +137,26 @@ export default class LessonsPlanTab {
     return cell
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'lesson-plan-tab tab-page'
-
-    // MATERIAL TABLE
-    this.elements.table = document.createElement('table')
-    this.elements.table.className = 'material-table'
-    this.elements.root.appendChild(this.elements.table)
-
-    this.elements.thead = document.createElement('thead')
-    this.elements.table.appendChild(this.elements.thead)
-
-    // HEADER
-    const tr = document.createElement('tr')
-    this.elements.thead.appendChild(tr)
-
-    const th1 = document.createElement('th')
-    th1.innerHTML = 'Dzień tygodnia'
-    tr.appendChild(th1)
-
-    const th2 = document.createElement('th')
-    th2.innerHTML = 'Godzina lekcyjna'
-    tr.appendChild(th2)
-
-    const th3 = document.createElement('th')
-    th3.innerHTML = 'Przedmiot'
-    tr.appendChild(th3)
-
-    // TBODY
-    this.elements.tbody = document.createElement('tbody')
-    this.elements.table.appendChild(this.elements.tbody)
-    /*return (
-      <div className='lesson-plan-tab tab-page' ref='root'>
+  render () {
+    return (
+      <div className='lessons-plan-tab tab-page' ref='root'>
         <table className='material-table' ref='table'>
           <thead>
             <tr>
-              <th>Dzień tygodnia</th>
-              <th>Godzina lekcyjna</th>
-              <th>Przedmiot</th>
+              <th>
+                Dzień tygodnia
+              </th>
+              <th>
+                Godzina lekcyjna
+              </th>
+              <th>
+                Przedmiot
+              </th>
             </tr>
           </thead>
           <tbody ref='tbody' />
         </table>
       </div>
-    )*/
+    )
   }
 }

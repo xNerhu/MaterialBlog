@@ -1,12 +1,15 @@
+import Component from '../../../../../../../helpers/Component'
+
 import MaterialButton from '../../../../../../../imports/materialdesign/components/MaterialButton'
 
-export default class CommentInput {
-  constructor (data) {
-    this.elements = {}
-
+export default class CommentInput extends Component {
+  beforeRender () {
     this.touched = false
 
-    this.render()
+    this.props.actionRippleStyle = {
+      backgroundColor: '#2196f3',
+      opacity: 0.3
+    }
   }
 
   /**
@@ -41,29 +44,14 @@ export default class CommentInput {
     }
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'post-comment-input'
-
-    // TEXT AREA
-    this.elements.textarea = document.createElement('textarea')
-    this.elements.textarea.className = 'post-comment-input-textarea'
-    this.elements.textarea.setAttribute('placeholder', 'Zaloguj się, by móc dodawać komentarze')
-    this.elements.textarea.addEventListener('input', this.onInput)
-    this.elements.root.appendChild(this.elements.textarea)
-
-    // ACTION
-    this.elements.action = document.createElement('div')
-    this.elements.action.className = 'post-comments-input-action'
-    this.elements.root.appendChild(this.elements.action)
-
-    // BUTTON
-    this.elements.button = new MaterialButton('DODAJ', false, 'post-comments-input-action-button')
-    this.elements.button.props.rippleStyle = {
-      backgroundColor: '#2196f3',
-      opacity: 0.3
-    }
-
-    this.elements.action.appendChild(this.elements.button.getRoot())
+  render () {
+    return (
+      <div className='post-comment-input' ref='root'>
+        <textarea className='post-comment-input-textarea' ref='textarea' placeholder='Zaloguj się, by móć dodawać komentarze' onInput={this.onInput} />
+        <div className='post-comments-input-action' ref='action'>
+          <MaterialButton text='DODAJ' shadow={false} className='post-comments-input-action-button' rippleStyle={this.props.actionRippleStyle} />
+        </div>
+      </div>
+    )
   }
 }

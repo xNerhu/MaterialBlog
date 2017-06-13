@@ -1,14 +1,8 @@
-export default class Comment {
-  constructor (data) {
-    this.elements = {}
+import Component from '../../../../../../../helpers/Component'
 
+export default class Comment extends Component {
+  beforeRender () {
     this.touched = false
-
-    this.props = {
-      data: data
-    }
-
-    this.render()
   }
 
   /**
@@ -109,42 +103,37 @@ export default class Comment {
     }
   }
 
-  render = () => {
-    this.elements.root = document.createElement('div')
-    this.elements.root.className = 'post-comment'
+  render () {
+    return (
+      <div className='post-comment' ref='root'>
+        <div className='post-comment-avatar' ref='avatar' />
+        <div className='post-comment-info' ref='info'>
+          <div className='post-comment-author' ref='author'>
+            AUTHR
+          </div>
+          <div className='post-comment-content' ref='text'>
+            XDDD
+          </div>
+          <div className='post-comment-date' ref='date'>
+            MEISIAC TEMU
+          </div>
+        </div>
+        <div className='post-comment-clear' />
+      </div>
+    )
+  }
 
-    // AVATAR
-    this.elements.avatar = document.createElement('div')
-    this.elements.avatar.className = 'post-comment-avatar'
-    this.elements.avatar.style.backgroundImage = 'url(' + this.props.data.avatar + ')'
-    this.elements.root.appendChild(this.elements.avatar)
+  afterRender () {
+    const props = this.props
+    const data = props.data
 
-    // INFO
-    this.elements.info = document.createElement('div')
-    this.elements.info.className = 'post-comment-info'
-    this.elements.root.appendChild(this.elements.info)
+    const avatar = this.elements.avatar
+    const author = this.elements.author
+    const text = this.elements.text
 
-    // AUTHOR
-    this.elements.author = document.createElement('div')
-    this.elements.author.className = 'post-comment-author'
-    this.elements.author.innerHTML = this.props.data.author
-    this.elements.info.appendChild(this.elements.author)
-
-    // TEXT
-    this.elements.text = document.createElement('div')
-    this.elements.text.className = 'post-comment-content'
-    this.elements.text.innerHTML = this.props.data.content
-    this.elements.info.appendChild(this.elements.text)
-
-    // DATE
-    this.elements.date = document.createElement('div')
-    this.elements.date.className = 'post-comment-date'
-    this.elements.info.appendChild(this.elements.date)
-
-    // CLEAR
-    this.elements.clear = document.createElement('div')
-    this.elements.clear.className = 'post-comment-clear'
-    this.elements.root.appendChild(this.elements.clear)
+    avatar.style.backgroundImage = 'url(' + data.avatar + ')'
+    author.innerHTML = data.author
+    text.innerHTML = data.content
 
     this.setDate()
   }
