@@ -20,18 +20,10 @@ import Snackbar from '../../imports/materialdesign/components/Snackbar'
 export default class App extends Component {
   beforeRender () {
     window.app = this
-    this.cursor = {}
 
-    this.elements = {}
-    this.props = {
-      defaultTitle: 'Blog klasy 3B'
-    }
+    this.props.defaultTitle = 'Blog klasy 3B'
 
-    this.accountInfo = {
-      userID: 1,
-      userName: 'Mikołaj Palkiewicz',
-      avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
-    }
+    this.accountInfo = false
 
     this.tabsLoaded = {
       posts: false,
@@ -41,6 +33,8 @@ export default class App extends Component {
     }
 
     this.isLoading = false
+
+    this.elementsToCallBack = []
   }
 
   getToolbar = () => {
@@ -188,6 +182,35 @@ export default class App extends Component {
       } else if (navigationDrawer.toggled) {
         navigationDrawer.hide()
         multiIcon.blockClick()
+      }
+    }
+  }
+
+  /**
+   * Logs user.
+   * TODO
+   */
+  logUser = () => {
+    this.accountInfo = {
+      userID: 1,
+      userName: 'Mikołaj Palkiewicz',
+      avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+      email: 'xnerhu22@onet.pl'
+    }
+
+    this.callElements()
+  }
+
+  /**
+   * Calls event on user log in elements.
+   * Updates stuffs.
+   */
+  callElements = () => {
+    if (this.accountInfo) {
+      for (var i = 0; i < this.elementsToCallBack.length; i++) {
+        const element = this.elementsToCallBack[i]
+
+        element.onUserLog()
       }
     }
   }
@@ -346,9 +369,18 @@ export default class App extends Component {
       },
       {
         text: 'Zaloguj się',
+        ref: 'itemLogin',
         className: 'navigation-drawer-login',
         onClick: function (e) {
           self.elements.loginDialog.show()
+        }
+      },
+      {
+        text: 'Wyloguj się',
+        ref: 'itemLogout',
+        className: 'navigation-drawer-logout',
+        onClick: function (e) {
+
         }
       }
     ]
@@ -362,5 +394,7 @@ export default class App extends Component {
         opacity: 0.2
       }
     })
+
+    this.logUser()
   }
 }

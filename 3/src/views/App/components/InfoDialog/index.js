@@ -106,5 +106,8 @@ export default class LoginDialog extends Component {
     ]
 
     root.setItems(items)
+
+    const action = Url.getUrlParameter('action')
+    if (action === 'info') this.toggle(true)
   }
 }

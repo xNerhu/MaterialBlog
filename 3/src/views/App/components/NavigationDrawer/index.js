@@ -169,12 +169,13 @@ export default class NavigationDrawer extends Component {
   setItems = (items) => {
     for (var i = 0; i < items.length; i++) {
       const item = items[i]
+      const ref = item.ref
       const text = item.text
       const className = item.className
       const onClick = item.onClick
 
       const element = (
-        <NavigationDrawerItem className={className} onClick={onClick}>
+        <NavigationDrawerItem className={className} onClick={onClick} ref={ref}>
           {
             text
           }
@@ -185,11 +186,36 @@ export default class NavigationDrawer extends Component {
     }
   }
 
+  /**
+   * On user logs event.
+   */
+  onUserLog = () => {
+    const app = window.app
+    const accountInfo = app.accountInfo
+
+    const header = this.elements.header
+    const avatar = this.elements.headerAvatar
+    const userName = this.elements.headerUserName
+    const email = this.elements.headerEmail
+
+    header.style.backgroundImage = 'none'
+
+    avatar.style.display = 'block'
+    avatar.style.backgroundImage = 'url(' + accountInfo.avatar + ')'
+
+    userName.innerHTML = accountInfo.userName
+    email.innerHTML = accountInfo.email
+
+    this.elements.itemLogin.getRoot().style.display = 'none'
+    this.elements.itemLogout.getRoot().style.display = 'block'
+  }
+
   render () {
     return (
       <div ref='root'>
         <div className='navigation-drawer' ref='container'>
           <div className='navigation-drawer-header' ref='header'>
+            <div className='navigation-drawer-header-avatar' ref='headerAvatar' />
             <div className='navigation-drawer-header-username' ref='headerUserName' />
             <div className='navigation-drawer-header-email' ref='headerEmail' />
           </div>
@@ -206,5 +232,7 @@ export default class NavigationDrawer extends Component {
     this.props.darkOpacity = 0.7
 
     window.addEventListener('resize', this.onWindowResize)
+
+    window.app.elementsToCallBack.push(this)
   }
 }

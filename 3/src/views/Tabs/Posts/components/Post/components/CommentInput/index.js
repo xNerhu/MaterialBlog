@@ -44,14 +44,44 @@ export default class CommentInput extends Component {
     }
   }
 
+  /**
+   * On user logs event.
+   */
+  onUserLog = () => {
+    const textarea = this.elements.textarea
+    const clickArea = this.elements.clickArea
+
+    textarea.setAttribute('placeholder', 'Dodaj komentarz')
+    textarea.removeAttribute('disabled')
+
+    clickArea.style.display = 'none'
+  }
+
+  /**
+   * On textarea click event.
+   * @param {Event}
+   */
+  onClickArea = (e) => {
+    const app = window.app
+
+    if (!app.accountInfo) {
+      app.elements.loginDialog.getRoot().toggle(true)
+    }
+  }
+
   render () {
     return (
       <div className='post-comment-input' ref='root'>
-        <textarea className='post-comment-input-textarea' ref='textarea' placeholder='Zaloguj się, by móć dodawać komentarze' onInput={this.onInput} />
+        <textarea className='post-comment-input-textarea' ref='textarea' placeholder='Zaloguj się, by móć dodawać komentarze' onInput={this.onInput} disabled='true' />
+        <div className='post-comment-input-click-area' ref='clickArea' onClick={this.onClickArea} />
         <div className='post-comments-input-action' ref='action'>
           <MaterialButton text='DODAJ' shadow={false} className='post-comments-input-action-button' rippleStyle={this.props.actionRippleStyle} />
         </div>
       </div>
     )
+  }
+
+  afterRender () {
+    window.app.elementsToCallBack.push(this)
   }
 }

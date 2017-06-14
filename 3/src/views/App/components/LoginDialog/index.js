@@ -95,6 +95,7 @@ export default class LoginDialog extends Component {
         root.toggle(false)
 
         snackbarLogged.toggle(true)
+        app.logUser()
       }, 1000)
     }
   }
