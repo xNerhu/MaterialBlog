@@ -115,7 +115,7 @@ export default class Toolbar extends Component {
           element.classList.add('search-icon')
 
           const searchIcon = (
-            <SearchIcon ref='searchIcon' />
+            <SearchIcon ref='searchIcon' onSearch={item.onSearch} />
           )
 
           this.renderComponents(searchIcon, element)

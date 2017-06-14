@@ -160,7 +160,7 @@ export default class PostsTab extends Component {
       loadPostsButtonContainer.style.display = 'block'
 
       app.callElements()
-    }, 1000)
+    }, 50)
   }
 
   /**

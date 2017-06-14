@@ -5,6 +5,8 @@ import NavigationDrawer from './components/NavigationDrawer/index'
 import InfoDialog from './components/InfoDialog'
 import LoginDialog from './components/LoginDialog'
 
+import SearchResults from './components/SearchResults'
+
 import Toolbar from './components/Toolbar'
 import TabLayout from './components/TabLayout'
 
@@ -159,6 +161,7 @@ export default class App extends Component {
     const multiIcon = toolbar.getMultiIcon()
     const searchIcon = toolbar.getSearchIcon()
     const navigationDrawer = this.getNavigationDrawer()
+    const searchResults = this.elements.searchResults
     const postsTab = this.getPostsTab()
     const galleryTab = this.getGalleryTab()
 
@@ -167,6 +170,8 @@ export default class App extends Component {
         searchIcon.changeToFullWidth(false)
         searchIcon.toggle(false)
         multiIcon.blockClick()
+      } else if (searchResults.toggled) {
+        searchResults.hide()
       } else if (postsTab.fullScreen.flag) {
         postsTab.toggleFullScreen(false)
         multiIcon.changeToDefault()
@@ -220,7 +225,7 @@ export default class App extends Component {
       <div>
         <div className='app-content' ref='appContent'>
           <Toolbar ref='toolbar'>
-            <TabLayout ref={(r) => { this.elements.tabLayout = r }} />
+            <TabLayout ref={(e) => { this.elements.tabLayout = e }} />
           </Toolbar>
           <div className='tab-pages' ref='tabPages'>
             <PostsTab ref='postsTab' />
@@ -228,6 +233,7 @@ export default class App extends Component {
             <AboutClassTab ref='aboutClassTab' />
             <LessonsPlanTab ref='lessonsPlanTab' />
           </div>
+          <SearchResults ref='searchResults' />
         </div>
         <NavigationDrawer ref='navigationDrawer' />
         <Preloader className='data-preloader' ref='preloader' />
@@ -279,7 +285,7 @@ export default class App extends Component {
         image: 'src/images/Toolbar/search.png',
         onSearch: function (query) {
           if (query.length >= 1) {
-            self.refs.searchResults.search(query)
+            self.elements.searchResults.search(query)
             if (navigationDrawer.toggled) navigationDrawer.hide()
             console.log(query)
           }

@@ -25,8 +25,10 @@ export default class SearchIcon extends Component {
   onClick = (e) => {
     if (window.innerWidth <= this.maxWidth) {
       this.changeToFullWidth(true)
-    } else {
+    } else if (!this.toggled) {
       this.toggle(true)
+    } else if (this.toggled) {
+      this.props.onSearch(this.elements.textField.getInput().value)
     }
   }
 
@@ -164,6 +166,17 @@ export default class SearchIcon extends Component {
     }
   }
 
+  /**
+   * On text field key press event.
+   * @param {Object} event data.
+   */
+  onKeyPress = (e) => {
+    if (e.key.toLowerCase() === 'enter') {
+      const value = this.elements.textField.getInput().value
+      this.props.onSearch(value)
+    }
+  }
+
   render () {
     return (
       <div className='search-icon-container' ref='root'>
@@ -175,6 +188,8 @@ export default class SearchIcon extends Component {
 
   afterRender () {
     const textField = this.elements.textField
+
+    textField.elements.input.addEventListener('keypress', this.onKeyPress)
     textField.elements.actionIcon.addEventListener('click', this.onActionIconClick)
 
     this.props.actionIconRippleStyle = {

@@ -1,5 +1,6 @@
-import NavigationDrawerItem from './components/NavigationDrawerItem'
 import Component from './../../../../helpers/Component/index'
+
+import NavigationDrawerItem from './components/NavigationDrawerItem'
 
 export default class NavigationDrawer extends Component {
   beforeRender () {

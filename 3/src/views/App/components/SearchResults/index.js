@@ -1,19 +1,20 @@
-import React from 'react'
+import Component from './../../../../helpers/Component/index'
 
 import Item from './components/Item'
 
-export default class SearchResults extends React.Component {
-  constructor () {
-    super()
-
-    this.state = {
-      result: [],
-      toggled: false
-    }
+export default class SearchResults extends Component {
+  beforeRender () {
+    this.toggled = false
 
     this.lastQuery = ''
+  }
 
-    this.items = []
+  /**
+   * Gets root.
+   * @return {DOMElement} root.
+   */
+  getRoot = () => {
+    return this.elements.root
   }
 
   /**
@@ -22,44 +23,33 @@ export default class SearchResults extends React.Component {
    */
   search = (query) => {
     const self = this
-    const root = this.refs.root
-    const app = this.props.getApp()
-    const toolbar = app.getToolBar()
-    const menuIcon = toolbar.refs.menuIcon
-    const searchIcon = toolbar.refs.searchIcon
+    const app = window.app
+    const tabPages = app.elements.tabPages
+    const toolbar = app.getToolbar()
+    const multiIcon = toolbar.getMultiIcon()
 
-    if (this.lastQuery !== query) {
-      this.items = []
-      this.setState({
-        result: [],
-        toggled: true
-      })
+    if (this.lastQuery !== query && query !== '') {
+      const root = this.getRoot()
+
+      root.innerHTML = ''
+
+      tabPages.style.opacity = '0'
+      toolbar.setTitle('Wyniki wyszykiwania dla: ' + query)
+      toolbar.toggleTabs(false)
+
+      multiIcon.changeToArrow()
 
       root.style.display = 'block'
 
-      app.setToolBarTitle('Wyniki wyszykiwania dla: ' + query)
-      app.hideTabLayout()
+      app.loading = true
       app.togglePreloader(true)
-      app.setState({
-        toggledTabPages: false
-      })
 
-      if (!searchIcon.state.toggled || !searchIcon.state.fullWidth) {
-        if (menuIcon.isExit) {
-          menuIcon.changeToDefault()
-          setTimeout(function () {
-            menuIcon.changeToArrow(false)
-          }, 200)
-        } else {
-          menuIcon.changeToArrow(false)
-        }
-      }
-
-      // TODO: Make request
       setTimeout(function () {
+        app.loading = false
         app.togglePreloader(false)
 
-        var result = []
+        let result = []
+
         for (var i = 0; i < query.length; i++) {
           const r = {
             id: i,
@@ -71,73 +61,48 @@ export default class SearchResults extends React.Component {
           result.push(r)
         }
 
-        self.setState({
-          result: result
-        })
+        result[0].media = 'http://www.hdwallpapers.in/thumbs/2017/far_cry_5_artwork_4k-t1.jpg'
+
+        for (var i = 0; i < result.length; i++) {
+          const element = (
+            <Item data={result[i]} index={i} />
+          )
+
+          self.renderComponents(element, root)
+        }
       }, 1000)
 
       this.lastQuery = query
+      this.toggled = true
     }
   }
 
   /**
-   * Hides results.
+   * Hides search results.
    */
   hide = () => {
-    const root = this.refs.root
-    const app = this.props.getApp()
-    const toolbar = app.getToolBar()
-    const menuIcon = toolbar.refs.menuIcon
-    const state = menuIcon.actualState
+    const app = window.app
+    const tabPages = app.elements.tabPages
+    const toolbar = app.getToolbar()
+    const multiIcon = toolbar.getMultiIcon()
+    const root = this.getRoot()
 
-    this.setState({
-      toggled: false,
-      result: []
-    })
+    tabPages.style.opacity = '1'
+    toolbar.setTitle(app.props.defaultTitle)
+    toolbar.toggleTabs(true)
 
-    if (state === 'default') {
-      menuIcon.changeToDefault()
-    } else if (state === 'exit') {
-      menuIcon.changeToExit()
-    }
+    multiIcon.changeToDefault()
 
-    for (var i = 0; i < this.items.length; i++) {
-      this.items[i].style.opacity = '0'
-    }
-
-    setTimeout(function () {
-      root.style.display = 'none'
-    }, 300)
-
-    app.setToolBarTitle(app.props.toolbarTitle)
-    app.showTabLayout()
-    app.setState({
-      toggledTabPages: true
-    })
+    root.style.display = 'none'
+    root.innerHTML = ''
 
     this.lastQuery = ''
-  }
-
-  /**
-   * Gets search results
-   * @return {SearchResults}
-   */
-  getSearchResults = () => {
-    return this
+    this.toggled = false
   }
 
   render () {
-    var index = -1
-
     return (
-      <div className='search-results' ref='root'>
-        {
-          this.state.result.map((data, i) => {
-            index++
-            return <Item key={i} data={data} index={index} getSearchResults={this.getSearchResults} />
-          })
-        }
-      </div>
+      <div className='search-results' ref='root' />
     )
   }
 }
