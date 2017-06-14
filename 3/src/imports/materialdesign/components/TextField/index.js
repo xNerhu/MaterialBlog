@@ -181,7 +181,7 @@ export default class TextField extends Component {
         <div className='material-text-field-helper-text' ref='helperText' />
         <div className='material-text-field-counter' ref='counter' />
         <div className='material-text-field-icon' ref='icon' />
-        <div className='material-text-field-action-icon ripple-icon' ref='actionIcon' onMouseDown={this.onActionIconMouseDown} onActionIconTouchStart={this.onActionIconTouchStart} />
+        <div className='material-text-field-action-icon ripple-icon' ref='actionIcon' onClick={this.props.onActionIconClick} onMouseDown={this.onActionIconMouseDown} onActionIconTouchStart={this.onActionIconTouchStart} />
       </div>
     )
   }
@@ -192,6 +192,7 @@ export default class TextField extends Component {
     if (this.props.helperText) this.setHelperText(this.props.helperText)
     if (this.props.maxLength) this.setCounter(true)
     if (this.props.className) this.elements.root.classList.add(this.props.className)
+    if (this.props.type != null) this.elements.input.type = this.props.type
 
     if (!this.props.actionIconRippleStyle) {
       this.props.actionIconRippleStyle = {

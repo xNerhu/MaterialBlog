@@ -53,27 +53,30 @@
 .material-text-field-hint {
   position: absolute;
   left: 0;
-  transition: 0.3s color, 0.3s top;
+  transition: 0.3s color, 0.3s top, 0.3s font-size, 0.3s opacity;
   cursor: text;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
-  opacity: 0.7;
 }
 
 .material-text-field.disabled > .material-text-field-hint {
   font-size: 16px;
   color: #000;
   top: 8px;
+  opacity: 0.7;
 }
 
 .material-text-field.enabled > .material-text-field-hint {
   color: #2d5cfa;
   top: -12px;
+  font-size: 14px;
+  opacity: 1;
 }
 
 .material-text-field.error > .material-text-field-hint {
   color: #d32f2f;
+  opacity: 1;
 }
 
 .material-text-field-divider {
@@ -103,6 +106,7 @@
 
 .material-text-field.error > .material-text-field-focus-divider {
   background-color: #d32f2f;
+  width: 100%;
 }
 
 .material-text-field-helper-text {

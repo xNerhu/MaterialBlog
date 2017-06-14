@@ -3,6 +3,7 @@ import Component from '../../helpers/Component'
 import NavigationDrawer from './components/NavigationDrawer/index'
 
 import InfoDialog from './components/InfoDialog'
+import LoginDialog from './components/LoginDialog'
 
 import Toolbar from './components/Toolbar'
 import TabLayout from './components/TabLayout'
@@ -14,6 +15,7 @@ import LessonsPlanTab from '../Tabs/LessonsPlan'
 
 import Preloader from './../../imports/materialdesign/components/Preloader'
 import Tooltip from '../../imports/materialdesign/components/Tooltip'
+import Snackbar from '../../imports/materialdesign/components/Snackbar'
 
 export default class App extends Component {
   beforeRender () {
@@ -207,10 +209,12 @@ export default class App extends Component {
         <NavigationDrawer ref='navigationDrawer' />
         <Preloader className='data-preloader' ref='preloader' />
         <InfoDialog ref='infoDialog' />
+        <LoginDialog ref='loginDialog' />
         <Tooltip ref='tooltipShowCommentsButton' text='Pokaż komentarze' />
         <Tooltip ref='tooltipLikeButton' text='Polub to!' />
         <Tooltip ref='tooltipLikesList' text='...' />
         <Tooltip ref='tooltipCategoryInfo' text='Data utworzenia:<br>Ilość zdjęc:' />
+        <Snackbar ref='snackbarLogged' text='Zalogowano pomyślnie' />
       </div>
     )
   }
@@ -220,6 +224,7 @@ export default class App extends Component {
     const toolbar = this.getToolbar()
     const tabLayout = this.elements.tabLayout
     const navigationDrawer = this.getNavigationDrawer()
+    const snackbarLogged = this.elements.snackbarLogged
 
     const items = [
       {
@@ -343,11 +348,19 @@ export default class App extends Component {
         text: 'Zaloguj się',
         className: 'navigation-drawer-login',
         onClick: function (e) {
-          console.log(e)
+          self.elements.loginDialog.show()
         }
       }
     ]
 
     navigationDrawer.setItems(navigationDrawerItems)
+
+    snackbarLogged.setActionButton({
+      text: 'WYLOGUJ',
+      rippleStyle: {
+        backgroundColor: '#FFEB3B',
+        opacity: 0.2
+      }
+    })
   }
 }

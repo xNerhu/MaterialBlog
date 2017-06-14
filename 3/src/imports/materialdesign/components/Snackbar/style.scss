@@ -29,13 +29,14 @@
 }
 
 .material-snackbar-action {
-  background-color: transparent !important;
-  color: #FFEB3B !important;
+  font-weight: 400;
+  background-color: transparent;
+  color: #FFEB3B;
   top: 50%;
   right: 0;
   transform: translateY(-50%) !important;
   position: absolute !important;
   height: 48px;
-  padding-top: 14.5px !important;
-  padding-bottom: 14.5px !important;
+  padding-top: 14.5px;
+  padding-bottom: 14.5px;
 }

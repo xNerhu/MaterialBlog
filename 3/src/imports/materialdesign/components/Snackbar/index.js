@@ -1,83 +1,87 @@
-import React from 'react'
+import Component from './../../../../helpers/Component'
 
 import MaterialButton from '../MaterialButton'
 
-export default class Snackbar extends React.Component {
-  constructor () {
-    super()
-
+export default class Snackbar extends Component {
+  beforeRender () {
     this.toggled = false
   }
 
   /**
-   * Shows snackbar.
-   */
-  show = () => {
-    const self = this
-    const root = this.refs.root
-    const content = this.refs.content
-
-    root.style.display = 'block'
-
-    setTimeout(function () {
-      root.style.bottom = '0px'
-
-      setTimeout(function () {
-        content.style.opacity = '1'
-      }, 150)
-
-      setTimeout(function () {
-        self.hide()
-      }, self.props.timeout)
-    }, 10)
-
-    this.toggled = true
+    * Gets root.
+    * @return {DOMElement} root.
+    */
+  getRoot = () => {
+    return this.elements.root
   }
 
   /**
-   * Hides snackbar.
+   * Shows or hides snackbar.
+   * @param {Boolean} show or hide.
    */
-  hide = () => {
+  toggle = (flag) => {
     const self = this
-    const root = this.refs.root
-    const content = this.refs.content
+    const root = this.elements.root
+    const content = this.elements.content
 
-    root.style.bottom = -root.scrollHeight + 'px'
+    if (flag) {
+      root.style.display = 'block'
 
-    setTimeout(function () {
-      root.style.display = 'none'
-      content.style.opacity = '0'
+      setTimeout(function () {
+        root.style.bottom = '0px'
 
-      self.toggled = false
-    }, 300)
+        setTimeout(function () {
+          content.style.opacity = '1'
+
+          setTimeout(function () {
+            self.toggle(false)
+          }, self.props.timeout)
+        }, 150)
+      }, 20)
+    } else {
+      root.style.bottom = -root.scrollHeight + 'px'
+
+      setTimeout(function () {
+        root.style.display = 'none'
+        content.style.opacity = '0'
+      }, 300)
+    }
+
+    this.toggled = flag
+  }
+
+  /**
+   * Sets action button.
+   * @param {Object} action button data.
+   */
+  setActionButton = (button) => {
+    const content = this.elements.content
+    const element = (
+      <MaterialButton className='material-snackbar-action' onClick={button.onClick} shadow={false} text={button.text} rippleStyle={button.rippleStyle} />
+    )
+
+    this.renderComponents(element, content)
   }
 
   render () {
-    var className = 'material-snackbar'
-    if (this.props.className) className += this.props.className
-
     return (
-      <div className={className} ref='root'>
+      <div className='material-snackbar' ref='root'>
         <div className='material-snackbar-content' ref='content'>
           <div className='material-snackbar-text' ref='text'>
             {
-              this.props.children
+              this.props.text
             }
           </div>
-          <MaterialButton className='material-snackbar-action' shadow={false} rippleStyle={this.props.actionRippleStyle} onClick={this.props.onActionClick}>
-            {
-              this.props.actionText
-            }
-          </MaterialButton>
         </div>
       </div>
     )
   }
-}
 
-Snackbar.defaultProps = {
-  timeout: 2500,
-  actionRippleStyle: {
-    backgroundColor: '#FFEB3B'
+  afterRender () {
+    const props = this.props
+    const root = this.getRoot()
+
+    if (props.className != null) root.classList.add(props.className)
+    if (props.timeout == null) props.timeout = 2500
   }
 }
