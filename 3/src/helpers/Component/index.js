@@ -79,14 +79,13 @@ export default class Component {
             }
           }
 
-          for (x = 0; x < childrenToMove.length; x++) {
+          for (x = childrenToMove.length - 1; x >= 0; x--) {
             if (typeof childrenToMove[x] !== 'string') {
               childrenToMove[x].isPropChild = true
             }
 
             children.splice(childrenIndex, 0, childrenToMove[x])
           }
-
 
           for (var i = 0; i < children.length; i++) {
             if (children[i].isPropChild) {

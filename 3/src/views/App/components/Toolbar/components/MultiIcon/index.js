@@ -28,17 +28,12 @@ export default class MultiIcon extends Component {
    * @param {Boolean} update actual state.
    */
   changeToExit = (update = true) => {
-    const self = this
     const root = this.elements.root
 
     if (!this.isArrow && !this.isExit) {
       root.className += ' multiIcon-exit multiIcon-exit-change'
-      this.isExit = null
-      // Wait until end of animation.
-      setTimeout(function () {
-        self.isExit = true
-      }, 800)
 
+      this.isExit = true
       if (update) this.actualState = 'exit'
     }
   }
@@ -48,17 +43,12 @@ export default class MultiIcon extends Component {
    * @param {Boolean} update actual state.
    */
   changeToArrow = (update = true) => {
-    const self = this
     const root = this.elements.root
 
     if (!this.isArrow && !this.isExit) {
       root.classList.remove('multiIcon-arrow-true')
       root.className += ' multiIcon-arrow multiIcon-arrow-change'
-      this.isArrow = null
-      // Wait until end of animation.
-      setTimeout(function () {
-        self.isArrow = true
-      }, 500)
+      this.isArrow = true
 
       if (update) this.actualState = 'arrow'
     }

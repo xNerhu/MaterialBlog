@@ -33,6 +33,10 @@ export default class NavigationDrawer extends Component {
     if (window.innerWidth <= 768) this.hideTemporary()
     // Otherwise hide persistent navigation drawer.
     else this.hidePersistent()
+
+    const multiIcon = window.app.getToolbar().getMultiIcon()
+
+    multiIcon.changeToDefault()
   }
 
   /**

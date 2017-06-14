@@ -31,17 +31,16 @@ export default class Dialog extends Component {
    * @param {Boolean} show or hide
    */
   toggle = (flag) => {
-    const self = this
     const root = this.getRoot()
 
     if (flag && !this.toggled) {
       this.toggled = true
 
       root.style.display = 'block'
-      setTimeout(function() {
+      setTimeout(function () {
         root.style.opacity = '1'
         root.style.top = '50%'
-      }, 10);
+      }, 10)
 
       this.toggleDark(true)
     } else {
@@ -49,9 +48,9 @@ export default class Dialog extends Component {
 
       root.style.opacity = '0'
       root.style.top = '25%'
-      setTimeout(function() {
+      setTimeout(function () {
         root.style.display = 'none'
-      }, 300);
+      }, 300)
 
       this.toggleDark(false)
     }
@@ -68,14 +67,14 @@ export default class Dialog extends Component {
     if (flag) {
       dark.style.display = 'block'
 
-      setTimeout(function() {
+      setTimeout(function () {
         dark.style.opacity = opacity
-      }, 10);
+      }, 10)
     } else {
       dark.style.opacity = '0'
-      setTimeout(function() {
+      setTimeout(function () {
         dark.style.display = 'none'
-      }, 300);
+      }, 300)
     }
   }
 
@@ -136,7 +135,7 @@ export default class Dialog extends Component {
     if (props.darkOpacity == null) props.darkOpacity = 0.7
 
     if (props.toggledOffTop == null) props.toggledOffTop = '25%'
-    else this.getRoot().style.top  = props.toggledOffTop
+    else this.getRoot().style.top = props.toggledOffTop
 
     if (props.actionButtonRippleStyle == null) {
       props.actionButtonRippleStyle = {
@@ -147,26 +146,6 @@ export default class Dialog extends Component {
 
     if (props.list === true) action.classList.add('list')
     else action.classList.add('side-by-side')
-
-    const items = [
-      {
-        text: 'ANULUJ',
-        onClick: function (e) {
-          console.log(e)
-        }
-      },
-      {
-        text: 'TEST',
-        style: {
-          color: '#ff0000'
-        },
-        onClick: function (e) {
-          console.log(e)
-        }
-      }
-    ]
-
-    this.setItems(items)
   }
 }
 /*    // Styles.

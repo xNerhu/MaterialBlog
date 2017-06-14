@@ -105,8 +105,10 @@ export default class Tab extends Component {
     }
 
     const action = Url.getUrlParameter('action')
-    const param = (action === undefined) ? '?tab=' + this.props.url : '?tab=' + this.props.url + '&action=' + action
-    window.history.pushState('', '', param)
+    let url = '?tab=' + this.props.url
+    if (action != null) url += '&action=' + action
+
+    window.history.pushState('', '', url)
   }
 
   /**
@@ -149,10 +151,10 @@ export default class Tab extends Component {
 
     tabLayout.tabs.push(this)
 
-    const urlTab = Url.getUrlParameter('tab')
+    let urlTab = Url.getUrlParameter('tab')
     const url = this.props.url
 
-    if (urlTab === url) {
+    if (urlTab != null && urlTab.toLowerCase() === url) {
       setTimeout(function () {
         self.select()
       }, 10)

@@ -41,8 +41,11 @@ export default class TabLayout extends Component {
       this.renderComponents(element, root)
     }
 
-    const urlTab = Url.getUrlParameter('tab')
-    if (urlTab === undefined) {
+    let urlTab = Url.getUrlParameter('tab')
+
+    if (urlTab != null) urlTab = urlTab.toLowerCase()
+
+    if (urlTab !== this.tabs[1].props.url && urlTab !== this.tabs[2].props.url && urlTab !== this.tabs[3].props.url) {
       setTimeout(function () {
         self.tabs[0].select()
       }, 10)
