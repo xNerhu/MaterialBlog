@@ -1,0 +1,57 @@
+.posts-table-mobile-item {
+  margin-top: 32px;
+  margin-left: auto;
+  margin-right: auto;
+  width: calc(100% - 48px);
+  height: auto;
+  background-color: #fff;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  position: relative;
+
+  &:first-child {
+    margin-top: 16px;
+  }
+
+  &:last-child {
+    margin-bottom: 32px;
+  }
+
+  & .cell {
+    padding: 16px;
+    font-size: 16px;
+    transition: 0.3s background-color;
+    position: relative;
+
+    &:hover {
+      background-color: #eee;
+      transition: 0.3s background-color;
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+    & .title {
+      float: left;
+      @include Roboto-Medium;
+      color: rgba(0, 0, 0, 0.54);
+      width: 25%;
+      margin-left: 8px;
+    }
+
+    & .text {
+      width: calc(75% - 16px);
+      text-align: right;
+      margin-right: 8px;
+      float: right;
+      @include Roboto-Regular;
+      color: rgba(0, 0, 0, 0.87);
+    }
+
+    &.checkbox .text {
+      width: auto;
+    }
+  }
+}

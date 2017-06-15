@@ -1,97 +1,148 @@
-import React from 'react'
+import Component from '../../../helpers/Component'
 
-import PostsTable from './components/PostsTable'
-import PostsMobile from './components/PostsMobile'
+import DekstopTable from './components/DekstopTable'
+import MobileTable from './components/MobileTable'
 
-import Checkbox from '../../../imports/materialdesign/components/Checkbox'
-
-export default class Posts extends React.Component {
-  constructor () {
-    super()
-
-    this.state = {
-      posts: [
-        {
-          id: 10,
-          title: 'Test',
-          author: 'Mikołaj Palkiewicz',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in neque turpis. Aenean tincidunt nunc nec ligula cursus iaculis. Pellentesque nisl nulla, malesuada a est a, tempor dapibus eros. Sed facilisis porta auctor.',
-          date: '14.04.2017 20:38',
-          avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
-          likes: [
-            {
-              userName: 'Mikołaj Palkiewicz',
-              userID: 1
-            },
-            {
-              userName: 'Eryk Rakowsky',
-              userID: 15
-            }
-          ],
-          comments: [
-            {
-              author: 'Mikołaj Palkiewicz',
-              userID: 1,
-              content: 'Lorem ipsum dolor sit amet',
-              date: '31.05.2017 18:14',
-              avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
-            }
-          ]
-        },
-        {
-          id: 10,
-          title: 'Bąk',
-          author: 'Mikołaj Palkiewicz',
-          content: 'Taka pszczoła albo bączur',
-          date: '14.04.2017 20:38',
-          avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
-          likes: [],
-          comments: []
+export default class PostsPage extends Component {
+  beforeRender () {
+    this.postsData = [
+      {
+        id: 11,
+        title: 'Post with style',
+        author: 'Mikołaj Palkiewicz',
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in neque turpis. Aenean tincidunt nunc nec ligula cursus iaculis. Pellentesque nisl nulla, malesuada a est a, tempor dapibus eros. Sed facilisis porta',
+        date: '15.06.2017 13:02',
+        avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+        likes: [],
+        comments: [
+          {
+            author: 'Mikołaj Palkiewicz',
+            userID: 1,
+            content: 'Warto wiedzieć',
+            date: '31.05.2017 18:14',
+            avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
+          }
+        ],
+        style: {
+          background: '#2196F3',
+          light: true,
+          ripple: true
         }
-      ]
-    }
+      },
+      {
+        id: 10,
+        title: 'Test',
+        author: 'Mikołaj Palkiewicz',
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in neque turpis. Aenean tincidunt nunc nec ligula cursus iaculis. Pellentesque nisl nulla, malesuada a est a, tempor dapibus eros. Sed facilisis porta auctor.',
+        date: '14.04.2017 20:38',
+        avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+        likes: [
+          {
+            userName: 'Mikołaj Palkiewicz',
+            userID: 1
+          },
+          {
+            userName: 'Eryk Rakowsky',
+            userID: 15
+          }
+        ],
+        comments: [
+          {
+            author: 'Mikołaj Palkiewicz',
+            userID: 1,
+            content: 'Lorem ipsum dolor sit amet',
+            date: '31.05.2017 18:14',
+            avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
+          }
+        ]
+      },
+      {
+        id: 9,
+        media: 'http://img11.deviantart.net/a66d/i/2015/109/3/b/forest_wallpaper_16_9_by_iorgudesign-d8qa67w.jpg',
+        title: 'Test',
+        author: 'Mikołaj Palkiewicz',
+        content: 'Card with picture test',
+        date: '14.04.2017 10:38',
+        avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+        likes: [],
+        comments: []
+      },
+      {
+        id: 8,
+        media: 'https://images.alphacoders.com/120/120313.jpg',
+        title: 'Rain',
+        author: 'Mikołaj Palkiewicz',
+        content: 'Rainy day',
+        date: '14.04.2017 9:45',
+        avatar: 'https://images.alphacoders.com/120/thumb-1920-120313.jpg',
+        likes: [],
+        comments: []
+      },
+      {
+        id: 7,
+        title: 'HTML TAGS TEST',
+        author: 'Mikołaj Palkiewicz',
+        content: '<div id="tag-test-margin"></div><div id="tag-test"></div><style>#tag-test-margin {height:128px;} #tag-test{width:48px;height:48px;background-color:#2196f3;border-radius:100%;animation-name:tag-test-animation;animation-duration:2s;animation-iteration-count:infinite;animation-timing-function:ease-in-out;position:absolute;top:0;left:0;right:0;margin:0 auto;}</style><style>@keyframes tag-test-animation {0% {border-radius:100%;width:48px; height:48px;background-color:#2196f3;}25% {border-radius:0%;width:152px;height:152px;background-color:#90CAF9;}100%{border-radius:100%;width:48px;height:48px;background-color:#2196f3;}}</style>',
+        date: '14.04.2017 8:07',
+        avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+        likes: [],
+        comments: []
+      },
+      {
+        id: 6,
+        title: 'Test 2',
+        author: 'Mikołaj Palkiewicz',
+        content: '6',
+        date: '14.04.2017 10:38',
+        avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+        likes: [],
+        comments: []
+      },
+      {
+        id: 5,
+        title: 'Test 2',
+        author: 'Mikołaj Palkiewicz',
+        content: '6',
+        date: '14.04.2017 10:38',
+        avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+        likes: [],
+        comments: []
+      }
+    ]
+  }
+
+  /**
+   * Gets root.
+   * @return {DOMElement} root
+   */
+  getRoot = () => {
+    return this.elements.root
+  }
+
+  /**
+   * Loads posts.
+   */
+  load = () => {
+    const self = this
+    const app = window.app
+    const desktopTable = this.elements.desktopTable
+    const mobileTable = this.elements.mobileTable
+
+    app.loadedPages.posts = true
+
+    setTimeout(function () {
+      app.togglePreloader(false)
+      app.isLoading = false
+      mobileTable.setCells(self.postsData)
+    }, 10)
   }
 
   render () {
-    const cells = [
-      {
-        title: 'ID',
-        text: '1'
-      },
-      {
-        title: 'Autor',
-        text: 'Mikołaj Pakiewicz'
-      },
-      {
-        title: 'Data',
-        text: '02.06.2017 21:45'
-      },
-      {
-        title: 'Tytuł',
-        text: 'Tyt<span style="font-weight:bold">uł</span>'
-      },
-      {
-        title: 'Treść',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, q<span style="color:red">te velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia</span> deserunt mollit anim id est laborum.'
-      }
-    ]
-
     return (
-      <div className='page' ref='root'>
-        <PostsTable posts={this.state.posts} />
-        <div className='posts-table-mobile'>
-          {
-            this.state.posts.map((data, i) => {
-              return <PostsMobile key={i} data={data} />
-            })
-          }
-        </div>
+      <div className='page page-posts' ref='root'>
+        <DekstopTable ref='desktopTable' />
+        <MobileTable ref='mobileTable' />
       </div>
     )
   }
-}
-
-Posts.defaultProps = {
-  title: 'Posty',
-  url: 'posts'
 }

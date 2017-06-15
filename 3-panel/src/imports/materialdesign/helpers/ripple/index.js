@@ -48,7 +48,7 @@ var Ripple = class Ripple {
     setTimeout(function () {
       rippleElement.style.width = animateSize + 'px'
       rippleElement.style.height = animateSize + 'px'
-    }, 1)
+    }, 10)
 
     function removeRipple () {
       rippleElement.style.opacity = '0'
@@ -57,12 +57,20 @@ var Ripple = class Ripple {
           rippleElement.parentNode.removeChild(rippleElement)
         }
       }, 400)
+
+      if (touch) {
+        document.removeEventListener('touchend', removeRipple)
+      } else {
+        document.removeEventListener('mouseout', removeRipple)
+        document.removeEventListener('mouseup', removeRipple)
+      }
     }
 
-    rippleElement.element.addEventListener('mouseout', removeRipple)
-    rippleElement.element.addEventListener('mouseup', removeRipple)
     if (touch) {
-      rippleElement.element.addEventListener('touchend', removeRipple)
+      document.addEventListener('touchend', removeRipple)
+    } else {
+      document.addEventListener('mouseout', removeRipple)
+      document.addEventListener('mouseup', removeRipple)
     }
   }
 }

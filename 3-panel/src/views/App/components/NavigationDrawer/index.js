@@ -1,90 +1,58 @@
-import React from 'react'
+import Component from './../../../../helpers/Component/index'
 
 import NavigationDrawerItem from './components/NavigationDrawerItem'
 
-export default class NavigationDrawer extends React.Component {
-  constructor () {
-    super()
-
+export default class NavigationDrawer extends Component {
+  beforeRender () {
     this.persistent = true
     this.toggled = false
   }
 
-  componentDidMount () {
-    const self = this
-    const app = this.props.getApp()
-    const header = this.refs.header
-    const avatar = this.refs.avatar
-    const username = this.refs.username
-    const email = this.refs.email
-
-    // Add on window resize event listener.
-    // If window width is less than 768 pixels and navigation drawer is toggled, then show temporary navigation drawer.
-    // If window width is more than 768 pixels and navigation drawer is toggled, then show persistent navigation drawer.
-    window.addEventListener('resize', function () {
-      if (window.innerWidth <= 768 && self.persistent && self.toggled) {
-        self.showTemporary()
-      }
-      if (window.innerWidth > 768 && !self.persistent && self.toggled) {
-        self.hideDark()
-        self.showPersistent()
-      }
-    })
-
-    header.style.backgroundImage = 'url(src/images/NavigationDrawer/header.png)'
-
-    app.elementsToChange.push(this)
+  /**
+   * Gets root.
+   * @return {DOMElement} root
+   */
+  getRoot = () => {
+    return this.elements.root
   }
 
   /**
    * Show navigation drawer.
    */
   show = () => {
-    const app = this.props.getApp()
-    const toolbar = app.getToolBar()
-    const menuIcon = toolbar.refs.menuIcon
-
     // If window width is less than 768, then show temporary navigation drawer.
     if (window.innerWidth <= 768) this.showTemporary()
     // Otherwise show persistent navigation drawer.
     else this.showPersistent()
-
-    menuIcon.changeToExit()
   }
 
   /**
    * Hide navigation drawer.
    */
   hide = () => {
-    const app = this.props.getApp()
-    const toolbar = app.getToolBar()
-    const menuIcon = toolbar.refs.menuIcon
-
     // If window width is more than 768, then hide temporary navigation drawer.
     if (window.innerWidth <= 768) this.hideTemporary()
     // Otherwise hide persistent navigation drawer.
     else this.hidePersistent()
 
-    menuIcon.isExit = true
+    const multiIcon = window.app.getToolbar().getMultiIcon()
 
-    setTimeout(function () {
-      menuIcon.changeToDefault()
-    }, 10)
+    multiIcon.changeToDefault()
   }
 
   /**
    * Shows persistent navigation drawer.
    */
   showPersistent = () => {
-    const app = this.props.getApp()
-    const root = this.getRoot()
+    const appContent = window.app.elements.appContent
+    const container = this.elements.container
 
     // Change left and width.
-    root.style.left = '0px'
-    root.style.width = this.props.persistentWidth + 'px'
+    container.style.left = '0px'
+    container.style.width = this.props.persistentWidth + 'px'
 
     // Change app's content width
-    app.getAppContent().style.width = 'calc(100% - ' + this.props.persistentWidth + 'px)'
+    appContent.style.width = 'calc(100% - ' + this.props.persistentWidth + 'px)'
 
     this.persistent = true
     this.toggled = true
@@ -94,14 +62,14 @@ export default class NavigationDrawer extends React.Component {
    * Hides persistent navigation drawer.
    */
   hidePersistent = () => {
-    const app = this.props.getApp()
-    const root = this.getRoot()
+    const appContent = window.app.elements.appContent
+    const container = this.elements.container
 
     // Change navigation drawer's left.
-    root.style.left = -this.props.persistentWidth + 'px'
+    container.style.left = -this.props.persistentWidth + 'px'
 
     // Change app's content width
-    app.getAppContent().style.width = '100%'
+    appContent.style.width = '100%'
 
     this.toggled = false
   }
@@ -110,18 +78,18 @@ export default class NavigationDrawer extends React.Component {
    * Shows temporary navigation drawer.
    */
   showTemporary = () => {
-    const app = this.props.getApp()
-    const root = this.getRoot()
+    const appContent = window.app.elements.appContent
+    const container = this.elements.container
 
     // Show dark background.
     this.showDark()
 
     // Change navigation drawer's left and width.
-    root.style.left = '0px'
-    root.style.width = this.props.temporaryWidth + 'px'
+    container.style.left = '0px'
+    container.style.width = this.props.temporaryWidth + 'px'
 
     // Change app's content width.
-    app.getAppContent().style.width = '100%'
+    appContent.style.width = '100%'
 
     this.persistent = false
     this.toggled = true
@@ -131,13 +99,13 @@ export default class NavigationDrawer extends React.Component {
    * Hides temporary navigation drawer.
    */
   hideTemporary = () => {
-    const root = this.getRoot()
+    const container = this.elements.container
 
     // Hide dark background.
     this.hideDark()
 
     // Change navigation drawer's left.
-    root.style.left = -this.props.temporaryWidth + 'px'
+    container.style.left = -this.props.temporaryWidth + 'px'
 
     this.toggled = false
   }
@@ -146,12 +114,12 @@ export default class NavigationDrawer extends React.Component {
    * Shows dark and fullscreen background.
    */
   showDark = () => {
-    const self = this
-    const dark = this.refs.dark
+    const darkOpacity = this.props.darkOpacity
+    const dark = this.elements.dark
 
     dark.style.display = 'block'
     setTimeout(function () {
-      dark.style.opacity = self.props.darkOpacity
+      dark.style.opacity = darkOpacity
     }, 10)
   }
 
@@ -159,7 +127,7 @@ export default class NavigationDrawer extends React.Component {
    * Hides dark and fullscreen background.
    */
   hideDark = () => {
-    const dark = this.refs.dark
+    const dark = this.elements.dark
 
     dark.style.opacity = '0'
     setTimeout(function () {
@@ -172,98 +140,98 @@ export default class NavigationDrawer extends React.Component {
     * Hides navigation drawer.
     */
   onDarkClick = () => {
-    this.hide()
-    this.props.getApp().getToolBar().refs.menuIcon.changeToDefault()
+    const multiIcon = window.app.getToolbar().getMultiIcon()
+
+    if (multiIcon.canClick) {
+      multiIcon.changeToDefault()
+      this.hide()
+    }
   }
 
   /**
-   * Gets root.
-   * @return {DOMElement}
+   * On window resize event.
+   * Changes type of navigation drawer.
+   * @param {Event}
    */
-  getRoot = () => {
-    return this.refs.root
+  onWindowResize = (e) => {
+    if (window.innerWidth <= 768 && this.persistent && this.toggled) {
+      this.showTemporary()
+    }
+    if (window.innerWidth > 768 && !this.persistent && this.toggled) {
+      this.hideDark()
+      this.showPersistent()
+    }
   }
 
   /**
-   * On posts item click event.
-   * Selects posts page.
-   * @param {Object} event data.
+   * Sets items.
+   * @param {Object} items
    */
-  onPostsClick = (e) => {
-    const app = this.props.getApp()
+  setItems = (items) => {
+    for (var i = 0; i < items.length; i++) {
+      const item = items[i]
+      const ref = item.ref
+      const text = item.text
+      const className = item.className
+      const onClick = item.onClick
 
-    app.selectPage(app.getPostsPage())
+      const element = (
+        <NavigationDrawerItem className={className} onClick={onClick} ref={ref}>
+          {
+            text
+          }
+        </NavigationDrawerItem>
+      )
 
-    this.hide()
+      this.renderComponents(element, this.elements.content)
+    }
   }
 
   /**
-   * On gallery item click event.
-   * Selects gallery page.
-   * @param {Object} event data.
+   * On user logs event.
    */
-  onGalleryClick = (e) => {
-    const app = this.props.getApp()
+  onUserLog = () => {
+    const app = window.app
+    const accountInfo = app.accountInfo
 
-    app.selectPage(app.getGalleryPage())
+    const header = this.elements.header
+    const avatar = this.elements.headerAvatar
+    const userName = this.elements.headerUserName
+    const email = this.elements.headerEmail
 
-    this.hide()
-  }
+    header.style.backgroundImage = 'none'
 
-  /**
-   * On about class item click event.
-   * Selects about class page.
-   * @param {Object} event data.
-   */
-  onAboutClassClick = (e) => {
-    const app = this.props.getApp()
+    avatar.style.display = 'block'
+    avatar.style.backgroundImage = 'url(' + accountInfo.avatar + ')'
 
-    app.selectPage(app.getAboutClassPage())
-
-    this.hide()
+    userName.innerHTML = accountInfo.userName
+    email.innerHTML = accountInfo.email
   }
 
   render () {
     return (
-      <div>
-        <div className='navigation-drawer' ref='root'>
+      <div ref='root'>
+        <div className='navigation-drawer' ref='container'>
           <div className='navigation-drawer-header' ref='header'>
-            <div className='navigation-drawer-header-avatar' ref='avatar' />
-            <div className='navigation-drawer-header-username' ref='username' />
-            <div className='navigation-drawer-header-email' ref='email' />
+            <div className='navigation-drawer-header-avatar' ref='headerAvatar' />
+            <div className='navigation-drawer-header-username' ref='headerUserName' />
+            <div className='navigation-drawer-header-email' ref='headerEmail' />
           </div>
-          <div className='navigation-drawer-content'>
-            <NavigationDrawerItem
-              getApp={this.props.getApp}
-              onClick={this.onPostsClick}
-              className='navigation-drawer-posts'
-            >
-              Posty
-            </NavigationDrawerItem>
-            <NavigationDrawerItem
-              getApp={this.props.getApp}
-              onClick={this.onGalleryClick}
-              className='navigation-drawer-gallery'
-            >
-              Galeria
-            </NavigationDrawerItem>
-            <NavigationDrawerItem
-              getApp={this.props.getApp}
-              onClick={this.onAboutClassClick}
-              className='navigation-drawer-about-class'
-            >
-              O klasie
-            </NavigationDrawerItem>
-          </div>
+          <div className='navigation-drawer-content' ref='content' />
         </div>
         <div className='dark' ref='dark' onClick={this.onDarkClick} />
       </div>
     )
   }
-}
 
-NavigationDrawer.defaultProps = {
-  persistentWidth: 240,
-  temporaryWidth: 260,
-  darkOpacity: 0.7
+  afterRender () {
+    const props = this.props
+
+    if (props.persistentWidth == null) props.persistentWidth = 240
+    if (props.temporaryWidth == null) props.temporaryWidth = 260
+    if (props.darkOpacity == null) props.darkOpacity = 0.7
+
+    window.addEventListener('resize', this.onWindowResize)
+    window.app.elementsToCallBack.push(this)
+  }
 }

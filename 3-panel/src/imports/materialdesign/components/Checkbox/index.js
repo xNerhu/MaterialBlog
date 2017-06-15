@@ -1,19 +1,24 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import Component from './../../../../helpers/Component'
 
-export default class Checkbox extends React.Component {
-  componentDidMount () {
-    this.checked = this.props.checked
-
-    if (this.props.checked) this.unCheck()
-    else this.check()
-
-    ReactDOM.findDOMNode(this).addEventListener('checked-changed', this.props.onCheckedChanged)
+export default class Checkbox extends Component {
+  beforeRender () {
+    this.checked = false
   }
 
-  unCheck = (userInteraction = false) => {
-    const border = this.refs.border
-    const icon = this.refs.icon
+  /**
+   * Gets root.
+   * @return {DOMElement} root
+  */
+  getRoot = () => {
+    return this.elements.root
+  }
+
+  /**
+   * Unchecks the checkboxs.
+   */
+  unCheck = () => {
+    const border = this.elements.border
+    const icon = this.elements.icon
 
     icon.classList.remove('material-checkbox-cover-animation')
     icon.classList.add('material-checkbox-hide')
@@ -21,37 +26,26 @@ export default class Checkbox extends React.Component {
     border.style.borderWidth = '2px'
     border.style.borderColor = this.props.offColor
 
-    let evt = document.createEvent('Event')
-    evt.initEvent('checked-changed', true, true)
-    evt.checked = false
-    evt.userInteraction = userInteraction
-    ReactDOM.findDOMNode(this).dispatchEvent(evt)
-
     this.checked = false
   }
 
   /**
    * Checks the checkbox and raises checked-changed event.
-   * @param {Boolean} userInteraction.
    */
-  check = (userInteraction = true) => {
-    const checkbox = this.refs.checkbox
-    const border = this.refs.border
-    const icon = this.refs.icon
+  check = () => {
+    const root = this.getRoot()
+    const border = this.elements.border
+    const icon = this.elements.icon
 
-    border.style.borderWidth = checkbox.offsetWidth / 2 + 'px'
+    console.log(this)
+
+    border.style.borderWidth = root.offsetWidth / 2 + 'px'
     border.style.borderColor = this.props.onColor
 
     setTimeout(function () {
       icon.classList.remove('material-checkbox-hide')
       icon.classList.add('material-checkbox-cover-animation')
     }, 150)
-
-    let evt = document.createEvent('Event')
-    evt.initEvent('checked-changed', true, true)
-    evt.checked = true
-    evt.userInteraction = userInteraction
-    ReactDOM.findDOMNode(this).dispatchEvent(evt)
 
     this.checked = true
   }
@@ -71,26 +65,35 @@ export default class Checkbox extends React.Component {
    * @param {Object} event data.
    */
   onMouseDown = (e) => {
-    const color = this.refs.border.style['border-color']
+    const root = this.getRoot()
+    const border = this.elements.border
+    const color = border.style['border-color']
 
-    const ripple = Ripple.createRipple(this.refs.checkbox, {
+    const ripple = Ripple.createRipple(root, {
       backgroundColor: color
-    }, createRippleCenter(this.refs.checkbox))
+    }, createRippleCenter(root))
     Ripple.makeRipple(ripple)
   }
 
   render () {
     return (
-      <div className='material-checkbox ripple-icon' onMouseDown={this.onMouseDown} ref='checkbox' onClick={this.onClick}>
+      <div className='material-checkbox ripple-icon' onMouseDown={this.onMouseDown} ref='root' onClick={this.onClick}>
         <div ref='border' className='material-checkbox-border' />
         <div ref='icon' className='material-checkbox-icon material-checkbox-hide' />
       </div>
     )
   }
-}
 
-Checkbox.defaultProps = {
-  onColor: '#2196F3',
-  offColor: '#757575',
-  checked: 'false'
+  afterRender () {
+    const props = this.props
+
+    if (!this.checked) {
+      this.unCheck()
+    } else {
+      this.check()
+    }
+
+    if (props.onColor == null) props.onColor = '#3F51B5'
+    if (props.offColor == null) props.offColor = '#757575'
+  }
 }

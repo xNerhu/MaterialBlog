@@ -1,137 +1,43 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-
-import NavigationDrawer from './components/NavigationDrawer'
-import Toolbar from './components/Toolbar'
-
-import Posts from '../Pages/Posts'
-import Gallery from '../Pages/Gallery'
-import AboutClass from '../Pages/AboutClass'
-
-import Preloader from '../../imports/materialdesign/components/Preloader'
-
+import Component from '../../helpers/Component'
 import Url from '../../helpers/Url'
 
-export default class App extends React.Component {
-  constructor () {
-    super()
+import NavigationDrawer from './components/NavigationDrawer/index'
+import Toolbar from './components/Toolbar'
 
-    this.state = ({
-      toolbarItems: [],
-      toggledPreloader: false
-    })
+import PostsPage from '../Pages/Posts'
+import GalleryPage from '../Pages/Gallery'
+import AboutClassPage from '../Pages/AboutClass'
+import LessonsPlanPage from '../Pages/LessonsPlan'
 
-    this.accountInfo = {
-      userID: 1,
-      userName: 'Mikołaj Palkiewicz',
-      avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
-    }
+import Preloader from './../../imports/materialdesign/components/Preloader'
 
-    this.elementsToChange = []
+export default class App extends Component {
+  beforeRender () {
+    window.app = this
 
-    this.lastPage = null
-    this.pageIsLoading = false
+    this.props.defaultTitle = 'Posty'
 
-    this.selected = {
-      posts: true,
+    this.elementsToCallBack = []
+
+    this.loadedPages = {
+      posts: false,
       gallery: false,
-      aboutClass: false
-    }
-  }
-
-  componentDidMount () {
-    const self = this
-    const navigationDrawer = this.getNavigationDrawer()
-
-    // Events.
-    function onClickMenu (e) {
-      if (!self.pageIsLoading) {
-        if (!navigationDrawer.toggled) {
-          navigationDrawer.show()
-        } else {
-          navigationDrawer.hide()
-        }
-      }
+      aboutClass: false,
+      lessonsPlan: false
     }
 
-    // Set toolbar items.
-    this.setState({
-      toolbarItems: [
-        {
-          type: 'Icon',
-          subType: 'Menu',
-          position: 'Left',
-          image: 'src/images/Toolbar/menu.png',
-          onClick: onClickMenu,
-          id: 'toolbar-icon-menu',
-          style: {
-            width: 24,
-            height: 18,
-            position: 'absolute',
-            top: '50%',
-            transform: 'translateY(-50%)'
-          }
-        },
-        {
-          type: 'Title',
-          title: 'Posty',
-          id: 'toolbar-title',
-          style: {
-            color: '#fff'
-          }
-        }
-      ]
-    })
+    this.isLoading = false
 
-    setTimeout(function () {
-      const pageParameter = Url.getUrlParameter('page')
-      const page = self.getPage(pageParameter)
-
-      if (page) {
-        self.selectPage(page)
-      } else {
-        self.selectPage(self.getPostsPage())
-      }
-    }, 10)
-  }
-
-  /**
-   * Gets app.
-   * @return {App}
-   */
-  getApp = () => {
-    return this
+    this.canSelect = true
+    this.lastPage = null
   }
 
   /**
    * Gets toolbar.
    * @return {Toolbar}
    */
-  getToolBar = () => {
-    return this.refs.toolbar
-  }
-
-  /**
-   * Sets toolbar title.
-   * @param {String} title.
-   */
-  setToolBarTitle = (title) => {
-    const items = this.state.toolbarItems
-    var index = 0
-
-    // Get title index.
-    for (var i = 0; i < items.length; i++) {
-      if (items[i].type === 'Title') {
-        index = i
-        break
-      }
-    }
-
-    items[index].title = title
-
-    this.setState({
-      toolbarItems: items
-    })
+  getToolbar = () => {
+    return this.elements.toolbar
   }
 
   /**
@@ -139,174 +45,297 @@ export default class App extends React.Component {
    * @return {NavigationDrawer}
    */
   getNavigationDrawer = () => {
-    return this.refs.navigationDrawer
-  }
-
-  /**
-   * Gets app content.
-   * @return {DOMElement}
-   */
-  getAppContent = () => {
-    return this.refs.appContent
-  }
-
-  /**
-   * Toggles preloader.
-   * @param {Boolean}
-   */
-  togglePreloader = (flag) => {
-    this.setState({
-      toggledPreloader: flag
-    })
-  }
-
-  /**
-   * Selects page.
-   * @param {DOMElement} page.
-   */
-  selectPage = (page) => {
-    const self = this
-    const lastPage = this.lastPage
-    const root = page.refs.root
-    const selected = this.pageWasSelected(page)
-
-    if (lastPage !== null && lastPage !== page) {
-      const lastPageRoot = lastPage.refs.root
-
-      lastPageRoot.style.opacity = '0'
-
-      setTimeout(function () {
-        lastPageRoot.style.display = 'none'
-      }, 300)
-    }
-
-    if (lastPage !== page) {
-      this.setToolBarTitle(page.props.title)
-
-      this.lastPage = page
-
-      // TODO: Make request
-      if (!selected) {
-        this.togglePreloader(true)
-
-        this.pageIsLoading = true
-
-        this.setSelectedPage(page)
-
-        setTimeout(function () {
-          self.showPage(page)
-          self.togglePreloader(false)
-          self.pageIsLoading = false
-        }, 500)
-      } else {
-        this.showPage(page)
-      }
-
-      const param = '?page=' + page.props.url
-      window.history.pushState('', '', param)
-    }
-  }
-
-  /**
-   * Shows page.
-   * @param {Object}
-   */
-  showPage = (page) => {
-    const root = page.refs.root
-
-    root.style.display = 'block'
-
-    setTimeout(function () {
-      root.style.opacity = '1'
-    }, 10)
-  }
-
-  /**
-   * Gets page from name.
-   * @param {String} name of page (from url).
-   * @return {Object}
-   */
-  getPage = (str) => {
-    const posts = this.getPostsPage()
-    const gallery = this.getGalleryPage()
-    const aboutClass = this.getAboutClassPage()
-
-    if (str === posts.props.url) return posts
-    else if (str === gallery.props.url) return gallery
-    else if (str === aboutClass.props.url) return aboutClass
-    else return null
-  }
-
-  /**
-   * Checks that page wasa selected.
-   * @param {Object} page.
-   * @return {Boolean} selected.
-   */
-  pageWasSelected = (page) => {
-    const posts = this.getPostsPage()
-    const gallery = this.getGalleryPage()
-    const aboutClass = this.getAboutClassPage()
-
-    if (page === posts) return this.selected.posts
-    else if (page === gallery) return this.selected.gallery
-    else if (page === aboutClass) return this.selected.aboutClass
-  }
-
-  /**
-   * Sets page selected.
-   * @param {Boolean}
-   */
-  setSelectedPage = (page) => {
-    const posts = this.getPostsPage()
-    const gallery = this.getGalleryPage()
-    const aboutClass = this.getAboutClassPage()
-
-    if (page === posts) this.selected.posts = true
-    else if (page === gallery) this.selected.gallery = true
-    else if (page === aboutClass) this.selected.aboutClass = true
+    return this.elements.navigationDrawer
   }
 
   /**
    * Gets posts page.
-   * @return {Posts}
+   * @return {PostsPage}
    */
   getPostsPage = () => {
-    return this.refs.posts
+    return this.elements.postsPage
   }
 
   /**
    * Gets gallery page.
-   * @return {Gallery}
+   * @return {GalleryPage}
    */
   getGalleryPage = () => {
-    return this.refs.gallery
+    return this.elements.galleryPage
   }
 
   /**
    * Gets about class page.
-   * @return {AboutClass}
+   * @return {AboutClassPage}
    */
   getAboutClassPage = () => {
-    return this.refs.aboutClass
+    return this.elements.aboutClassPage
+  }
+
+  /**
+   * Gets lessons plan page.
+   * @return {LessonsPlanPage}
+   */
+  getLessonsPlanTab = () => {
+    return this.elements.lessonsPlanPage
+  }
+
+  /**
+   * Gets preloader.
+   * @return {Preloader}
+   */
+  getPreloader = () => {
+    return this.elements.preloader
+  }
+
+  /**
+   * Shows or hides preloader.
+   * @param {Boolean}
+   */
+  togglePreloader = (flag) => {
+    const preloader = this.getPreloader().getRoot()
+
+    preloader.style.display = (!flag) ? 'none' : 'block'
+  }
+
+  /**
+   * On multi-icon click event.
+   * @param {Event}
+   */
+  onMultiIconClick = () => {
+    const toolbar = this.getToolbar()
+    const multiIcon = toolbar.getMultiIcon()
+    const navigationDrawer = this.getNavigationDrawer()
+
+    if (multiIcon.canClick) {
+      if (!navigationDrawer.toggled) {
+        navigationDrawer.show()
+        multiIcon.changeToExit()
+        multiIcon.blockClick()
+      } else {
+        navigationDrawer.hide()
+      }
+    }
+  }
+
+  /**
+   * Logs user.
+   * TODO
+   */
+  logUser = () => {
+    this.accountInfo = {
+      userID: 1,
+      userName: 'Mikołaj Palkiewicz',
+      avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+      email: 'xnerhu22@onet.pl'
+    }
+
+    this.callElements()
+  }
+
+  /**
+   * Calls event on user log in elements.
+   * Updates stuffs.
+   */
+  callElements = () => {
+    if (this.accountInfo) {
+      for (var i = 0; i < this.elementsToCallBack.length; i++) {
+        const element = this.elementsToCallBack[i]
+
+        element.onUserLog()
+      }
+    }
+  }
+
+  /**
+   * Sets toolbar items.
+   */
+  setToolbarItems = () => {
+    const toolbar = this.getToolbar()
+
+    const items = [
+      {
+        type: 'Icon',
+        subType: 'MultiIcon',
+        position: 'Left',
+        onClick: this.onMultiIconClick,
+        id: 'toolbar-icon-multi-icon',
+        style: {
+          width: '24px',
+          height: '18px',
+          position: 'absolute',
+          top: '50%',
+          transform: 'translateY(-50%)'
+        }
+      },
+      {
+        type: 'Title',
+        title: this.props.defaultTitle,
+        style: {
+          color: '#fff'
+        }
+      }
+    ]
+
+    toolbar.setItems(items)
+  }
+
+  /**
+   * Sets navigation drawer items.
+   */
+  setNavigationDrawerItems = () => {
+    const self = this
+    const navigationDrawer = this.getNavigationDrawer()
+
+    const navigationDrawerItems = [
+      {
+        text: 'Posty',
+        className: 'navigation-drawer-posts',
+        onClick: function (e) {
+          self.selectPage(self.getPostsPage())
+        }
+      },
+      {
+        text: 'Galeria',
+        className: 'navigation-drawer-gallery',
+        onClick: function (e) {
+          self.selectPage(self.getGalleryPage())
+        }
+      },
+      {
+        text: 'O klasie',
+        className: 'navigation-drawer-about-class',
+        onClick: function (e) {
+          self.selectPage(self.getAboutClassPage())
+        }
+      },
+      {
+        text: 'Plan lekcji',
+        className: 'navigation-drawer-lessons-plan',
+        onClick: function (e) {
+          self.selectPage(self.getLessonsPlanTab())
+        }
+      }
+    ]
+
+    navigationDrawer.setItems(navigationDrawerItems)
+  }
+
+  /**
+   * Selects page.
+   * @param {PostsPage | GalleryPage}
+   */
+  selectPage = (page) => {
+    if (this.canSelect && this.lastPage !== page && !this.isLoading) {
+      const self = this
+      const navigationDrawer = this.getNavigationDrawer()
+      const pageRoot = page.getRoot()
+      const pageName = this.getPageName(page)
+
+      this.canSelect = false
+
+      if (navigationDrawer.toggled) navigationDrawer.hide()
+
+      pageRoot.style.display = 'block'
+
+      if (pageName === 'posts' && !this.loadedPages.posts || pageName === 'gallery' && !this.loadedPages.gallery || pageName === 'aboutClass' && !this.loadedPages.aboutClass || pageName === 'lessonsPlan' && !this.loadedPages.lessonsPlan) {
+        this.togglePreloader(true)
+        this.isLoading = true
+
+        page.load()
+      }
+
+      setTimeout(function () {
+        pageRoot.style.opacity = '1'
+
+        setTimeout(function () {
+          self.canSelect = true
+        }, 300)
+      }, 10)
+
+      const url = '?page=' + pageName.toLowerCase()
+      window.history.pushState('', '', url)
+
+      const lastPage = this.lastPage
+      if (lastPage != null) {
+        this.deselectPage(lastPage)
+      }
+
+      this.lastPage = page
+    }
+  }
+
+  /**
+   * Deselects page.
+   * @param {PostsPage | GalleryPage}
+   */
+  deselectPage = (page) => {
+    const pageRoot = page.getRoot()
+
+    pageRoot.style.opacity = '0'
+
+    setTimeout(function () {
+      pageRoot.style.display = 'none'
+    }, 300)
+  }
+
+  /**
+   * Gets page page.
+   * @param {PostsPage | GalleryPage}
+   * @return {String} page name
+   */
+  getPageName = (page) => {
+    const postsPage = this.getPostsPage()
+    const galleryPage = this.getGalleryPage()
+    const aboutClassPage = this.getAboutClassPage()
+    const lessonsPlanPage = this.getLessonsPlanTab()
+
+    if (postsPage === page) return 'posts'
+    else if (galleryPage === page) return 'gallery'
+    else if (aboutClassPage === page) return 'aboutClass'
+    else if (lessonsPlanPage === page) return 'lessonsPlan'
+    return null
   }
 
   render () {
-    // Styles.
-    const preloaderStyle = {
-      display: (!this.state.toggledPreloader) ? 'none' : 'block'
-    }
-
     return (
       <div>
         <div className='app-content' ref='appContent'>
-          <Toolbar ref='toolbar' items={this.state.toolbarItems} getApp={this.getApp} />
-          <Posts ref='posts' getApp={this.getApp} />
-          <Gallery ref='gallery' getApp={this.getApp} />
-          <AboutClass ref='aboutClass' getApp={this.getApp} />
+          <Toolbar ref='toolbar' />
+          <div className='pages'>
+            <PostsPage ref='postsPage' />
+            <GalleryPage ref='galleryPage' />
+            <AboutClassPage ref='aboutClassPage' />
+            <LessonsPlanPage ref='lessonsPlanPage' />
+          </div>
         </div>
-        <Preloader className='preloader' ref='preloader' style={preloaderStyle} strokeColor='#2196f3' strokeWidth={4} />
-        <NavigationDrawer ref='navigationDrawer' getApp={this.getApp} />
+        <NavigationDrawer ref='navigationDrawer' />
+        <Preloader className='data-preloader' ref='preloader' />
       </div>
     )
+  }
+
+  afterRender () {
+    this.setToolbarItems()
+    this.setNavigationDrawerItems()
+
+    let urlPage = Url.getUrlParameter('page')
+    let pageToSelect = this.getPostsPage()
+
+    if (urlPage != null) {
+      urlPage = urlPage.toLowerCase()
+
+      if (urlPage === 'gallery') {
+        pageToSelect = this.getGalleryPage()
+      } else if (urlPage === 'aboutclass') {
+        pageToSelect = this.getAboutClassPage()
+      } else if (urlPage === 'lessonsplan') {
+        pageToSelect = this.getLessonsPlanTab()
+      }
+    }
+
+    this.selectPage(pageToSelect)
+
+    this.logUser()
   }
 }

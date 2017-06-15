@@ -1,42 +1,77 @@
-import React from 'react'
+import Component from './../../../../../../helpers/Component/index'
 
-export default class NavigationDrawerItem extends React.Component {
+export default class NavigationDrawerItem extends Component {
+  beforeComponent () {
+    this.touched = false
+
+    this.rippleStyle = {
+      backgroundColor: '#000',
+      opacity: 0.2
+    }
+  }
+
   /**
-    * On mouse down event.
-    * @param {object} event data
-    */
+   * Gets root.
+   * @return {DOMElement} root
+   */
+  getRoot = () => {
+    return this.elements.root
+  }
+
+  /**
+   * On click event.
+   * @param {Event}
+   */
+   onClick = (e) => {
+     const onClick = this.props.onClick
+
+     if (typeof onClick === 'function') onClick(e)
+   }
+
+  /**
+   * On mouse down event.
+   * @param {Event}
+   */
   onMouseDown = (e) => {
-    if (!this.props.getApp().blockMouseDownEvent) {
-      var ripple = Ripple.createRipple(this.refs.item, {
-        backgroundColor: '#000',
-        opacity: 0.2
-      }, createRippleMouse(this.refs.item, e, 1.5))
+    if (!this.touched) {
+      let ripple = Ripple.createRipple(this.elements.root, this.rippleStyle, createRippleMouse(this.elements.root, e, 1.5))
       Ripple.makeRipple(ripple)
     }
   }
 
   /**
    * On touch event (on mobile).
-   * @param {Object} event data
+   * @param {Event}
    */
   onTouchStart = (e) => {
-    var ripple = Ripple.createRipple(this.refs.item, {
-      backgroundColor: '#000',
-      opacity: 0.2
-    }, createRippleMouse(this.refs.item, e, 1.5, true))
+    let ripple = Ripple.createRipple(this.elements.root, this.rippleStyle, createRippleMouse(this.elements.root, e, 1.5, true))
     Ripple.makeRipple(ripple)
-    this.props.getApp().blockMouseDownEvent = true
+    this.touched = true
+  }
+
+  /**
+   * Sets text.
+   * @param {String} text
+   */
+  setText = (str) => {
+    this.elements.text.innerHTML = str
   }
 
   render () {
-    var className = 'navigation-drawer-item ripple '
-    if (this.props.className !== undefined) className += this.props.className
-
     return (
-      <div className={className} ref='item' style={this.props.style} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart} onClick={this.props.onClick}>
-        <div className='icon' style={this.props.iconStyle} />
-        {this.props.children}
+      <div className='navigation-drawer-item ripple' ref='root' onClick={this.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>
+        <div className='icon' ref='icon' />
+        <div className='text' ref='text' />
       </div>
     )
+  }
+
+  afterRender () {
+    const props = this.props
+    const root = this.getRoot()
+
+    if (props.className) root.classList.add(props.className)
+
+    this.setText(this.props.children)
   }
 }
