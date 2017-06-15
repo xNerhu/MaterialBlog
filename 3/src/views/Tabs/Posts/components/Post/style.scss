@@ -34,7 +34,11 @@
       color: #fff !important;
     }
   }
-}
+
+  &.full-screen .post-content {
+    user-select: auto !important;
+  }
+ }
 
 .post-media {
   position: relative;

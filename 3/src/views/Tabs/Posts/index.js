@@ -276,6 +276,8 @@ export default class PostsTab extends Component {
             }, 10)
           }
         }
+
+        root.classList.add('full-screen')
       } else if (!flag) {
         const post = this.fullScreen.post
         const root = post.getRoot()
@@ -286,6 +288,8 @@ export default class PostsTab extends Component {
 
         root.style.maxWidth = '550px'
         root.style.marginTop = '32px'
+
+        root.classList.remove('full-screen')
 
         setTimeout(function () {
           for (let i = 0; i < posts.length; i++) {

@@ -41,6 +41,12 @@ export default class TabLayout extends Component {
       this.renderComponents(element, root)
     }
 
+    const indicator = (
+      <div className='indicator' ref='indicator' />
+    )
+
+    this.renderComponents(indicator, root)
+
     let urlTab = Url.getUrlParameter('tab')
 
     if (urlTab != null) urlTab = urlTab.toLowerCase()
@@ -79,9 +85,7 @@ export default class TabLayout extends Component {
 
   render () {
     return (
-      <div className='tab-layout' ref='root'>
-        <div className='indicator' ref='indicator' />
-      </div>
+      <div className='tab-layout' ref='root' />
     )
   }
 }

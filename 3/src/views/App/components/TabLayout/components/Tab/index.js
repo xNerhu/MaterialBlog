@@ -68,7 +68,7 @@ export default class Tab extends Component {
 
     const indicator = tabLayout.elements.indicator
     indicator.style.width = this.elements.root.offsetWidth + 'px'
-    indicator.style.left = this.elements.root.offsetLeft + 'px'
+    indicator.style.left = this.elements.root.offsetLeft - 48 + 'px'
 
     const page = this.props.page
     const pageRoot = page.getRoot()
