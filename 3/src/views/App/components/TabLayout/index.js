@@ -1,60 +1,60 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import Component from '../../../../helpers/Component'
 
 import Url from '../../../../helpers/Url'
 
 import Tab from './components/Tab'
 
-export default class TabLayout extends React.Component {
-  constructor () {
-    super()
-
-    this.state = {
-      tabs: []
-    }
-
+export default class TabLayout extends Component {
+  beforeRender () {
     this.tabs = []
-
     this.lastSelectedIndex = -1
     this.lastSelectedIndex2 = -1
     this.selectedIndex = -1
   }
 
-  componentDidMount () {
-    this.setState({width: this.refs.tabLayout.offsetWidth})
-
-    if (this.props.onSelect != null) {
-      ReactDOM.findDOMNode(this).addEventListener('selected', this.props.onSelect)
-    }
+  /**
+   * Gets root.
+   * @return {DOMElement} root.
+   */
+  getRoot = () => {
+    return this.elements.root
   }
 
   /**
-   * Selects and deselects tabs.
+   * Sets tabs.
+   * @param {Object} tabs.
    */
-  selectTab = (tab) => {
-    const app = this.props.getApp()
+  setTabs = (tabs) => {
+    const self = this
+    const root = this.getRoot()
 
-    if (app.canSelectTab) {
-      for (var i = 0; i < this.tabs.length; i++) {
-        if (this.tabs[i] !== tab && this.tabs[i].selected) {
-          this.tabs[i].deselect()
-        }
-      }
-      tab.select()
-      var event = document.createEvent('Event')
-      event.initEvent('selected', true, true)
-      event.page = tab.props.data.page
-      ReactDOM.findDOMNode(this).dispatchEvent(event)
-      this.selectedIndex = this.tabs.indexOf(tab)
-      const action = Url.getUrlParameter('action')
-      const param = (action === undefined) ? '?tab=' + tab.props.data.url : '?tab=' + tab.props.data.url + '&action=' + action
-      window.history.pushState('', '', param)
+    for (var i = 0; i < tabs.length; i++) {
+      const tab = tabs[i]
+      const element = (
+        <Tab getTabLayout={this.getTabLayout} page={tab.page} url={tab.url} onSelect={tab.onSelect} onDeselect={tab.onDeselect}>
+          {
+            tab.title
+          }
+        </Tab>
+      )
 
-      app.canSelectTab = false
+      this.renderComponents(element, root)
+    }
 
+    const indicator = (
+      <div className='indicator' ref='indicator' />
+    )
+
+    this.renderComponents(indicator, root)
+
+    let urlTab = Url.getUrlParameter('tab')
+
+    if (urlTab != null) urlTab = urlTab.toLowerCase()
+
+    if (urlTab !== this.tabs[1].props.url && urlTab !== this.tabs[2].props.url && urlTab !== this.tabs[3].props.url) {
       setTimeout(function () {
-        app.canSelectTab = true
-      }, 250)
+        self.tabs[0].select()
+      }, 10)
     }
   }
 
@@ -66,20 +66,26 @@ export default class TabLayout extends React.Component {
     return this
   }
 
+  /**
+   * Selects and deselects tabs.
+   */
+  selectTab = (tab) => {
+    const app = window.app
+
+    if (!app.isLoading) {
+      for (var i = 0; i < this.tabs.length; i++) {
+        if (this.tabs[i] !== tab && this.tabs[i].selected) {
+          this.tabs[i].deselect()
+        }
+      }
+
+      tab.select()
+    }
+  }
+
   render () {
     return (
-      <div ref='tabLayout' style={this.props.style} className={'tab-layout ' + this.props.className} onMouseDown={this.onMouseDown}>
-        {this.state.tabs.map((object, i) => {
-          return <Tab getTabLayout={this.getTabLayout} key={i} data={object} allTabsData={this.state.tabs} getApp={this.props.getApp} />
-        })}
-        <div className='indicator' ref='indicator' />
-        {this.props.children}
-      </div>
+      <div className='tab-layout' ref='root' />
     )
   }
-}
-
-TabLayout.defaultProps = {
-  color: '#fff',
-  defaultColor: 'rgba(255, 255, 255, 0.54)'
 }

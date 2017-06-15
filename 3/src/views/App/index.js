@@ -1,285 +1,63 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import Component from '../../helpers/Component'
+import Cookies from '../../helpers/Cookies'
 
-import LoginDialog from './components/LoginDialog'
+import NavigationDrawer from './components/NavigationDrawer/index'
+
 import InfoDialog from './components/InfoDialog'
+import LoginDialog from './components/LoginDialog'
+
+import SearchResults from './components/SearchResults'
+
 import Toolbar from './components/Toolbar'
 import TabLayout from './components/TabLayout'
-import Tab from './components/TabLayout/components/Tab'
-import NavigationDrawer from './components/NavigationDrawer'
 
 import PostsTab from '../Tabs/Posts'
 import GalleryTab from '../Tabs/Gallery'
 import AboutClassTab from '../Tabs/AboutClass'
 import LessonsPlanTab from '../Tabs/LessonsPlan'
 
-import Snackbar from '../../imports/materialdesign/components/Snackbar'
+import Preloader from './../../imports/materialdesign/components/Preloader'
 import Tooltip from '../../imports/materialdesign/components/Tooltip'
-import Preloader from '../../imports/materialdesign/components/Preloader'
+import Snackbar from '../../imports/materialdesign/components/Snackbar'
 
-import SearchResults from './components/SearchResults'
+export default class App extends Component {
+  beforeRender () {
+    window.app = this
 
-import Url from '../../helpers/Url'
-import Cookies from '../../helpers/Cookies'
-
-export default class App extends React.Component {
-  constructor () {
-    super()
-
-    this.state = ({
-      toolbarItems: [],
-      toolbarShadow: true,
-      tabLayoutLeft: 48,
-      contentWidth: '100%',
-      tabLayoutHidden: false,
-      toggledPreloader: false,
-      toggledTabPages: true,
-      tooltipsData: {
-        like: {
-          text: '...',
-          list: '...'
-        },
-        category: {
-          date: '...',
-          picturesCount: '...'
-        }
-      }
-    })
-
-    this.accountInfo = {
-      userID: 1,
-      userName: 'Mikołaj Palkiewicz',
-      avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
-    }
+    this.props.defaultTitle = 'Blog klasy 3B'
 
     this.accountInfo = false
 
-    this.selected = {
+    this.tabsLoaded = {
       posts: false,
       gallery: false,
       aboutClass: false,
       lessonsPlan: false
     }
 
-    this.blockMouseDownEvent = false
-    this.canSelectTab = true
+    this.isLoading = false
 
-    this.elementsToChange = []
+    this.elementsToCallBack = []
   }
 
-  componentDidMount () {
-    const self = this
-    const navigationDrawer = this.refs.navigationDrawer
-
-    // Events.
-    function onClickMenu (event) {
-      const toolbar = self.getToolBar()
-      const searchIcon = toolbar.refs.searchIcon
-
-      const postsTab = self.getPostsTab()
-      const galleryTab = self.getGalleryTab()
-
-      const searchResults = self.refs.searchResults
-
-      if (searchIcon.state.toggled && searchIcon.state.fullWidth) {
-        searchIcon.hide()
-      } else if (searchResults.state.toggled) {
-        searchResults.hide()
-      } else if (postsTab.isFullScreen) {
-        postsTab.exitFullScreen()
-      } else if (galleryTab.toggledPictures) {
-        if (galleryTab.toggledFullScreen) {
-          galleryTab.hideFullScreen()
-        } else {
-          galleryTab.hidePictures()
-        }
-      } else {
-        if (!navigationDrawer.toggled) {
-          self.getToolBar().refs.menuIcon.changeToExit()
-          navigationDrawer.show()
-        } else {
-          self.getToolBar().refs.menuIcon.changeToDefault()
-          navigationDrawer.hide()
-        }
-      }
-    }
-
-    function onPostsSelect () {
-      const postsTab = self.getPostsTab()
-
-      if (!self.selected.posts) postsTab.loadPosts()
-
-      if (postsTab.isFABToggled) {
-        postsTab.isFABToggled = false
-        postsTab.toggleFAB(true)
-      }
-    }
-
-    function onPostsDeselect () {
-      const postsTab = self.getPostsTab()
-
-      if (postsTab.isFABToggled) postsTab.toggleFAB(false, false)
-    }
-
-    function onGalleryTabSelect () {
-      if (!self.selected.gallery) self.getGalleryTab().loadCategories()
-    }
-
-    function onLessonsPlanTabSelect () {
-      if (!self.selected.lessonsPlan) self.getLessonsPlanTab().loadPlan()
-    }
-
-    // Set toolbar items.
-    this.setState({
-      toolbarItems: [
-        {
-          type: 'Icon',
-          subType: 'Menu',
-          position: 'Left',
-          image: 'src/images/Toolbar/menu.png',
-          onClick: onClickMenu,
-          id: 'toolbar-icon-menu',
-          style: {
-            width: 24,
-            height: 18,
-            position: 'absolute',
-            top: '50%',
-            transform: 'translateY(-50%)'
-          }
-        },
-        {
-          type: 'Title',
-          title: this.props.toolbarTitle,
-          id: 'toolbar-title',
-          style: {
-            color: '#fff'
-          }
-        },
-        {
-          type: 'Icon',
-          subType: 'Search',
-          position: 'Right',
-          image: 'src/images/Toolbar/search.png',
-          onSearch: function (query) {
-            if (query.length >= 1) {
-              self.refs.searchResults.search(query)
-              if (navigationDrawer.toggled) navigationDrawer.hide()
-            }
-          }
-        }
-      ]
-    })
-
-    // Set tabs.
-    this.refs.tabLayout.setState({
-      tabs: [
-        {
-          title: 'POSTY',
-          url: 'posts',
-          page: this.refs.postsTab,
-          onSelect: onPostsSelect,
-          onDeselect: onPostsDeselect
-        },
-        {
-          title: 'GALERIA',
-          url: 'gallery',
-          page: this.refs.galleryTab,
-          onSelect: onGalleryTabSelect
-        },
-        {
-          title: 'O KLASIE',
-          url: 'aboutclass',
-          page: this.refs.aboutClassTab
-        },
-        {
-          title: 'PLAN LEKCJI',
-          url: 'lessonsplan',
-          page: this.refs.lessonsPlanTab,
-          onSelect: onLessonsPlanTabSelect
-        }
-      ]
-    })
-
-    // Timer, because there is react bug with states so must wait 1 sec.
-    // if in url is 'post' parametr eg. http://localhost:1811/?post=1 will be displayed post in full screen version.
-    setTimeout(function () {
-      var postsTab = self.getPostsTab()
-      const urlPost = Url.getUrlParameter('post')
-      const postID = isNaN(parseInt(urlPost)) ? false : parseInt(urlPost) // Check if 'post' parametr is int.
-      if (postID !== false) {
-        var postData = postsTab.getPost(postID)
-        postsTab.setState({fullScreenPost: postData})
-        postsTab.showFullScreenPost(postID)
-      }
-
-      const action = Url.getUrlParameter('action')
-      if (action === 'info') {
-        self.refs.infoDialog.show()
-      }
-    }, 1)
-
-    this.logUser()
-
-    const was = Cookies.getCookie('was')
-    if (was !== 'true') {
-      Cookies.setCookie('was', 'true', 90)
-
-      setTimeout(function () {
-        self.refs.snackbar.show()
-      }, 1)
-    }
-  }
-
-  /**
-   * Logs user.
-   * @param {String} login.
-   * @param {String} password.
-   * @return {Boolean} data is correct.
-   */
-  logUser = (login, password) => {
-    this.accountInfo = {
-      userID: 1,
-      userName: 'Mikołaj Palkiewicz',
-      avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
-      email: 'xnerhu22@onet.pl'
-    }
-
-    for (var i = 0; i < this.elementsToChange.length; i++) {
-      this.elementsToChange[i].userLogs()
-    }
-    return true
-  }
-
-  /**
-   * Gets app.
-   * @return {App}
-   */
-  getApp = () => {
-    return this
-  }
-
-  /**
-   * Gets account info.
-   * @return {Object}
-   */
-  getAccountInfo = () => {
-    return this.accountInfo
+  getToolbar = () => {
+    return this.elements.toolbar
   }
 
   /**
    * Gets toolbar.
    * @return {Toolbar}
    */
-  getToolBar = () => {
-    return this.refs.toolbar
+  getToolbar = () => {
+    return this.elements.toolbar
   }
 
   /**
-   * Gets tablayout.
-   * @return {TabLayout}
+   * Gets navigation drawer.
+   * @return {NavigationDrawer}
    */
-  getTabLayout = () => {
-    return this.refs.tabLayout
+  getNavigationDrawer = () => {
+    return this.elements.navigationDrawer
   }
 
   /**
@@ -287,7 +65,7 @@ export default class App extends React.Component {
    * @return {PostsTab}
    */
   getPostsTab = () => {
-    return this.refs.postsTab
+    return this.elements.postsTab
   }
 
   /**
@@ -295,15 +73,15 @@ export default class App extends React.Component {
    * @return {GalleryTab}
    */
   getGalleryTab = () => {
-    return this.refs.galleryTab
+    return this.elements.galleryTab
   }
 
   /**
    * Gets about class tab.
-   * @return {AboutClass}
+   * @return {AboutClassTab}
    */
   getAboutClassTab = () => {
-    return this.refs.aboutClassTab
+    return this.elements.aboutClassTab
   }
 
   /**
@@ -311,153 +89,331 @@ export default class App extends React.Component {
    * @return {LessonsPlanTab}
    */
   getLessonsPlanTab = () => {
-    return this.refs.lessonsPlanTab
+    return this.elements.lessonsPlanTab
   }
 
   /**
-   * Sets toolbar color.
-   * @param {String} color.
+   * Gets preloader.
+   * @return {Preloader}
    */
-  setToolBarColor = (color) => {
-    const toolbar = this.getToolBar()
-
-    toolbar.refs.root.style.backgroundColor = color
+  getPreloader = () => {
+    return this.elements.preloader
   }
 
   /**
-   * Shows tabs.
-   */
-  showTabLayout = () => {
-    const toolbar = this.getToolBar()
-
-    this.setState({
-      tabLayoutHidden: false
-    })
-
-    toolbar.refs.root.style.height = '128px'
-  }
-
-  /**
-   * Hides tabs.
-   */
-  hideTabLayout = () => {
-    const toolbar = this.getToolBar()
-
-    this.setState({
-      tabLayoutHidden: true
-    })
-
-    toolbar.refs.root.style.height = '64px'
-  }
-
-  /**
-   * Sets toolbar title.
-   * @param {String} title.
-   */
-  setToolBarTitle = (title) => {
-    const items = this.state.toolbarItems
-    var index = 0
-
-    // Get title index.
-    for (var i = 0; i < items.length; i++) {
-      if (items[i].type === 'Title') {
-        index = i
-        break
-      }
-    }
-
-    items[index].title = title
-  }
-
-  /**
-   * Toggles preloader.
-   * @param {Boolean} true shows preloader false hides preloader.
+   * Shows or hides preloader.
+   * @param {Boolean}
    */
   togglePreloader = (flag) => {
-    this.setState({
-      toggledPreloader: flag
-    })
+    const preloader = this.getPreloader().getRoot()
+
+    preloader.style.display = (!flag) ? 'none' : 'block'
   }
 
   /**
-   * On snackbar action button click event.
-   * Opens new tab with all informations about cookies.
+   * On tab select event.
+   * @param {PostsTab | GalleryTab | AboutClassTab | LessonsPlanTab}
    */
-  onSnackbarActionClick = () => {
-    window.open('http://wszystkoociasteczkach.pl/po-co-sa-ciasteczka/', '_blank')
+  onTabSelect = (tab) => {
+    const name = this.getTabName(tab)
+
+    if (name === 'posts' && !this.tabsLoaded.posts || name === 'gallery' && !this.tabsLoaded.gallery || name === 'aboutClass' && !this.tabsLoaded.aboutClass || name === 'lessonsPlan' && !this.tabsLoaded.lessonsPlan) {
+      this.togglePreloader(true)
+      this.isLoading = true
+
+      tab.load()
+    }
+
+    if (typeof tab.onSelect === 'function') tab.onSelect()
+  }
+
+  /**
+   * On tab deselect event.
+   * @param {PostsTab | GalleryTab | AboutClassTab | LessonsPlanTab}
+   */
+  onTabDeselect = (tab) => {
+    if (typeof tab.onDeselect === 'function') tab.onDeselect()
+  }
+
+  /**
+   * Gets tab name.
+   * @param {PostsTab | GalleryTab | AboutClassTab | LessonsPlanTab}
+   * @return {String} tab name.
+   */
+  getTabName = (tab) => {
+    const postsTab = this.getPostsTab()
+    const galleryTab = this.getGalleryTab()
+    const aboutClassTab = this.getAboutClassTab()
+    const lessonsPlanTab = this.getLessonsPlanTab()
+
+    if (tab === postsTab) return 'posts'
+    else if (tab === galleryTab) return 'gallery'
+    else if (tab === aboutClassTab) return 'aboutClass'
+    else if (tab === lessonsPlanTab) return 'lessonsPlan'
+  }
+
+  /**
+   * On multi icon click event.
+   * Important event for navigation.
+   * @param {Event}
+   */
+  onMultiIconClick = (e) => {
+    const toolbar = this.elements.toolbar
+    const multiIcon = toolbar.getMultiIcon()
+    const searchIcon = toolbar.getSearchIcon()
+    const navigationDrawer = this.getNavigationDrawer()
+    const searchResults = this.elements.searchResults
+    const postsTab = this.getPostsTab()
+    const galleryTab = this.getGalleryTab()
+
+    if (multiIcon.canClick) {
+      if (searchIcon.toggled && searchIcon.fullWidth) {
+        searchIcon.changeToFullWidth(false)
+        searchIcon.toggle(false)
+        multiIcon.blockClick()
+      } else if (searchResults.toggled) {
+        searchResults.hide()
+      } else if (postsTab.fullScreen.flag) {
+        postsTab.toggleFullScreen(false)
+        multiIcon.changeToDefault()
+        multiIcon.blockClick()
+      } else if (galleryTab.fullScreenPicture) {
+        galleryTab.togglePictureFullScreen(false)
+      } else if (galleryTab.fullScreenPictures) {
+        galleryTab.togglePicturesFullScreen(false)
+      } else if (!navigationDrawer.toggled) {
+        navigationDrawer.show()
+        multiIcon.changeToExit()
+        multiIcon.blockClick()
+      } else if (navigationDrawer.toggled) {
+        navigationDrawer.hide()
+        multiIcon.blockClick()
+      }
+    }
+  }
+
+  /**
+   * Logs user.
+   * TODO
+   */
+  logUser = () => {
+    this.accountInfo = {
+      userID: 1,
+      userName: 'Mikołaj Palkiewicz',
+      avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+      email: 'xnerhu22@onet.pl'
+    }
+
+    this.callElements()
+  }
+
+  /**
+   * Calls event on user log in elements.
+   * Updates stuffs.
+   */
+  callElements = () => {
+    if (this.accountInfo) {
+      for (var i = 0; i < this.elementsToCallBack.length; i++) {
+        const element = this.elementsToCallBack[i]
+
+        element.onUserLog()
+      }
+    }
   }
 
   render () {
-    // Styles.
-    const tabLayoutStyle = {
-      left: this.state.tabLayoutLeft,
-      visibility: (!this.state.tabLayoutHidden) ? 'visible' : 'hidden',
-      opacity: (!this.state.tabLayoutHidden) ? 1 : 0,
-      width: 'calc(100% - ' + this.state.tabLayoutLeft + 'px)'
-    }
-
-    const appContentStyle = {
-      width: this.state.contentWidth
-    }
-
-    const tabPagesStyle = {
-      height: 'calc(100% - ' + ((!this.state.tabLayoutHidden) ? '128px' : '64px') + ')',
-      opacity: (!this.state.toggledTabPages) ? 0 : 1
-    }
-
-    const preloaderStyle = {
-      height: 54,
-      width: 54,
-      visibility: (!this.state.toggledPreloader) ? 'hidden' : 'visible'
-    }
-
     return (
       <div>
-        <div className='app-content' ref='appContent' style={appContentStyle}>
-          <Toolbar ref='toolbar' items={this.state.toolbarItems} getApp={this.getApp} shadow={this.state.toolbarShadow}>
-            <TabLayout ref='tabLayout' className='tab-layout-1' style={tabLayoutStyle} getApp={this.getApp} />
+        <div className='app-content' ref='appContent'>
+          <Toolbar ref='toolbar'>
+            <TabLayout ref={(e) => { this.elements.tabLayout = e }} />
           </Toolbar>
-          <div className='tab-pages' style={tabPagesStyle}>
-            <PostsTab ref='postsTab' getApp={this.getApp} />
-            <GalleryTab ref='galleryTab' getApp={this.getApp} />
-            <AboutClassTab ref='aboutClassTab' getApp={this.getApp} />
-            <LessonsPlanTab ref='lessonsPlanTab' getApp={this.getApp} />
+          <div className='tab-pages' ref='tabPages'>
+            <PostsTab ref='postsTab' />
+            <GalleryTab ref='galleryTab' />
+            <AboutClassTab ref='aboutClassTab' />
+            <LessonsPlanTab ref='lessonsPlanTab' />
           </div>
-          <SearchResults ref='searchResults' getApp={this.getApp} />
+          <SearchResults ref='searchResults' />
         </div>
-        <LoginDialog ref='loginDialog' getApp={this.getApp} />
+        <NavigationDrawer ref='navigationDrawer' />
+        <Preloader className='data-preloader' ref='preloader' />
         <InfoDialog ref='infoDialog' />
-        <Preloader ref='preloader' className='data-preloader' style={preloaderStyle} strokeColor='#2196f3' strokeWidth={4} />
-        <NavigationDrawer ref='navigationDrawer' getApp={this.getApp} />
-        <Tooltip ref='tooltipLike'>
-          {this.state.tooltipsData.like.text}
-        </Tooltip>
-        <Tooltip ref='tooltipLikesList'>
-          {this.state.tooltipsData.like.list}
-        </Tooltip>
-        <Tooltip ref='tooltipShowComments'>
-          Pokaż komentarze
-        </Tooltip>
-        <Tooltip ref='tooltipHideComments'>
-          Ukryj komentarze
-        </Tooltip>
-        <Tooltip ref='tooltipCategoryInfo'>
-          {
-            'Data utworzenia: ' + this.state.tooltipsData.category.date + '\n Ilość zdjęć: ' + this.state.tooltipsData.category.picturesCount
-          }
-        </Tooltip>
-        <Tooltip ref='tooltipAddComment'>
-          Dodaj komentarz
-        </Tooltip>
-        <Snackbar ref='snackbar' actionText='ZOBACZ' timeout={7500} onActionClick={this.onSnackbarActionClick}>
-          Strona wykorzystuje pliki cookies.
-        </Snackbar>
+        <LoginDialog ref='loginDialog' />
+        <Tooltip ref='tooltipShowCommentsButton' text='Pokaż komentarze' />
+        <Tooltip ref='tooltipLikeButton' text='Polub to!' />
+        <Tooltip ref='tooltipLikesList' text='...' />
+        <Tooltip ref='tooltipCategoryInfo' text='Data utworzenia:<br>Ilość zdjęc:' />
+        <Snackbar ref='snackbarLogged' text='Zalogowano pomyślnie' />
+        <Snackbar ref='snackbarCookies' text='Strona wykorzystuje pliki cookies.' timeout={7500} />
       </div>
     )
   }
-}
 
-App.defaultProps = {
-  toolbarTitle: 'Blog klasy 3B',
-  toolbarBackgroundColor: '#2196F3'
+  afterRender () {
+    const self = this
+    const toolbar = this.getToolbar()
+    const tabLayout = this.elements.tabLayout
+    const navigationDrawer = this.getNavigationDrawer()
+    const snackbarLogged = this.elements.snackbarLogged
+    const snackbarCookies = this.elements.snackbarCookies
+
+    const items = [
+      {
+        type: 'Icon',
+        subType: 'MultiIcon',
+        position: 'Left',
+        onClick: this.onMultiIconClick,
+        id: 'toolbar-icon-multi-icon',
+        style: {
+          width: '24px',
+          height: '18px',
+          position: 'absolute',
+          top: '50%',
+          transform: 'translateY(-50%)'
+        }
+      },
+      {
+        type: 'Title',
+        title: this.props.defaultTitle,
+        style: {
+          color: '#fff'
+        }
+      },
+      {
+        type: 'Icon',
+        subType: 'Search',
+        id: 'toolbar-icon-search',
+        position: 'Right',
+        image: 'src/images/Toolbar/search.png',
+        onSearch: function (query) {
+          if (query.length >= 1) {
+            self.elements.searchResults.search(query)
+            if (navigationDrawer.toggled) navigationDrawer.hide()
+          }
+        }
+      }
+    ]
+
+    toolbar.setItems(items)
+
+    const tabs = [
+      {
+        title: 'POSTY',
+        url: 'posts',
+        page: this.elements.postsTab,
+        onSelect: function () {
+          self.onTabSelect(self.getPostsTab())
+        },
+        onDeselect: function () {
+          self.onTabDeselect(self.getPostsTab())
+        }
+      },
+      {
+        title: 'GALERIA',
+        url: 'gallery',
+        page: this.elements.galleryTab,
+        onSelect: function () {
+          self.onTabSelect(self.getGalleryTab())
+        },
+        onDeselect: function () {
+          self.onTabDeselect(self.getGalleryTab())
+        }
+      },
+      {
+        title: 'O KLASIE',
+        url: 'aboutclass',
+        page: this.elements.aboutClassTab,
+        onSelect: function () {
+          self.onTabSelect(self.getAboutClassTab())
+        },
+        onDeselect: function () {
+          self.onTabDeselect(self.getAboutClassTab())
+        }
+      },
+      {
+        title: 'PLAN LEKCJI',
+        url: 'lessonsplan',
+        page: this.elements.lessonsPlanTab,
+        onSelect: function () {
+          self.onTabSelect(self.getLessonsPlanTab())
+        },
+        onDeselect: function () {
+          self.onTabDeselect(self.getLessonsPlanTab())
+        }
+      }
+    ]
+
+    tabLayout.setTabs(tabs)
+
+    const navigationDrawerItems = [
+      {
+        text: 'Informacje',
+        className: 'navigation-drawer-info',
+        onClick: function (e) {
+          self.elements.infoDialog.toggle(true)
+        }
+      },
+      {
+        text: 'GitHub',
+        className: 'navigation-drawer-github',
+        onClick: function (e) {
+          window.open('https://github.com/xNerhu22/MyClassBlog', '_blank')
+        }
+      },
+      {
+        text: 'Panel',
+        className: 'navigation-drawer-panel',
+        onClick: function (e) {
+          console.log(e)
+        }
+      },
+      {
+        text: 'Zarejestruj się',
+        className: 'navigation-drawer-register',
+        onClick: function (e) {
+          console.log(e)
+        }
+      },
+      {
+        text: 'Zaloguj się',
+        ref: 'itemLogin',
+        className: 'navigation-drawer-login',
+        onClick: function (e) {
+          self.elements.loginDialog.show()
+        }
+      },
+      {
+        text: 'Wyloguj się',
+        ref: 'itemLogout',
+        className: 'navigation-drawer-logout',
+        onClick: function (e) {
+
+        }
+      }
+    ]
+
+    navigationDrawer.setItems(navigationDrawerItems)
+
+    snackbarLogged.setActionButton({
+      text: 'WYLOGUJ'
+    })
+
+    const visited = Cookies.getCookie('visited')
+
+    if (!visited) {
+      snackbarCookies.setActionButton({
+        text: 'WIĘCEJ',
+        onClick: function () {
+          window.open('http://wszystkoociasteczkach.pl/po-co-sa-ciasteczka/', '_blank')
+        }
+      })
+
+      snackbarCookies.toggle(true)
+
+      Cookies.setCookie('visited', 'true', 365)
+    }
+
+    this.logUser()
+  }
 }

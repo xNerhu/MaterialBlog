@@ -12,5 +12,7 @@ export default class Url {
     for (e = 0; e < o.length; e++) {
       if (t = o[e].split('='), t[0] === r) return void 0 === t[1] ? !0 : t[1]
     }
+
+    return null
   }
 }

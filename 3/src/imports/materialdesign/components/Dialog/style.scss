@@ -1,14 +1,16 @@
 .material-dialog {
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   height: auto;
   background-color: #F9F9F9;
   position: absolute;
-  top: 50%;
+  top: 25%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9;
+  opacity: 0;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  transition: 0.3s opacity, 0.3s visibility, 0.3s top;
+  transition: 0.3s opacity, 0.3s top;
   display: none;
 }
 
@@ -25,13 +27,15 @@
   @include Roboto-Regular;
   padding-left: 24px;
   padding-right: 24px;
-  padding-top: 20px;
+  margin-top: 20px;
   font-size: 16px;
   color: #444;
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
   word-wrap: break-word;
+  max-height: 65vh;
+  transform: translateZ(0);
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -64,44 +68,45 @@
   padding-top: 8px;
   padding-bottom: 8px;
   margin-top: 24px;
-}
 
-.material-dialog-action-side-by-side .material-button {
-  margin-right: 8px;
-  float: right;
-  min-width: 64px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
+  &.side-by-side .material-button {
+    margin-right: 8px;
+    float: right;
+    min-width: 64px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 
-.material-dialog-action-side-by-side .material-dialog-action-clear {
-  clear: both;
-}
+  &.side-by-side .material-dialog-action-clear {
+    clear: both;
+  }
 
-.material-dialog-action-list {
-  padding-bottom: 8px;
-}
+  &.list {
+    padding-bottom: 8px;
+  }
 
-.material-dialog-action-list .material-dialog-action {
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
+  &.list .material-button {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-right: 16px;
+    float: right;
+    width: 100%;
+    text-align: right;
+  }
 
-.material-dialog-action-list .material-button {
-  padding-top: 16px;
-  padding-bottom: 16px;
-  padding-right: 16px;
-  float: right;
-  width: 100%;
-  text-align: right;
+  & .material-button {
+    background-color: transparent;
+    color: #2196f3;
+  }
 }
 
 .material-dialog-dark {
   width: 100%;
   height: 100%;
   background-color: #000;
-  opacity: 0.7;
+  opacity: 0;
+  display: none;
   position: absolute;
   z-index: 8;
-  transition: 0.3s opacity, 0.3s visibility;
+  transition: 0.3s opacity;
 }

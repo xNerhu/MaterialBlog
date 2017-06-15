@@ -15,6 +15,7 @@
   border: none;
   -webkit-text-fill-color: transparent;
   background-color: transparent;
+  text-shadow: 0px 0px 0px #000;
   cursor: text;
 }
 
@@ -22,7 +23,16 @@
   background-color: transparent;
 }
 
-.material-text-field-textarea {
+.material-text-field-input::placeholder {
+  color: #000;
+  opacity: 0;
+}
+
+.material-text-field.enabled > .material-text-field-input::placeholder {
+  opacity: 0.7;
+}
+
+/*.material-text-field-textarea {
   font-size: 16px;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -38,31 +48,35 @@
   text-decoration: none !important;
   @include Roboto-Regular;
 }
+*/
 
 .material-text-field-hint {
-  font-size: 16px;
-  color: #000;
-  top: 8px;
-  opacity: 0.7;
   position: absolute;
   left: 0;
-  transition: all 0.3s;
+  transition: 0.3s color, 0.3s top, 0.3s font-size, 0.3s opacity;
   cursor: text;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
 }
 
-.material-text-field-place-holder {
+.material-text-field.disabled > .material-text-field-hint {
+  font-size: 16px;
   color: #000;
-  opacity: 0.7;
   top: 8px;
-  position: absolute;
-  left: 0;
-  cursor: text;
-  width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
+  opacity: 0.7;
+}
+
+.material-text-field.enabled > .material-text-field-hint {
+  color: #2d5cfa;
+  top: -12px;
+  font-size: 14px;
+  opacity: 1;
+}
+
+.material-text-field.error > .material-text-field-hint {
+  color: #d32f2f;
+  opacity: 1;
 }
 
 .material-text-field-divider {
@@ -74,21 +88,39 @@
 }
 
 .material-text-field-focus-divider {
-  width: 0%;
   height: 2px;
   margin-top: -2px;
   margin-left: auto;
   margin-right: auto;
-  transition: 0.3s width;
+  transition: 0.3s width, 0.3s background-color;
+  background-color: #2d5cfa;
 }
 
-.material-textfield-helper-text {
+.material-text-field.disabled > .material-text-field-focus-divider {
+  width: 0%;
+}
+
+.material-text-field.enabled > .material-text-field-focus-divider {
+  width: 100%;
+}
+
+.material-text-field.error > .material-text-field-focus-divider {
+  background-color: #d32f2f;
+  width: 100%;
+}
+
+.material-text-field-helper-text {
   font-size: 14px;
   color: #000;
   opacity: 0.6;
   margin-top: 8px;
   float: left;
   transition: 0.3s opacity, 0.3s color;
+}
+
+.material-text-field.error > .material-text-field-helper-text {
+  color: #d32f2f;
+  opacity: 1;
 }
 
 .material-text-field-counter {
@@ -101,22 +133,34 @@
 }
 
 .material-text-field-counter:after {
+  content: '';
   clear: both;
+  display: block;
+}
+
+.material-text-field.error > .material-text-field-counter {
+  color: #d32f2f;
+  opacity: 1;
 }
 
 .material-text-field-icon {
+  width: 24px;
+  height: 24px;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: cover;
   position: absolute;
+  left: -32px;
   top: 50%;
   transform: translateY(-50%);
+  opacity: 0.7;
+  display: none;
 }
 
 .material-text-field-action-icon {
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: cover;
   position: absolute;
   cursor: pointer;
   opacity: 0.7;
@@ -124,4 +168,6 @@
   height: 24px;
   right: 0;
   top: -8px;
+  display: none;
+  //background-image: url(../src/images/LoginDialog/visible.png);
 }

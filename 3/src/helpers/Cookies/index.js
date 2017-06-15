@@ -18,6 +18,7 @@ export default class Cookies {
         return c.substring(name.length, c.length)
       }
     }
+
     return false
   }
 }

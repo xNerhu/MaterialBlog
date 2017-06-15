@@ -1,36 +1,18 @@
-import React from 'react'
+import Component from '../../../../../../../helpers/Component'
 
 import MaterialButton from '../../../../../../../imports/materialdesign/components/MaterialButton'
 
-export default class CommentInput extends React.Component {
-  constructor () {
-    super()
-
-    this.state = {
-      toggledButton: false
-    }
-  }
-
-  componentDidMount () {
-    const app = this.props.getApp()
-
-    if (!app.accountInfo) {
-      this.refs.textarea.disabled = true
-    } else {
-      this.userLogs()
-    }
-    app.elementsToChange.push(this)
+export default class CommentInput extends Component {
+  beforeRender () {
+    this.touched = false
   }
 
   /**
-   * When user logs event.
+   * Gets root.
+   * @return {DOMElement} root.
    */
-  userLogs = () => {
-    const textArea = this.refs.textarea
-
-    textArea.disabled = false
-    textArea.placeholder = 'Dodaj komentarz'
-    textArea.classList.remove('post-comment-input-textarea-not-logged')
+  getRoot = () => {
+    return this.elements.root
   }
 
   /**
@@ -38,51 +20,72 @@ export default class CommentInput extends React.Component {
    * Hides or shows add comment button.
    */
   onInput = () => {
-    const textArea = this.refs.textarea
-    const length = textArea.value.length
-    const inputAction = this.refs.inputAction
+    const app = window.app
+    const textarea = this.elements.textarea
+    const length = textarea.value.length
+    const action = this.elements.action
 
-    if (this.props.getApp().accountInfo) {
-      textArea.style.height = 'auto'
-      textArea.style.height = textArea.scrollHeight + 'px'
+    if (app.accountInfo) {
+      textarea.style.height = 'auto'
+      textarea.style.height = textarea.scrollHeight + 'px'
+
       if (length > 0) {
-        inputAction.style.height = inputAction.scrollHeight + 'px'
+        action.style.height = action.scrollHeight + 'px'
       } else {
-        inputAction.style.height = '0px'
+        action.style.height = '0px'
       }
     } else {
-      inputAction.style.height = '0px'
+      action.style.height = '0px'
     }
   }
 
   /**
-   * On textarea click event.
-   * @param {Object} event data.
+   * On user logs event.
    */
-  onClick = (e) => {
-    const app = this.props.getApp()
-    const loginDialog = app.refs.loginDialog
+  onUserLog = () => {
+    const textarea = this.elements.textarea
+    const clickArea = this.elements.clickArea
+
+    textarea.setAttribute('placeholder', 'Dodaj komentarz')
+    textarea.removeAttribute('disabled')
+
+    clickArea.style.display = 'none'
+  }
+
+  /**
+   * On textarea click event.
+   * @param {Event}
+   */
+  onClickArea = (e) => {
+    const app = window.app
 
     if (!app.accountInfo) {
-      loginDialog.show()
+      app.elements.loginDialog.getRoot().toggle(true)
     }
   }
 
   render () {
-    // Styles.
-    const materialButtonRippleStyle = {
-      backgroundColor: '#2196f3'
-    }
-
     return (
-      <div className='post-comment-input'>
-        <textarea ref='textarea' className='post-comment-input-textarea post-comment-input-textarea-not-logged' placeholder='Zaloguj się, by móc dodawać komentarze' onClick={this.onClick} onInput={this.onInput} />
-        <div className='post-comments-input-action' ref='inputAction'>
-          <MaterialButton shadow={false} backgroundColor='transparent' color='#2196f3' rippleStyle={materialButtonRippleStyle}>
-            DODAJ
-          </MaterialButton>
+      <div className='post-comment-input' ref='root'>
+        <textarea className='post-comment-input-textarea' ref='textarea' placeholder='Zaloguj się, by móć dodawać komentarze' onInput={this.onInput} disabled='true' />
+        <div className='post-comment-input-click-area' ref='clickArea' onClick={this.onClickArea} />
+        <div className='post-comments-input-action' ref='action'>
+          <MaterialButton text='DODAJ' shadow={false} className='post-comments-input-action-button' rippleStyle={this.props.actionRippleStyle} />
         </div>
       </div>
     )
+  }
+
+  afterRender () {
+    const props = this.props
+
+    props.actionRippleStyle = {
+      backgroundColor: '#2196f3',
+      opacity: 0.3
+    }
+
+    if (this.props.dark) props.actionRippleStyle.backgroundColor = '#fff'
+
+    window.app.elementsToCallBack.push(this)
   }
 }

@@ -1,18 +1,40 @@
-import React from 'react'
+import Component from './../../../../helpers/Component'
 
-export default class Preloader extends React.Component {
+export default class Preloader extends Component {
+  /**
+   * Gets root.
+   * @return {DOMElement} root.
+   */
+  getRoot = () => {
+    return this.elements.root
+  }
+
   render () {
     return (
-      <div style={this.props.style} className={this.props.className} ref='root'>
-        <svg className='preloader-determinate' viewBox='25 25 50 50'>
-          <circle className='path' ref='path' style={{stroke: this.props.strokeColor, strokeWidth: this.props.strokeWidth}} cx='50' cy='50' r='20' fill='none' strokeMiterlimit='10' />
-        </svg>
-      </div>
+      <div className='material-preloader' ref='root' />
     )
   }
-}
 
-Preloader.defaultProps = {
-  strokeColor: '#03a9f4',
-  strokeWidth: 5
+  afterRender () {
+    // Must add svg manually.
+    this.elements.svg = document.createElement('svg')
+    this.elements.svg.className = 'preloader-determinate'
+    this.elements.svg.setAttribute('viewBox', '25 25 50 50')
+
+    this.elements.circle = document.createElement('circle')
+    this.elements.circle.className = 'path'
+    this.elements.circle.setAttributes({
+      cx: '50',
+      cy: '50',
+      r: '20',
+      fill: 'none',
+      'stroke-miterlimit': '10'
+    })
+
+    this.elements.svg.appendChild(this.elements.circle)
+
+    this.elements.root.innerHTML = this.elements.svg.outerHTML
+
+    if (this.props.className != null) this.getRoot().classList.add(this.props.className)
+  }
 }

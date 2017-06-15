@@ -1,131 +1,130 @@
-import React from 'react'
+import Component from '../../../../../../helpers/Component'
 
 import Url from '../../../../../../helpers/Url'
 
-export default class Tab extends React.Component {
-  constructor () {
-    super()
-
+export default class Tab extends Component {
+  beforeRender () {
     this.selected = false
-  }
+    this.defaultOpacity = 0.54
 
-  componentDidMount () {
-    var self = this
-    var tabLayout = this.props.getTabLayout()
-    this.setState({color: tabLayout.props.defaultColor})
-    tabLayout.tabs.push(this)
-
-    setTimeout(function () {
-      const urlTab = Url.getUrlParameter('tab')
-      var tabIndex = 0
-      if (urlTab !== '') {
-        for (var i = 0; i < self.props.allTabsData.length; i++) {
-          if (self.props.allTabsData[i].url === urlTab) {
-            tabIndex = i
-            break
-          }
-        }
-      }
-      tabLayout.selectTab(tabLayout.tabs[tabIndex])
-    }, 10)
+    this.touched = false
+    this.ripple = {
+      backgroundColor: '#fff',
+      opacity: 0.2
+    }
   }
 
   /**
-   * On click event.
+   * Gets root.
+   * @return {DOMElement} root.
    */
-  onClick = () => {
+  getRoot = () => {
+    return this.elements.root
+  }
+
+  /**
+   * On tab click event.
+   * @param {Event}
+   */
+  onClick = (e) => {
     this.props.getTabLayout().selectTab(this)
   }
 
   /**
-   * On mouse down event.
-   * @param {object} event data
+   * On tab mouse down event.
+   * Makes ripple.
+   * @param {Event}
    */
   onMouseDown = (e) => {
-    if (!this.props.getApp().blockMouseDownEvent) {
-      var ripple = Ripple.createRipple(this.refs.tab, {
-        backgroundColor: '#fff'
-      }, createRippleMouse(this.refs.tab, e, 1.5))
+    if (!this.touched) {
+      let ripple = Ripple.createRipple(this.elements.root, this.ripple, createRippleMouse(this.elements.root, e, 1.5))
       Ripple.makeRipple(ripple)
     }
   }
 
   /**
-   * On touch event (on mobile).
-   * @param {Object} event data
+   * On tab touch start event.
+   * Makes ripple.
+   * @param {Event}
    */
   onTouchStart = (e) => {
-    var ripple = Ripple.createRipple(this.refs.tab, {
-      backgroundColor: '#fff'
-    }, createRippleMouse(this.refs.tab, e, 1.5, true))
+    let ripple = Ripple.createRipple(this.elements.root, this.ripple, createRippleMouse(this.elements.root, e, 1.5, true))
     Ripple.makeRipple(ripple)
-    this.props.getApp().blockMouseDownEvent = true
-  }
-
-  /**
-   * Deselects tab.
-   */
-  deselect = () => {
-    var tabLayout = this.props.getTabLayout()
-
-    this.refs.title.style.color = tabLayout.props.defaultColor
-    tabLayout.lastSelectedIndex = tabLayout.tabs.indexOf(this)
-
-    if (typeof this.props.data.onDeselect === 'function') {
-      this.props.data.onDeselect()
-    }
-
-    this.selected = false
+    this.touched = true
   }
 
   /**
    * Selects tab.
    */
   select = () => {
-    if (typeof this.props.data.onSelect === 'function') {
-      this.props.data.onSelect()
-    }
     this.selected = true
+
+    const select = this.props.onSelect
+    if (typeof select === 'function') select()
 
     const tabLayout = this.props.getTabLayout()
 
-    this.refs.title.style.color = tabLayout.props.color
+    this.elements.title.style.opacity = '1'
 
-    const indicator = tabLayout.refs.indicator
-    indicator.style.width = this.refs.tab.offsetWidth + 'px'
-    indicator.style.left = this.refs.tab.offsetLeft + 'px'
+    const indicator = tabLayout.elements.indicator
+    indicator.style.width = this.elements.root.offsetWidth + 'px'
+    indicator.style.left = this.elements.root.offsetLeft - 48 + 'px'
 
-    const page = this.getPage()
-    const root = page.getRoot()
-
-    root.style.display = 'block'
-    setTimeout(function () {
-      root.style.left = '0%'
-    }, 10)
+    const page = this.props.page
+    const pageRoot = page.getRoot()
 
     if (page != null) {
+      pageRoot.style.display = 'block'
+      setTimeout(function () {
+        pageRoot.style.left = '0%'
+      }, 10)
+
+      tabLayout.selectedIndex = tabLayout.tabs.indexOf(this)
+
       if (tabLayout.lastSelectedIndex === -1 || tabLayout.lastSelectedIndex2 === tabLayout.tabs.indexOf(this)) {
         return
       }
       tabLayout.lastSelectedIndex2 = tabLayout.tabs.indexOf(this)
 
       const lastTab = tabLayout.tabs[tabLayout.lastSelectedIndex]
-      const lastPageRoot = lastTab.getPage().getRoot()
+      const lastPageRoot = lastTab.props.page.getRoot()
 
       if (tabLayout.tabs.indexOf(this) > tabLayout.lastSelectedIndex) {
-        if (lastTab.getPage() != null) {
+        if (lastPageRoot != null) {
           lastPageRoot.style.left = '-100%'
           setTimeout(function () {
             lastPageRoot.style.display = 'none'
-          }, 250)
+          }, 150)
         }
       } else {
         lastPageRoot.style.left = '100%'
         setTimeout(function () {
           lastPageRoot.style.display = 'none'
-        }, 250)
+        }, 150)
       }
     }
+
+    const action = Url.getUrlParameter('action')
+    let url = '?tab=' + this.props.url
+    if (action != null) url += '&action=' + action
+
+    window.history.pushState('', '', url)
+  }
+
+  /**
+   * Deselects tab.
+   */
+  deselect = () => {
+    const tabLayout = this.props.getTabLayout()
+
+    this.elements.title.style.opacity = this.defaultOpacity
+    tabLayout.lastSelectedIndex = tabLayout.tabs.indexOf(this)
+
+    const deselect = this.props.onDeselect
+
+    if (typeof deselect === 'function') deselect()
+
+    this.selected = false
   }
 
   /**
@@ -133,16 +132,32 @@ export default class Tab extends React.Component {
    * @return {DomElement}
    */
   getPage = () => {
-    return this.props.data.page
+    return this.page
   }
 
   render () {
     return (
-      <div ref='tab' onClick={this.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart} style={this.props.style} className='tab ripple'>
-        <div ref='title' className='tab-title'>
-          {this.props.data.title}
+      <div className='tab ripple' ref='root' onClick={this.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>
+        <div className='tab-title' ref='title'>
+          {this.props.children}
         </div>
       </div>
     )
+  }
+
+  afterRender () {
+    const self = this
+    const tabLayout = this.props.getTabLayout()
+
+    tabLayout.tabs.push(this)
+
+    let urlTab = Url.getUrlParameter('tab')
+    const url = this.props.url
+
+    if (urlTab != null && urlTab.toLowerCase() === url) {
+      setTimeout(function () {
+        self.select()
+      }, 10)
+    }
   }
 }

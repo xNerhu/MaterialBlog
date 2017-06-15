@@ -21,15 +21,16 @@
   background-color: rgba(0, 0, 0, 0.4);
   @include Roboto-Regular;
   @include text-selectable;
+  @include text-unselectable;
   z-index: 10;
 }
 
 .category-info {
   position: absolute;
-  right: 12px;
-  width: 22px;
-  height: 22px;
-  @include center-vertical-important;
+  top: 0;
+  right: 0;
+  width: 51px;
+  height: 51px;
   @include image-center(22px, 22px);
   background-image: url(images/NavigationDrawer/info.png);
   @include invert-colors;

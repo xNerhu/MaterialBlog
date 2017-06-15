@@ -1,324 +1,194 @@
-import React from 'react'
+import Component from '../../../../helpers/Component'
 
 import Dialog from '../../../../imports/materialdesign/components/Dialog'
 import Preloader from '../../../../imports/materialdesign/components/Preloader'
 import TextField from '../../../../imports/materialdesign/components/TextField'
 
-export default class LoginDialog extends React.Component {
-  constructor () {
-    super()
+export default class LoginDialog extends Component {
+  beforeRender () {
+    this.isPasswordType = true
 
-    this.state = {
-      toggledPreloader: false,
-      inputPassword: false,
-      dialogTitle: '',
-      loginHelperText: '*Wymagane',
-      passwordHelperText: '*Wymagane',
-      actionButtons: []
-    }
-
-    this.titles = {
-      default: 'Zaloguj się',
-      loggin: 'Logowanie',
-      logged: 'Witaj na naszym blogu!'
-    }
-
-    this.buttons = {
-      default: [],
-      loggin: [],
-      logged: []
-    }
+    this.isLoginError = false
+    this.isPasswordError = false
   }
 
-  componentDidMount = () => {
-    const self = this
-    const buttons = {
-      default: [
-        {
-          text: 'ZALOGUJ',
-          shadow: false,
-          style: {},
-          rippleStyle: {
-            backgroundColor: '#2196f3'
-          },
-          foreground: '#2196f3',
-          backgroundColor: 'transparent',
-          onClick: this.onLoginButtonClick
-        }, {
-          text: 'ANULUJ',
-          shadow: false,
-          style: {},
-          rippleStyle: {
-            backgroundColor: '#2196f3'
-          },
-          foreground: '#2196f3',
-          backgroundColor: 'transparent',
-          onClick: function () {
-            self.refs.dialog.hide()
-          }
-        }
-      ],
-      logged: [
-        {
-          text: 'ZAMKNIJ',
-          shadow: false,
-          style: {},
-          rippleStyle: {
-            backgroundColor: '#2196f3'
-          },
-          foreground: '#2196f3',
-          backgroundColor: 'transparent',
-          onClick: function () {
-            self.refs.dialog.hide()
-          }
-        }
-      ]
-    }
-
-    this.buttons = buttons
-
-    this.setState({
-      actionButtons: this.buttons.default,
-      dialogTitle: this.titles.default
-    })
+  /**
+   * Gets root.
+   * @return {DOMElement} root.
+   */
+  getRoot = () => {
+    return this.elements.root
   }
 
   /**
    * Shows dialog.
    */
   show = () => {
-    /*if (this.refs.login.state.error && this.refs.login.state.focusedDivider) this.toggleError(this.refs.login, false)
-    if (this.refs.password.state.error && this.refs.password.state.focusedDivider) this.toggleError(this.refs.password, false)
-    this.refs.login.setValue('')
-    this.refs.password.setValue('')*/
-    const app = this.props.getApp()
-    const toolbar = app.getToolBar()
-    const navigationDrawer = app.refs.navigationDrawer
+    const app = window.app
+    const navigationDrawer = app.getNavigationDrawer()
+    const root = this.getRoot()
 
-    if (navigationDrawer.toggled) {
-      navigationDrawer.hide()
-      toolbar.refs.menuIcon.changeToDefault()
-    }
-    this.refs.dialog.show()
+    if (navigationDrawer.toggled) navigationDrawer.hide()
+    root.toggle(true)
   }
 
   /**
-   * On login button click event.
-   * @param {Object} event data.
-   */
-  onLoginButtonClick = (e) => {
-    const login = this.refs.login
-    const password = this.refs.password
-    const l = this.checkForError(login)
-    const p = this.checkForError(password)
-
-    if (l && p) {
-      this.login(login, password)
-    }
-  }
-
-  /**
-   * Logs user.
-   */
-  login = (login, password) => {
-    const self = this
-    const app = this.props.getApp()
-    const content = this.refs.content
-
-    if (app.logUser(login, password)) {
-      content.style.opacity = '0'
-
-      this.setState({
-        toggledPreloader: true,
-        dialogTitle: this.titles.loggin
-      })
-
-      // TODO: Make request
-      const timer = setTimeout(function () {
-        self.setState({
-          toggledPreloader: false,
-          dialogTitle: self.titles.logged,
-          actionButtons: self.buttons.logged
-        })
-
-        self.showMessage()
-      }, 1000)
-
-      function cancel () {
-        clearTimeout(timer)
-        self.setState({
-          toggledPreloader: false,
-          dialogTitle: self.titles.default,
-          actionButtons: self.buttons.default
-        })
-        content.style.display = 'block'
-        setTimeout(function () {
-          content.style.opacity = '1'
-        }, 1)
-      }
-
-      this.setState({
-        actionButtons: [
-          {
-            text: 'ANULUJ',
-            shadow: false,
-            style: {},
-            rippleStyle: {
-              backgroundColor: '#2196f3'
-            },
-            foreground: '#2196f3',
-            backgroundColor: 'transparent',
-            onClick: function () {
-              cancel()
-            }
-          }
-        ]
-      })
-    }
-  }
-
-  /**
-   * Shows message.
-   */
-  showMessage = () => {
-    const message = this.refs.message
-    const avatar = this.refs.avatar
-
-    this.refs.content.style.display = 'none'
-    message.style.display = 'block'
-    setTimeout(function () {
-      message.style.opacity = '1'
-
-      setTimeout(function () {
-        const img = new Image()
-
-        img.onload = function () {
-          avatar.style.backgroundImage = 'url(' + this.src + ')'
-          avatar.style.width = '96px'
-          avatar.style.height = '96px'
-        }
-
-        img.src = 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
-      }, 150)
-    }, 10)
-  }
-
-  /**
-   * On login textfield input event.
-   * @param {Object} event data.
-   */
-  onLoginInput = (e) => {
-    const element = this.refs.login
-
-    this.checkForError(element)
-  }
-
-  /**
-   * On password textfield input event.
-   * @param {Object} event data.
-   */
-  onPasswordInput = (e) => {
-    const element = this.refs.password
-
-    this.checkForError(element)
-  }
-
-  /**
-   * On password textfield action icon click event.
-   * @param {Object} event data.
+   * On password input action icon click event.
+   * Changes password visibility.
+   * @param {Event}
    */
   onActionIconClick = (e) => {
-    this.setState({
-      inputPassword: !this.state.inputPassword
-    })
+    const textField = this.elements.passwordTextField
+    const textFieldRoot = textField.getRoot()
+    const textFieldInput = textField.getInput()
+
+    this.isPasswordType = !this.isPasswordType
+
+    textFieldInput.type = (this.isPasswordType) ? 'password' : 'text'
+
+    if (this.isPasswordType) {
+      textFieldRoot.classList.remove('visible')
+    } else {
+      textFieldRoot.classList.add('visible')
+    }
   }
 
-  /**
-   * Checks for error.
-   * @param {DOMElement}
-   * @return {Boolean} is error.
-   */
-  checkForError = (element) => {
-    const value = element.getValue()
+  onLoginClick = () => {
+    const loginTextField = this.elements.loginTextField
+    const passwordTextField = this.elements.passwordTextField
 
-    if (value.length < 1) {
-      this.toggleError(element, true)
-      return false
-    } else {
-      this.toggleError(element, false)
-      return true
+    const login = loginTextField.getInput().value
+    const password = passwordTextField.getInput().value
+
+    if (login.length < 1) {
+      loginTextField.toggleError(true)
+      this.isLoginError = true
+    }
+
+    if (password.length < 1) {
+      passwordTextField.toggleError(true)
+    }
+
+    if (login.length > 0 && password.length > 0) {
+      const root = this.getRoot()
+      const form = this.elements.form
+      const dialogContent = this.getRoot().elements.content
+      const preloader = this.elements.preloader
+      const app = window.app
+      const snackbarLogged = app.elements.snackbarLogged
+
+      dialogContent.style.height = dialogContent.scrollHeight - 20 + 'px'
+
+      form.style.opacity = '0'
+
+      setTimeout(function () {
+        form.style.display = 'none'
+      }, 300)
+
+      preloader.style.display = 'block'
+
+      root.elements.title.innerHTML = 'Logowanie'
+      root.setItems(this.logingItems)
+
+      // TODO: Make reqeust.
+      setTimeout(function () {
+        root.toggle(false)
+
+        snackbarLogged.toggle(true)
+        app.logUser()
+      }, 1000)
     }
   }
 
   /**
-   * Disables or enables error.
-   * @param {DOMElement}
-   * @param {Boolean} enable or disable.
+   * On login input or blur event.
    */
-  toggleError = (element, flag) => {
-    element.setState({
-      focusedDivider: flag,
-      error: flag
-    })
+  onLoginInput = () => {
+    const textField = this.elements.loginTextField
+    const input = textField.getInput()
+
+    if (input.value.length < 1 && !this.isLoginError) {
+      textField.toggleError(true)
+      this.isLoginError = true
+    } else if (input.value.length > 0 && this.isLoginError) {
+      textField.toggleError(false)
+      this.isLoginError = false
+    }
+  }
+
+  /**
+   * On password input or blur event.
+   */
+  onPasswordInput = () => {
+    const textField = this.elements.passwordTextField
+    const input = textField.getInput()
+
+    if (input.value.length < 1 && !this.isPasswordError) {
+      textField.toggleError(true)
+      this.isPasswordError = true
+    } else if (input.value.length > 0 && this.isPasswordError) {
+      textField.toggleError(false)
+      this.isPasswordError = false
+    }
+  }
+
+  /**
+   * Cancels loging.
+   */
+  cancelLoging = () => {
+
   }
 
   render () {
-    // Styles.
-    const preloaderStyle = {
-      display: (!this.state.toggledPreloader) ? 'none' : 'block'
-    }
-
-    const passwordType = (!this.state.inputPassword) ? 'password' : 'text'
-
-    const passwordActionIcon = (!this.state.inputPassword) ? 'src/images/LoginDialog/visible.png' : 'src/images/LoginDialog/hidden.png'
-
     return (
-      <div>
-        <Dialog ref='dialog' className='login-dialog' title={this.state.dialogTitle} actionButtons={this.state.actionButtons}>
-          <div className='login-dialog-content' ref='content'>
-            <TextField
-              ref='login'
-              hint='Login/E-Mail'
-              type='email'
-              placeHolder={false}
-              focusColor='#2196f3'
-              helperText={this.state.loginHelperText}
-              onInput={this.onLoginInput}
-              onBlur={this.onLoginInput}
-            />
-            <TextField
-              className='login-dialog-password'
-              ref='password'
-              hint='Hasło'
-              type={passwordType}
-              placeHolder={false}
-              focusColor='#2196f3'
-              actionIcon={passwordActionIcon}
-              onActionIconClick={this.onActionIconClick}
-              helperText={this.state.passwordHelperText}
-              onInput={this.onPasswordInput}
-              onBlur={this.onPasswordInput}
-            />
-            <div className='login-dialog-forgot-password'>
-              Zapomniałem(am) hasła
-            </div>
-          </div>
-          <div className='login-dialog-message' ref='message'>
-            <div className='login-dialog-message-avatar'>
-              <div className='login-dialog-message-avatar-pic' ref='avatar' />
-            </div>
-            Zostałeś zalogowany na koncie Nersent!
-            <br />
-            Możesz komentować wszystkie posty,
-            <br />
-            edytować informacje o sobie tutaj
-            <br />
-            oraz logować się do aplikacji Nersent
-            <br />
-          </div>
-          <Preloader style={preloaderStyle} className='login-dialog-preloader' strokeColor='#2196f3' strokeWidth={4} />
-        </Dialog>
-      </div>
+      <Dialog className='login-dialog' title='Zaloguj się' ref='root'>
+        <div className='login-dialog-form' ref={(e) => this.elements.form = e}>
+          <TextField ref={(e) => this.elements.loginTextField = e} hint='Login/E-mail' helperText='*Wymagane' />
+          <TextField ref={(e) => this.elements.passwordTextField = e} className='login-dialog-password' hint='Hasło' helperText='*Wymagane' type='password' onActionIconClick={this.onActionIconClick} />
+        </div>
+        <div className='login-dialog-preloader-container' ref={(e) => this.elements.preloader = e}>
+          <Preloader />
+        </div>
+      </Dialog>
     )
+  }
+
+  afterRender () {
+    const self = this
+    const root = this.getRoot()
+
+    const loginTextField = this.elements.loginTextField
+    const loginTextFieldInput = loginTextField.getInput()
+
+    const passwordTextField = this.elements.passwordTextField
+    const passwordTextFieldInput = passwordTextField.getInput()
+
+    this.defaultItems = [
+      {
+        text: 'ZALOGUJ',
+        onClick: self.onLoginClick
+      },
+      {
+        text: 'ANULUJ',
+        onClick: function () {
+          root.toggle(false)
+        }
+      }
+    ]
+
+    this.logingItems = [
+      {
+        text: 'ANULUJ',
+        onClick: self.cancelLoging
+      }
+    ]
+
+    root.setItems(this.defaultItems)
+
+    loginTextFieldInput.addEventListener('input', this.onLoginInput)
+    loginTextFieldInput.addEventListener('blur', this.onLoginInput)
+
+    passwordTextFieldInput.addEventListener('input', this.onPasswordInput)
+    passwordTextFieldInput.addEventListener('blur', this.onPasswordInput)
   }
 }

@@ -3,9 +3,16 @@ const webpack = require('webpack')
 
 module.exports = {
   devtool: 'eval-source-map',
+
   entry: {
     entry: './src'
   },
+
+  node: {
+    __dirname: false,
+    __filename: false
+  },
+
   output: {
     path: path.join(__dirname, 'build'),
     filename: '[name].bundle.js'
@@ -45,13 +52,14 @@ module.exports = {
           }
         ]
       }, {
-        test: /\.(js|jsx)$/,
+        test: /\.(js)$/,
         include: path.resolve(__dirname, 'src'),
         use: [
           {
             loader: 'babel-loader',
             options: {
-              presets: ['react', 'es2015', 'stage-0']
+              presets: ['es2015', 'stage-0'],
+              plugins: [['transform-jsx', { 'useVariables': true }]]
             }
           }
         ]
@@ -65,6 +73,6 @@ module.exports = {
 
   resolve: {
     modules: ['node_modules'],
-    extensions: ['.js', '.jsx']
+    extensions: ['.js']
   }
 }

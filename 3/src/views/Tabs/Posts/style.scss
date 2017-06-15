@@ -1,6 +1,7 @@
 .posts {
   transition: 0.3s opacity;
   z-index: 6;
+  margin-bottom: 24px;
 }
 
 .fullscreen-post {
@@ -26,29 +27,34 @@
   }
 }
 
-.load-posts-button {
-  width: 100% !important;
+.load-posts-button-container {
+  width: 100%;
   max-width: 164px;
-  margin: 24px auto;
+  margin-bottom: 24px;
+  margin-left: auto;
+  margin-right: auto;
   display: none;
+}
+
+.load-posts-button {
+  display: block !important;
 }
 
 .posts-fab-container {
   width: 56px;
   height: 56px;
+  transition: 0.3s width, 0.3s height;
   position: fixed;
   right: 32px;
   bottom: 32px;
-  z-index: 8;
   display: none;
+  z-index: 2;
 }
 
 .posts-fab {
-  background-color: #2196f3;
   width: 0px;
   height: 0px;
-  z-index: 8;
-  transition: 0.3s width, 0.3s height;
+  transition: 0.3s width ease, 0.3s height ease;
   position: absolute !important;
   top: 50%;
   left: 50%;
@@ -64,4 +70,5 @@
   width: 54px;
   height: 54px;
   margin: 24px auto;
+  display: none;
 }

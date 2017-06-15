@@ -23,15 +23,18 @@ html, body {
 .app-content {
   position: fixed;
   background-color: #FFFFFF;
-  transition: width 0.3s;
+  transition: width 0.3s ease;
+  width: 100%;
   height: 100%;
   right: 0;
   top: 0;
 }
 
 .data-preloader {
+  width: 54px;
+  height: 54px;
   position: fixed;
   @include center;
   z-index: 8;
-  visibility: hidden;
+  display: none;
 }

@@ -1,7 +1,22 @@
-import React from 'react'
+import Component from '../../../../../../../helpers/Component'
 
-export default class Comment extends React.Component {
-  componentDidMount () {
+export default class Comment extends Component {
+  beforeRender () {
+    this.touched = false
+  }
+
+  /**
+   * Gets root.
+   * @return {DOMElement} root.
+   */
+  getRoot = () => {
+    return this.elements.root
+  }
+
+  /**
+   * Sets date.
+   */
+  setDate = () => {
     const date = new Date()
     const year = date.getFullYear()
     const month = date.getMonth() + 1
@@ -17,7 +32,7 @@ export default class Comment extends React.Component {
     const months = month - commentDate.month
     const years = year - commentDate.year
 
-    var result = ''
+    let result = ''
 
     if (years > 0) {
       if (years === 1) {
@@ -61,7 +76,7 @@ export default class Comment extends React.Component {
       result = 'Error (Component: Comment/index.js)'
     }
 
-    this.refs.date.innerHTML = result
+    this.elements.date.innerHTML = result
   }
 
   /**
@@ -90,21 +105,36 @@ export default class Comment extends React.Component {
 
   render () {
     return (
-      <div className='post-comment'>
-        <div className='post-comment-avatar' />
-        <div className='post-comment-info'>
-          <div className='post-comment-author'>
-            {this.props.data.author}
+      <div className='post-comment' ref='root'>
+        <div className='post-comment-avatar' ref='avatar' />
+        <div className='post-comment-info' ref='info'>
+          <div className='post-comment-author' ref='author'>
+            AUTHR
           </div>
-          <div className='post-comment-content'>
-            {this.props.data.content}
+          <div className='post-comment-content' ref='text'>
+            XDDD
           </div>
           <div className='post-comment-date' ref='date'>
-            1d
+            MEISIAC TEMU
           </div>
         </div>
         <div className='post-comment-clear' />
       </div>
     )
+  }
+
+  afterRender () {
+    const props = this.props
+    const data = props.data
+
+    const avatar = this.elements.avatar
+    const author = this.elements.author
+    const text = this.elements.text
+
+    avatar.style.backgroundImage = 'url(' + data.avatar + ')'
+    author.innerHTML = data.author
+    text.innerHTML = data.content
+
+    this.setDate()
   }
 }

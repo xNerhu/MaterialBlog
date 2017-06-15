@@ -1,7 +1,9 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
 import App from './views/App'
+import UI from './helpers/UI'
 
 import './styles.scss'
 
-ReactDOM.render(<App />, document.getElementById('app'))
+// Wait for sass load.
+setTimeout(function () {
+  UI.render(new App(), document.getElementById('app'))
+}, 1)

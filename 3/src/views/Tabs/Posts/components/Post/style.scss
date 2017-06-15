@@ -10,9 +10,35 @@
   border-radius: 2px;
   overflow: hidden;
   transition: 0.25s ease-in-out height, 0.25s ease-in-out width, 0.25s ease-in-out max-width, 0.2s opacity, 0.2s ease-in-out margin-top;
-  margin-top: 64px;
+  margin-top: 96px;
   opacity: 0;
-}
+
+  &.white-actions {
+    & .post-sub-title {
+      opacity: 1;
+    }
+
+    & .post-action-item {
+      @include invert-colors;
+    }
+
+    & .post-comment-input-textarea {
+      color: #fff;
+
+      &::placeholder {
+        color: #fff;
+      }
+    }
+
+    & .post-comments-input-action-button {
+      color: #fff !important;
+    }
+  }
+
+  &.full-screen .post-content {
+    user-select: auto !important;
+  }
+ }
 
 .post-media {
   position: relative;
@@ -106,6 +132,10 @@
 }
 
 .post-action-like {
+  background-image: url(images/Post/favorite_border.png);
+}
+
+.post-action-like.likes {
   background-image: url(images/Post/favorite_full.png);
 }
 
@@ -113,7 +143,7 @@
   background-image: url(images/Post/expand_more.png);
   background-size: 26px 26px;
   transform: rotate(0deg);
-  transition: 0.3s transform ease-in-out;
+  transition: 0.3s transform ease;
 }
 
 .post-action-item-count {
@@ -132,5 +162,5 @@
   clear: both;
   height: 0px;
   overflow: hidden;
-  transition: 0.3s height ease-in-out;
+  transition: 0.3s height ease;
 }

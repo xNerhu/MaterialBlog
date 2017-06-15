@@ -1,12 +1,21 @@
 .material-table {
-  width: 100%;
+  width: 80%;
+  max-width: 1000px;
   opacity: 0;
   transition: 0.3s opacity;
+  background-color: #fff;
+  margin-top: 32px;
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: collapse;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: 0.3s ease margin-top, 0.3s ease width;
 
   & thead tr th {
-    @include Roboto-Regular;
+    @include Roboto-Medium;
     font-size: 16px;
-    color: rgba(0,0,0,0.7);
+    color: rgba(0,0,0,0.54);
     text-align: left;
     padding: 18px;
     vertical-align: top;
@@ -22,7 +31,8 @@
     padding: 18px;
     vertical-align: top;
     border-top: 0;
-    color: #000;
+    color: rgba(0, 0, 0, 87);
+    font-size: 16px;
   }
 
   & tbody .border td {
@@ -30,6 +40,22 @@
   }
 
   & .bold {
-    @include Roboto-Medium;
+    @include Roboto-Regular;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .material-table {
+    margin-top: 0px;
+    width: 100%;
+
+    & thead tr th {
+      font-size: 13px;
+    }
+
+    & tbody tr td {
+      font-weight: 400px;
+      font-size: 12px;
+    }
   }
 }

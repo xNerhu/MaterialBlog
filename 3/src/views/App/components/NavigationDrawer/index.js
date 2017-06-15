@@ -1,73 +1,19 @@
-import React from 'react'
+import Component from './../../../../helpers/Component/index'
 
 import NavigationDrawerItem from './components/NavigationDrawerItem'
 
-export default class NavigationDrawer extends React.Component {
-  constructor () {
-    super()
-
-    this.state = {
-      left: -240,
-      width: 240,
-      height: '100%',
-      darkOpacity: 0,
-      darkVisible: false,
-      persistent: true,
-      toggled: false,
-      loginItemText: 'Zaloguj się'
-    }
-
+export default class NavigationDrawer extends Component {
+  beforeRender () {
     this.persistent = true
     this.toggled = false
   }
 
-  componentDidMount () {
-    const self = this
-    const app = this.props.getApp()
-    const header = this.refs.header
-    const avatar = this.refs.avatar
-    const username = this.refs.username
-    const email = this.refs.email
-
-    // Add on window resize event listener.
-    // If window width is less than 768 pixels and navigation drawer is toggled, then show temporary navigation drawer.
-    // If window width is more than 768 pixels and navigation drawer is toggled, then show persistent navigation drawer.
-    window.addEventListener('resize', function () {
-      if (window.innerWidth <= 768 && self.persistent && self.toggled) {
-        self.showTemporary()
-      }
-      if (window.innerWidth > 768 && !self.persistent && self.toggled) {
-        self.hideDark()
-        self.showPersistent()
-      }
-    })
-
-    header.style.backgroundImage = 'url(src/images/NavigationDrawer/header.png)'
-
-    app.elementsToChange.push(this)
-  }
-
   /**
-   * When user logs event.
+   * Gets root.
+   * @return {DOMElement} root.
    */
-  userLogs = () => {
-    const app = this.props.getApp()
-    const header = this.refs.header
-    const avatar = this.refs.avatar
-    const username = this.refs.username
-    const email = this.refs.email
-
-    header.style.backgroundImage = 'none'
-
-    avatar.style.backgroundImage = 'url(' + app.accountInfo.avatar + ')'
-
-    username.innerHTML = app.accountInfo.userName
-
-    email.innerHTML = app.accountInfo.email
-
-    this.setState({
-      loginItemText: 'Wyloguj się'
-    })
+  getRoot = () => {
+    return this.elements.root
   }
 
   /**
@@ -88,23 +34,25 @@ export default class NavigationDrawer extends React.Component {
     if (window.innerWidth <= 768) this.hideTemporary()
     // Otherwise hide persistent navigation drawer.
     else this.hidePersistent()
+
+    const multiIcon = window.app.getToolbar().getMultiIcon()
+
+    multiIcon.changeToDefault()
   }
 
   /**
    * Shows persistent navigation drawer.
    */
   showPersistent = () => {
-    const app = this.props.getApp()
-    const root = this.getRoot()
+    const appContent = window.app.elements.appContent
+    const container = this.elements.container
 
     // Change left and width.
-    root.style.left = '0px'
-    root.style.width = this.props.persistentWidth + 'px'
+    container.style.left = '0px'
+    container.style.width = this.props.persistentWidth + 'px'
 
     // Change app's content width
-    app.setState({
-      contentWidth: 'calc(100% - ' + this.props.persistentWidth + 'px)'
-    })
+    appContent.style.width = 'calc(100% - ' + this.props.persistentWidth + 'px)'
 
     this.persistent = true
     this.toggled = true
@@ -114,16 +62,14 @@ export default class NavigationDrawer extends React.Component {
    * Hides persistent navigation drawer.
    */
   hidePersistent = () => {
-    const app = this.props.getApp()
-    const root = this.getRoot()
+    const appContent = window.app.elements.appContent
+    const container = this.elements.container
 
     // Change navigation drawer's left.
-    root.style.left = -this.props.persistentWidth + 'px'
+    container.style.left = -this.props.persistentWidth + 'px'
 
     // Change app's content width
-    app.setState({
-      contentWidth: '100%'
-    })
+    appContent.style.width = '100%'
 
     this.toggled = false
   }
@@ -132,20 +78,18 @@ export default class NavigationDrawer extends React.Component {
    * Shows temporary navigation drawer.
    */
   showTemporary = () => {
-    const app = this.props.getApp()
-    const root = this.getRoot()
+    const appContent = window.app.elements.appContent
+    const container = this.elements.container
 
     // Show dark background.
     this.showDark()
 
     // Change navigation drawer's left and width.
-    root.style.left = '0px'
-    root.style.width = this.props.temporaryWidth + 'px'
+    container.style.left = '0px'
+    container.style.width = this.props.temporaryWidth + 'px'
 
     // Change app's content width.
-    app.setState({
-      contentWidth: '100%'
-    })
+    appContent.style.width = '100%'
 
     this.persistent = false
     this.toggled = true
@@ -155,13 +99,13 @@ export default class NavigationDrawer extends React.Component {
    * Hides temporary navigation drawer.
    */
   hideTemporary = () => {
-    const root = this.getRoot()
+    const container = this.elements.container
 
     // Hide dark background.
     this.hideDark()
 
     // Change navigation drawer's left.
-    root.style.left = -this.props.temporaryWidth + 'px'
+    container.style.left = -this.props.temporaryWidth + 'px'
 
     this.toggled = false
   }
@@ -170,12 +114,12 @@ export default class NavigationDrawer extends React.Component {
    * Shows dark and fullscreen background.
    */
   showDark = () => {
-    const self = this
-    const dark = this.refs.dark
+    const darkOpacity = this.props.darkOpacity
+    const dark = this.elements.dark
 
     dark.style.display = 'block'
     setTimeout(function () {
-      dark.style.opacity = self.props.darkOpacity
+      dark.style.opacity = darkOpacity
     }, 10)
   }
 
@@ -183,7 +127,7 @@ export default class NavigationDrawer extends React.Component {
    * Hides dark and fullscreen background.
    */
   hideDark = () => {
-    const dark = this.refs.dark
+    const dark = this.elements.dark
 
     dark.style.opacity = '0'
     setTimeout(function () {
@@ -196,107 +140,100 @@ export default class NavigationDrawer extends React.Component {
     * Hides navigation drawer.
     */
   onDarkClick = () => {
-    this.hide()
-    this.props.getApp().getToolBar().refs.menuIcon.changeToDefault()
-  }
+    const multiIcon = window.app.getToolbar().getMultiIcon()
 
-  /**
-   * On info item click event.
-   * Shows info dialog.
-   */
-  onInfoClick = () => {
-    const app = this.props.getApp()
-
-    app.getToolBar().refs.menuIcon.changeToDefault()
-    this.hide()
-
-    app.refs.infoDialog.show()
-  }
-
-  /**
-   * On login item click event.
-   * Show login dialog.
-   */
-  onLoginClick = () => {
-    const app = this.props.getApp()
-
-    if (!app.accountInfo) {
-      app.getToolBar().refs.menuIcon.changeToDefault()
+    if (multiIcon.canClick) {
+      multiIcon.changeToDefault()
       this.hide()
-
-      app.refs.loginDialog.show()
     }
   }
 
   /**
-   * On github item click event.
+   * On window resize event.
+   * Changes type of navigation drawer.
+   * @param {Event}
    */
-  onGitHubClick = () => {
-    window.open('https://github.com/xNerhu22/MyClassBlog', '_blank')
+  onWindowResize = (e) => {
+    if (window.innerWidth <= 768 && this.persistent && this.toggled) {
+      this.showTemporary()
+    }
+    if (window.innerWidth > 768 && !this.persistent && this.toggled) {
+      this.hideDark()
+      this.showPersistent()
+    }
   }
 
   /**
-   * Gets root.
-   * @return {DOMElement}
+   * Sets items.
+   * @param {Object} items.
    */
-  getRoot = () => {
-    return this.refs.root
+  setItems = (items) => {
+    for (var i = 0; i < items.length; i++) {
+      const item = items[i]
+      const ref = item.ref
+      const text = item.text
+      const className = item.className
+      const onClick = item.onClick
+
+      const element = (
+        <NavigationDrawerItem className={className} onClick={onClick} ref={ref}>
+          {
+            text
+          }
+        </NavigationDrawerItem>
+      )
+
+      this.renderComponents(element, this.elements.content)
+    }
+  }
+
+  /**
+   * On user logs event.
+   */
+  onUserLog = () => {
+    const app = window.app
+    const accountInfo = app.accountInfo
+
+    const header = this.elements.header
+    const avatar = this.elements.headerAvatar
+    const userName = this.elements.headerUserName
+    const email = this.elements.headerEmail
+
+    header.style.backgroundImage = 'none'
+
+    avatar.style.display = 'block'
+    avatar.style.backgroundImage = 'url(' + accountInfo.avatar + ')'
+
+    userName.innerHTML = accountInfo.userName
+    email.innerHTML = accountInfo.email
+
+    this.elements.itemLogin.getRoot().style.display = 'none'
+    this.elements.itemLogout.getRoot().style.display = 'block'
   }
 
   render () {
     return (
-      <div>
-        <div className='navigation-drawer' ref='root'>
+      <div ref='root'>
+        <div className='navigation-drawer' ref='container'>
           <div className='navigation-drawer-header' ref='header'>
-            <div className='navigation-drawer-header-avatar' ref='avatar' />
-            <div className='navigation-drawer-header-username' ref='username'></div>
-            <div className='navigation-drawer-header-email' ref='email'></div>
+            <div className='navigation-drawer-header-avatar' ref='headerAvatar' />
+            <div className='navigation-drawer-header-username' ref='headerUserName' />
+            <div className='navigation-drawer-header-email' ref='headerEmail' />
           </div>
-          <div className='navigation-drawer-content'>
-            <NavigationDrawerItem
-              onClick={this.onInfoClick}
-              getApp={this.props.getApp}
-              className='navigation-drawer-info'
-            >
-              Informacje
-            </NavigationDrawerItem>
-            <NavigationDrawerItem
-              onClick={this.onGitHubClick}
-              getApp={this.props.getApp}
-              className='navigation-drawer-github'
-            >
-              GitHub
-            </NavigationDrawerItem>
-            <div className='navigation-drawer-divider' />
-            <NavigationDrawerItem
-              getApp={this.props.getApp}
-              className='navigation-drawer-panel'
-            >
-              Panel
-            </NavigationDrawerItem>
-            <NavigationDrawerItem
-              getApp={this.props.getApp}
-              className='navigation-drawer-register'
-            >
-              Zarejestruj się
-            </NavigationDrawerItem>
-            <NavigationDrawerItem
-              onClick={this.onLoginClick}
-              getApp={this.props.getApp}
-              className='navigation-drawer-login'
-            >
-              {this.state.loginItemText}
-            </NavigationDrawerItem>
-          </div>
+          <div className='navigation-drawer-content' ref='content' />
         </div>
         <div className='dark' ref='dark' onClick={this.onDarkClick} />
       </div>
     )
   }
-}
 
-NavigationDrawer.defaultProps = {
-  persistentWidth: 240,
-  temporaryWidth: 260,
-  darkOpacity: 0.7
+  afterRender () {
+    this.props.persistentWidth = 240
+    this.props.temporaryWidth = 260
+    this.props.darkOpacity = 0.7
+
+    window.addEventListener('resize', this.onWindowResize)
+
+    window.app.elementsToCallBack.push(this)
+  }
 }

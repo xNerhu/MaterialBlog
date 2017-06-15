@@ -1,9 +1,7 @@
-import React from 'react'
+import Component from '../../../helpers/Component'
 
-export default class LessonsPlanTab extends React.Component {
-  constructor () {
-    super()
-
+export default class LessonsPlanTab extends Component {
+  beforeRender () {
     this.lessonsStart = [
       '8.00',
       '8.50',
@@ -25,25 +23,35 @@ export default class LessonsPlanTab extends React.Component {
       '14.15',
       '15.05'
     ]
+
+    this.plan = []
   }
 
   /**
-   * Loads lessons plan.
+   * Gets root.
+   * @param {DOMElement} root.
    */
-  loadPlan = () => {
+  getRoot = () => {
+    return this.elements.root
+  }
+
+  /**
+   * Loads plan
+   */
+  load = () => {
     const self = this
-    const app = this.props.getApp()
+    const app = window.app
+    const root = this.getRoot()
+    const table = this.elements.table
+    const tbody = this.elements.tbody
 
-    app.togglePreloader(true)
-    app.selected.lessonsPlan = true
-    app.canSelectTab = false
+    app.tabsLoaded.lessonsPlan = true
 
-    // TODO: make request
     setTimeout(function () {
       app.togglePreloader(false)
-      app.canSelectTab = true
+      app.isLoading = false
 
-      const plan = [
+      self.plan = [
         {
           day: 'Poniedziałek',
           subjects: [
@@ -61,55 +69,89 @@ export default class LessonsPlanTab extends React.Component {
         }
       ]
 
-      self.refs.tbody.innerHTML = self.parsePlan(plan)
-      self.refs.table.style.opacity = '1'
-    }, 1000)
+      for (let p = 0; p < self.plan.length; p++) {
+        const cell = self.parsePlan(self.plan[p])
+
+        tbody.appendChild(cell)
+      }
+
+      table.style.opacity = '1'
+    }, 500)
   }
 
   /**
-   * Parses plan into html string.
-   * @param {Object} plan.
-   * @return {String} html string.
+   * Parses plan into table cell.
+   * @param {Object} plan for a day.
+   * @return {DOMElement} table cell.
    */
   parsePlan = (plan) => {
-    var html = ''
+    const _day = plan.day
+    const _subjects = plan.subjects
 
-    for (var p = 0; p < plan.length; p++) {
-      var hours = ''
-      for (let i = 0; i < plan[p].subjects.length; i++) {
-        hours += '<span class="bold">' + (i + 1) + '.</span> ' + this.lessonsStart[i] + '-' + this.lessonsFinish[i] + ((i < plan[p].subjects.length) ? '<br />' : '')
-      }
+    const cell = document.createElement('tr')
+    if (this.plan.indexOf(plan) > 0) cell.className = 'border'
 
-      var subjects = ''
-      for (let i = 0; i < plan[p].subjects.length; i++) {
-        subjects += plan[p].subjects[i] + ((i < plan[p].subjects.length) ? '<br />' : '')
-      }
+    const day = document.createElement('td')
+    day.innerHTML = _day
+    cell.appendChild(day)
 
-      const border = (p > 0) ? 'class="border"' : ''
+    const hours = document.createElement('td')
+    cell.appendChild(hours)
 
-      html += '<tr ' + border + '><td>' + plan[p].day + '</td><td>' + hours + '</td><td>' + subjects + '</td></tr>'
+    for (let i = 0; i < _subjects.length; i++) {
+      const start = this.lessonsStart[i]
+      const finish = this.lessonsFinish[i]
+
+      const hour = start + '-' + finish
+
+      const element = document.createElement('div')
+      hours.appendChild(element)
+      const index = document.createElement('span')
+      element.appendChild(index)
+      index.className = 'bold'
+      index.innerHTML = i + 1 + '. '
+
+      const value = document.createElement('span')
+      element.appendChild(value)
+      value.innerHTML = hour
     }
 
-    return html
-  }
+    const subjects = document.createElement('td')
+    cell.appendChild(subjects)
 
-  /**
-   * Gets root.
-   * @param {DomElement}
-   */
-  getRoot = () => {
-    return this.refs.root
+    for (let i = 0; i < _subjects.length; i++) {
+      const subject = _subjects[i]
+
+      const element = document.createElement('div')
+      subjects.appendChild(element)
+      const index = document.createElement('span')
+      element.appendChild(index)
+      index.className = 'bold'
+      index.innerHTML = i + 1 + '. '
+
+      const value = document.createElement('span')
+      element.appendChild(value)
+      value.innerHTML = subject
+    }
+
+    return cell
   }
 
   render () {
     return (
-      <div className='lesson-plan-tab tab-page' ref='root'>
+      <div className='lessons-plan-tab tab-page' ref='root'>
         <table className='material-table' ref='table'>
           <thead>
             <tr>
-              <th>Dzień tygodnia</th>
-              <th>Godzina lekcyjna</th>
-              <th>Przedmiot</th>
+              <th>
+                Dzień tygodnia
+              </th>
+              <th>
+                Godzina lekcyjna
+              </th>
+              <th>
+                Przedmiot
+              </th>
             </tr>
           </thead>
           <tbody ref='tbody' />

@@ -2,7 +2,8 @@
   width: 100%;
   height: auto;
   float: left;
+  position: relative;
   opacity: 0;
-  transition: 1.5s opacity;
+  transition: 1s opacity, 2s top, 2s left, 3s width, 3s height;
   cursor: pointer;
 }
