@@ -29,7 +29,7 @@ export default class LessonsPlanTab extends Component {
 
   /**
    * Gets root.
-   * @param {DOMElement} root.
+   * @param {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
@@ -41,7 +41,6 @@ export default class LessonsPlanTab extends Component {
   load = () => {
     const self = this
     const app = window.app
-    const root = this.getRoot()
     const table = this.elements.table
     const tbody = this.elements.tbody
 
@@ -81,8 +80,8 @@ export default class LessonsPlanTab extends Component {
 
   /**
    * Parses plan into table cell.
-   * @param {Object} plan for a day.
-   * @return {DOMElement} table cell.
+   * @param {Object} plan for a day
+   * @return {DOMElement} table cell
    */
   parsePlan = (plan) => {
     const _day = plan.day

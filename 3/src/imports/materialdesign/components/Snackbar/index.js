@@ -9,7 +9,7 @@ export default class Snackbar extends Component {
 
   /**
     * Gets root.
-    * @return {DOMElement} root.
+    * @return {DOMElement} root
     */
   getRoot = () => {
     return this.elements.root
@@ -17,7 +17,7 @@ export default class Snackbar extends Component {
 
   /**
    * Shows or hides snackbar.
-   * @param {Boolean} show or hide.
+   * @param {Boolean} show or hide
    */
   toggle = (flag) => {
     const self = this
@@ -52,7 +52,7 @@ export default class Snackbar extends Component {
 
   /**
    * Sets action button.
-   * @param {Object} action button data.
+   * @param {Object} action button data
    */
   setActionButton = (button) => {
     const content = this.elements.content

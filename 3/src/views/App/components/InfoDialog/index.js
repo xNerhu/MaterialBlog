@@ -6,7 +6,7 @@ import Url from '../../../../helpers/Url'
 export default class LoginDialog extends Component {
   /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
@@ -41,6 +41,25 @@ export default class LoginDialog extends Component {
     }
 
     window.history.pushState('', '', url)
+  }
+
+  /**
+   * Sets dialog items.
+   */
+  setDialogButtons = () => {
+    const self = this
+    const root = this.getRoot()
+
+    const items = [
+      {
+        text: 'ZAMKNIJ',
+        onClick: function (e) {
+          self.toggle(false)
+        }
+      }
+    ]
+
+    root.setItems(items)
   }
 
   render () {
@@ -93,21 +112,9 @@ export default class LoginDialog extends Component {
   }
 
   afterRender () {
-    const self = this
-    const root = this.getRoot()
-
-    const items = [
-      {
-        text: 'ZAMKNIJ',
-        onClick: function (e) {
-          self.toggle(false)
-        }
-      }
-    ]
-
-    root.setItems(items)
-
     const action = Url.getUrlParameter('action')
     if (action === 'info') this.toggle(true)
+
+    this.setDialogButtons()
   }
 }

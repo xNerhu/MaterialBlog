@@ -3,7 +3,7 @@ import Component from './../../../../../../helpers/Component/index'
 export default class Item extends Component {
   /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root

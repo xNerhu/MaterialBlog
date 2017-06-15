@@ -12,7 +12,7 @@ export default class Post extends Component {
 
   /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
@@ -241,7 +241,7 @@ export default class Post extends Component {
 
   /**
    * Sets media.
-   * @param {String} image url.
+   * @param {String} image url
    */
   setMedia = (url) => {
     const mediaBlur = this.elements.mediaBlur

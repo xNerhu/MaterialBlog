@@ -7,7 +7,7 @@ export default class MaterialButton extends Component {
 
   /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
@@ -43,7 +43,7 @@ export default class MaterialButton extends Component {
 
   /**
    * Sets button text.
-   * @param {String} text.
+   * @param {String} text
    */
   setText = (str) => {
     this.elements.root.innerHTML = str
@@ -66,7 +66,7 @@ export default class MaterialButton extends Component {
       }
     }
 
-    if (props.shadow === false) root.classList.add('no-shadow')
+    if (!props.shadow) root.classList.add('no-shadow')
     if (props.className != null) root.classList.add(props.className)
 
     this.setText(props.text)

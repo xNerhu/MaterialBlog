@@ -1,6 +1,9 @@
 import Component from './../../../../helpers/Component'
 
 export default class Preloader extends Component {
+  beforeRender () {
+
+  }
   /**
    * Gets root.
    * @return {DOMElement} root.
@@ -16,6 +19,9 @@ export default class Preloader extends Component {
   }
 
   afterRender () {
+    const props = this.props
+    const root = this.getRoot()
+
     // Must add svg manually.
     this.elements.svg = document.createElement('svg')
     this.elements.svg.className = 'preloader-determinate'
@@ -33,8 +39,8 @@ export default class Preloader extends Component {
 
     this.elements.svg.appendChild(this.elements.circle)
 
-    this.elements.root.innerHTML = this.elements.svg.outerHTML
+    root.innerHTML = this.elements.svg.outerHTML
 
-    if (this.props.className != null) this.getRoot().classList.add(this.props.className)
+    if (props.className != null) root.classList.add(props.className)
   }
 }

@@ -28,7 +28,7 @@ export default class PostsTab extends Component {
 
   /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
@@ -56,7 +56,6 @@ export default class PostsTab extends Component {
   load = () => {
     const self = this
     const app = window.app
-    const root = this.getRoot()
     const posts = this.elements.posts
     const loadPostsButtonContainer = this.elements.loadPostsButtonContainer
 
@@ -214,8 +213,8 @@ export default class PostsTab extends Component {
 
   /**
    * Enter or exit full screen post.
-   * @param {Boolean} full screen.
-   * @param {Post} post.
+   * @param {Boolean} full screen
+   * @param {Post} post
    */
   toggleFullScreen = (flag, post) => {
     const app = window.app
@@ -401,7 +400,7 @@ export default class PostsTab extends Component {
 
   /**
    * Shows or hides floating action button.
-   * @param {Boolean} show or hide.
+   * @param {Boolean} show or hide
    */
   toggleFAB = (flag) => {
     const fabContainer = this.elements.fabContainer

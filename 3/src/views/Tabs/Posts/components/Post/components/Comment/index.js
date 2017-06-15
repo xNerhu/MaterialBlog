@@ -7,7 +7,7 @@ export default class Comment extends Component {
 
   /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
@@ -81,8 +81,8 @@ export default class Comment extends Component {
 
   /**
    * Parses date to object.
-   * @param {String} date.
-   * @return {Object} date
+   * @param {String} date
+   * @return {Object} data
    */
   parseDate = (str) => {
     const array = str.split('.')

@@ -16,7 +16,7 @@ export default class Tab extends Component {
 
   /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root

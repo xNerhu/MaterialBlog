@@ -9,7 +9,7 @@ export default class Dialog extends Component {
 
  /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
@@ -17,8 +17,8 @@ export default class Dialog extends Component {
 
   /**
    * On action button click event.
-   * @param {Object} event data.
-   * @param {Object} button data.
+   * @param {Object} event data
+   * @param {Object} button data
    */
   onActionButtonClick = (e, data) => {
     if (typeof data.onClick === 'function') {
@@ -72,6 +72,7 @@ export default class Dialog extends Component {
       }, 10)
     } else {
       dark.style.opacity = '0'
+
       setTimeout(function () {
         dark.style.display = 'none'
       }, 300)
@@ -130,12 +131,13 @@ export default class Dialog extends Component {
 
   afterRender () {
     const props = this.props
+    const root = this.getRoot()
     const action = this.elements.action
 
     if (props.darkOpacity == null) props.darkOpacity = 0.7
 
     if (props.toggledOffTop == null) props.toggledOffTop = '25%'
-    else this.getRoot().style.top = props.toggledOffTop
+    else root.style.top = props.toggledOffTop
 
     if (props.actionButtonRippleStyle == null) {
       props.actionButtonRippleStyle = {
@@ -148,35 +150,3 @@ export default class Dialog extends Component {
     else action.classList.add('side-by-side')
   }
 }
-/*    // Styles.
-    const style = Object.assign(
-      {
-        opacity: (!this.state.toggled) ? 0 : 1,
-        top: (!this.state.toggled) ? this.props.toggledOffTop : '50%'
-      }, this.props.style
-    )
-    //        visibility: (!this.state.toggled) ? 'hidden' : 'visible',
-
-    const darkStyle = {
-      visibility: (!this.state.toggled) ? 'hidden' : 'visible',
-      opacity: (!this.state.toggled) ? 0 : this.props.darkOpacity
-    }
-
-    const contentStyle = {
-      maxHeight: this.props.maxHeight
-    }
-
-    const className = 'material-dialog ' + ((!this.props.buttonsList) ? 'material-dialog-action-side-by-side ' : 'material-dialog-action-list ') + ((this.props.className) ? this.props.className : '')
-
-    return (
-
-    )
-  }
-}
-
-Dialog.defaultProps = {
-  buttonsList: false,
-  maxHeight: '70vh',
-  darkOpacity: 0.7,
-  toggledOffTop: '25%'
-}*/

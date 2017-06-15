@@ -10,7 +10,7 @@ export default class NavigationDrawer extends Component {
 
   /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
@@ -165,7 +165,7 @@ export default class NavigationDrawer extends Component {
 
   /**
    * Sets items.
-   * @param {Object} items.
+   * @param {Object} items
    */
   setItems = (items) => {
     for (var i = 0; i < items.length; i++) {
@@ -228,9 +228,11 @@ export default class NavigationDrawer extends Component {
   }
 
   afterRender () {
-    this.props.persistentWidth = 240
-    this.props.temporaryWidth = 260
-    this.props.darkOpacity = 0.7
+    const props = this.props
+
+    if (props.persistentWidth == null) props.persistentWidth = 240
+    if (props.temporaryWidth == null) props.temporaryWidth = 260
+    if (props.darkOpacity == null) props.darkOpacity = 0.7
 
     window.addEventListener('resize', this.onWindowResize)
 

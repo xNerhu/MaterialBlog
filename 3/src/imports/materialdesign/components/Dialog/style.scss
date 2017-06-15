@@ -36,31 +36,7 @@
   word-wrap: break-word;
   max-height: 65vh;
   transform: translateZ(0);
-
-  &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-    transition: 0.3s background-color;
-  }
-
-  &::-webkit-scrollbar-button {
-    width: 0px;
-    height: 0px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.5);
-    border: 0px none #ffffff;
-    border-radius: 0px;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.65);
-  }
-
-  &::-webkit-scrollbar-corner {
-    background: transparent;
-  }
+  @include material-scroll;
 }
 
 .material-dialog-action {

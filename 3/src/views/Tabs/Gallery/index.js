@@ -1,5 +1,4 @@
 import Component from '../../../helpers/Component'
-import Colors from '../../../helpers/Colors'
 
 import Category from './components/Category'
 import Picture from './components/Picture'
@@ -19,7 +18,7 @@ export default class GalleryTab extends Component {
 
   /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
@@ -222,7 +221,7 @@ export default class GalleryTab extends Component {
 
   /**
    * Shows or hides full screen picture.
-   * @param {Boolean} show or hide.
+   * @param {Boolean} show or hide
    * @param {Picture}
    */
   togglePictureFullScreen = (flag, pic) => {

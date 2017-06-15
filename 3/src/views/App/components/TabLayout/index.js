@@ -14,7 +14,7 @@ export default class TabLayout extends Component {
 
   /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
@@ -22,7 +22,7 @@ export default class TabLayout extends Component {
 
   /**
    * Sets tabs.
-   * @param {Object} tabs.
+   * @param {Object} tabs
    */
   setTabs = (tabs) => {
     const self = this

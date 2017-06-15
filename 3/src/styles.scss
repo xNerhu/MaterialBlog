@@ -11,6 +11,8 @@ $pictureBlur: 10px;
 @import 'mixins/shadows.scss';
 @import 'mixins/text.scss';
 
+@import 'src/imports/materialdesign/mixins/scroll.scss';
+
 @import 'views/App/styles.scss';
 @import 'views/App/components/Toolbar/style.scss';
 @import 'views/App/components/Toolbar/components/MultiIcon/style.scss';

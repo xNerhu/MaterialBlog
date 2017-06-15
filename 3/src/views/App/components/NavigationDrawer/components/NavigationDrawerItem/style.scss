@@ -57,6 +57,8 @@
 }
 
 .navigation-drawer-logout {
+  display: none;
+
   & .icon {
     background-image: url(images/NavigationDrawer/login.png);
   }

@@ -14,7 +14,7 @@ export default class LoginDialog extends Component {
 
   /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
@@ -53,6 +53,9 @@ export default class LoginDialog extends Component {
     }
   }
 
+  /**
+   * On login button click event.
+   */
   onLoginClick = () => {
     const loginTextField = this.elements.loginTextField
     const passwordTextField = this.elements.passwordTextField
@@ -139,6 +142,35 @@ export default class LoginDialog extends Component {
 
   }
 
+  /**
+   * Sets dialog buttons.
+   */
+  setDialogButtons = () => {
+    const root = this.getRoot()
+
+    this.defaultItems = [
+      {
+        text: 'ZALOGUJ',
+        onClick: this.onLoginClick
+      },
+      {
+        text: 'ANULUJ',
+        onClick: function () {
+          root.toggle(false)
+        }
+      }
+    ]
+
+    this.logingItems = [
+      {
+        text: 'ANULUJ',
+        onClick: this.cancelLoging
+      }
+    ]
+
+    root.setItems(this.defaultItems)
+  }
+
   render () {
     return (
       <Dialog className='login-dialog' title='Zaloguj się' ref='root'>
@@ -154,41 +186,18 @@ export default class LoginDialog extends Component {
   }
 
   afterRender () {
-    const self = this
-    const root = this.getRoot()
-
     const loginTextField = this.elements.loginTextField
     const loginTextFieldInput = loginTextField.getInput()
 
     const passwordTextField = this.elements.passwordTextField
     const passwordTextFieldInput = passwordTextField.getInput()
 
-    this.defaultItems = [
-      {
-        text: 'ZALOGUJ',
-        onClick: self.onLoginClick
-      },
-      {
-        text: 'ANULUJ',
-        onClick: function () {
-          root.toggle(false)
-        }
-      }
-    ]
-
-    this.logingItems = [
-      {
-        text: 'ANULUJ',
-        onClick: self.cancelLoging
-      }
-    ]
-
-    root.setItems(this.defaultItems)
-
     loginTextFieldInput.addEventListener('input', this.onLoginInput)
     loginTextFieldInput.addEventListener('blur', this.onLoginInput)
 
     passwordTextFieldInput.addEventListener('input', this.onPasswordInput)
     passwordTextFieldInput.addEventListener('blur', this.onPasswordInput)
+
+    this.setDialogButtons()
   }
 }

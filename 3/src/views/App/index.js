@@ -138,7 +138,7 @@ export default class App extends Component {
   /**
    * Gets tab name.
    * @param {PostsTab | GalleryTab | AboutClassTab | LessonsPlanTab}
-   * @return {String} tab name.
+   * @return {String} tab name
    */
   getTabName = (tab) => {
     const postsTab = this.getPostsTab()
@@ -221,42 +221,13 @@ export default class App extends Component {
     }
   }
 
-  render () {
-    return (
-      <div>
-        <div className='app-content' ref='appContent'>
-          <Toolbar ref='toolbar'>
-            <TabLayout ref={(e) => { this.elements.tabLayout = e }} />
-          </Toolbar>
-          <div className='tab-pages' ref='tabPages'>
-            <PostsTab ref='postsTab' />
-            <GalleryTab ref='galleryTab' />
-            <AboutClassTab ref='aboutClassTab' />
-            <LessonsPlanTab ref='lessonsPlanTab' />
-          </div>
-          <SearchResults ref='searchResults' />
-        </div>
-        <NavigationDrawer ref='navigationDrawer' />
-        <Preloader className='data-preloader' ref='preloader' />
-        <InfoDialog ref='infoDialog' />
-        <LoginDialog ref='loginDialog' />
-        <Tooltip ref='tooltipShowCommentsButton' text='Pokaż komentarze' />
-        <Tooltip ref='tooltipLikeButton' text='Polub to!' />
-        <Tooltip ref='tooltipLikesList' text='...' />
-        <Tooltip ref='tooltipCategoryInfo' text='Data utworzenia:<br>Ilość zdjęc:' />
-        <Snackbar ref='snackbarLogged' text='Zalogowano pomyślnie' />
-        <Snackbar ref='snackbarCookies' text='Strona wykorzystuje pliki cookies.' timeout={7500} />
-      </div>
-    )
-  }
-
-  afterRender () {
+  /**
+   * Sets toolbar items.
+   */
+  setToolbarItems = () => {
     const self = this
     const toolbar = this.getToolbar()
-    const tabLayout = this.elements.tabLayout
     const navigationDrawer = this.getNavigationDrawer()
-    const snackbarLogged = this.elements.snackbarLogged
-    const snackbarCookies = this.elements.snackbarCookies
 
     const items = [
       {
@@ -296,6 +267,14 @@ export default class App extends Component {
     ]
 
     toolbar.setItems(items)
+  }
+
+  /**
+   * Sets tabs.
+   */
+  setTabs = () => {
+    const self = this
+    const tabLayout = this.elements.tabLayout
 
     const tabs = [
       {
@@ -345,6 +324,14 @@ export default class App extends Component {
     ]
 
     tabLayout.setTabs(tabs)
+  }
+
+  /**
+   * Sets navigation drawer items.
+   */
+  setNavigationDrawerItems = () => {
+    const self = this
+    const navigationDrawer = this.getNavigationDrawer()
 
     const navigationDrawerItems = [
       {
@@ -394,6 +381,44 @@ export default class App extends Component {
     ]
 
     navigationDrawer.setItems(navigationDrawerItems)
+  }
+
+  render () {
+    return (
+      <div>
+        <div className='app-content' ref='appContent'>
+          <Toolbar ref='toolbar'>
+            <TabLayout ref={(e) => { this.elements.tabLayout = e }} />
+          </Toolbar>
+          <div className='tab-pages' ref='tabPages'>
+            <PostsTab ref='postsTab' />
+            <GalleryTab ref='galleryTab' />
+            <AboutClassTab ref='aboutClassTab' />
+            <LessonsPlanTab ref='lessonsPlanTab' />
+          </div>
+          <SearchResults ref='searchResults' />
+        </div>
+        <NavigationDrawer ref='navigationDrawer' />
+        <Preloader className='data-preloader' ref='preloader' />
+        <InfoDialog ref='infoDialog' />
+        <LoginDialog ref='loginDialog' />
+        <Tooltip ref='tooltipShowCommentsButton' text='Pokaż komentarze' />
+        <Tooltip ref='tooltipLikeButton' text='Polub to!' />
+        <Tooltip ref='tooltipLikesList' text='...' />
+        <Tooltip ref='tooltipCategoryInfo' text='Data utworzenia:<br>Ilość zdjęc:' />
+        <Snackbar ref='snackbarLogged' text='Zalogowano pomyślnie' />
+        <Snackbar ref='snackbarCookies' text='Strona wykorzystuje pliki cookies.' timeout={7500} />
+      </div>
+    )
+  }
+
+  afterRender () {
+    const snackbarLogged = this.elements.snackbarLogged
+    const snackbarCookies = this.elements.snackbarCookies
+
+    this.setToolbarItems()
+    this.setTabs()
+    this.setNavigationDrawerItems()
 
     snackbarLogged.setActionButton({
       text: 'WYLOGUJ'
@@ -414,6 +439,6 @@ export default class App extends Component {
       Cookies.setCookie('visited', 'true', 365)
     }
 
-    this.logUser()
+  //  this.logUser()
   }
 }

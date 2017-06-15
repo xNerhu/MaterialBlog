@@ -7,7 +7,7 @@ export default class TextField extends Component {
 
   /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
@@ -15,7 +15,7 @@ export default class TextField extends Component {
 
   /**
    * Gets input.
-   * @return {DOMElement} input.
+   * @return {DOMElement} input
    */
   getInput = () => {
     return this.elements.input
@@ -24,7 +24,7 @@ export default class TextField extends Component {
   /**
    * On focus event.
    * Toggle on input.
-   * @param {Object} event data.
+   * @param {Object} event data
    */
   onFocus = (e) => {
     if (!this.toggled && this.elements.input.value.length < 1) this.toggle(true)
@@ -33,7 +33,7 @@ export default class TextField extends Component {
   /**
    * On blur event.
    * Toggle off input.
-   * @param {Object} event data.
+   * @param {Object} event data
    */
   onBlur = (e) => {
     if (this.toggled && this.elements.input.value.length < 1) this.toggle(false)
@@ -41,7 +41,7 @@ export default class TextField extends Component {
 
   /**
    * On input event.
-   * @param {Object} event data.
+   * @param {Object} event data
    */
   onInput = (e) => {
     if (this.counter) {
@@ -59,7 +59,7 @@ export default class TextField extends Component {
 
   /**
    * Sets hint text.
-   * @param {String} text.
+   * @param {String} text
    */
   setHint = (str = 'Hint') => {
     this.elements.hint.innerHTML = str
@@ -67,7 +67,7 @@ export default class TextField extends Component {
 
   /**
    * Sets input placeholder.
-   * @param {String} text.
+   * @param {String} text
    */
   setPlaceholder = (str = 'Placeholder') => {
     this.elements.input.setAttribute('placeholder', str)
@@ -75,7 +75,7 @@ export default class TextField extends Component {
 
   /**
    * Sets helper text.
-   * @param {String} text.
+   * @param {String} text
    */
   setHelperText = (str = 'Helper text') => {
     this.elements.helperText.innerHTML = str
@@ -96,7 +96,7 @@ export default class TextField extends Component {
 
   /**
    * Sets counter text.
-   * @param {String} text.
+   * @param {String} text
    */
   setCounterText = (str = '0/0') => {
     this.elements.counter.innerHTML = str
@@ -104,7 +104,7 @@ export default class TextField extends Component {
 
   /**
    * Sets max length of text.
-   * @param {Int} max characters.
+   * @param {Int} max characters
    */
   setMaxLength = (max) => {
     this.counter = true
@@ -115,13 +115,15 @@ export default class TextField extends Component {
 
   /**
    * Toggle error.
-   * @param {Boolean}.
+   * @param {Boolean}
    */
   toggleError = (flag) => {
+    const root = this.getRoot()
+
     if (flag) {
-      this.elements.root.classList.add('error')
+      root.classList.add('error')
     } else {
-      this.elements.root.classList.remove('error')
+      root.classList.remove('error')
     }
 
     this.error = flag
@@ -132,13 +134,16 @@ export default class TextField extends Component {
    * @param {Boolean}
    */
   toggle = (flag) => {
+    const root = this.getRoot()
+    const input = this.getInput()
+
     if (flag) {
-      this.elements.root.classList.remove('disabled')
-      this.elements.root.classList.add('enabled')
-      this.elements.input.focus()
+      root.classList.remove('disabled')
+      root.classList.add('enabled')
+      input.focus()
     } else {
-      this.elements.root.classList.remove('enabled')
-      this.elements.root.classList.add('disabled')
+      root.classList.remove('enabled')
+      root.classList.add('disabled')
     }
 
     this.toggled = flag
@@ -150,10 +155,6 @@ export default class TextField extends Component {
    * @param {Object} event data.
    */
   onActionIconMouseDown = (e) => {
-    /*if (this.props.actionIcon && !this.props.disabled) {
-      var ripple = Ripple.createRipple(this.refs.actionIcon, this.props.actionIconRippleStyle, createRippleCenter(this.refs.actionIcon, 14))
-      Ripple.makeRipple(ripple)
-    }*/
     if (!this.touched) {
       let ripple = Ripple.createRipple(this.elements.actionIcon, this.props.actionIconRippleStyle, createRippleCenter(this.elements.actionIcon, 14))
       Ripple.makeRipple(ripple)
@@ -187,12 +188,14 @@ export default class TextField extends Component {
   }
 
   afterRender () {
-    if (this.props.hint) this.setHint(this.props.hint)
-    if (this.props.placeholder) this.setPlaceholder(this.props.placeholder)
-    if (this.props.helperText) this.setHelperText(this.props.helperText)
-    if (this.props.maxLength) this.setCounter(true)
-    if (this.props.className) this.elements.root.classList.add(this.props.className)
-    if (this.props.type != null) this.elements.input.type = this.props.type
+    const props = this.props
+
+    if (props.hint) this.setHint(this.props.hint)
+    if (props.placeholder) this.setPlaceholder(this.props.placeholder)
+    if (props.helperText) this.setHelperText(this.props.helperText)
+    if (props.maxLength) this.setCounter(true)
+    if (props.className) this.elements.root.classList.add(this.props.className)
+    if (props.type != null) this.elements.input.type = this.props.type
 
     if (!this.props.actionIconRippleStyle) {
       this.props.actionIconRippleStyle = {

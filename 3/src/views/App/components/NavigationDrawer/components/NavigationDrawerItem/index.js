@@ -12,7 +12,7 @@ export default class NavigationDrawerItem extends Component {
 
   /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
@@ -51,7 +51,7 @@ export default class NavigationDrawerItem extends Component {
 
   /**
    * Sets text.
-   * @param {String} text.
+   * @param {String} text
    */
   setText = (str) => {
     this.elements.text.innerHTML = str
@@ -67,7 +67,10 @@ export default class NavigationDrawerItem extends Component {
   }
 
   afterRender () {
-    if (this.props.className) this.getRoot().classList.add(this.props.className)
+    const props = this.props
+    const root = this.getRoot()
+
+    if (props.className) root.classList.add(props.className)
 
     this.setText(this.props.children)
   }

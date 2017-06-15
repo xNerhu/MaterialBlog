@@ -11,7 +11,7 @@ export default class SearchResults extends Component {
 
   /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
@@ -19,7 +19,7 @@ export default class SearchResults extends Component {
 
   /**
    * Search for posts.
-   * @param {String} query.
+   * @param {String} query
    */
   search = (query) => {
     const self = this

@@ -17,7 +17,7 @@ export default class Toolbar extends Component {
 
   /**
    * Gets root.
-   * @return {DOMElement} root.
+   * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
@@ -27,7 +27,7 @@ export default class Toolbar extends Component {
    * On item mouse down event.
    * Makes ripple.
    * @param {Event}
-   * @param {DOMElement} element.
+   * @param {DOMElement} element
    */
   onItemMouseDown = (e, target) => {
     if (!this.touched) {
@@ -40,7 +40,7 @@ export default class Toolbar extends Component {
    * On item touch start event.
    * Makes ripple.
    * @param {Event}
-   * @param {DOMElement} element.
+   * @param {DOMElement} element
    */
   onItemTouchStart = (e, target) => {
     let ripple = Ripple.createRipple(target, this.actionIconRippleStyle, createRippleCenter(target, 14, 0.4, true))
@@ -50,13 +50,11 @@ export default class Toolbar extends Component {
 
   /**
    * Sets items.
-   * @param {Object} items.
+   * @param {Object} items
    */
   setItems = (items) => {
     const self = this
     let first = true
-    let hasLeftIcon = false
-    let left = 16
 
     for (var i = 0; i < items.length; i++) {
       const item = items[i]
@@ -82,10 +80,6 @@ export default class Toolbar extends Component {
           if (position === 'Right') {
             className += ' toolbar-right-first'
           }
-        }
-
-        if (position === 'Left') {
-          hasLeftIcon = true
         }
 
         const element = document.createElement('div')
@@ -127,10 +121,6 @@ export default class Toolbar extends Component {
 
         this.elements.content.appendChild(element)
       } else if (type === 'Title') {
-        if (hasLeftIcon) {
-          left = 80
-        }
-
         const element = (
           <div className='toolbar-title' ref='title' style={style}>
             {item.title}
@@ -169,8 +159,8 @@ export default class Toolbar extends Component {
 
   /**
    * Hides items.
-   * @param {Boolean} hide multi icon.
-   * @param {Boolean} hide search icon.
+   * @param {Boolean} hide multi icon
+   * @param {Boolean} hide search icon
    */
   hideItems = (multiIcon = false, search = true, title = true) => {
     this.hiddenItems = []
