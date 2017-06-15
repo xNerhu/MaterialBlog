@@ -118,7 +118,7 @@ export default class GalleryTab extends Component {
 
       setTimeout(function () {
         categories.style.opacity = '1'
-      }, 10)
+      }, 20)
 
       app.togglePreloader(false)
       app.isLoading = false

@@ -21,6 +21,7 @@
   background-color: rgba(0, 0, 0, 0.4);
   @include Roboto-Regular;
   @include text-selectable;
+  @include text-unselectable;
   z-index: 10;
 }
 

@@ -56,6 +56,14 @@ export default class Snackbar extends Component {
    */
   setActionButton = (button) => {
     const content = this.elements.content
+
+    if (button.rippleStyle == null) {
+      button.rippleStyle = {
+        backgroundColor: '#FFEB3B',
+        opacity: 0.2
+      }
+    }
+
     const element = (
       <MaterialButton className='material-snackbar-action' onClick={button.onClick} shadow={false} text={button.text} rippleStyle={button.rippleStyle} />
     )

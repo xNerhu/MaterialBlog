@@ -1,4 +1,5 @@
 import Component from '../../helpers/Component'
+import Cookies from '../../helpers/Cookies'
 
 import NavigationDrawer from './components/NavigationDrawer/index'
 
@@ -244,6 +245,7 @@ export default class App extends Component {
         <Tooltip ref='tooltipLikesList' text='...' />
         <Tooltip ref='tooltipCategoryInfo' text='Data utworzenia:<br>Ilość zdjęc:' />
         <Snackbar ref='snackbarLogged' text='Zalogowano pomyślnie' />
+        <Snackbar ref='snackbarCookies' text='Strona wykorzystuje pliki cookies.' timeout={7500} />
       </div>
     )
   }
@@ -254,6 +256,7 @@ export default class App extends Component {
     const tabLayout = this.elements.tabLayout
     const navigationDrawer = this.getNavigationDrawer()
     const snackbarLogged = this.elements.snackbarLogged
+    const snackbarCookies = this.elements.snackbarCookies
 
     const items = [
       {
@@ -393,12 +396,23 @@ export default class App extends Component {
     navigationDrawer.setItems(navigationDrawerItems)
 
     snackbarLogged.setActionButton({
-      text: 'WYLOGUJ',
-      rippleStyle: {
-        backgroundColor: '#FFEB3B',
-        opacity: 0.2
-      }
+      text: 'WYLOGUJ'
     })
+
+    const visited = Cookies.getCookie('visited')
+
+    if (!visited) {
+      snackbarCookies.setActionButton({
+        text: 'WIĘCEJ',
+        onClick: function () {
+          window.open('http://wszystkoociasteczkach.pl/po-co-sa-ciasteczka/', '_blank')
+        }
+      })
+
+      snackbarCookies.toggle(true)
+
+      Cookies.setCookie('visited', 'true', 365)
+    }
 
     this.logUser()
   }
