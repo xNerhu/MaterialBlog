@@ -287,7 +287,6 @@ export default class App extends Component {
           if (query.length >= 1) {
             self.elements.searchResults.search(query)
             if (navigationDrawer.toggled) navigationDrawer.hide()
-            console.log(query)
           }
         }
       }

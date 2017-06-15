@@ -5,11 +5,6 @@ import MaterialButton from '../../../../../../../imports/materialdesign/componen
 export default class CommentInput extends Component {
   beforeRender () {
     this.touched = false
-
-    this.props.actionRippleStyle = {
-      backgroundColor: '#2196f3',
-      opacity: 0.3
-    }
   }
 
   /**
@@ -82,6 +77,15 @@ export default class CommentInput extends Component {
   }
 
   afterRender () {
+    const props = this.props
+
+    props.actionRippleStyle = {
+      backgroundColor: '#2196f3',
+      opacity: 0.3
+    }
+
+    if (this.props.dark) props.actionRippleStyle.backgroundColor = '#fff'
+
     window.app.elementsToCallBack.push(this)
   }
 }

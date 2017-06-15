@@ -230,8 +230,10 @@ export default class Post extends Component {
       this.renderComponents(comment, comments)
     }
 
+    const dark = false
+
     const commentInput = (
-      <CommentInput ref='commentInput' />
+      <CommentInput ref='commentInput' dark={dark} />
     )
 
     this.renderComponents(commentInput, comments)
@@ -331,6 +333,8 @@ export default class Post extends Component {
   afterRender () {
     const props = this.props
     const data = props.data
+    const style = data.style
+    const root = this.getRoot()
     const getPostsTab = props.getPostsTab()
 
     const title = this.elements.title
@@ -368,6 +372,19 @@ export default class Post extends Component {
     }
 
     if (data.media != null) this.setMedia(data.media)
+
+    if (style != null) {
+      if (style.light) {
+        props.rippleStyle.backgroundColor = '#fff'
+
+        root.style.color = '#fff'
+        root.classList.add('white-actions')
+      }
+
+      if (style.background != null) {
+        root.style.backgroundColor = style.background
+      }
+    }
 
     this.loadComments()
     this.animate()

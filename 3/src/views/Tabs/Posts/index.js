@@ -69,6 +69,29 @@ export default class PostsTab extends Component {
 
       self.postsData = [
         {
+          id: 11,
+          title: 'Post with style',
+          author: 'Mikołaj Palkiewicz',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in neque turpis. Aenean tincidunt nunc nec ligula cursus iaculis. Pellentesque nisl nulla, malesuada a est a, tempor dapibus eros. Sed facilisis porta',
+          date: '15.06.2017 13:02',
+          avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+          likes: [],
+          comments: [
+            {
+              author: 'Mikołaj Palkiewicz',
+              userID: 1,
+              content: 'Warto wiedzieć',
+              date: '31.05.2017 18:14',
+              avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281'
+            }
+          ],
+          style: {
+            background: '#2196F3',
+            light: true,
+            ripple: true
+          }
+        },
+        {
           id: 10,
           title: 'Test',
           author: 'Mikołaj Palkiewicz',

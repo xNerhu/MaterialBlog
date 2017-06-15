@@ -12,6 +12,28 @@
   transition: 0.25s ease-in-out height, 0.25s ease-in-out width, 0.25s ease-in-out max-width, 0.2s opacity, 0.2s ease-in-out margin-top;
   margin-top: 96px;
   opacity: 0;
+
+  &.white-actions {
+    & .post-sub-title {
+      opacity: 1;
+    }
+
+    & .post-action-item {
+      @include invert-colors;
+    }
+
+    & .post-comment-input-textarea {
+      color: #fff;
+
+      &::placeholder {
+        color: #fff;
+      }
+    }
+
+    & .post-comments-input-action-button {
+      color: #fff !important;
+    }
+  }
 }
 
 .post-media {
