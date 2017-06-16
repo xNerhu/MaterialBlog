@@ -38,11 +38,13 @@ export default class Cell extends Component {
     if (props.className != null) root.classList.add(props.className)
     if (props.isCheckBox) {
       const checkBox = (
-        <Checkbox />
+        <Checkbox ref='checkbox' />
       )
 
       this.renderComponents(checkBox, this.elements.text)
       root.classList.add('checkbox')
+
+      this.props.getMobileTable().cells.push(this)
     }
   }
 }

@@ -1,10 +1,13 @@
 import Component from '../../../helpers/Component'
 
-import DekstopTable from './components/DekstopTable'
-import MobileTable from './components/MobileTable'
+import Table from './components/Table'
+import List from './components/List'
 
 export default class PostsPage extends Component {
   beforeRender () {
+    this.tableLoaded = false
+    this.listLoaded = false
+
     this.postsData = [
       {
         id: 11,
@@ -126,8 +129,6 @@ export default class PostsPage extends Component {
     const self = this
     const app = window.app
     const tables = this.elements.tables
-    const desktopTable = this.elements.desktopTable
-    const desktopTableRoot = desktopTable.getRoot()
 
     app.loadedPages.posts = true
 
@@ -135,63 +136,120 @@ export default class PostsPage extends Component {
       app.togglePreloader(false)
       app.isLoading = false
 
-      desktopTable.setCells(self.postsData)
-      desktopTableRoot.style.display = 'block'
+      const table = false
+
+      if (table) {
+        self.switchToTable()
+      } else {
+        self.switchToList()
+      }
 
       tables.style.opacity = '1'
     }, 1000)
   }
 
   /**
-   * Changes to list.
+   * Switch to table.
    */
-  changeToList = () => {
-    const self = this
+  switchToTable = (hide) => {
     const app = window.app
+    const toolbar = app.getToolbar()
+    const viewIcon = toolbar.getViewIcon()
 
-    app.isTable = false
+    const table = this.elements.table
+    const list = this.elements.list
 
-    const desktopTable = this.elements.desktopTable
-    const desktopTableRoot = desktopTable.getRoot()
+    app.isTable = true
+    viewIcon.classList.remove('table')
 
-    const mobileTable = this.elements.mobileTable
-    const mobileTableRoot = this.elements.mobileTable.getRoot()
+    list.getRoot().style.display = 'none'
+    table.getRoot().style.display = 'block'
 
-    desktopTableRoot.style.display = 'none'
-    setTimeout(function () {
-      mobileTable.setCells(self.postsData)
+    if (!this.tableLoaded) {
+      this.tableLoaded = true
 
-      mobileTableRoot.style.display = 'block'
-    }, 20)
+      table.setCells(this.postsData)
+    }
+
+    if (this.listLoaded) {
+      this.toggleCheckBoxes()
+    }
   }
 
   /**
-   * Changes to table.
+   * Switch to list.
    */
-  changeToTable = () => {
-    const self = this
+  switchToList = () => {
     const app = window.app
+    const toolbar = app.getToolbar()
+    const viewIcon = toolbar.getViewIcon()
 
-    app.isTable = true
+    const table = this.elements.table
+    const list = this.elements.list
 
-    const desktopTable = this.elements.desktopTable
-    const desktopTableRoot = desktopTable.getRoot()
+    app.isTable = false
+    viewIcon.classList.add('table')
 
-    const mobileTable = this.elements.mobileTable
-    const mobileTableRoot = this.elements.mobileTable.getRoot()
+    table.getRoot().style.display = 'none'
+    list.getRoot().style.display = 'block'
 
-    mobileTableRoot.style.display = 'none'
-    setTimeout(function () {
-      desktopTableRoot.style.display = 'block'
-    }, 20)
+    if (!this.listLoaded) {
+      this.listLoaded = true
+
+      list.setCells(this.postsData)
+    }
+
+    if (this.tableLoaded) {
+      this.toggleCheckBoxes(true)
+    }
+  }
+
+  /**
+   * Toggle checkbox in table or list.
+   * When user toggle checkbox in table and switch to list, checkboxes in list must be same state like in table.
+   * @param {Boolean} change checkboxes state in list
+   */
+  toggleCheckBoxes = (_list = false) => {
+    const table = this.elements.table
+    const list = this.elements.list
+
+    let checkboxesTable = []
+    let checkboxesList = []
+
+    for (var i = 0; i < table.cells.length; i++) {
+      const cell = table.cells[i]
+      const checkbox = cell.elements.checkbox
+
+      checkboxesTable.push(checkbox)
+    }
+
+    for (var i = 0; i < list.cells.length; i++) {
+      const cell = list.cells[i]
+      const checkbox = cell.elements.checkbox
+
+      checkboxesList.push(checkbox)
+    }
+
+    const checkboxesBefore = (_list) ? checkboxesTable : checkboxesList
+    const checkboxes = (!_list) ? checkboxesTable : checkboxesList
+
+    for (var i = 0; i < checkboxesBefore.length; i++) {
+      const checkbox = checkboxesBefore[i]
+
+      if (checkbox.checked && !checkboxes[i].checked) {
+        checkboxes[i].check()
+      } else if (!checkbox.checked && checkboxes[i].checked) {
+        checkboxes[i].unCheck()
+      }
+    }
   }
 
   render () {
     return (
       <div className='page page-posts' ref='root'>
         <div className='page-posts-tables' ref='tables'>
-          <DekstopTable ref='desktopTable' />
-          <MobileTable ref='mobileTable' />
+          <Table ref='table' />
+          <List ref='list' />
         </div>
       </div>
     )

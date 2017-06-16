@@ -15,7 +15,7 @@ export default class Cell extends Component {
     return (
       <tr ref='root'>
         <td>
-          <Checkbox />
+          <Checkbox ref='checkbox' />
         </td>
         <td ref='id' />
         <td>
@@ -44,5 +44,7 @@ export default class Cell extends Component {
     this.elements.comments.innerHTML = data.comments.length
     this.elements.likes.innerHTML = data.likes.length
     this.elements.content.innerHTML = data.content
+
+    this.props.getDesktopTable().cells.push(this)
   }
 }

@@ -198,6 +198,7 @@ export default class App extends Component {
       },
       {
         type: 'Icon',
+        ref: 'viewIcon',
         position: 'Right',
         className: 'toolbar-icon-view',
         onClick: this.onViewClick,
@@ -220,11 +221,9 @@ export default class App extends Component {
     const tooltip = this.elements.tooltipView
 
     if (this.isTable) {
-      target.classList.add('table')
-      postsPage.changeToList()
+      postsPage.switchToList()
     } else {
-      target.classList.remove('table')
-      postsPage.changeToTable()
+      postsPage.switchToTable()
     }
 
     tooltip.toggle(false)

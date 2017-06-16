@@ -85,6 +85,10 @@ export default class Toolbar extends Component {
 
         const element = document.createElement('div')
 
+        if (item.ref != null) {
+          this.elements[item.ref] = element
+        }
+
         if (typeof onClick === 'function') element.addEventListener('click', onClick)
         if (typeof onMouseEnter === 'function') element.addEventListener('mouseenter', onMouseEnter)
         if (typeof onMouseLeave === 'function') element.addEventListener('mouseleave', onMouseLeave)
@@ -139,6 +143,14 @@ export default class Toolbar extends Component {
    */
   getMultiIcon = () => {
     return this.elements.multiIcon
+  }
+
+  /**
+   * Gets view icon.
+   * @return {DOMElement}
+   */
+  getViewIcon = () => {
+    return this.elements.viewIcon
   }
 
   /**

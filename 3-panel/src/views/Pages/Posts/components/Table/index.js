@@ -2,13 +2,25 @@ import Component from '../../../../../helpers/Component'
 
 import Cell from './components/Cell'
 
-export default class DesktopTable extends Component {
+export default class Table extends Component {
+  beforeRender () {
+    this.cells = []
+  }
+
   /**
    * Gets root.
    * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
+  }
+
+  /**
+   * Gets desktop table.
+   * @return {DekstopTable}
+   */
+  getDesktopTable = () => {
+    return this
   }
 
   /**
@@ -20,7 +32,7 @@ export default class DesktopTable extends Component {
 
     for (var i = 0; i < posts.length; i++) {
       const cell = (
-        <Cell data={posts[i]} />
+        <Cell data={posts[i]} getDesktopTable={this.getDesktopTable} />
       )
 
       this.renderComponents(cell, tbody)
