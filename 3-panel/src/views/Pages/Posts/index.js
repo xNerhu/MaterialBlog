@@ -133,7 +133,8 @@ export default class PostsPage extends Component {
     setTimeout(function () {
       app.togglePreloader(false)
       app.isLoading = false
-      mobileTable.setCells(self.postsData)
+      //mobileTable.setCells(self.postsData)
+      //desktopTable.setCells(self.postsData)
     }, 10)
   }
 

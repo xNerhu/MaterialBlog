@@ -96,15 +96,15 @@ export default class Toolbar extends Component {
             <MultiIcon ref='multiIcon' />
           )
 
-          element.addEventListener('mousedown', function (e) {
-            self.onItemMouseDown(e, element)
-          })
-          element.addEventListener('touchstart', function (e) {
-            self.onItemTouchStart(e, element)
-          })
-
           this.renderComponents(multiIcon, element)
         }
+
+        element.addEventListener('mousedown', function (e) {
+          self.onItemMouseDown(e, element)
+        })
+        element.addEventListener('touchstart', function (e) {
+          self.onItemTouchStart(e, element)
+        })
 
         this.items.push(element)
 

@@ -33,3 +33,12 @@ html, body {
   z-index: 8;
   display: none;
 }
+
+.toolbar-menu {
+  position: fixed !important;
+  top: 8px;
+  right: 32px;
+  opacity: 0;
+  display: none;
+  transition: 0.3s opacity, 0.3s height ease-out;
+}

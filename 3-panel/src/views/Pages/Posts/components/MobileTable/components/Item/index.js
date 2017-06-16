@@ -35,6 +35,6 @@ export default class Item extends Component {
     this.elements.comments.setText(data.comments.length)
     this.elements.likes.setText(data.likes.length)
     this.elements.title.setText(data.title)
-    this.elements.title.setText(data.content)
+    this.elements.content.setText(data.content)
   }
 }

@@ -1,0 +1,19 @@
+.material-menu-item {
+  width: 100%;
+  height: auto;
+  background-color: #fff;
+  text-align: left;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 24px;
+  font-size: 15px;
+  @include Roboto-Regular;
+  color: #000;
+  cursor: pointer;
+  transition: 0.3s background-color;
+
+  &:hover {
+    background-color: #eee;
+    transition: 0.3s background-color;
+  }
+}

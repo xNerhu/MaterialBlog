@@ -9,6 +9,7 @@ import GalleryPage from '../Pages/Gallery'
 import AboutClassPage from '../Pages/AboutClass'
 import LessonsPlanPage from '../Pages/LessonsPlan'
 
+import Menu from './../../imports/materialdesign/components/Menu'
 import Preloader from './../../imports/materialdesign/components/Preloader'
 
 export default class App extends Component {
@@ -78,6 +79,14 @@ export default class App extends Component {
    */
   getLessonsPlanTab = () => {
     return this.elements.lessonsPlanPage
+  }
+
+  /**
+   * Gets menu.
+   * @return {Menu}
+   */
+  getMenu = () => {
+    return this.elements.menu
   }
 
   /**
@@ -151,6 +160,7 @@ export default class App extends Component {
    * Sets toolbar items.
    */
   setToolbarItems = () => {
+    const self = this
     const toolbar = this.getToolbar()
 
     const items = [
@@ -173,6 +183,14 @@ export default class App extends Component {
         title: this.props.defaultTitle,
         style: {
           color: '#fff'
+        }
+      },
+      {
+        type: 'Icon',
+        position: 'Right',
+        id: 'toolbar-icon-more',
+        onClick: function (e) {
+          self.toggleMenu(true)
         }
       }
     ]
@@ -219,6 +237,43 @@ export default class App extends Component {
     ]
 
     navigationDrawer.setItems(navigationDrawerItems)
+  }
+
+  /**
+   * Sets menu items.
+   */
+  setMenuItems = () => {
+    const self = this
+    const menu = this.getMenu()
+
+    const items = [
+      {
+        text: 'Odśwież',
+        onClick: function () {
+
+        }
+      },
+      {
+        text: 'Dodaj',
+        onClick: function () {
+
+        }
+      },
+      {
+        text: 'Edytuj',
+        onClick: function () {
+
+        }
+      },
+      {
+        text: 'Usuń',
+        onClick: function () {
+
+        }
+      }
+    ]
+
+    menu.setItems(items)
   }
 
   /**
@@ -297,6 +352,54 @@ export default class App extends Component {
     return null
   }
 
+  /**
+   * Toggle menu.
+   * @param {Boolean} show or hide.
+   */
+  toggleMenu = (flag) => {
+    const self = this
+    const menu = this.getMenu()
+    const menuRoot = menu.getRoot()
+
+    if (flag) {
+      menuRoot.style.overflowY = 'hidden'
+      menuRoot.style.display = 'block'
+
+      setTimeout(function () {
+        menuRoot.style.height = menuRoot.scrollHeight - 16 + 'px'
+        menuRoot.style.opacity = '1'
+        document.addEventListener('click', self.onClick)
+
+        setTimeout(function () {
+          menuRoot.style.overflowY = 'auto'
+        }, 300)
+      }, 20)
+    } else {
+      document.removeEventListener('click', this.onClick)
+
+      menuRoot.style.overflowY = 'hidden'
+
+      menuRoot.style.height = '32px'
+
+      setTimeout(function () {
+        menuRoot.style.opacity = '0'
+      }, 50)
+
+      setTimeout(function () {
+        menuRoot.style.display = 'none'
+      }, 300)
+    }
+  }
+
+  /**
+   * On click event.
+   * Hides menu.
+   * @param {Event}
+   */
+  onClick = (e) => {
+    this.toggleMenu(false)
+  }
+
   render () {
     return (
       <div>
@@ -309,6 +412,7 @@ export default class App extends Component {
             <LessonsPlanPage ref='lessonsPlanPage' />
           </div>
         </div>
+        <Menu ref='menu' className='toolbar-menu' mobile={true} />
         <NavigationDrawer ref='navigationDrawer' />
         <Preloader className='data-preloader' ref='preloader' />
       </div>
@@ -316,8 +420,11 @@ export default class App extends Component {
   }
 
   afterRender () {
+    const menuRoot = this.getMenu().getRoot()
+
     this.setToolbarItems()
     this.setNavigationDrawerItems()
+    this.setMenuItems()
 
     let urlPage = Url.getUrlParameter('page')
     let pageToSelect = this.getPostsPage()
@@ -337,5 +444,7 @@ export default class App extends Component {
     this.selectPage(pageToSelect)
 
     this.logUser()
+
+    menuRoot.style.height = '32px'
   }
 }
