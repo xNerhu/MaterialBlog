@@ -2,3 +2,15 @@
   opacity: 0;
   transition: 0.3s opacity;
 }
+
+.page-posts-fab {
+  width: 56px;
+  height: 56px;
+  position: fixed !important;
+  right: 32px;
+  bottom: 32px;
+
+  & .material-fab-icon {
+    background-image: url(images/Posts/add.png);
+  }
+}

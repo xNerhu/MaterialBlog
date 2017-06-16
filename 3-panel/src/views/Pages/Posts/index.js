@@ -4,6 +4,8 @@ import Cookies from '../../../helpers/Cookies'
 import Table from './components/Table'
 import List from './components/List'
 
+import FAB from '../../../imports/materialdesign/components/FAB'
+
 export default class PostsPage extends Component {
   beforeRender () {
     this.tableLoaded = false
@@ -263,6 +265,7 @@ export default class PostsPage extends Component {
           <Table ref='table' />
           <List ref='list' />
         </div>
+        <FAB className='page-posts-fab' />
       </div>
     )
   }
