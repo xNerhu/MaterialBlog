@@ -4,12 +4,12 @@ import Cookies from '../../../helpers/Cookies'
 import Table from './components/Table'
 import List from './components/List'
 
-import FAB from '../../../imports/materialdesign/components/FAB'
-
 export default class PostsPage extends Component {
   beforeRender () {
     this.tableLoaded = false
     this.listLoaded = false
+
+    this.selectedPosts = []
 
     this.postsData = [
       {
@@ -159,6 +159,24 @@ export default class PostsPage extends Component {
   }
 
   /**
+   * On select this page event.
+   */
+  onSelect = () => {
+    const app = window.app
+
+    app.toggleFAB(true)
+  }
+
+  /**
+   * On deselect this page event.
+   */
+  onDeselect = () => {
+    const app = window.app
+
+    app.toggleFAB(false)
+  }
+
+  /**
    * Switch to table.
    */
   switchToTable = (hide) => {
@@ -258,6 +276,77 @@ export default class PostsPage extends Component {
     }
   }
 
+  /**
+  * On menu delete posts button click event.
+  * @param {Event}
+  */
+  onDeletePostsButtonClick = (e) => {
+    const app = window.app
+    const dialog = app.elements.deletePostsDialog
+    const navigationDrawer = app.getNavigationDrawer()
+
+    if (navigationDrawer.toggled) navigationDrawer.hide()
+
+    this.selectedPosts = this.getSelectedPosts()
+
+    if (this.selectedPosts.length > 0) {
+      dialog.toggle(true)
+    }
+  }
+
+  /**
+   * Gets selected posts.
+   * @return {Object} selected posts.
+   */
+  getSelectedPosts = () => {
+    const app = window.app
+
+    const table = this.elements.table
+    const list = this.elements.list
+
+    let posts = []
+
+    const element = (app.isTable) ? table : list
+
+    for (var i = 0; i < element.cells.length; i++) {
+      const cell = element.cells[i]
+      const checkbox = cell.elements.checkbox
+
+      if (checkbox.checked) {
+        if (!app.isTable) {
+          posts.push(cell.props.getItem())
+        } else {
+          posts.push(cell)
+        }
+      }
+    }
+
+    return posts
+  }
+
+  /**
+   * Deletes selected posts.
+   * TODO
+   */
+  deletePosts = (e) => {
+    const app = window.app
+    const dialog = app.elements.deletePostsDialog
+    const snackbar = app.elements.deletedPostsSnackbar
+    const snackbarRoot = snackbar.getRoot()
+    const fabContainer = app.elements.fabContainer
+
+    dialog.toggle(false)
+    snackbar.toggle(true)
+
+    if (window.innerWidth < 480) {
+      fabContainer.style.bottom = snackbarRoot.scrollHeight + 16 + 'px'
+
+      setTimeout(function () {
+        fabContainer.style.bottom = '32px'
+      }, 5200)
+    }
+  }
+
   render () {
     return (
       <div className='page page-posts' ref='root'>
@@ -265,7 +354,6 @@ export default class PostsPage extends Component {
           <Table ref='table' />
           <List ref='list' />
         </div>
-        <FAB className='page-posts-fab' />
       </div>
     )
   }

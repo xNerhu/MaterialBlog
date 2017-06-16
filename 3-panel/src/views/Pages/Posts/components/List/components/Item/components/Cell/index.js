@@ -45,6 +45,7 @@ export default class Cell extends Component {
       root.classList.add('checkbox')
 
       this.props.getMobileTable().cells.push(this)
+      this.props.getMobileTable().checkbox = this.elements.checkBox
     }
   }
 }

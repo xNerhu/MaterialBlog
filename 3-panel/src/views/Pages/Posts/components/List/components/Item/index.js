@@ -11,17 +11,24 @@ export default class Item extends Component {
     return this.elements.root
   }
 
+  /**
+   * Gets item.
+   */
+  getItem = () => {
+    return this
+  }
+
   render () {
     return (
       <div className='posts-table-list-item'>
-        <Cell getMobileTable={this.props.getMobileTable} title='AKCJA' isCheckBox='true' />
-        <Cell getMobileTable={this.props.getMobileTable} title='ID' ref='id' />
-        <Cell getMobileTable={this.props.getMobileTable} title='AUTOR' ref='author' />
-        <Cell getMobileTable={this.props.getMobileTable} title='DATA' ref='date' />
-        <Cell getMobileTable={this.props.getMobileTable} title='KOMENTARZE' ref='comments' />
-        <Cell getMobileTable={this.props.getMobileTable} title='POLUBIENIA' ref='likes' />
-        <Cell getMobileTable={this.props.getMobileTable} title='TYTUŁ' ref='title' />
-        <Cell getMobileTable={this.props.getMobileTable} title='TREŚĆ' ref='content' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='AKCJA' isCheckBox='true' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='ID' ref='id' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='AUTOR' ref='author' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='DATA' ref='date' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='KOMENTARZE' ref='comments' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='POLUBIENIA' ref='likes' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='TYTUŁ' ref='title' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='TREŚĆ' ref='content' />
       </div>
     )
   }

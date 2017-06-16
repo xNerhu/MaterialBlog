@@ -9,8 +9,11 @@ import GalleryPage from '../Pages/Gallery'
 import AboutClassPage from '../Pages/AboutClass'
 import LessonsPlanPage from '../Pages/LessonsPlan'
 
+import Dialog from './../../imports/materialdesign/components/Dialog'
+import FAB from './../../imports/materialdesign/components/FAB'
 import Menu from './../../imports/materialdesign/components/Menu'
 import Preloader from './../../imports/materialdesign/components/Preloader'
+import Snackbar from './../../imports/materialdesign/components/Snackbar'
 import Tooltip from './../../imports/materialdesign/components/Tooltip'
 
 export default class App extends Component {
@@ -108,6 +111,30 @@ export default class App extends Component {
     const preloader = this.getPreloader().getRoot()
 
     preloader.style.display = (!flag) ? 'none' : 'block'
+  }
+
+  /**
+   * Shows or hides floatig action button.
+   * @param {Boolean} show or hide
+   */
+  toggleFAB = (flag) => {
+    const fab = this.elements.fab.getRoot()
+
+    if (flag) {
+      fab.style.display = 'block'
+
+      setTimeout(function () {
+        fab.style.height = '56px'
+        fab.style.width = '56px'
+      }, 20)
+    } else {
+      fab.style.height = '0px'
+      fab.style.width = '0px'
+
+      setTimeout(function () {
+        fab.style.display = 'none'
+      }, 300)
+    }
   }
 
   /**
@@ -301,6 +328,7 @@ export default class App extends Component {
   setMenuItems = () => {
     const self = this
     const menu = this.getMenu()
+    const postsPage = this.getPostsPage()
 
     const items = [
       {
@@ -323,9 +351,7 @@ export default class App extends Component {
       },
       {
         text: 'Usuń',
-        onClick: function () {
-
-        }
+        onClick: postsPage.onDeletePostsButtonClick
       }
     ]
 
@@ -364,6 +390,8 @@ export default class App extends Component {
         }, 300)
       }, 10)
 
+      if (typeof page.onSelect === 'function') page.onSelect()
+
       const url = '?page=' + pageName.toLowerCase()
       window.history.pushState('', '', url)
 
@@ -384,6 +412,8 @@ export default class App extends Component {
     const pageRoot = page.getRoot()
 
     pageRoot.style.opacity = '0'
+
+    if (typeof page.onDeselect === 'function') page.onDeselect()
 
     setTimeout(function () {
       pageRoot.style.display = 'none'
@@ -448,6 +478,29 @@ export default class App extends Component {
   }
 
   /**
+   * Sets dialog action buttons.
+   */
+  setdeletePostsDialogItems = () => {
+    const postsPage = this.getPostsPage()
+    const dialog = this.elements.deletePostsDialog
+
+    const items = [
+      {
+        text: 'TAK',
+        onClick: postsPage.deletePosts
+      },
+      {
+        text: 'NIE',
+        onClick: function () {
+          dialog.toggle(false)
+        }
+      }
+    ]
+
+    dialog.setItems(items)
+  }
+
+  /**
    * On click event.
    * Hides menu.
    * @param {Event}
@@ -468,7 +521,14 @@ export default class App extends Component {
             <LessonsPlanPage ref='lessonsPlanPage' />
           </div>
         </div>
+        <div className='fab' ref='fabContainer'>
+          <FAB ref='fab' />
+        </div>
         <Menu ref='menu' className='toolbar-menu' mobile={true} />
+        <Dialog ref='deletePostsDialog' title='Jesteś pewny(a)?'>
+          Nie będzie można ich odzyskać.
+        </Dialog>
+        <Snackbar className='snackbar-deleted-posts' ref='deletedPostsSnackbar' text='Pomyślnie usunięto posty' timeout={5000} />
         <Tooltip ref='tooltipView' text='Przełącz na liste' />
         <NavigationDrawer ref='navigationDrawer' />
         <Preloader className='data-preloader' ref='preloader' />
@@ -482,6 +542,7 @@ export default class App extends Component {
     this.setToolbarItems()
     this.setNavigationDrawerItems()
     this.setMenuItems()
+    this.setdeletePostsDialogItems()
 
     let urlPage = Url.getUrlParameter('page')
     let pageToSelect = this.getPostsPage()

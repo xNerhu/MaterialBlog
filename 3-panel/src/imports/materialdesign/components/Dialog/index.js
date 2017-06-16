@@ -141,9 +141,14 @@ export default class Dialog extends Component {
 
     if (props.actionButtonRippleStyle == null) {
       props.actionButtonRippleStyle = {
-        backgroundColor: '#2196f3',
+        backgroundColor: '#3f51b5',
         opacity: 0.3
       }
+    }
+
+    if (props.title === false) {
+      this.elements.title.style.display = 'none'
+      this.elements.content.style.marginTop = '28px'
     }
 
     if (props.list === true) action.classList.add('list')
