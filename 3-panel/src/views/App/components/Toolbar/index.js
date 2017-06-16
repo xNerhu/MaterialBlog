@@ -63,6 +63,8 @@ export default class Toolbar extends Component {
       let style = item.style
       const image = item.image
       const onClick = item.onClick
+      const onMouseEnter = item.onMouseEnter
+      const onMouseLeave = item.onMouseLeave
 
       if (type === 'Icon') {
         if (image && subType !== 'Menu' && subType !== 'Search') {
@@ -82,13 +84,14 @@ export default class Toolbar extends Component {
         }
 
         const element = document.createElement('div')
-        const id = item.id
-        const isOnClickEvent = (typeof onClick === 'function')
-        if (isOnClickEvent) element.addEventListener('click', onClick)
+
+        if (typeof onClick === 'function') element.addEventListener('click', onClick)
+        if (typeof onMouseEnter === 'function') element.addEventListener('mouseenter', onMouseEnter)
+        if (typeof onMouseLeave === 'function') element.addEventListener('mouseleave', onMouseLeave)
 
         element.className = className
+        if (item.className != null) element.classList.add(item.className)
 
-        if (id) element.id = id
         if (style) element.setStyle(style)
 
         if (subType === 'MultiIcon') {

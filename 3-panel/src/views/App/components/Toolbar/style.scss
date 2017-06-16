@@ -53,6 +53,14 @@
   transition: 0.3s top, 0.3s opacity;
 }
 
-#toolbar-icon-more {
+.toolbar-icon-more {
   background-image: url(images/Toolbar/more.png);
+}
+
+.toolbar-icon-view {
+  background-image: url(images/Toolbar/view_list.png);
+
+  &.table {
+    background-image: url(images/Toolbar/view_column.png)
+  }
 }

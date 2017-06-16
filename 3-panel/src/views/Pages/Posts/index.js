@@ -125,24 +125,74 @@ export default class PostsPage extends Component {
   load = () => {
     const self = this
     const app = window.app
+    const tables = this.elements.tables
     const desktopTable = this.elements.desktopTable
-    const mobileTable = this.elements.mobileTable
+    const desktopTableRoot = desktopTable.getRoot()
 
     app.loadedPages.posts = true
 
     setTimeout(function () {
       app.togglePreloader(false)
       app.isLoading = false
-      //mobileTable.setCells(self.postsData)
-      //desktopTable.setCells(self.postsData)
-    }, 10)
+
+      desktopTable.setCells(self.postsData)
+      desktopTableRoot.style.display = 'block'
+
+      tables.style.opacity = '1'
+    }, 1000)
+  }
+
+  /**
+   * Changes to list.
+   */
+  changeToList = () => {
+    const self = this
+    const app = window.app
+
+    app.isTable = false
+
+    const desktopTable = this.elements.desktopTable
+    const desktopTableRoot = desktopTable.getRoot()
+
+    const mobileTable = this.elements.mobileTable
+    const mobileTableRoot = this.elements.mobileTable.getRoot()
+
+    desktopTableRoot.style.display = 'none'
+    setTimeout(function () {
+      mobileTable.setCells(self.postsData)
+
+      mobileTableRoot.style.display = 'block'
+    }, 20)
+  }
+
+  /**
+   * Changes to table.
+   */
+  changeToTable = () => {
+    const self = this
+    const app = window.app
+
+    app.isTable = true
+
+    const desktopTable = this.elements.desktopTable
+    const desktopTableRoot = desktopTable.getRoot()
+
+    const mobileTable = this.elements.mobileTable
+    const mobileTableRoot = this.elements.mobileTable.getRoot()
+
+    mobileTableRoot.style.display = 'none'
+    setTimeout(function () {
+      desktopTableRoot.style.display = 'block'
+    }, 20)
   }
 
   render () {
     return (
       <div className='page page-posts' ref='root'>
-        <DekstopTable ref='desktopTable' />
-        <MobileTable ref='mobileTable' />
+        <div className='page-posts-tables' ref='tables'>
+          <DekstopTable ref='desktopTable' />
+          <MobileTable ref='mobileTable' />
+        </div>
       </div>
     )
   }

@@ -29,7 +29,7 @@ export default class DesktopTable extends Component {
 
   render () {
     return (
-      <table className='material-table'>
+      <table className='material-table' ref='root'>
         <thead>
           <tr>
             <th />

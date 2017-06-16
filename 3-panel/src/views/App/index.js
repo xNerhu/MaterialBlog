@@ -11,6 +11,7 @@ import LessonsPlanPage from '../Pages/LessonsPlan'
 
 import Menu from './../../imports/materialdesign/components/Menu'
 import Preloader from './../../imports/materialdesign/components/Preloader'
+import Tooltip from './../../imports/materialdesign/components/Tooltip'
 
 export default class App extends Component {
   beforeRender () {
@@ -31,6 +32,8 @@ export default class App extends Component {
 
     this.canSelect = true
     this.lastPage = null
+
+    this.isTable = true
   }
 
   /**
@@ -169,7 +172,7 @@ export default class App extends Component {
         subType: 'MultiIcon',
         position: 'Left',
         onClick: this.onMultiIconClick,
-        id: 'toolbar-icon-multi-icon',
+        className: 'toolbar-icon-multi-icon',
         style: {
           width: '24px',
           height: '18px',
@@ -188,14 +191,68 @@ export default class App extends Component {
       {
         type: 'Icon',
         position: 'Right',
-        id: 'toolbar-icon-more',
+        className: 'toolbar-icon-more',
         onClick: function (e) {
           self.toggleMenu(true)
         }
+      },
+      {
+        type: 'Icon',
+        position: 'Right',
+        className: 'toolbar-icon-view',
+        onClick: this.onViewClick,
+        onMouseEnter: this.onViewMouseEnter,
+        onMouseLeave: this.onViewMouseLeave
       }
     ]
 
     toolbar.setItems(items)
+  }
+
+  /**
+   * On toolbar view item click event.
+   * Changes table.
+   * @param {Event}
+   */
+  onViewClick = (e) => {
+    const target = e.target
+    const postsPage = this.getPostsPage()
+    const tooltip = this.elements.tooltipView
+
+    if (this.isTable) {
+      target.classList.add('table')
+      postsPage.changeToList()
+    } else {
+      target.classList.remove('table')
+      postsPage.changeToTable()
+    }
+
+    tooltip.toggle(false)
+  }
+
+  /**
+   * On toolbar view item mouse enter event.
+   * Shows tooltip.
+   * @param {Event}
+   */
+  onViewMouseEnter = (e) => {
+    const tooltip = this.elements.tooltipView
+
+    const text = (this.isTable) ? 'Przełącz na listę' : 'Przełącz na tabelę'
+
+    tooltip.setText(text)
+    tooltip.toggle(true, e.target)
+  }
+
+  /**
+   * On toolbar view item mouse leave event.
+   * Hides tooltip.
+   * @param {Event}
+   */
+  onViewMouseLeave = (e) => {
+    const tooltip = this.elements.tooltipView
+
+    tooltip.toggle(false)
   }
 
   /**
@@ -413,6 +470,7 @@ export default class App extends Component {
           </div>
         </div>
         <Menu ref='menu' className='toolbar-menu' mobile={true} />
+        <Tooltip ref='tooltipView' text='Przełącz na liste' />
         <NavigationDrawer ref='navigationDrawer' />
         <Preloader className='data-preloader' ref='preloader' />
       </div>
