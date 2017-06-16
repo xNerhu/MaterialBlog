@@ -1,4 +1,5 @@
 import Component from '../../../helpers/Component'
+import Cookies from '../../../helpers/Cookies'
 
 import Table from './components/Table'
 import List from './components/List'
@@ -136,7 +137,14 @@ export default class PostsPage extends Component {
       app.togglePreloader(false)
       app.isLoading = false
 
-      const table = false
+      let cookieTable = Cookies.getCookie('table')
+      const windowWidth = window.innerWidth
+
+      let table = true
+
+      if (windowWidth < 1000 && cookieTable !== 'true' || windowWidth >= 1000 && cookieTable === 'false') {
+        table = false
+      }
 
       if (table) {
         self.switchToTable()
@@ -174,6 +182,8 @@ export default class PostsPage extends Component {
     if (this.listLoaded) {
       this.toggleCheckBoxes()
     }
+
+    Cookies.setCookie('table', 'true', 365)
   }
 
   /**
@@ -202,6 +212,8 @@ export default class PostsPage extends Component {
     if (this.tableLoaded) {
       this.toggleCheckBoxes(true)
     }
+
+    Cookies.setCookie('table', 'false', 365)
   }
 
   /**

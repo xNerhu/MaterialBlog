@@ -80,6 +80,7 @@ export default class Toolbar extends Component {
         if (first) {
           if (position === 'Right') {
             className += ' toolbar-right-first'
+            first = false
           }
         }
 
