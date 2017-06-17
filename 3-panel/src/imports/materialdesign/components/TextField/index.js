@@ -18,7 +18,7 @@ export default class TextField extends Component {
    * @return {DOMElement} input
    */
   getInput = () => {
-    return this.elements.input
+    return (!this.props.textarea) ? this.elements.input : this.elements.textarea
   }
 
   /**
@@ -27,7 +27,7 @@ export default class TextField extends Component {
    * @param {Object} event data
    */
   onFocus = (e) => {
-    if (!this.toggled && this.elements.input.value.length < 1) this.toggle(true)
+    if (!this.toggled && this.getInput().value.length < 1) this.toggle(true)
   }
 
   /**
@@ -36,7 +36,7 @@ export default class TextField extends Component {
    * @param {Object} event data
    */
   onBlur = (e) => {
-    if (this.toggled && this.elements.input.value.length < 1) this.toggle(false)
+    if (this.toggled && this.getInput().value.length < 1) this.toggle(false)
   }
 
   /**
@@ -45,7 +45,7 @@ export default class TextField extends Component {
    */
   onInput = (e) => {
     if (this.counter) {
-      const value = this.elements.input.value
+      const value = this.getInput().value
 
       if (value.length > this.props.maxLength && !this.error && !this.elements.root.classList.contains('error')) {
         this.toggleError(true)
@@ -54,6 +54,13 @@ export default class TextField extends Component {
       }
 
       this.setCounterText(value.length + '/' + this.props.maxLength)
+    }
+
+    if (this.props.textarea === true) {
+      const textarea = this.elements.textarea
+
+      textarea.style.height = 'auto'
+      textarea.style.height = textarea.scrollHeight - 16 + 'px'
     }
   }
 
@@ -70,7 +77,7 @@ export default class TextField extends Component {
    * @param {String} text
    */
   setPlaceholder = (str = 'Placeholder') => {
-    this.elements.input.setAttribute('placeholder', str)
+    this.getInput().setAttribute('placeholder', str)
   }
 
   /**
@@ -176,6 +183,7 @@ export default class TextField extends Component {
     return (
       <div className='material-text-field disabled' ref='root'>
         <input className='material-text-field-input' ref='input' onFocus={this.onFocus} onBlur={this.onBlur} onInput={this.onInput} />
+        <textarea className='material-text-field-text-area' ref='textarea' onFocus={this.onFocus} onBlur={this.onBlur} onInput={this.onInput} />
         <div className='material-text-field-hint' ref='hint' onClick={this.onFocus} />
         <div className='material-text-field-divider' ref='divider' />
         <div className='material-text-field-focus-divider' ref='focusDivider' />
@@ -190,12 +198,15 @@ export default class TextField extends Component {
   afterRender () {
     const props = this.props
 
+    if (props.textarea === true) this.elements.textarea.style.display = 'block'
+    else this.elements.input.style.display = 'block'
+
     if (props.hint) this.setHint(this.props.hint)
     if (props.placeholder) this.setPlaceholder(this.props.placeholder)
     if (props.helperText) this.setHelperText(this.props.helperText)
     if (props.maxLength) this.setCounter(true)
     if (props.className) this.elements.root.classList.add(this.props.className)
-    if (props.type != null) this.elements.input.type = this.props.type
+    if (props.type != null) this.getInput().type = this.props.type
 
     if (!this.props.actionIconRippleStyle) {
       this.props.actionIconRippleStyle = {

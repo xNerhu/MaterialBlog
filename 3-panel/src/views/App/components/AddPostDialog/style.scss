@@ -1,0 +1,89 @@
+.add-post-dialog {
+  width: 100%;
+  height: calc(100% - 64px);
+  position: absolute;
+  top: 64px;
+  left: 0;
+  z-index: 7;
+  background-color: white;
+  opacity: 0;
+  display: none;
+  overflow: auto;
+  transition: 0.3s opacity;
+}
+
+.add-post-dialog-container {
+  width: calc(100% - 32px);
+  max-width: 640px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.add-post-dialog-title {
+  margin: 32px auto;
+}
+
+.add-post-dialog-container-uplad-container {
+  margin-top: 32px;
+  overflow: hidden;
+}
+
+.add-post-dialog-upload-button {
+  background-color: #3f51b5;
+  float: left;
+}
+
+.add-post-dialog-value {
+  max-width: 75%;
+  white-space: nowrap;
+  overflow: hidden;
+  float: right;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  margin-left: 24px;
+  @include Roboto-Regular;
+  font-size: 16px;
+  color: #000;
+  position: relative;
+
+  & .value {
+    opacity: 0;
+    transition: 0.2s opacity;
+  }
+
+  & .indicator {
+    width: 0%;
+    height: 2px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    background-color: #FFC107;
+    transition: 0.3s width;
+  }
+}
+
+.add-post-dialog-upload-input {
+  display: none;
+}
+
+/*.add-post-dialog-upload {
+  & input, button {
+    width: auto;
+    min-width: 88px;
+    display: inline-block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 24px;
+    padding-right: 24px;
+    border-radius: 2px;
+    @include Roboto-Medium;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+    background-color: #2196f3;
+    font-size: 14px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  }
+}*/

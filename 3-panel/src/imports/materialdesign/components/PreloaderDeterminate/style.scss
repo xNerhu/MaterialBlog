@@ -1,0 +1,14 @@
+.preloader-determinate {
+  -webkit-transform-origin: center center;
+  transform-origin: center center;
+  width: 64px;
+  height: 64px;
+  margin: 64px;
+}
+
+.preloader-determinate .path {
+  stroke-dashoffset: 0;
+  stroke-linecap: square;
+  stroke: #FFC107;
+  stroke-width: 4;
+}

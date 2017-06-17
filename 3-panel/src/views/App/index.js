@@ -1,6 +1,8 @@
 import Component from '../../helpers/Component'
 import Url from '../../helpers/Url'
 
+import AddPostDialog from './components/AddPostDialog'
+
 import NavigationDrawer from './components/NavigationDrawer/index'
 import Toolbar from './components/Toolbar'
 
@@ -20,7 +22,7 @@ export default class App extends Component {
   beforeRender () {
     window.app = this
 
-    this.props.defaultTitle = 'Posty'
+    this.defaultTitle = 'Posty'
 
     this.elementsToCallBack = []
 
@@ -33,6 +35,7 @@ export default class App extends Component {
 
     this.isLoading = false
 
+    this.selectedPage = null
     this.canSelect = true
     this.lastPage = null
 
@@ -210,9 +213,19 @@ export default class App extends Component {
       },
       {
         type: 'Title',
-        title: this.props.defaultTitle,
+        title: this.defaultTitle,
         style: {
           color: '#fff'
+        }
+      },
+      {
+        type: 'Button',
+        text: 'ZAPISZ',
+        ref: 'saveButton',
+        position: 'Right',
+        className: 'toolbar-button-save',
+        onClick: function (e) {
+          console.log(e)
         }
       },
       {
@@ -370,6 +383,7 @@ export default class App extends Component {
       const pageRoot = page.getRoot()
       const pageName = this.getPageName(page)
 
+      this.selectedPage = page
       this.canSelect = false
 
       if (navigationDrawer.toggled) navigationDrawer.hide()
@@ -393,6 +407,7 @@ export default class App extends Component {
         title = 'Plan lekcji'
       }
 
+      this.defaultTitle = title
       toolbar.setTitle(title)
 
       setTimeout(function () {
@@ -522,6 +537,18 @@ export default class App extends Component {
     this.toggleMenu(false)
   }
 
+  /**
+   * On floating action button click event.
+   * @param {Event}
+   */
+  onFABClick = (e) => {
+    const postsPage = this.getPostsPage()
+
+    if (this.selectedPage === postsPage) {
+      this.elements.addPostDialog.toggle(true)
+    }
+  }
+
   render () {
     return (
       <div>
@@ -533,9 +560,10 @@ export default class App extends Component {
             <AboutClassPage ref='aboutClassPage' />
             <LessonsPlanPage ref='lessonsPlanPage' />
           </div>
+          <AddPostDialog ref='addPostDialog' />
         </div>
         <div className='fab' ref='fabContainer'>
-          <FAB ref='fab' />
+          <FAB ref='fab' onClick={this.onFABClick} />
         </div>
         <Menu ref='menu' className='toolbar-menu' mobile={true} />
         <Dialog ref='deletePostsDialog' title='Jesteś pewny(a)?'>

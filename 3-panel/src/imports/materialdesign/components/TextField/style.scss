@@ -16,7 +16,9 @@
   -webkit-text-fill-color: transparent;
   background-color: transparent;
   text-shadow: 0px 0px 0px #000;
+  color: #FFC107;
   cursor: text;
+  display: none;
 }
 
 .material-text-field-input:disabled {
@@ -32,23 +34,38 @@
   opacity: 0.7;
 }
 
-/*.material-text-field-textarea {
+.material-text-field-text-area {
+  width: 100%;
+  height: 100%;
   font-size: 16px;
   padding-top: 8px;
   padding-bottom: 8px;
-  width: 100%;
   -webkit-text-fill-color: transparent;
   background-color: transparent;
+  text-shadow: 0px 0px 0px #000;
+  color: #FFC107;
   cursor: text;
+  display: none;
   resize: none;
   outline: none;
   border: none;
   margin: 0;
-  display: block;
   text-decoration: none !important;
   @include Roboto-Regular;
 }
-*/
+
+.material-text-field-text-area:disabled {
+  background-color: transparent;
+}
+
+.material-text-field-text-area::placeholder {
+  color: #000;
+  opacity: 0;
+}
+
+.material-text-field.enabled > .material-text-field-text-area::placeholder {
+  opacity: 0.7;
+}
 
 .material-text-field-hint {
   position: absolute;
@@ -68,7 +85,7 @@
 }
 
 .material-text-field.enabled > .material-text-field-hint {
-  color: #2d5cfa;
+  color: #FFC107;
   top: -12px;
   font-size: 14px;
   opacity: 1;
@@ -93,7 +110,7 @@
   margin-left: auto;
   margin-right: auto;
   transition: 0.3s width, 0.3s background-color;
-  background-color: #2d5cfa;
+  background-color: #FFC107;
 }
 
 .material-text-field.disabled > .material-text-field-focus-divider {

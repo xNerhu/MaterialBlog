@@ -2,6 +2,8 @@ import Component from '../../../../helpers/Component'
 
 import MultiIcon from './components/MultiIcon'
 
+import MaterialButton from '../../../../imports/materialdesign/components/MaterialButton'
+
 export default class Toolbar extends Component {
   beforeRender () {
     this.touched = false
@@ -66,7 +68,19 @@ export default class Toolbar extends Component {
       const onMouseEnter = item.onMouseEnter
       const onMouseLeave = item.onMouseLeave
 
-      if (type === 'Icon') {
+      if (type === 'Button') {
+        let className = 'toolbar-button'
+
+        if (item.className != null) {
+          className += ' ' + item.className
+        }
+
+        const element = (
+          <MaterialButton ref={item.ref} className={className} shadow={false} text={item.text} onClick={onClick} />
+        )
+
+        this.renderComponents(element, this.elements.content)
+      } else if (type === 'Icon') {
         if (image && subType !== 'Menu' && subType !== 'Search') {
           style = Object.assign(
             {
@@ -159,19 +173,37 @@ export default class Toolbar extends Component {
    * @param {Boolean} hide multi icon
    * @param {Boolean} hide search icon
    */
-  hideItems = (multiIcon = false, search = true, title = true) => {
-    /*this.hiddenItems = []
+  hideItems = (multiIcon = false, title = true) => {
+    this.hiddenItems = []
 
     for (var i = 0; i < this.items.length; i++) {
       const item = this.items[i]
-      const id = item.id
       const classList = item.classList
 
-      if (multiIcon && id === 'toolbar-icon-multi-icon' || search && id === 'toolbar-icon-search' || classList.contains('toolbar-title') && title) {
-        item.style.top = '96px'
-        this.hiddenItems.push(item)
+      /*if (multiIcon && classList.contains('toolbar-icon-multi-icon') || title && classList.contains('toolbar-title')) {
+
+      }*/
+      /*if (multiIcon && classList.contains('toolbar-icon-multi-icon') || title && classList.contains('toolbar-title')) {
+        this.hideElement(item)
+      } else {
+        this.hideElement(item)
+      }*/
+      const isMultiIcon = classList.contains('toolbar-icon-multi-icon')
+      const isTitle = classList.contains('toolbar-title')
+      const isSaveButton = classList.contains('toolbar-button-save')
+
+      if (multiIcon && isMultiIcon || title && isTitle || !isMultiIcon && !isTitle && !isSaveButton) {
+        this.hideElement(item)
       }
-    }*/
+    }
+  }
+
+  /**
+   * Hides element.
+   */
+  hideElement = (element) => {
+    element.style.top = '96px'
+    this.hiddenItems.push(element)
   }
 
   /**

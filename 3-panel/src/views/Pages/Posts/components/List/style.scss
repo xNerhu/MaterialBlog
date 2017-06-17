@@ -53,6 +53,7 @@
       float: right;
       @include Roboto-Regular;
       color: rgba(0, 0, 0, 0.87);
+      position: relative;
     }
 
     &.checkbox .text {

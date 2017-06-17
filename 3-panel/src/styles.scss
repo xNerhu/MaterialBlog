@@ -12,8 +12,21 @@ $pictureBlur: 10px;
 @import 'mixins/text.scss';
 
 @import 'src/imports/materialdesign/mixins/scroll.scss';
+@import 'src/imports/materialdesign/components/Checkbox/style.scss';
+@import 'src/imports/materialdesign/components/Dialog/style.scss';
+@import 'src/imports/materialdesign/components/MaterialButton/style.scss';
+@import 'src/imports/materialdesign/components/Menu/style.scss';
+@import 'src/imports/materialdesign/components/Preloader/style.scss';
+//@import 'src/imports/materialdesign/components/PreloaderDeterminate/style.scss';
+@import 'src/imports/materialdesign/components/TextField/style.scss';
+@import 'src/imports/materialdesign/components/Tooltip/style.scss';
+@import 'src/imports/materialdesign/components/FAB/style.scss';
+@import 'src/imports/materialdesign/components/Snackbar/style.scss';
+@import 'src/imports/materialdesign/helpers/ripple/style.scss';
 
 @import 'views/App/styles.scss';
+@import 'views/App/components/AddPostDialog/style.scss';
+
 @import 'views/App/components/Toolbar/style.scss';
 @import 'views/App/components/Toolbar/components/MultiIcon/style.scss';
 
@@ -24,14 +37,3 @@ $pictureBlur: 10px;
 @import 'views/Pages/Posts/style.scss';
 @import 'views/Pages/Posts/components/Table/style.scss';
 @import 'views/Pages/Posts/components/List/style.scss';
-
-@import 'src/imports/materialdesign/components/Checkbox/style.scss';
-@import 'src/imports/materialdesign/components/Dialog/style.scss';
-@import 'src/imports/materialdesign/components/MaterialButton/style.scss';
-@import 'src/imports/materialdesign/components/Menu/style.scss';
-@import 'src/imports/materialdesign/components/Preloader/style.scss';
-@import 'src/imports/materialdesign/components/TextField/style.scss';
-@import 'src/imports/materialdesign/components/Tooltip/style.scss';
-@import 'src/imports/materialdesign/components/FAB/style.scss';
-@import 'src/imports/materialdesign/components/Snackbar/style.scss';
-@import 'src/imports/materialdesign/helpers/ripple/style.scss';

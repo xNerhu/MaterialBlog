@@ -54,6 +54,7 @@ export default class Component {
           if (typeof props.onFocus === 'function') element.addEventListener('focus', props.onFocus)
           if (typeof props.onBlur === 'function') element.addEventListener('blur', props.onBlur)
           if (typeof props.onInput === 'function') element.addEventListener('input', props.onInput)
+          if (typeof props.onChange === 'function') element.addEventListener('change', props.onChange)
 
           if (typeof props.style === 'object') {
             Object.assign(element.style, props.style)

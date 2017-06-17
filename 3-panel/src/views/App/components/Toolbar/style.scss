@@ -23,7 +23,22 @@
   @include toolbar-icon;
   @include invert-colors
   cursor: pointer;
+  top: 0;
   transition: 0.3s top, 0.3s opacity;
+}
+
+.toolbar-button {
+  padding-top: 23.5px;
+  padding-bottom: 23px;
+  position: relative;
+  float: right;
+  background-color: transparent;
+}
+
+.toolbar-button-save {
+  display: none;
+  opacity: 0;
+  transition: 0.3s opacity;
 }
 
 .toolbar-left {
