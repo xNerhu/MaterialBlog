@@ -1,0 +1,39 @@
+.material-switch {
+  position: relative;
+
+  & .track {
+    width: 32px;
+    background-color: #000;
+    border-radius: 15px;
+    height: 16px;
+    position: relative;
+    opacity: 0.38;
+    left: 8px;
+    transition: 0.2s opacity, 0.2s background-color;
+  }
+
+  & .thumb {
+    width: 22px;
+    height: 22px;
+    background-color: #fafafa;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.14), 0 1px 3px rgba(0,0,0,0.26);
+    border-radius: 50%;
+    transition: 0.2s background-color, 0.2s left;
+  }
+
+  &.toggled {
+    & .track {
+      opacity: 0.5;
+      background-color: #FFC107;
+    }
+
+    & .thumb {
+      left: 27px;
+      background-color: #FFC107;
+    }
+  }
+}

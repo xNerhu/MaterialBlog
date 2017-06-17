@@ -5,85 +5,98 @@
   top: 64px;
   left: 0;
   z-index: 7;
-  background-color: white;
+  background-color: #F5F5F5;
   opacity: 0;
   display: none;
   overflow: auto;
   transition: 0.3s opacity;
-}
 
-.add-post-dialog-container {
-  width: calc(100% - 32px);
-  max-width: 640px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.add-post-dialog-title {
-  margin: 32px auto;
-}
-
-.add-post-dialog-container-uplad-container {
-  margin-top: 32px;
-  overflow: hidden;
-}
-
-.add-post-dialog-upload-button {
-  background-color: #3f51b5;
-  float: left;
-}
-
-.add-post-dialog-value {
-  max-width: 75%;
-  white-space: nowrap;
-  overflow: hidden;
-  float: right;
-  padding-top: 9px;
-  padding-bottom: 9px;
-  margin-left: 24px;
-  @include Roboto-Regular;
-  font-size: 16px;
-  color: #000;
-  position: relative;
-
-  & .value {
-    opacity: 0;
-    transition: 0.2s opacity;
-  }
-
-  & .indicator {
-    width: 0%;
-    height: 2px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  & .container {
+    width: calc(100% - 32px);
+    max-width: 640px;
     margin: 0 auto;
-    background-color: #FFC107;
-    transition: 0.3s width;
+    position: relative;
+
+    & .text-field-title {
+      margin: 32px auto;
+    }
+
+    & .upload-container {
+      margin-top: 32px;
+      height: 37px;
+
+      & .button {
+        background-color: #FFC107;
+        float: left;
+      }
+
+      & .value-container {
+        max-width: calc(100% - 156px);
+        float: right;
+        padding-top: 9px;
+        padding-bottom: 9px;
+        margin-left: 24px;
+        @include Roboto-Regular;
+        font-size: 16px;
+        color: #000;
+        position: relative;
+        transition: 0.3s max-width;
+
+        & .value {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: calc(100% - 32px);
+          opacity: 0;
+          transition: 0.2s opacity;
+        }
+
+        & .indicator {
+          width: 0%;
+          height: 2px;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+          background-color: #FFC107;
+          transition: 0.3s width;
+        }
+
+        & .icon {
+          width: 32px;
+          height: 32px;
+          position: absolute;
+          right: 0;
+          top: 2px;
+          opacity: 0;
+          display: none;
+          transition: 0.3s opacity;
+          cursor: pointer;
+          border-radius: 100%;
+          @include image-center(24px, 24px);
+          background-image: url(images/Toolbar/exit.png);
+        }
+      }
+    }
+
+    & .media {
+      max-width: 50%;
+      margin: 32px auto;
+      display: block;
+      clear: both;
+      position: relative;
+      transition: 0.3s max-width;
+    }
+  }
+
+  & .upload-input {
+    display: none;
   }
 }
 
-.add-post-dialog-upload-input {
-  display: none;
-}
-
-/*.add-post-dialog-upload {
-  & input, button {
-    width: auto;
-    min-width: 88px;
-    display: inline-block;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 24px;
-    padding-right: 24px;
-    border-radius: 2px;
-    @include Roboto-Medium;
-    text-align: center;
-    cursor: pointer;
-    color: #fff;
-    background-color: #2196f3;
-    font-size: 14px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+@media screen and (max-width: 480px) {
+  .add-post-dialog .media {
+    max-width: 100% !important;
   }
-}*/
+}

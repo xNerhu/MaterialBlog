@@ -1,8 +1,9 @@
 import Component from './../../../../helpers/Component'
-import Url from './../../../../helpers/Url'
+
+import FileInput from './components/FileInput'
 
 import TextField from '../../../../imports/materialdesign/components/TextField'
-import MaterialButton from '../../../../imports/materialdesign/components/MaterialButton'
+import Switch from '../../../../imports/materialdesign/components/Switch'
 
 export default class AddPostDialog extends Component {
   beforeRender () {
@@ -56,77 +57,16 @@ export default class AddPostDialog extends Component {
     }, 20)
   }
 
-  /**
-   * On upload button click event.
-   * Triggers input click.
-   * @param {Event}
-   */
-  onUploadButtonClick = (e) => {
-    const input = this.elements.upload
-
-    input.click()
-  }
-
-  /**
-   * On upload input change event.
-   * Shows or hides field with file name.
-   * @param {Event}
-   */
-  onUploadInputChange = (e) => {
-    const input = this.elements.upload
-    const value = input.value
-
-    const uploadValue = this.elements.uploadValue
-    const indicator = this.elements.uploadValueIndicator
-
-    if (value === '') {
-      uploadValue.style.opacity = '0'
-      indicator.style.width = '0%'
-
-      setTimeout(function () {
-        uploadValue.innerHTML = value
-      }, 300)
-    } else {
-      uploadValue.innerHTML = Url.extractFileName(value)
-
-      setTimeout(function () {
-        uploadValue.style.opacity = '1'
-        indicator.style.width = '100%'
-      }, 1)
-    }
-
-    /*let reader = new FileReader()
-
-    reader.onload = function (e) {
-
-    }
-    const test =this.elements.test
-    reader.onprogress = function (e) {
-      if (e.lengthComputable) {
-          var progress = parseInt( ((e.loaded / e.total) * 100), 10 );
-          console.log(progress);
-          test.setProgress(progress)
-      }
-    }
-
-    reader.readAsDataURL(input.files[0])*/
-  }
-
   render () {
     return (
       <div className='add-post-dialog' ref='root'>
-        <div className='add-post-dialog-container'>
-          <TextField className='add-post-dialog-title' hint='Tytuł' />
+        <div className='container'>
+          <TextField className='text-field-title' hint='Tytuł' />
           <TextField textarea={true} hint='Treść' placeholder='Można używać HTML, CSS oraz JavaScript' />
-          <div className='add-post-dialog-container-uplad-container'>
-            <MaterialButton onClick={this.onUploadButtonClick} className='add-post-dialog-upload-button' text='Dodaj zdjęcie' />
-            <div className='add-post-dialog-value'>
-              <div className='value' ref='uploadValue' />
-              <div className='indicator' ref='uploadValueIndicator' />
-            </div>
-          </div>
+          <FileInput ref='FileInput' />
+          <img className='media' ref='media' draggable='false' />
+          <Switch />
         </div>
-        <input className='add-post-dialog-upload-input' ref='upload' type='file' name='pic' accept='image/*' onChange={this.onUploadInputChange} />
       </div>
     )
   }

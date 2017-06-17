@@ -52,17 +52,17 @@ export default class Checkbox extends Component {
 
   /**
    * On click event.
-   * @param {Object} event data.
+   * @param {Event} event data.
    */
   onClick = (e) => {
     if (!this.checked) this.check()
     else this.unCheck()
   }
 
-  /*
+  /**
    * On mouse down event.
    * Makes ripple.
-   * @param {Object} event data.
+   * @param {Event} event data.
    */
   onMouseDown = (e) => {
     const root = this.getRoot()
@@ -70,7 +70,8 @@ export default class Checkbox extends Component {
     const color = border.style['border-color']
 
     const ripple = Ripple.createRipple(root, {
-      backgroundColor: color
+      backgroundColor: color,
+      opacity: 0.2
     }, createRippleCenter(root))
     Ripple.makeRipple(ripple)
   }
