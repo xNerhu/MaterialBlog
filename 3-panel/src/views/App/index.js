@@ -365,6 +365,7 @@ export default class App extends Component {
   selectPage = (page) => {
     if (this.canSelect && this.lastPage !== page && !this.isLoading) {
       const self = this
+      const toolbar = this.getToolbar()
       const navigationDrawer = this.getNavigationDrawer()
       const pageRoot = page.getRoot()
       const pageName = this.getPageName(page)
@@ -381,6 +382,18 @@ export default class App extends Component {
 
         page.load()
       }
+
+      let title = 'Posty'
+
+      if (pageName === 'gallery') {
+        title = 'Galeria'
+      } else if (pageName === 'aboutClass') {
+        title = 'O klasie'
+      } else if (pageName === 'lessonsPlan') {
+        title = 'Plan lekcji'
+      }
+
+      toolbar.setTitle(title)
 
       setTimeout(function () {
         pageRoot.style.opacity = '1'

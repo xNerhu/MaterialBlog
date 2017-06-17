@@ -93,7 +93,7 @@ export default class Checkbox extends Component {
       this.check()
     }
 
-    if (props.onColor == null) props.onColor = '#3F51B5'
+    if (props.onColor == null) props.onColor = '#FFC107'
     if (props.offColor == null) props.offColor = '#757575'
   }
 }
