@@ -24,6 +24,10 @@ export default class App extends Component {
 
     this.defaultTitle = 'Posty'
 
+    this.accountInfo = {
+      userName: 'Mikołaj Palkiewicz'
+    }
+
     this.elementsToCallBack = []
 
     this.loadedPages = {
@@ -571,6 +575,7 @@ export default class App extends Component {
         </Dialog>
         <Snackbar className='snackbar-deleted-posts' ref='deletedPostsSnackbar' text='Pomyślnie usunięto posty' timeout={5000} />
         <Tooltip ref='tooltipView' text='Przełącz na liste' />
+        <Tooltip ref='tooltipUploadButton' text='Najlepiej w proporcjach 16:9' />
         <NavigationDrawer ref='navigationDrawer' />
         <Preloader className='data-preloader' ref='preloader' />
       </div>

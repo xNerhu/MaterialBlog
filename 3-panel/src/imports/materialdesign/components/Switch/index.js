@@ -36,6 +36,8 @@ export default class Switch extends Component {
       root.classList.remove('toggled')
     }
 
+    if (typeof this.props.onSwitch === 'function') this.props.onSwitch(flag)
+
     this.toggled = flag
   }
 
@@ -84,14 +86,14 @@ export default class Switch extends Component {
     if (props.rippleStyleOn == null) {
       props.rippleStyleOn = {
         backgroundColor: '#FFC107',
-        opacity: 0.1
+        opacity: 0.25
       }
     }
 
     if (props.rippleStyleOff == null) {
       props.rippleStyleOff = {
         backgroundColor: '#000',
-        opacity: 0.1
+        opacity: 0.08
       }
     }
   }

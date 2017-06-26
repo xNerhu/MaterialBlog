@@ -28,13 +28,34 @@ export default class FileInput extends Component {
   }
 
   /**
+   * On button mouse enter event.
+   * Shows tooltip.
+   * @param {Event}
+   */
+  onButtonMouseEnter = (e) => {
+    const tooltip = window.app.elements.tooltipUploadButton
+
+    tooltip.toggle(true, this.elements.button.getRoot())
+  }
+
+  /**
+   * On button mouse leave event.
+   * Hides tooltip.
+   * @param {Event}
+   */
+  onButtonMouseLeave = (e) => {
+    const tooltip = window.app.elements.tooltipUploadButton
+
+    tooltip.toggle(false)
+  }
+
+  /**
    * On upload input change event.
    * Shows or hides field with file name.
    * @param {Event}
    */
   onInputChange = (e) => {
-    const media = window.app.elements.addPostDialog.elements.media
-
+    const preview = window.app.elements.addPostDialog.elements.preview
     const actionIcon = this.elements.actionIcon
     const input = this.elements.upload
     const value = input.value
@@ -52,8 +73,7 @@ export default class FileInput extends Component {
       let reader = new FileReader()
 
       reader.onload = function (e) {
-        const data = e.srcElement.result
-        const time = (indicator.style.width === '100%') ? 1 : 200
+        const src = e.target.result
 
         indicator.style.width = '100%'
 
@@ -62,12 +82,9 @@ export default class FileInput extends Component {
 
           setTimeout(function () {
             actionIcon.style.opacity = '0.7'
+            preview.setMedia(src)
           }, 20)
         }
-
-        setTimeout(function () {
-          media.src = data
-        }, time)
       }
 
       reader.readAsDataURL(input.files[0])
@@ -79,13 +96,15 @@ export default class FileInput extends Component {
    * @param {Event}
    */
   onActionIconClick = (e) => {
-    const media = window.app.elements.addPostDialog.elements.media
+    const preview = window.app.elements.addPostDialog.elements.preview
     const actionIcon = this.elements.actionIcon
 
     const input = this.elements.upload
 
     const uploadValue = this.elements.value
     const indicator = this.elements.indicator
+
+    preview.setMedia('')
 
     input.value = ''
 
@@ -97,8 +116,6 @@ export default class FileInput extends Component {
       actionIcon.style.display = 'none'
       uploadValue.innerHTML = ''
     }, 300)
-
-    media.src = ''
   }
 
   /**
@@ -127,7 +144,7 @@ export default class FileInput extends Component {
   render () {
     return (
       <div className='upload-container'>
-        <MaterialButton onClick={this.onButtonClick} className='button' text='Dodaj zdjęcie' />
+        <MaterialButton ref='button' onClick={this.onButtonClick} className='button' text='Dodaj zdjęcie' />
         <div className='value-container'>
           <div className='value' ref='value' />
           <div className='indicator' ref='indicator' />
@@ -139,6 +156,7 @@ export default class FileInput extends Component {
   }
 
   afterRender () {
+    const buttonRoot = this.elements.button.getRoot()
     const props = this.props
 
     if (props.actionIconRippleStyle == null) {
@@ -147,5 +165,8 @@ export default class FileInput extends Component {
         opacity: 0.2
       }
     }
+
+    buttonRoot.addEventListener('mouseenter', this.onButtonMouseEnter)
+    buttonRoot.addEventListener('mouseleave', this.onButtonMouseLeave)
   }
 }

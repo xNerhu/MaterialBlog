@@ -26,7 +26,7 @@
       height: 37px;
 
       & .button {
-        background-color: #FFC107;
+        background-color: #3f51b5;
         float: left;
       }
 
@@ -79,19 +79,36 @@
         }
       }
     }
-
-    & .media {
-      max-width: 50%;
-      margin: 32px auto;
-      display: block;
-      clear: both;
-      position: relative;
-      transition: 0.3s max-width;
-    }
   }
 
   & .upload-input {
     display: none;
+  }
+
+  .switch-container {
+    margin-top: 24px;
+    height: 16px;
+
+    & .text {
+      @include Roboto-Regular;
+      font-size: 16px;
+      color: #000;
+      opacity: 0.7;
+      float: left;
+      transform: translateZ(0);
+    }
+
+    & .material-switch {
+      margin-left: 16px;
+      margin-top: 1.5px;
+      float: left;
+
+      &::after {
+        content: '';
+        display: block;
+        clear: both;
+      }
+    }
   }
 }
 
