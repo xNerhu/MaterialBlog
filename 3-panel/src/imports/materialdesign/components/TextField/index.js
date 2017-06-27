@@ -3,6 +3,8 @@ import Component from '../../../../helpers/Component'
 export default class TextField extends Component {
   beforeRender () {
     this.counter = false
+
+    this.error = false
   }
 
   /**

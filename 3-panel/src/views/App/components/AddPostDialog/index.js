@@ -9,7 +9,6 @@ import Switch from '../../../../imports/materialdesign/components/Switch'
 
 export default class AddPostDialog extends Component {
   beforeRender () {
-    this.persistent = true
     this.toggled = false
 
     this.previewToggled = false
@@ -37,28 +36,52 @@ export default class AddPostDialog extends Component {
     const saveButton = toolbar.elements.saveButton
     const saveButtonRoot = saveButton.getRoot()
 
-    if (navigationDrawer.toggled) navigationDrawer.hide()
+    app.toggleFAB(!flag)
 
-    app.toggleFAB(false)
+    if (flag) {
+      if (navigationDrawer.toggled) navigationDrawer.hide()
 
-    toolbar.setTitle('Dodaj post')
-    toolbar.hideItems(false, false)
+      toolbar.setTitle('Dodaj post')
+      toolbar.hideItems(false, false)
 
-    multiIcon.changeToExit()
-
-    setTimeout(function () {
-      saveButtonRoot.style.display = 'block'
+      multiIcon.changeToExit()
 
       setTimeout(function () {
-        saveButtonRoot.style.opacity = '1'
+        saveButtonRoot.style.display = 'block'
+
+        setTimeout(function () {
+          saveButtonRoot.style.opacity = '1'
+        }, 20)
+      }, 100)
+
+      root.style.display = 'block'
+
+      setTimeout(function () {
+        root.style.opacity = '1'
       }, 20)
-    }, 100)
+    } else {
+      toolbar.setTitle(app.defaultTitle)
 
-    root.style.display = 'block'
+      multiIcon.changeToDefault()
 
-    setTimeout(function () {
-      root.style.opacity = '1'
-    }, 20)
+      saveButtonRoot.style.opacity = '0'
+
+      setTimeout(function () {
+        saveButtonRoot.style.display = 'none'
+
+        setTimeout(function () {
+          toolbar.showItems()
+        }, 10)
+      }, 150)
+
+      root.style.opacity = '0'
+
+      setTimeout(function () {
+        root.style.display = 'none'
+      }, 300)
+    }
+
+    this.toggled = flag
   }
 
   /**
@@ -90,8 +113,8 @@ export default class AddPostDialog extends Component {
    * Updates preview title and content.
    */
   updatePreview = () => {
-    const title = this.elements.textFieldTitle.getInput().value
-    const content = this.elements.textFieldContent.getInput().value
+    const title = this.elements.titleTextField.getInput().value
+    const content = this.elements.contentTextField.getInput().value
 
     const preview = this.elements.preview
 
@@ -114,17 +137,6 @@ export default class AddPostDialog extends Component {
   }
 
   /**
-   * On input event.
-   * Updates preview post.
-   * @param {Event}
-   */
-  onInput = (e) => {
-    if (this.previewToggled) {
-      this.updatePreview()
-    }
-  }
-
-  /**
    * Parse date if is less than 10.
    */
   parseDate = (d) => {
@@ -135,12 +147,99 @@ export default class AddPostDialog extends Component {
     return d
   }
 
+  /**
+   * Verify data.
+   * @return {Boolean} data is correct
+   */
+  verifyData = () => {
+    const titleTextField = this.elements.titleTextField
+    const contentTextField = this.elements.contentTextField
+
+    const title = titleTextField.getInput().value
+    const content = contentTextField.getInput().value
+
+    let correct = true
+
+    if (title.length < 1) {
+      titleTextField.toggleError(true)
+
+      correct = false
+    }
+
+    if (content.length < 1) {
+      contentTextField.toggleError(true)
+
+      correct = false
+    }
+
+    return correct
+  }
+
+  /**
+   * On textfield input event.
+   * Updates preview post.
+   * @param {TextField}
+   */
+  onInput = (textField) => {
+    if (this.previewToggled) {
+      this.updatePreview()
+    }
+
+    const input = textField.getInput()
+
+    if (input.value.length > 0 && textField.error) {
+      textField.toggleError(false)
+    } else if (input.value.length < 1 && !textField.error) {
+      textField.toggleError(true)
+    }
+  }
+
+  /**
+   * On textfield blur event.
+   * @param {TextField}
+   */
+  onBlur = (textField) => {
+    if (textField.getInput().value.length < 1) textField.toggleError(true)
+  }
+
+  /**
+   * On title textfield input event.
+   * @param {Event}
+   */
+  onTitleTextFieldInput = (e) => {
+    this.onInput(this.elements.titleTextField)
+  }
+
+  /**
+   * On title textfield blur event.
+   * @param {Event}
+   */
+  onTitleTextFieldBlur = (e) => {
+    this.onBlur(this.elements.titleTextField)
+  }
+
+  /**
+   * On content textfield input event.
+   * @param {Event}
+   */
+  onContentTextFieldInput = (e) => {
+    this.onInput(this.elements.contentTextField)
+  }
+
+  /**
+   * On content textfield blur event.
+   * @param {Event}
+   */
+  onContentTextFieldBlur = (e) => {
+    this.onBlur(this.elements.contentTextField)
+  }
+
   render () {
     return (
       <div className='add-post-dialog' ref='root'>
         <div className='container'>
-          <TextField className='text-field-title' hint='Tytuł' ref='textFieldTitle' />
-          <TextField textarea={true} hint='Treść' placeholder='Można używać HTML, CSS oraz JavaScript' ref='textFieldContent' />
+          <TextField className='text-field-title' hint='Tytuł' ref='titleTextField' helperText='*Wymagane' />
+          <TextField textarea={true} hint='Treść' placeholder='Można używać HTML oraz CSS' ref='contentTextField' helperText='*Wymagane' />
           <FileInput ref='fileInput' />
           <div className='switch-container'>
             <div className='text'>
@@ -155,16 +254,13 @@ export default class AddPostDialog extends Component {
   }
 
   afterRender () {
-    const self = this
+    const title = this.elements.titleTextField.getInput()
+    const content = this.elements.contentTextField.getInput()
 
-    setTimeout(function () {
-      self.toggle(true)
-    }, 100)
+    title.addEventListener('input', this.onTitleTextFieldInput)
+    title.addEventListener('blur', this.onTitleTextFieldBlur)
 
-    const title = this.elements.textFieldTitle.getInput()
-    const content = this.elements.textFieldContent.getInput()
-
-    title.addEventListener('input', this.onInput)
-    content.addEventListener('input', this.onInput)
+    content.addEventListener('input', this.onContentTextFieldInput)
+    content.addEventListener('blur', this.onContentTextFieldBlur)
   }
 }

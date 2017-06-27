@@ -18,11 +18,12 @@
     position: relative;
 
     & .text-field-title {
-      margin: 32px auto;
+      margin-top: 32px;
+      margin-bottom: 48px;
     }
 
     & .upload-container {
-      margin-top: 32px;
+      margin-top: 48px;
       height: 37px;
 
       & .button {

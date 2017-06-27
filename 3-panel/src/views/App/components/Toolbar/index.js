@@ -212,7 +212,7 @@ export default class Toolbar extends Component {
   showItems = () => {
     for (var i = 0; i < this.hiddenItems.length; i++) {
       const item = this.hiddenItems[i]
-      const top = (item === this.searchIconParent) ? '0px' : '50%'
+      const top = '0px'
 
       item.style.top = top
     }

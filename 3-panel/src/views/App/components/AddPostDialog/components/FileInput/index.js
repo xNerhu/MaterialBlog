@@ -82,9 +82,10 @@ export default class FileInput extends Component {
 
           setTimeout(function () {
             actionIcon.style.opacity = '0.7'
-            preview.setMedia(src)
           }, 20)
         }
+
+        preview.setMedia(src)
       }
 
       reader.readAsDataURL(input.files[0])

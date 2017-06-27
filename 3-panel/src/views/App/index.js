@@ -153,8 +153,12 @@ export default class App extends Component {
     const multiIcon = toolbar.getMultiIcon()
     const navigationDrawer = this.getNavigationDrawer()
 
+    const addPostDialog = this.elements.addPostDialog
+
     if (multiIcon.canClick) {
-      if (!navigationDrawer.toggled) {
+      if (addPostDialog.toggled) {
+        addPostDialog.toggle(false)
+      } else if (!navigationDrawer.toggled) {
         navigationDrawer.show()
         multiIcon.changeToExit()
         multiIcon.blockClick()
@@ -228,9 +232,7 @@ export default class App extends Component {
         ref: 'saveButton',
         position: 'Right',
         className: 'toolbar-button-save',
-        onClick: function (e) {
-          console.log(e)
-        }
+        onClick: this.onSavePostButtonClick
       },
       {
         type: 'Icon',
@@ -553,6 +555,23 @@ export default class App extends Component {
     }
   }
 
+  /**
+   * On save post button click event.
+   * Adds post.
+   * TODO.
+   * Close add post dialog.
+   * @param {Event}
+   */
+  onSavePostButtonClick = (e) => {
+    const addPostDialog = this.elements.addPostDialog
+    const snackbar = this.elements.addedPostSnackbar
+
+    if (addPostDialog.verifyData()) {
+      addPostDialog.toggle(false)
+      snackbar.toggle(true)
+    }
+  }
+
   render () {
     return (
       <div>
@@ -574,6 +593,7 @@ export default class App extends Component {
           Nie będzie można ich odzyskać.
         </Dialog>
         <Snackbar className='snackbar-deleted-posts' ref='deletedPostsSnackbar' text='Pomyślnie usunięto posty' timeout={5000} />
+        <Snackbar className='snackbar-added-post' ref='addedPostSnackbar' text='Pomyślnie dodano post' />
         <Tooltip ref='tooltipView' text='Przełącz na liste' />
         <Tooltip ref='tooltipUploadButton' text='Najlepiej w proporcjach 16:9' />
         <NavigationDrawer ref='navigationDrawer' />
