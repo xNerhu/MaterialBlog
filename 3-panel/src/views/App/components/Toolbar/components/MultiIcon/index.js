@@ -74,7 +74,7 @@ export default class MultiIcon extends Component {
       }, 500)
 
       if (update) this.actualState = 'default'
-    } else if (!this.isArrow && this.isExit) {
+    } else if (this.isExit) {
       root.classList.remove('multiIcon-exit')
       root.classList.remove('multiIcon-exit-change')
       this.isExit = null

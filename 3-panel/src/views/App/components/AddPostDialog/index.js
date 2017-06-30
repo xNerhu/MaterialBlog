@@ -138,6 +138,8 @@ export default class AddPostDialog extends Component {
 
   /**
    * Parse date if is less than 10.
+   * @param {Int}
+   * @return {String}
    */
   parseDate = (d) => {
     if (d < 10) {
@@ -237,11 +239,11 @@ export default class AddPostDialog extends Component {
   render () {
     return (
       <div className='add-post-dialog' ref='root'>
-        <div className='container'>
-          <TextField className='text-field-title' hint='Tytuł' ref='titleTextField' helperText='*Wymagane' />
+        <div className='add-post-dialog-container'>
+          <TextField className='add-post-dialog-text-field-title' hint='Tytuł' ref='titleTextField' helperText='*Wymagane' />
           <TextField textarea={true} hint='Treść' placeholder='Można używać HTML oraz CSS' ref='contentTextField' helperText='*Wymagane' />
           <FileInput ref='fileInput' />
-          <div className='switch-container'>
+          <div className='add-post-dialog-switch-container'>
             <div className='text'>
               Podgląd
             </div>
