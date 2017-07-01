@@ -9,6 +9,8 @@ export default class PostsPage extends Component {
     this.tableLoaded = false
     this.listLoaded = false
 
+    this.checkBoxes = false
+
     this.selectedPosts = []
 
     this.postsData = [
@@ -199,11 +201,13 @@ export default class PostsPage extends Component {
       table.setCells(this.postsData)
     }
 
-    if (this.listLoaded) {
+    /*if (this.listLoaded) {
       this.toggleCheckBoxes()
-    }
+    }*/
 
     Cookies.setCookie('table', 'true', 365)
+
+    this.isTable = true
   }
 
   /**
@@ -229,9 +233,9 @@ export default class PostsPage extends Component {
       list.setCells(this.postsData)
     }
 
-    if (this.tableLoaded) {
+    /*if (this.tableLoaded) {
       this.toggleCheckBoxes(true)
-    }
+    }*/
 
     Cookies.setCookie('table', 'false', 365)
   }
@@ -241,7 +245,7 @@ export default class PostsPage extends Component {
    * When user toggle checkbox in table and switch to list, checkboxes in list must be same state like in table.
    * @param {Boolean} change checkboxes state in list
    */
-  toggleCheckBoxes = (_list = false) => {
+/*  toggleCheckBoxes = (_list = false) => {
     const table = this.elements.table
     const list = this.elements.list
 
@@ -274,24 +278,66 @@ export default class PostsPage extends Component {
         checkboxes[i].unCheck()
       }
     }
+  }*/
+
+  /**
+   * On menu delete posts button click event.
+   * @param {Event}
+   */
+  onMenuDeletePostsButtonClick = (e) => {
+    this.toggleCheckBoxes(true)
   }
 
   /**
-  * On menu delete posts button click event.
-  * @param {Event}
-  */
-  onDeletePostsButtonClick = (e) => {
+   * Shows or hides checkboxes.
+   * @param {Boolean}
+   */
+  toggleCheckBoxes (flag) {
     const app = window.app
-    const dialog = app.elements.deletePostsDialog
-    const navigationDrawer = app.getNavigationDrawer()
+    const toolbar = app.getToolbar()
+    const deleteButton = toolbar.elements.deleteButton
+    const deleteButtonRoot = deleteButton.getRoot()
+    const multiIcon = toolbar.getMultiIcon()
 
-    if (navigationDrawer.toggled) navigationDrawer.hide()
+    if (flag) {
+      const navigationDrawer = app.getNavigationDrawer()
 
-    this.selectedPosts = this.getSelectedPosts()
+      if (navigationDrawer.toggled) navigationDrawer.hide()
 
-    if (this.selectedPosts.length > 0) {
-      dialog.toggle(true)
+      toolbar.hideItems(false, false)
+
+      setTimeout(function () {
+        deleteButtonRoot.style.display = 'block'
+
+        setTimeout(function () {
+          deleteButtonRoot.style.opacity = '1'
+        }, 20)
+      }, 100)
+
+      multiIcon.changeToExit()
+    } else {
+      deleteButtonRoot.style.opacity = '0'
+
+      setTimeout(function () {
+        deleteButtonRoot.style.display = 'none'
+
+        toolbar.showItems()
+      }, 150)
+
+      multiIcon.changeToDefault()
     }
+
+    const toolbarTitle = (flag) ? 'Usuń zaznaczone posty (0)' : app.defaultTitle
+
+    toolbar.setTitle(toolbarTitle)
+
+    if (app.isTable) {
+      const table = this.elements.table
+
+      table.toggleCheckBoxes(flag)
+    }
+
+    this.checkBoxes = flag
   }
 
   /**
@@ -322,6 +368,21 @@ export default class PostsPage extends Component {
     }
 
     return posts
+  }
+
+  /**
+   * On toolbar button delete posts click event.
+   * Shows confirm dialog.
+   * @param {Event}
+   */
+  onDeletePostsButtonClick = (e) => {
+    const app = window.app
+    const selectedPosts = this.getSelectedPosts()
+    const dialog = app.elements.deletePostsDialog
+
+    if (selectedPosts.length >= 1) {
+      dialog.toggle(true)
+    }
   }
 
   /**

@@ -69,7 +69,7 @@ export default class Cell extends Component {
           }
         </td>
         <td ref='content' />
-        <td className='menu'>
+        <td>
           <div className='menu-icon' ref='menuIcon' onClick={this.onMenuIconClick} onMouseDown={this.onMenuIconMouseDown} onTouchStart={this.onMenuIconTouchStart} />
         </td>
       </tr>

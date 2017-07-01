@@ -157,8 +157,12 @@ export default class App extends Component {
 
     const postDialog = this.elements.postDialog
 
+    const postsPage = this.getPostsPage()
+
     if (multiIcon.canClick) {
-      if (postDialog.toggled) {
+      if (postsPage.checkBoxes) {
+        postsPage.toggleCheckBoxes(false)
+      } else if (postDialog.toggled) {
         postDialog.toggle(false)
       } else if (!navigationDrawer.toggled) {
         navigationDrawer.show()
@@ -206,6 +210,8 @@ export default class App extends Component {
     const self = this
     const toolbar = this.getToolbar()
 
+    const postsPage = this.getPostsPage()
+
     const items = [
       {
         type: 'Icon',
@@ -233,8 +239,16 @@ export default class App extends Component {
         text: 'ZAPISZ',
         ref: 'saveButton',
         position: 'Right',
-        className: 'toolbar-button-save',
+        className: 'toolbar-button',
         onClick: this.onSavePostButtonClick
+      },
+      {
+        type: 'Button',
+        text: 'USUŃ',
+        ref: 'deleteButton',
+        position: 'Right',
+        className: 'toolbar-button',
+        onClick: postsPage.onDeletePostsButtonClick
       },
       {
         type: 'Icon',
@@ -372,7 +386,7 @@ export default class App extends Component {
       },
       {
         text: 'Usuń',
-        onClick: postsPage.onDeletePostsButtonClick
+        onClick: postsPage.onMenuDeletePostsButtonClick
       }
     ]
 

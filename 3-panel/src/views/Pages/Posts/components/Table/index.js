@@ -39,12 +39,26 @@ export default class Table extends Component {
     }
   }
 
+  /**
+   * Shows or hides checkboxes.
+   * @param {Boolean}
+   */
+  toggleCheckBoxes (flag) {
+    const root = this.getRoot()
+
+    if (flag) {
+      root.classList.add('checkboxes')
+    } else {
+      root.classList.remove('checkboxes')
+    }
+  }
+
   render () {
     return (
       <table className='material-table' ref='root'>
         <thead>
           <tr>
-            <th />
+            <th ref='checkboxCell' />
             <th>
               ID
             </th>
@@ -66,7 +80,7 @@ export default class Table extends Component {
             <th>
               Treść
             </th>
-            <th />
+            <th ref='menuCell' />
           </tr>
         </thead>
         <tbody ref='tbody' />

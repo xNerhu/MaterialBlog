@@ -34,7 +34,11 @@
     color: rgba(0, 0, 0, 0.87);
     position: relative;
 
-    &.menu {
+    &:first-child {
+      display: none;
+    }
+
+    &:last-child {
       padding-left: 0px;
       padding-right: 0px;
       width: 40px;
@@ -50,10 +54,6 @@
         @include center-vertical;
         cursor: pointer;
       }
-    }
-
-    &:first-child {
-      display: none;
     }
   }
 
@@ -72,5 +72,27 @@
 
   & .bold {
     @include Roboto-Medium;
+  }
+
+  &.checkboxes {
+    & thead tr th {
+      &:first-child {
+        display: table-cell;
+      }
+
+      &:last-child {
+        display: none;
+      }
+    }
+
+    & tbody tr td {
+      &:first-child {
+        display: block;
+      }
+
+      &:last-child {
+        display: none;
+      }
+    }
   }
 }
