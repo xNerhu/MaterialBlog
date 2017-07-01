@@ -213,7 +213,7 @@ export default class App extends Component {
         className: 'toolbar-icon-multi-icon',
         style: {
           width: '24px',
-          height: '18px',
+          height: '16px',
           position: 'absolute',
           top: '50%',
           transform: 'translateY(-50%)'
@@ -514,7 +514,7 @@ export default class App extends Component {
   /**
    * Sets dialog action buttons.
    */
-  setdeletePostsDialogItems = () => {
+  setDeletePostsDialogItems = () => {
     const postsPage = this.getPostsPage()
     const dialog = this.elements.deletePostsDialog
 
@@ -608,7 +608,7 @@ export default class App extends Component {
     this.setToolbarItems()
     this.setNavigationDrawerItems()
     this.setMenuItems()
-    this.setdeletePostsDialogItems()
+    this.setDeletePostsDialogItems()
 
     let urlPage = Url.getUrlParameter('page')
     let pageToSelect = this.getPostsPage()

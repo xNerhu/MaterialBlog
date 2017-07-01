@@ -240,8 +240,11 @@ export default class AddPostDialog extends Component {
     return (
       <div className='add-post-dialog' ref='root'>
         <div className='add-post-dialog-container'>
-          <TextField className='add-post-dialog-text-field-title' hint='Tytuł' ref='titleTextField' helperText='*Wymagane' />
-          <TextField textarea={true} hint='Treść' placeholder='Można używać HTML oraz CSS' ref='contentTextField' helperText='*Wymagane' />
+          <TextField hint='Tytuł' ref='titleTextField' helperText='*Wymagane' />
+          <TextField className='add-post-dialog-text-field-content' textarea={true} hint='Treść' placeholder='Można używać HTML oraz CSS' ref='contentTextField' helperText='*Wymagane' />
+          <a href='https://www.w3schools.com/tags/' target='_blank'>
+            Lista znaczników HTML
+          </a>
           <FileInput ref='fileInput' />
           <div className='add-post-dialog-switch-container'>
             <div className='text'>
@@ -249,8 +252,8 @@ export default class AddPostDialog extends Component {
             </div>
             <Switch ref='switch' onSwitch={this.onSwitch} />
           </div>
-          <Post ref='preview' />
         </div>
+        <Post ref='preview' />
       </div>
     )
   }

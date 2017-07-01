@@ -2,6 +2,12 @@
   width: 100%;
   position: relative;
   @include Roboto-Regular;
+
+  &::after {
+    content: '';
+    display: block;
+    clear:both;
+  }
 }
 
 .material-text-field-input {

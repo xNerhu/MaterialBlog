@@ -1,6 +1,6 @@
 .add-post-dialog {
   width: 100%;
-  height: calc(100% - 64px);
+  height: calc(100% - 88px);
   position: absolute;
   top: 64px;
   left: 0;
@@ -10,22 +10,30 @@
   display: none;
   overflow: auto;
   transition: 0.3s opacity;
+  padding-top: 24px;
 }
 
 .add-post-dialog-container {
-  width: calc(100% - 32px);
-  max-width: 640px;
+  width: calc(100% - 64px);
+  padding: 32px;
+  max-width: 576px;
   margin: 0 auto;
   position: relative;
+  background-color: #fff;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  border-radius: 2px;
+
+  & a {
+    margin-top: 24px;
+  }
 }
 
-.add-post-dialog-text-field-title {
-  margin-top: 32px;
-  margin-bottom: 48px;
+.add-post-dialog-text-field-content {
+  margin-top: 24px;
 }
 
 .add-post-dialog-upload-container {
-  margin-top: 48px;
+  margin-top: 24px;
   height: 37px;
 
   & .button {

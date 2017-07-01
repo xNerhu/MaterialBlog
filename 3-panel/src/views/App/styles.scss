@@ -68,3 +68,11 @@ html, body {
 .snackbar-deleted-posts, .snackbar-added-post {
   width: 300px;
 }
+
+a {
+  color: #3f51b5;
+  text-decoration: none;
+  @include Roboto-Regular;
+  font-size: 14px;
+  display: block;
+}

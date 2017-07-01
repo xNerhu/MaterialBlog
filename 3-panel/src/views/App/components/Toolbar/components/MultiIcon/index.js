@@ -66,22 +66,22 @@ export default class MultiIcon extends Component {
       root.className += ' multiIcon-arrow multiIcon-arrow-backtodefault'
       root.classList.remove('multiIcon-arrow')
       root.classList.remove('multiIcon-arrow-change')
-      this.isArrow = null
+      this.isArrow = false
+
       // Wait until end of animation.
       setTimeout(function () {
         root.classList.remove('multiIcon-arrow-backtodefault')
-        self.isArrow = false
       }, 500)
 
       if (update) this.actualState = 'default'
     } else if (this.isExit) {
       root.classList.remove('multiIcon-exit')
       root.classList.remove('multiIcon-exit-change')
-      this.isExit = null
+      this.isExit = false
+
       // Wait until end of animation.
       setTimeout(function () {
         root.classList.remove('multiIcon-exit-backtodefault')
-        self.isExit = false
       }, 500)
 
       if (update) this.actualState = 'default'
