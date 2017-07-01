@@ -2,8 +2,9 @@ import Component from '../../../../helpers/Component'
 
 export default class TextField extends Component {
   beforeRender () {
-    this.counter = false
+    this.toggled = false
 
+    this.counter = false
     this.error = false
   }
 
@@ -179,6 +180,34 @@ export default class TextField extends Component {
     let ripple = Ripple.createRipple(this.elements.actionIcon, this.props.actionIconRippleStyle, createRippleCenter(this.elements.actionIcon, 14, 0.4, true))
     Ripple.makeRipple(ripple)
     this.touched = true
+  }
+
+  /**
+   * Sets input value.
+   * @param {String} value
+   */
+  setValue (str) {
+    if (this.props.textarea === true) {
+      this.elements.textarea.value = str
+    } else {
+      this.elements.input.value = str
+    }
+
+    this.onInput()
+
+    if (str.length > 1 && !this.toggled) {
+      this.toggle(true)
+    } else if (str.length < 1 && this.toggled) {
+      this.toggle(false)
+    }
+  }
+
+  /**
+   * Gets input value.
+   * @return {String} value
+   */
+  getValue () {
+    return this.getInput().value
   }
 
   render () {

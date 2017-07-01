@@ -17,6 +17,10 @@
     border-top: 0;
     vertical-align: bottom;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+    &:first-child {
+      display: none;
+    }
   }
 
   & tbody tr td {
@@ -29,6 +33,28 @@
     font-size: 16px;
     color: rgba(0, 0, 0, 0.87);
     position: relative;
+
+    &.menu {
+      padding-left: 0px;
+      padding-right: 0px;
+      width: 40px;
+
+      & .menu-icon {
+        width: 40px;
+        height: 64px;
+        right: 22px;
+        @include image-center(24px, auto);
+        background-image: url(images/Toolbar/more.png);
+        opacity: 0.7;
+        position: absolute;
+        @include center-vertical;
+        cursor: pointer;
+      }
+    }
+
+    &:first-child {
+      display: none;
+    }
   }
 
   & tbody tr {

@@ -63,5 +63,9 @@ export default class MenuItem extends Component {
         opacity: 0.2
       }
     }
+
+    const menu = this.props.getMenu()
+
+    menu.items.push(this)
   }
 }

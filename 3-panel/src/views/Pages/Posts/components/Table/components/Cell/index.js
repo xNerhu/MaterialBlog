@@ -3,12 +3,49 @@ import Component from '../../../../../../../helpers/Component'
 import Checkbox from '../../../../../../../imports/materialdesign/components/CheckBox'
 
 export default class Cell extends Component {
+  beforeRender () {
+    this.touched = false
+  }
+
   /**
    * Gets root.
    * @return {DOMElement} root
    */
   getRoot = () => {
     return this.elements.root
+  }
+
+  /**
+   * On menu icon mouse down event.
+   * Makes ripple.
+   * @param {Event}
+   */
+  onMenuIconMouseDown = (e) => {
+    if (!this.touched) {
+      let ripple = Ripple.createRipple(this.elements.menuIcon, this.props.menuIconRippleStyle, createRippleCenter(this.elements.menuIcon, 14))
+      Ripple.makeRipple(ripple)
+    }
+  }
+
+  /**
+   * On menu icon touch start event.
+   * Makes ripple.
+   * @param {Event}
+   */
+  onMenuIconTouchStart = (e) => {
+    let ripple = Ripple.createRipple(this.elements.menuIcon, this.props.menuIconRippleStyle, createRippleCenter(this.elements.menuIcon, 14, 0.4, true))
+    Ripple.makeRipple(ripple)
+
+    this.touched = true
+  }
+
+  onMenuIconClick = (e) => {
+    const app = window.app
+    const menu = app.elements.postItemMenu
+
+    document.removeEventListener('click', app.onClick)
+
+    app.toggleMenu(true, menu, e.target, false)
   }
 
   render () {
@@ -32,11 +69,15 @@ export default class Cell extends Component {
           }
         </td>
         <td ref='content' />
+        <td className='menu'>
+          <div className='menu-icon' ref='menuIcon' onClick={this.onMenuIconClick} onMouseDown={this.onMenuIconMouseDown} onTouchStart={this.onMenuIconTouchStart} />
+        </td>
       </tr>
     )
   }
 
   afterRender () {
+    const props = this.props
     const data = this.props.data
 
     this.elements.id.innerHTML = data.id
@@ -46,5 +87,12 @@ export default class Cell extends Component {
     this.elements.content.innerHTML = data.content
 
     this.props.getDesktopTable().cells.push(this)
+
+    if (props.menuIconRippleStyle == null) {
+      props.menuIconRippleStyle = {
+        backgroundColor: '#000',
+        opacity: 0.2
+      }
+    }
   }
 }

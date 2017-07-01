@@ -1,7 +1,7 @@
 import Component from '../../helpers/Component'
 import Url from '../../helpers/Url'
 
-import AddPostDialog from './components/AddPostDialog'
+import PostDialog from './components/PostDialog'
 
 import NavigationDrawer from './components/NavigationDrawer/index'
 import Toolbar from './components/Toolbar'
@@ -44,6 +44,8 @@ export default class App extends Component {
     this.lastPage = null
 
     this.isTable = true
+
+    this.toggledMenu = false
   }
 
   /**
@@ -153,11 +155,11 @@ export default class App extends Component {
     const multiIcon = toolbar.getMultiIcon()
     const navigationDrawer = this.getNavigationDrawer()
 
-    const addPostDialog = this.elements.addPostDialog
+    const postDialog = this.elements.postDialog
 
     if (multiIcon.canClick) {
-      if (addPostDialog.toggled) {
-        addPostDialog.toggle(false)
+      if (postDialog.toggled) {
+        postDialog.toggle(false)
       } else if (!navigationDrawer.toggled) {
         navigationDrawer.show()
         multiIcon.changeToExit()
@@ -239,7 +241,7 @@ export default class App extends Component {
         position: 'Right',
         className: 'toolbar-icon-more',
         onClick: function (e) {
-          self.toggleMenu(true)
+          self.toggleMenu(true, self.elements.menu)
         }
       },
       {
@@ -377,6 +379,29 @@ export default class App extends Component {
     menu.setItems(items)
   }
 
+  setPostItemMenuItems () {
+    const self = this
+    const menu = this.elements.postItemMenu
+    const postsPage = this.getPostsPage()
+
+    const items = [
+      {
+        text: 'Edytuj',
+        onClick: function () {
+
+        }
+      },
+      {
+        text: 'Usuń',
+        onClick: function () {
+
+        }
+      }
+    ]
+
+    menu.setItems(items)
+  }
+
   /**
    * Selects page.
    * @param {PostsPage | GalleryPage}
@@ -475,39 +500,90 @@ export default class App extends Component {
   /**
    * Toggle menu.
    * @param {Boolean} show or hide.
+   * @param {Menu} menu
+   * @param {DOMElement} clicked element
    */
-  toggleMenu = (flag) => {
+  toggleMenu = (flag, _menu, clickedElement) => {
     const self = this
-    const menu = this.getMenu()
+    const menu = (flag) ? _menu : this.toggledMenu
+
     const menuRoot = menu.getRoot()
 
+    if (this.toggledMenu !== false) {
+      if (_menu !== this.toggledMenu) {
+        this.toggleMenu(false, this.toggledMenu)
+      }
+    }
+
     if (flag) {
+      let top = 8
+      let right = 32
+
+      if (clickedElement != null) {
+        const bounds = clickedElement.getBoundingClientRect()
+
+        top = bounds.top
+        right = bounds.right - bounds.left
+      }
+
+      menuRoot.style.top = top + 'px'
+      menuRoot.style.right = right + 'px'
+
       menuRoot.style.overflowY = 'hidden'
       menuRoot.style.display = 'block'
+      menuRoot.style.opacity = '1'
 
       setTimeout(function () {
-        menuRoot.style.height = menuRoot.scrollHeight - 16 + 'px'
-        menuRoot.style.opacity = '1'
-        document.addEventListener('click', self.onClick)
+        document.removeEventListener('click', this.onClick)
+
+        menuRoot.style.width = '112px'
+        menuRoot.style.height = menuRoot.scrollHeight + 'px'
 
         setTimeout(function () {
-          menuRoot.style.overflowY = 'auto'
-        }, 300)
-      }, 20)
+          self.toggleMenuItems(true, menu)
+
+          setTimeout(function () {
+            menuRoot.style.overflowY = 'auto'
+          }, 200)
+        }, 100)
+
+        document.addEventListener('click', self.onClick)
+      }, 10)
+
+      this.toggledMenu = menu
     } else {
       document.removeEventListener('click', this.onClick)
 
       menuRoot.style.overflowY = 'hidden'
 
-      menuRoot.style.height = '32px'
+      menuRoot.style.height = '0px'
+      menuRoot.style.width = '0px'
 
-      setTimeout(function () {
-        menuRoot.style.opacity = '0'
-      }, 50)
+      this.toggleMenuItems(false, menu)
+
+      menuRoot.style.opacity = '0'
 
       setTimeout(function () {
         menuRoot.style.display = 'none'
       }, 300)
+
+      this.toggledMenu = false
+    }
+  }
+
+  /**
+   * Shows or hides menu items.
+   * @param {Boolean} show or hide
+   * @param {Menu} menu
+   */
+  toggleMenuItems (flag, menu) {
+    for (var i = 0; i < menu.items.length; i++) {
+      const menuItem = menu.items[i]
+      const menuItemRoot = menuItem.getRoot()
+
+      setTimeout(function () {
+        menuItemRoot.style.opacity = (flag) ? '1' : '0'
+      }, i * 25)
     }
   }
 
@@ -551,7 +627,7 @@ export default class App extends Component {
     const postsPage = this.getPostsPage()
 
     if (this.selectedPage === postsPage) {
-      this.elements.addPostDialog.toggle(true)
+      this.elements.postDialog.toggle(true)
     }
   }
 
@@ -563,11 +639,11 @@ export default class App extends Component {
    * @param {Event}
    */
   onSavePostButtonClick = (e) => {
-    const addPostDialog = this.elements.addPostDialog
+    const postDialog = this.elements.postDialog
     const snackbar = this.elements.addedPostSnackbar
 
-    if (addPostDialog.verifyData()) {
-      addPostDialog.toggle(false)
+    if (postDialog.verifyData()) {
+      postDialog.toggle(false)
       snackbar.toggle(true)
     }
   }
@@ -583,12 +659,13 @@ export default class App extends Component {
             <AboutClassPage ref='aboutClassPage' />
             <LessonsPlanPage ref='lessonsPlanPage' />
           </div>
-          <AddPostDialog ref='addPostDialog' />
+          <PostDialog ref='postDialog' />
         </div>
         <div className='fab' ref='fabContainer'>
           <FAB ref='fab' onClick={this.onFABClick} />
         </div>
         <Menu ref='menu' className='toolbar-menu' mobile={true} />
+        <Menu ref='postItemMenu' className='toolbar-menu' mobile={true} />
         <Dialog ref='deletePostsDialog' title='Jesteś pewny(a)?'>
           Nie będzie można ich odzyskać.
         </Dialog>
@@ -603,11 +680,10 @@ export default class App extends Component {
   }
 
   afterRender () {
-    const menuRoot = this.getMenu().getRoot()
-
     this.setToolbarItems()
     this.setNavigationDrawerItems()
     this.setMenuItems()
+    this.setPostItemMenuItems()
     this.setDeletePostsDialogItems()
 
     let urlPage = Url.getUrlParameter('page')
@@ -629,6 +705,7 @@ export default class App extends Component {
 
     this.logUser()
 
-    menuRoot.style.height = '32px'
+    this.elements.menu.getRoot().style.width = '0px'
+    this.elements.postItemMenu.getRoot().style.width = '0px'
   }
 }

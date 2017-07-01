@@ -144,7 +144,7 @@ export default class FileInput extends Component {
 
   render () {
     return (
-      <div className='add-post-dialog-upload-container'>
+      <div className='post-dialog-upload-container'>
         <MaterialButton ref='button' onClick={this.onButtonClick} className='button' text='Dodaj zdjęcie' />
         <div className='value-container'>
           <div className='value' ref='value' />

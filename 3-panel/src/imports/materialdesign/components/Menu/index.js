@@ -3,6 +3,10 @@ import Component from '../../../../helpers/Component'
 import MenuItem from './components/MenuItem'
 
 export default class Menu extends Component {
+  beforeRender () {
+    this.items = []
+  }
+
   /**
    * Gets root.
    * @return {DOMElement} root
@@ -17,11 +21,13 @@ export default class Menu extends Component {
   setItems = (items) => {
     const root = this.getRoot()
 
+    this.items = []
+
     for (var i = 0; i < items.length; i++) {
       const item = items[i]
 
       const element = (
-        <MenuItem onClick={item.onClick}>
+        <MenuItem onClick={item.onClick} getMenu={() => { return this }}>
           {
             item.text
           }

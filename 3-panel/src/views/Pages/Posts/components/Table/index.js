@@ -66,6 +66,7 @@ export default class Table extends Component {
             <th>
               Treść
             </th>
+            <th />
           </tr>
         </thead>
         <tbody ref='tbody' />

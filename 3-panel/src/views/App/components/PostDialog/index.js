@@ -7,7 +7,7 @@ import Post from './components/Post'
 import TextField from '../../../../imports/materialdesign/components/TextField'
 import Switch from '../../../../imports/materialdesign/components/Switch'
 
-export default class AddPostDialog extends Component {
+export default class PostDialog extends Component {
   beforeRender () {
     this.toggled = false
 
@@ -82,6 +82,17 @@ export default class AddPostDialog extends Component {
     }
 
     this.toggled = flag
+  }
+
+  /**
+   * Resets form.
+   */
+  resetForm () {
+    const title = this.elements.titleTextField
+    const content = this.elements.contentTextField
+
+    title.setValue('')
+    content.setValue('')
   }
 
   /**
@@ -238,15 +249,15 @@ export default class AddPostDialog extends Component {
 
   render () {
     return (
-      <div className='add-post-dialog' ref='root'>
-        <div className='add-post-dialog-container'>
+      <div className='post-dialog' ref='root'>
+        <div className='post-dialog-container'>
           <TextField hint='Tytuł' ref='titleTextField' helperText='*Wymagane' />
-          <TextField className='add-post-dialog-text-field-content' textarea={true} hint='Treść' placeholder='Można używać HTML oraz CSS' ref='contentTextField' helperText='*Wymagane' />
+          <TextField className='post-dialog-text-field-content' textarea={true} hint='Treść' placeholder='Można używać HTML oraz CSS' ref='contentTextField' helperText='*Wymagane' />
           <a href='https://www.w3schools.com/tags/' target='_blank'>
             Lista znaczników HTML
           </a>
           <FileInput ref='fileInput' />
-          <div className='add-post-dialog-switch-container'>
+          <div className='post-dialog-switch-container'>
             <div className='text'>
               Podgląd
             </div>
