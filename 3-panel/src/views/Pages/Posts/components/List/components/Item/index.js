@@ -27,6 +27,7 @@ export default class Item extends Component {
         <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='DATA' ref='date' />
         <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='KOMENTARZE' ref='comments' />
         <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='POLUBIENIA' ref='likes' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='ZDJĘCIE' className='picture' ref='picture' />
         <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='TYTUŁ' ref='title' />
         <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='TREŚĆ' ref='content' />
       </div>
@@ -41,6 +42,7 @@ export default class Item extends Component {
     this.elements.date.setText(data.date)
     this.elements.comments.setText(data.comments.length)
     this.elements.likes.setText(data.likes.length)
+    this.elements.picture.setText((data.media != null) ? '<img src="' + data.media + '" >' : '')
     this.elements.title.setText(data.title)
     this.elements.content.setText(data.content)
   }

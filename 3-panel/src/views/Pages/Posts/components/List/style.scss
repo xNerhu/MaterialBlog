@@ -10,6 +10,10 @@
       display: none;
     }
   }
+
+  &.pictures .posts-table-list-item .cell.picture {
+    display: block;
+  }
 }
 
 .posts-table-list-item {
@@ -98,6 +102,14 @@
 
       & .text {
         width: auto;
+      }
+    }
+
+    &.picture {
+      display: none;
+
+      & .text img {
+        max-width: 196px;
       }
     }
   }

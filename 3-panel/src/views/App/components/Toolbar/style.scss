@@ -79,3 +79,11 @@
     background-image: url(images/Toolbar/view_column.png)
   }
 }
+
+.toolbar-icon-show-pictures {
+  background-image: url(images/Toolbar/image.png);
+
+  &.hide {
+    background-image: url(images/Toolbar/image-hide.png);
+  }
+}

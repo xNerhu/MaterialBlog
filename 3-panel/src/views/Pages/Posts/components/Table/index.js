@@ -5,6 +5,8 @@ import Cell from './components/Cell'
 export default class Table extends Component {
   beforeRender () {
     this.cells = []
+
+    this.toggledPictures = false
   }
 
   /**
@@ -51,6 +53,24 @@ export default class Table extends Component {
     } else {
       root.classList.remove('checkboxes')
     }
+  }
+
+  /**
+   * Shows or hides pictures.
+   * @param {Boolean}
+   */
+  togglePictures (flag) {
+    const root = this.getRoot()
+
+    if (flag) {
+      root.classList.add('pictures')
+    } else {
+      root.classList.remove('pictures')
+    }
+
+    window.app.getPostsPage().toggledPictures = flag
+
+    this.toggledPictures = flag
   }
 
   render () {

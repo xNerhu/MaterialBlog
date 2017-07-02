@@ -264,6 +264,15 @@ export default class App extends Component {
         onClick: this.onViewClick,
         onMouseEnter: this.onViewMouseEnter,
         onMouseLeave: this.onViewMouseLeave
+      },
+      {
+        type: 'Icon',
+        ref: 'showPicturesIcon',
+        position: 'Right',
+        className: 'toolbar-icon-show-pictures',
+        onClick: postsPage.onShowPicturesClick,
+        onMouseEnter: this.onShowPicturesMouseEnter,
+        onMouseLeave: this.onShowPicturesMouseLeave
       }
     ]
 
@@ -311,6 +320,32 @@ export default class App extends Component {
    */
   onViewMouseLeave = (e) => {
     const tooltip = this.elements.tooltipView
+
+    tooltip.toggle(false)
+  }
+
+  /**
+   * On toolbar show images mouse enter event.
+   * Shows tooltip.
+   * @param {Event}
+   */
+  onShowPicturesMouseEnter = (e) => {
+    const postsPage = this.getPostsPage()
+    const tooltip = this.elements.tooltipShowPictures
+
+    const text = (!postsPage.toggledPictures) ? 'Pokaż zdjęcia' : 'Ukryj zdjęcia'
+
+    tooltip.setText(text)
+    tooltip.toggle(true, e.target)
+  }
+
+  /**
+   * On toolbar show images mouse leave event.
+   * Hides tooltip.
+   * @param {Event}
+   */
+  onShowPicturesMouseLeave = (e) => {
+    const tooltip = this.elements.tooltipShowPictures
 
     tooltip.toggle(false)
   }
@@ -677,6 +712,7 @@ export default class App extends Component {
         <Snackbar className='snackbar-deleted-posts' ref='deletedPostsSnackbar' text='Pomyślnie usunięto posty' timeout={5000} />
         <Snackbar className='snackbar-added-post' ref='addedPostSnackbar' text='Pomyślnie dodano post' />
         <Tooltip ref='tooltipView' text='Przełącz na liste' />
+        <Tooltip ref='tooltipShowPictures' text='Pokaż zdjęcia' />
         <Tooltip ref='tooltipUploadButton' text='Najlepiej w proporcjach 16:9' />
         <NavigationDrawer ref='navigationDrawer' />
         <Preloader className='data-preloader' ref='preloader' />

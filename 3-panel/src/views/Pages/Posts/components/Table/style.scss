@@ -96,11 +96,17 @@
     }
   }
 
-  & .picture-header {
+  & .picture-header, & .picture-cell {
     display: none;
   }
 
-  & .picture-cell {
-    display: none;
+  & .picture-cell img {
+    max-width: 196px;
+  }
+
+  &.pictures {
+    & .picture-header, & .picture-cell {
+      display: table-cell;
+    }
   }
 }

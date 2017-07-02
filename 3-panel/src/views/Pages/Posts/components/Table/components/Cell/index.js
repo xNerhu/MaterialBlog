@@ -78,9 +78,7 @@ export default class Cell extends Component {
         <td ref='date' />
         <td ref='comments' />
         <td ref='likes' />
-        <td className='picture-cell'>
-          <img src='https://images.alphacoders.com/120/120313.jpg' style='max-height: 100px;' />
-        </td>
+        <td ref='picture' className='picture-cell' />
         <td>
           {
             this.props.data.title
@@ -102,6 +100,7 @@ export default class Cell extends Component {
     this.elements.date.innerHTML = data.date
     this.elements.comments.innerHTML = data.comments.length
     this.elements.likes.innerHTML = data.likes.length
+    this.elements.picture.innerHTML = (data.media != null) ? '<img src="' + data.media + '" >' : ''
     this.elements.content.innerHTML = data.content
 
     this.props.getDesktopTable().cells.push(this)

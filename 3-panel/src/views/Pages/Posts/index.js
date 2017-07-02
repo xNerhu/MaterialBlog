@@ -16,6 +16,8 @@ export default class PostsPage extends Component {
 
     this.clickedPost = null
 
+    this.toggledPictures = false
+
     this.selectedPosts = []
 
     this.postsData = [
@@ -211,6 +213,12 @@ export default class PostsPage extends Component {
     this.resetCheckboxes()
 
     this.isTable = true
+
+    if (list.toggledPictures && !table.toggledPictures) {
+      table.togglePictures(true)
+    } else if (!list.toggledPictures && table.toggledPictures) {
+      table.togglePictures(false)
+    }
   }
 
   /**
@@ -239,6 +247,12 @@ export default class PostsPage extends Component {
     this.resetCheckboxes()
 
     Cookies.setCookie('table', 'false', 365)
+
+    if (table.toggledPictures && !list.toggledPictures) {
+      list.togglePictures(true)
+    } else if (!table.toggledPictures && list.toggledPictures) {
+      list.togglePictures(false)
+    }
   }
 
   /**
@@ -413,6 +427,33 @@ export default class PostsPage extends Component {
         fabContainer.style.bottom = '32px'
       }, 5200)
     }
+  }
+
+  /**
+   * On toolbar show pictures icon click event.
+   * Shows or hides pictures in table or list.
+   * @param {Event}
+   */
+  onShowPicturesClick = (e) => {
+    const app = window.app
+    const toolbar = app.getToolbar()
+    const showPicturesIcon = toolbar.elements.showPicturesIcon
+    const tooltip = app.elements.tooltipShowPictures
+
+    const table = this.elements.table
+    const list = this.elements.list
+
+    tooltip.toggle(false)
+
+    if (!this.toggledPictures) {
+      showPicturesIcon.classList.add('hide')
+    } else {
+      showPicturesIcon.classList.remove('hide')
+    }
+
+    const element = (this.isTable) ? table : list
+
+    element.togglePictures(!this.toggledPictures)
   }
 
   render () {
