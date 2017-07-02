@@ -21,7 +21,7 @@ export default class Item extends Component {
   render () {
     return (
       <div className='posts-table-list-item'>
-        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='AKCJA' isCheckBox='true' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='AKCJA' isAction='true' />
         <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='ID' ref='id' />
         <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='AUTOR' ref='author' />
         <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='DATA' ref='date' />

@@ -39,6 +39,20 @@ export default class List extends Component {
     }
   }
 
+  /**
+   * Shows or hides checkboxes.
+   * @param {Boolean}
+   */
+  toggleCheckBoxes (flag) {
+    const root = this.getRoot()
+
+    if (flag) {
+      root.classList.add('checkboxes')
+    } else {
+      root.classList.remove('checkboxes')
+    }
+  }
+
   render () {
     return (
       <div className='posts-table-list' ref='root' />

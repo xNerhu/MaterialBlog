@@ -331,18 +331,16 @@ export default class PostsPage extends Component {
 
     toolbar.setTitle(toolbarTitle)
 
-    if (app.isTable) {
-      const table = this.elements.table
+    const table = (app.isTable) ? this.elements.table : this.elements.list
 
-      table.toggleCheckBoxes(flag)
-    }
+    table.toggleCheckBoxes(flag)
 
     this.checkBoxes = flag
   }
 
   /**
    * Gets selected posts.
-   * @return {Object} selected posts.
+   * @return {Object} selected posts
    */
   getSelectedPosts = () => {
     const app = window.app

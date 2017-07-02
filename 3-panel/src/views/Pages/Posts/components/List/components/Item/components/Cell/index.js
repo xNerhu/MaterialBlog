@@ -3,6 +3,10 @@ import Component from '../../../../../../../../../helpers/Component'
 import Checkbox from '../../../../../../../../../imports/materialdesign/components/CheckBox'
 
 export default class Cell extends Component {
+  beforeRender () {
+    this.touched = false
+  }
+
   /**
    * Gets root.
    * @return {DOMElement} root
@@ -16,6 +20,44 @@ export default class Cell extends Component {
    */
   setText = (str) => {
     this.elements.text.innerHTML = str
+  }
+
+  /**
+   * On menu icon click event.
+   * Shows menu.
+   * @param {Event}
+   */
+  onMenuIconClick = (e) => {
+    const app = window.app
+    const menu = app.elements.postItemMenu
+
+    document.removeEventListener('click', app.onClick)
+
+    app.toggleMenu(true, menu, e.target, false)
+  }
+
+  /**
+   * On menu icon mouse down event.
+   * Makes ripple.
+   * @param {Event}
+   */
+  onMenuIconMouseDown = (e) => {
+    if (!this.touched) {
+      let ripple = Ripple.createRipple(this.elements.menuIcon, this.props.menuIconRippleStyle, createRippleCenter(this.elements.menuIcon, 14))
+      Ripple.makeRipple(ripple)
+    }
+  }
+
+  /**
+   * On menu icon touch start event.
+   * Makes ripple.
+   * @param {Event}
+   */
+  onMenuIconTouchStart = (e) => {
+    let ripple = Ripple.createRipple(this.elements.menuIcon, this.props.menuIconRippleStyle, createRippleCenter(this.elements.menuIcon, 14, 0.4, true))
+    Ripple.makeRipple(ripple)
+
+    this.touched = true
   }
 
   render () {
@@ -36,16 +78,30 @@ export default class Cell extends Component {
     const root = this.getRoot()
 
     if (props.className != null) root.classList.add(props.className)
-    if (props.isCheckBox) {
+
+    if (props.isAction) {
       const checkBox = (
         <Checkbox ref='checkbox' />
       )
 
+      const menuIcon = (
+        <div ref='menuIcon' className='menu-icon' onClick={this.onMenuIconClick} onMouseDown={this.onMenuIconMouseDown} onTouchStart={this.onMenuIconTouchStart} />
+      )
+
       this.renderComponents(checkBox, this.elements.text)
-      root.classList.add('checkbox')
+      this.renderComponents(menuIcon, this.elements.text)
+
+      root.classList.add('action')
 
       this.props.getMobileTable().cells.push(this)
       this.props.getMobileTable().checkbox = this.elements.checkBox
+    }
+
+    if (props.menuIconRippleStyle == null) {
+      props.menuIconRippleStyle = {
+        backgroundColor: '#000',
+        opacity: 0.2
+      }
     }
   }
 }

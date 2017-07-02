@@ -16,6 +16,20 @@ export default class Cell extends Component {
   }
 
   /**
+   * On menu icon click event.
+   * Shows menu.
+   * @param {Event}
+   */
+  onMenuIconClick = (e) => {
+    const app = window.app
+    const menu = app.elements.postItemMenu
+
+    document.removeEventListener('click', app.onClick)
+
+    app.toggleMenu(true, menu, e.target, false)
+  }
+
+  /**
    * On menu icon mouse down event.
    * Makes ripple.
    * @param {Event}
@@ -37,15 +51,6 @@ export default class Cell extends Component {
     Ripple.makeRipple(ripple)
 
     this.touched = true
-  }
-
-  onMenuIconClick = (e) => {
-    const app = window.app
-    const menu = app.elements.postItemMenu
-
-    document.removeEventListener('click', app.onClick)
-
-    app.toggleMenu(true, menu, e.target, false)
   }
 
   render () {
