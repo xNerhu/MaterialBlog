@@ -9,6 +9,8 @@ export default class PostsPage extends Component {
     this.tableLoaded = false
     this.listLoaded = false
 
+    this.isTable = true
+
     this.checkBoxes = false
     this.checkedCheckBoxes = 0
 
@@ -190,7 +192,7 @@ export default class PostsPage extends Component {
     const table = this.elements.table
     const list = this.elements.list
 
-    app.isTable = true
+    this.isTable = true
     viewIcon.classList.remove('table')
 
     list.getRoot().style.display = 'none'
@@ -220,7 +222,7 @@ export default class PostsPage extends Component {
     const table = this.elements.table
     const list = this.elements.list
 
-    app.isTable = false
+    this.isTable = false
     viewIcon.classList.add('table')
 
     table.getRoot().style.display = 'none'
@@ -288,7 +290,7 @@ export default class PostsPage extends Component {
 
     toolbar.setTitle(toolbarTitle)
 
-    const table = (app.isTable) ? this.elements.table : this.elements.list
+    const table = (this.isTable) ? this.elements.table : this.elements.list
 
     table.toggleCheckBoxes(flag)
 
@@ -322,7 +324,7 @@ export default class PostsPage extends Component {
     const table = this.elements.table
     const list = this.elements.list
 
-    const element = (!window.app.isTable) ? table : list
+    const element = (!this.isTable) ? table : list
 
     for (var i = 0; i < element.cells.length; i++) {
       const cell = element.cells[i]
@@ -348,14 +350,14 @@ export default class PostsPage extends Component {
 
     let posts = []
 
-    const element = (app.isTable) ? table : list
+    const element = (this.isTable) ? table : list
 
     for (var i = 0; i < element.cells.length; i++) {
       const cell = element.cells[i]
       const checkbox = cell.elements.checkbox
 
       if (checkbox.checked) {
-        if (!app.isTable) {
+        if (!this.isTable) {
           posts.push(cell.props.getItem())
         } else {
           posts.push(cell)

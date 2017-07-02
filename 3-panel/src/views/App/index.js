@@ -43,8 +43,6 @@ export default class App extends Component {
     this.canSelect = true
     this.lastPage = null
 
-    this.isTable = true
-
     this.toggledMenu = false
   }
 
@@ -282,7 +280,7 @@ export default class App extends Component {
     const postsPage = this.getPostsPage()
     const tooltip = this.elements.tooltipView
 
-    if (this.isTable) {
+    if (postsPage.isTable) {
       postsPage.switchToList()
     } else {
       postsPage.switchToTable()
@@ -297,9 +295,10 @@ export default class App extends Component {
    * @param {Event}
    */
   onViewMouseEnter = (e) => {
+    const postsPage = this.getPostsPage()
     const tooltip = this.elements.tooltipView
 
-    const text = (this.isTable) ? 'Przełącz na listę' : 'Przełącz na tabelę'
+    const text = (postsPage.isTable) ? 'Przełącz na listę' : 'Przełącz na tabelę'
 
     tooltip.setText(text)
     tooltip.toggle(true, e.target)
