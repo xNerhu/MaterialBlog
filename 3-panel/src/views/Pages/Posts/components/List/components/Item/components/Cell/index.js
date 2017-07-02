@@ -34,6 +34,8 @@ export default class Cell extends Component {
     document.removeEventListener('click', app.onClick)
 
     app.toggleMenu(true, menu, e.target, false)
+
+    app.getPostsPage().clickedPost = this.props.getItem()
   }
 
   /**

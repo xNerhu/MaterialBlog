@@ -12,6 +12,8 @@ export default class PostDialog extends Component {
     this.toggled = false
 
     this.previewToggled = false
+
+    this.clearForm = false
   }
 
   /**
@@ -26,7 +28,7 @@ export default class PostDialog extends Component {
    * Toggle dialog.
    * @param {Boolean} show or hide
    */
-  toggle = (flag) => {
+  toggle = (flag, edit = false, postData) => {
     const root = this.getRoot()
 
     const app = window.app
@@ -41,7 +43,6 @@ export default class PostDialog extends Component {
     if (flag) {
       if (navigationDrawer.toggled) navigationDrawer.hide()
 
-      toolbar.setTitle('Dodaj post')
       toolbar.hideItems(false, false)
 
       multiIcon.changeToExit()
@@ -59,9 +60,12 @@ export default class PostDialog extends Component {
       setTimeout(function () {
         root.style.opacity = '1'
       }, 20)
-    } else {
-      toolbar.setTitle(app.defaultTitle)
 
+      if (this.clearForm) {
+        this.resetForm()
+        this.clearForm = false
+      }
+    } else {
       multiIcon.changeToDefault()
 
       saveButtonRoot.style.opacity = '0'
@@ -79,6 +83,28 @@ export default class PostDialog extends Component {
       setTimeout(function () {
         root.style.display = 'none'
       }, 300)
+    }
+
+    let toolbarTitle = app.defaultTitle
+
+    if (flag && !edit) {
+      toolbarTitle = 'Dodaj post'
+    } else if (flag && edit) {
+      toolbarTitle = 'Edytuj post'
+    }
+
+    toolbar.setTitle(toolbarTitle)
+
+    if (edit) {
+      const title = this.elements.titleTextField
+      const content = this.elements.contentTextField
+
+      title.setValue(postData.title)
+      content.setValue(postData.content)
+
+      this.clearForm = true
+
+      this.updatePreview()
     }
 
     this.toggled = flag

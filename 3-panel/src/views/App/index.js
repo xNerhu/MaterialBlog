@@ -379,7 +379,7 @@ export default class App extends Component {
       },
       {
         text: 'Usuń',
-        onClick: postsPage.onMenuDeletePostsButtonClick
+        onClick: postsPage.onMenuItemDeletePostsClick
       }
     ]
 
@@ -394,9 +394,7 @@ export default class App extends Component {
     const items = [
       {
         text: 'Edytuj',
-        onClick: function () {
-
-        }
+        onClick: postsPage.onMenuItemEditPostClick
       },
       {
         text: 'Usuń',

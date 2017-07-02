@@ -195,7 +195,7 @@ export default class TextField extends Component {
 
     this.onInput()
 
-    if (str.length > 1 && !this.toggled) {
+    if (str.length >= 1 && !this.toggled) {
       this.toggle(true)
     } else if (str.length < 1 && this.toggled) {
       this.toggle(false)

@@ -14,6 +14,8 @@ export default class PostsPage extends Component {
     this.checkBoxes = false
     this.checkedCheckBoxes = 0
 
+    this.clickedPost = null
+
     this.selectedPosts = []
 
     this.postsData = [
@@ -243,8 +245,15 @@ export default class PostsPage extends Component {
    * On menu delete posts button click event.
    * @param {Event}
    */
-  onMenuDeletePostsButtonClick = (e) => {
+  onMenuItemDeletePostsClick = (e) => {
     this.toggleCheckBoxes(true)
+  }
+
+  onMenuItemEditPostClick = (e) => {
+    const app = window.app
+    const dialog = app.elements.postDialog
+
+    dialog.toggle(true, true, this.clickedPost.props.data)
   }
 
   /**

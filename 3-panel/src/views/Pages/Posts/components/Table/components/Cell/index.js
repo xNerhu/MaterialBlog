@@ -27,6 +27,8 @@ export default class Cell extends Component {
     document.removeEventListener('click', app.onClick)
 
     app.toggleMenu(true, menu, e.target, false)
+
+    app.getPostsPage().clickedPost = this
   }
 
   /**
@@ -76,6 +78,9 @@ export default class Cell extends Component {
         <td ref='date' />
         <td ref='comments' />
         <td ref='likes' />
+        <td className='picture-cell'>
+          <img src='https://images.alphacoders.com/120/120313.jpg' style='max-height: 100px;' />
+        </td>
         <td>
           {
             this.props.data.title

@@ -32,7 +32,7 @@ export default class List extends Component {
 
     for (var i = 0; i < posts.length; i++) {
       const cell = (
-        <Item data={posts[i]} getMobileTable={this.getMobileTable} />
+        <Item data={posts[i]} getMobileTable={this.getMobileTable} getItem={() => { return this }} />
       )
 
       this.renderComponents(cell, root)

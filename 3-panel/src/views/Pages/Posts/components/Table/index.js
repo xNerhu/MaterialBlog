@@ -74,6 +74,9 @@ export default class Table extends Component {
             <th>
               Polubienia
             </th>
+            <th className='picture-header'>
+              Zdjęcie
+            </th>
             <th>
               Tytuł
             </th>
