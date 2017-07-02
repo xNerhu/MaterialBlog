@@ -26,6 +26,9 @@ export default class Checkbox extends Component {
     border.style.borderWidth = '2px'
     border.style.borderColor = this.props.offColor
 
+    const onCheck = this.props.onCheck
+    if (typeof onCheck === 'function') onCheck(false)
+
     this.checked = false
   }
 
@@ -37,8 +40,6 @@ export default class Checkbox extends Component {
     const border = this.elements.border
     const icon = this.elements.icon
 
-    console.log(this)
-
     border.style.borderWidth = root.offsetWidth / 2 + 'px'
     border.style.borderColor = this.props.onColor
 
@@ -46,6 +47,9 @@ export default class Checkbox extends Component {
       icon.classList.remove('material-checkbox-hide')
       icon.classList.add('material-checkbox-cover-animation')
     }, 150)
+
+    const onCheck = this.props.onCheck
+    if (typeof onCheck === 'function') onCheck(true)
 
     this.checked = true
   }

@@ -10,6 +10,7 @@ export default class PostsPage extends Component {
     this.listLoaded = false
 
     this.checkBoxes = false
+    this.checkedCheckBoxes = 0
 
     this.selectedPosts = []
 
@@ -201,11 +202,9 @@ export default class PostsPage extends Component {
       table.setCells(this.postsData)
     }
 
-    /*if (this.listLoaded) {
-      this.toggleCheckBoxes()
-    }*/
-
     Cookies.setCookie('table', 'true', 365)
+
+    this.resetCheckboxes()
 
     this.isTable = true
   }
@@ -233,52 +232,10 @@ export default class PostsPage extends Component {
       list.setCells(this.postsData)
     }
 
-    /*if (this.tableLoaded) {
-      this.toggleCheckBoxes(true)
-    }*/
+    this.resetCheckboxes()
 
     Cookies.setCookie('table', 'false', 365)
   }
-
-  /**
-   * Toggle checkbox in table or list.
-   * When user toggle checkbox in table and switch to list, checkboxes in list must be same state like in table.
-   * @param {Boolean} change checkboxes state in list
-   */
-/*  toggleCheckBoxes = (_list = false) => {
-    const table = this.elements.table
-    const list = this.elements.list
-
-    let checkboxesTable = []
-    let checkboxesList = []
-
-    for (var i = 0; i < table.cells.length; i++) {
-      const cell = table.cells[i]
-      const checkbox = cell.elements.checkbox
-
-      checkboxesTable.push(checkbox)
-    }
-
-    for (var i = 0; i < list.cells.length; i++) {
-      const cell = list.cells[i]
-      const checkbox = cell.elements.checkbox
-
-      checkboxesList.push(checkbox)
-    }
-
-    const checkboxesBefore = (_list) ? checkboxesTable : checkboxesList
-    const checkboxes = (!_list) ? checkboxesTable : checkboxesList
-
-    for (var i = 0; i < checkboxesBefore.length; i++) {
-      const checkbox = checkboxesBefore[i]
-
-      if (checkbox.checked && !checkboxes[i].checked) {
-        checkboxes[i].check()
-      } else if (!checkbox.checked && checkboxes[i].checked) {
-        checkboxes[i].unCheck()
-      }
-    }
-  }*/
 
   /**
    * On menu delete posts button click event.
@@ -327,7 +284,7 @@ export default class PostsPage extends Component {
       multiIcon.changeToDefault()
     }
 
-    const toolbarTitle = (flag) ? 'Usuń zaznaczone posty (0)' : app.defaultTitle
+    const toolbarTitle = (flag) ? 'Usuń zaznaczone posty (' + this.checkedCheckBoxes + ')' : app.defaultTitle
 
     toolbar.setTitle(toolbarTitle)
 
@@ -336,6 +293,47 @@ export default class PostsPage extends Component {
     table.toggleCheckBoxes(flag)
 
     this.checkBoxes = flag
+  }
+
+  /**
+   * On checkbox check event.
+   * @param {Boolean} checked or unchecked
+   * @param {Checkbox}
+   */
+  onCheck = (flag, element) => {
+    const app = window.app
+    const toolbar = app.getToolbar()
+
+    if (this.checkBoxes) {
+      if (flag) {
+        this.checkedCheckBoxes++
+      } else {
+        this.checkedCheckBoxes--
+      }
+
+      toolbar.setTitle('Usuń zaznaczone posty (' + this.checkedCheckBoxes + ')')
+    }
+  }
+
+  /**
+   * Resets checkboxes.
+   */
+  resetCheckboxes = () => {
+    const table = this.elements.table
+    const list = this.elements.list
+
+    const element = (!window.app.isTable) ? table : list
+
+    for (var i = 0; i < element.cells.length; i++) {
+      const cell = element.cells[i]
+      const checkbox = cell.elements.checkbox
+
+      if (checkbox.checked) {
+        checkbox.unCheck()
+      }
+    }
+
+    this.checkedCheckBoxes = 0
   }
 
   /**

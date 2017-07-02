@@ -60,6 +60,14 @@ export default class Cell extends Component {
     this.touched = true
   }
 
+  /**
+   * On checkbox check event.
+   * @param {Boolean} checked
+   */
+  onCheck = (flag) => {
+    window.app.getPostsPage().onCheck(flag, this)
+  }
+
   render () {
     return (
       <div className='cell' ref='root'>
@@ -81,7 +89,7 @@ export default class Cell extends Component {
 
     if (props.isAction) {
       const checkBox = (
-        <Checkbox ref='checkbox' />
+        <Checkbox ref='checkbox' onCheck={this.onCheck} />
       )
 
       const menuIcon = (

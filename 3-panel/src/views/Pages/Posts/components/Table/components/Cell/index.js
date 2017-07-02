@@ -53,11 +53,19 @@ export default class Cell extends Component {
     this.touched = true
   }
 
+  /**
+   * On checkbox check event.
+   * @param {Boolean} checked
+   */
+  onCheck = (flag) => {
+    window.app.getPostsPage().onCheck(flag, this)
+  }
+
   render () {
     return (
       <tr ref='root'>
         <td>
-          <Checkbox ref='checkbox' />
+          <Checkbox ref='checkbox' onCheck={this.onCheck} />
         </td>
         <td ref='id' />
         <td>

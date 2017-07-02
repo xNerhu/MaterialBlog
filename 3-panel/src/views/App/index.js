@@ -379,12 +379,6 @@ export default class App extends Component {
         }
       },
       {
-        text: 'Edytuj',
-        onClick: function () {
-
-        }
-      },
-      {
         text: 'Usuń',
         onClick: postsPage.onMenuDeletePostsButtonClick
       }
