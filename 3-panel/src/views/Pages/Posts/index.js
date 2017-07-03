@@ -415,18 +415,27 @@ export default class PostsPage extends Component {
     const dialog = app.elements.deletePostsDialog
     const snackbar = app.elements.deletedPostsSnackbar
     const snackbarRoot = snackbar.getRoot()
-    const fabContainer = app.elements.fabContainer
 
     dialog.toggle(false)
     snackbar.toggle(true)
 
-    if (window.innerWidth < 480) {
-      fabContainer.style.bottom = snackbarRoot.scrollHeight + 16 + 'px'
+    app.moveFAB(snackbarRoot.scrollHeight)
+  }
 
-      setTimeout(function () {
-        fabContainer.style.bottom = '32px'
-      }, 5200)
-    }
+  /**
+   * Deletes selected post.
+   * TODO
+   */
+  deletePost = (e) => {
+    const app = window.app
+    const dialog = app.elements.deletePostDialog
+    const snackbar = app.elements.deletedPostSnackbar
+    const snackbarRoot = snackbar.getRoot()
+
+    dialog.toggle(false)
+    snackbar.toggle(true)
+
+    app.moveFAB(snackbarRoot.scrollHeight)
   }
 
   /**

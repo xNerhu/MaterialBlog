@@ -273,6 +273,24 @@ export default class PostDialog extends Component {
     this.onBlur(this.elements.contentTextField)
   }
 
+  /**
+   * On save post button click event.
+   * Adds post.
+   * TODO.
+   * Close add post dialog.
+   * @param {Event}
+   */
+  onSavePostButtonClick = (e) => {
+    const app = window.app
+    const postDialog = app.elements.postDialog
+    const snackbar = app.elements.addedPostSnackbar
+
+    if (this.verifyData()) {
+      postDialog.toggle(false)
+      snackbar.toggle(true)
+    }
+  }
+
   render () {
     return (
       <div className='post-dialog' ref='root'>

@@ -208,6 +208,7 @@ export default class App extends Component {
     const self = this
     const toolbar = this.getToolbar()
 
+    const postDialog = this.elements.postDialog
     const postsPage = this.getPostsPage()
 
     const items = [
@@ -238,7 +239,7 @@ export default class App extends Component {
         ref: 'saveButton',
         position: 'Right',
         className: 'toolbar-button',
-        onClick: this.onSavePostButtonClick
+        onClick: postDialog.onSavePostButtonClick
       },
       {
         type: 'Button',
@@ -397,6 +398,8 @@ export default class App extends Component {
   setMenuItems = () => {
     const self = this
     const menu = this.getMenu()
+
+    const postDialog = this.elements.postDialog
     const postsPage = this.getPostsPage()
 
     const items = [
@@ -409,7 +412,7 @@ export default class App extends Component {
       {
         text: 'Dodaj',
         onClick: function () {
-
+          postDialog.toggle(true)
         }
       },
       {
@@ -424,6 +427,8 @@ export default class App extends Component {
   setPostItemMenuItems () {
     const self = this
     const menu = this.elements.postItemMenu
+    const dialog = this.elements.deletePostDialog
+
     const postsPage = this.getPostsPage()
 
     const items = [
@@ -434,7 +439,7 @@ export default class App extends Component {
       {
         text: 'Usuń',
         onClick: function () {
-
+          dialog.toggle(true)
         }
       }
     ]
@@ -651,6 +656,29 @@ export default class App extends Component {
   }
 
   /**
+   * Sets dialog action buttons.
+   */
+  setDeletePostDialogItems = () => {
+    const postsPage = this.getPostsPage()
+    const dialog = this.elements.deletePostDialog
+
+    const items = [
+      {
+        text: 'TAK',
+        onClick: postsPage.deletePost
+      },
+      {
+        text: 'NIE',
+        onClick: function () {
+          dialog.toggle(false)
+        }
+      }
+    ]
+
+    dialog.setItems(items)
+  }
+
+  /**
    * On click event.
    * Hides menu.
    * @param {Event}
@@ -672,19 +700,19 @@ export default class App extends Component {
   }
 
   /**
-   * On save post button click event.
-   * Adds post.
-   * TODO.
-   * Close add post dialog.
-   * @param {Event}
+   * Moves floating action button.
+   * @param {Int} height
+   * @param {Int} duration
    */
-  onSavePostButtonClick = (e) => {
-    const postDialog = this.elements.postDialog
-    const snackbar = this.elements.addedPostSnackbar
+  moveFAB (height, duration = 2700) {
+    const fabContainer = this.elements.fabContainer
 
-    if (postDialog.verifyData()) {
-      postDialog.toggle(false)
-      snackbar.toggle(true)
+    if (window.innerWidth < 480) {
+      fabContainer.style.bottom = height + 16 + 'px'
+
+      setTimeout(function () {
+        fabContainer.style.bottom = '32px'
+      }, duration)
     }
   }
 
@@ -709,7 +737,11 @@ export default class App extends Component {
         <Dialog ref='deletePostsDialog' title='Jesteś pewny(a)?'>
           Nie będzie można ich odzyskać.
         </Dialog>
-        <Snackbar className='snackbar-deleted-posts' ref='deletedPostsSnackbar' text='Pomyślnie usunięto posty' timeout={5000} />
+        <Dialog ref='deletePostDialog' title='Jesteś pewny(a)?'>
+          Nie będzie można go odzyskać.
+        </Dialog>
+        <Snackbar className='snackbar-deleted-posts' ref='deletedPostsSnackbar' text='Pomyślnie usunięto posty' />
+        <Snackbar className='snackbar-deleted-posts' ref='deletedPostSnackbar' text='Pomyślnie usunięto post' />
         <Snackbar className='snackbar-added-post' ref='addedPostSnackbar' text='Pomyślnie dodano post' />
         <Tooltip ref='tooltipView' text='Przełącz na liste' />
         <Tooltip ref='tooltipShowPictures' text='Pokaż zdjęcia' />
@@ -726,6 +758,7 @@ export default class App extends Component {
     this.setMenuItems()
     this.setPostItemMenuItems()
     this.setDeletePostsDialogItems()
+    this.setDeletePostDialogItems()
 
     let urlPage = Url.getUrlParameter('page')
     let pageToSelect = this.getPostsPage()
