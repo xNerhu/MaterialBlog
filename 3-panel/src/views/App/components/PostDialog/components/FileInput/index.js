@@ -55,35 +55,23 @@ export default class FileInput extends Component {
    * @param {Event}
    */
   onInputChange = (e) => {
-    const preview = window.app.elements.addPostDialog.elements.preview
-    const actionIcon = this.elements.actionIcon
+    const self = this
+
+    const preview = window.app.elements.postDialog.elements.preview
     const input = this.elements.upload
     const value = input.value
 
     const uploadValue = this.elements.value
-    const indicator = this.elements.indicator
 
     if (value !== '') {
       uploadValue.innerHTML = Url.extractFileName(value)
-
-      setTimeout(function () {
-        uploadValue.style.opacity = '1'
-      }, 1)
 
       let reader = new FileReader()
 
       reader.onload = function (e) {
         const src = e.target.result
 
-        indicator.style.width = '100%'
-
-        if (actionIcon.style.display !== 'block') {
-          actionIcon.style.display = 'block'
-
-          setTimeout(function () {
-            actionIcon.style.opacity = '0.7'
-          }, 20)
-        }
+        self.toggleUploadValue(true)
 
         preview.setMedia(src)
       }
@@ -93,28 +81,53 @@ export default class FileInput extends Component {
   }
 
   /**
-   * On action icon click event.
-   * @param {Event}
+   * Shows or hides upload value.
+   * @param {Boolean}
    */
-  onActionIconClick = (e) => {
-    const preview = window.app.elements.addPostDialog.elements.preview
+  toggleUploadValue = (flag) => {
     const actionIcon = this.elements.actionIcon
-
     const input = this.elements.upload
 
     const uploadValue = this.elements.value
     const indicator = this.elements.indicator
 
+    uploadValue.style.opacity = (flag) ? '1' : '0'
+    indicator.style.width = (flag) ? '100%' : '0'
+
+    if (flag) {
+      if (actionIcon.style.display !== 'block') {
+        actionIcon.style.display = 'block'
+
+        setTimeout(function () {
+          actionIcon.style.opacity = '0.7'
+        }, 20)
+      }
+    } else {
+      actionIcon.style.opacity = '0'
+
+      setTimeout(function () {
+        actionIcon.style.display = 'none'
+      }, 300)
+    }
+  }
+
+  /**
+   * On action icon click event.
+   * @param {Event}
+   */
+  onActionIconClick = (e) => {
+    const preview = window.app.elements.postDialog.elements.preview
+    const input = this.elements.upload
+
+    const uploadValue = this.elements.value
+
     preview.setMedia('')
 
     input.value = ''
 
-    indicator.style.width = '0%'
-    uploadValue.style.opacity = '0'
+    this.toggleUploadValue(false)
 
-    actionIcon.style.opacity = '0'
     setTimeout(function () {
-      actionIcon.style.display = 'none'
       uploadValue.innerHTML = ''
     }, 300)
   }

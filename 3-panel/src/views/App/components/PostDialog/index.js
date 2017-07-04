@@ -30,6 +30,11 @@ export default class PostDialog extends Component {
    */
   toggle = (flag, edit = false, postData) => {
     const root = this.getRoot()
+    const preview = this.elements.preview
+
+    const fileInput = this.elements.fileInput
+    const input = fileInput.elements.upload
+    const uploadValue = fileInput.elements.value
 
     const app = window.app
     const navigationDrawer = app.getNavigationDrawer()
@@ -60,11 +65,6 @@ export default class PostDialog extends Component {
       setTimeout(function () {
         root.style.opacity = '1'
       }, 20)
-
-      if (this.clearForm) {
-        this.resetForm()
-        this.clearForm = false
-      }
     } else {
       multiIcon.changeToDefault()
 
@@ -83,6 +83,18 @@ export default class PostDialog extends Component {
       setTimeout(function () {
         root.style.display = 'none'
       }, 300)
+
+      if (this.clearForm) {
+        this.resetForm()
+        this.clearForm = false
+
+        fileInput.toggleUploadValue(false)
+
+        input.innerHTML = ''
+        uploadValue.innerHTML = ''
+
+        preview.setMedia('')
+      }
     }
 
     let toolbarTitle = app.defaultTitle
@@ -104,6 +116,16 @@ export default class PostDialog extends Component {
 
       this.clearForm = true
 
+      if (postData.media != null) {
+        uploadValue.innerHTML = postData.media
+
+        fileInput.toggleUploadValue(true)
+
+        preview.setMedia(postData.media)
+      }
+    }
+
+    if (flag) {
       this.updatePreview()
     }
 
