@@ -63,16 +63,22 @@ export default class PostDialog extends Component {
       }, 20)
 
       if (edit) {
-        this.toggledEditMode = true
+        this.toggledEditMode = edit
+
+        saveButtonRoot.innerHTML = 'ZAPISZ'
 
         this.clearForm()
 
         setTimeout(function () {
           self.setForm(postData.title, postData.content, postData.media)
         }, 1)
+      } else {
+        saveButtonRoot.innerHTML = 'DODAJ'
       }
 
       if (!edit && this.toggledEditMode) {
+        this.toggledEditMode = false
+
         this.clearForm()
       }
     } else {
@@ -310,19 +316,28 @@ export default class PostDialog extends Component {
 
   /**
    * On save post button click event.
-   * Adds post.
+   * Adds or saves post.
    * TODO.
-   * Close add post dialog.
+   * Closes add post dialog.
    * @param {Event}
    */
   onSavePostButtonClick = (e) => {
+    const self = this
+
     const app = window.app
     const postDialog = app.elements.postDialog
     const snackbar = app.elements.addedPostSnackbar
+    const snackbarText = snackbar.elements.text
 
     if (this.verifyData()) {
       postDialog.toggle(false)
+
+      snackbarText.innerHTML = (!this.toggledEditMode) ? 'Pomyślnie dodano post' : 'Pomyślnie zapisano post'
       snackbar.toggle(true)
+
+      setTimeout(function () {
+        self.clearForm()
+      }, 300)
     }
   }
 

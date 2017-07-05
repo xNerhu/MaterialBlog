@@ -27,18 +27,26 @@ export default class Table extends Component {
 
   /**
    * Sets cells.
-   * @param {Object} posts.
+   * @param {Object} posts data
    */
   setCells = (posts) => {
+    for (var i = 0; i < posts.length; i++) {
+      this.addPost(posts[i])
+    }
+  }
+
+  /**
+   * Adds post to table.
+   * @param {Object} post data.
+   */
+  addPost = (data) => {
     const tbody = this.elements.tbody
 
-    for (var i = 0; i < posts.length; i++) {
-      const cell = (
-        <Cell data={posts[i]} getDesktopTable={this.getDesktopTable} />
-      )
+    const cell = (
+      <Cell data={data} getDesktopTable={this.getDesktopTable} />
+    )
 
-      this.renderComponents(cell, tbody)
-    }
+    this.renderComponents(cell, tbody)
   }
 
   /**

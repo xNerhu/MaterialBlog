@@ -235,7 +235,7 @@ export default class App extends Component {
       },
       {
         type: 'Button',
-        text: 'ZAPISZ',
+        text: 'DODAJ',
         ref: 'saveButton',
         position: 'Right',
         className: 'toolbar-button',

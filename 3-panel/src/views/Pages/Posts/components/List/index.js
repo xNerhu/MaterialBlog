@@ -29,16 +29,23 @@ export default class List extends Component {
    * @param {Object} posts.
    */
   setCells = (posts) => {
-    const root = this.getRoot()
-    const tbody = this.elements.tbody
-
     for (var i = 0; i < posts.length; i++) {
-      const cell = (
-        <Item data={posts[i]} getMobileTable={this.getMobileTable} getItem={() => { return this }} />
-      )
-
-      this.renderComponents(cell, root)
+      this.addPost(posts[i])
     }
+  }
+
+  /**
+   * Adds post to table.
+   * @param {Object} post data.
+   */
+  addPost = (data) => {
+    const root = this.getRoot()
+
+    const cell = (
+      <Item data={data} getMobileTable={this.getMobileTable} getItem={() => { return this }} />
+    )
+
+    this.renderComponents(cell, root)
   }
 
   /**

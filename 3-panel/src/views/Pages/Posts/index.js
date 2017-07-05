@@ -4,6 +4,9 @@ import Cookies from '../../../helpers/Cookies'
 import Table from './components/Table'
 import List from './components/List'
 
+import MaterialButton from '../../../imports/materialdesign/components/MaterialButton'
+import Preloader from '../../../imports/materialdesign/components/Preloader'
+
 export default class PostsPage extends Component {
   beforeRender () {
     this.tableLoaded = false
@@ -19,6 +22,8 @@ export default class PostsPage extends Component {
     this.toggledPictures = false
 
     this.selectedPosts = []
+
+    this.loadedPage = 0
 
     this.postsData = [
       {
@@ -164,6 +169,10 @@ export default class PostsPage extends Component {
       }
 
       tables.style.opacity = '1'
+
+      self.elements.loadButton.getRoot().innerHTML = 'ZAŁADUJ WIĘCEJ (3)'
+
+      self.toggleLoadButtonContainer(true)
     }, 1000)
   }
 
@@ -465,6 +474,86 @@ export default class PostsPage extends Component {
     element.togglePictures(!this.toggledPictures)
   }
 
+  toggleLoadButtonContainer = (flag) => {
+    this.elements.loadButtonContainer.style.display = (flag) ? 'block' : 'none'
+  }
+
+  toggleLoadPreloader = (flag) => {
+    this.elements.loadPreloader.getRoot().style.display = (flag) ? 'block' : 'none'
+  }
+
+  onLoadButtonClick = (e) => {
+    this.loadPosts()
+  }
+
+  loadPosts () {
+    const self = this
+    const app = window.app
+
+    const table = this.elements.table
+    const list = this.elements.list
+
+    app.isLoading = true
+    this.toggleLoadButtonContainer(false)
+    this.toggleLoadPreloader(true)
+
+    setTimeout(function () {
+      const posts = [
+        {
+          id: 10,
+          title: 'Load test',
+          author: 'Mikołaj Palkiewicz',
+          content: '<h1>1</h1>',
+          date: '14.04.2017 10:38',
+          avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+          likes: [],
+          comments: []
+        },
+        {
+          id: 10,
+          title: 'Load test',
+          author: 'Mikołaj Palkiewicz',
+          content: '<h1>2</h1>',
+          date: '14.04.2017 10:38',
+          avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+          likes: [],
+          comments: []
+        },
+        {
+          id: 10,
+          title: 'Load test',
+          author: 'Mikołaj Palkiewicz',
+          content: '<h1>3</h1>',
+          date: '14.04.2017 10:38',
+          avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+          likes: [],
+          comments: []
+        }
+      ]
+
+      for (var i = 0; i < posts.length; i++) {
+        const post = posts[i]
+
+        self.postsData.push(post)
+
+        if (self.tableLoaded) {
+          table.addPost(post)
+        }
+
+        if (self.listLoaded) {
+          list.addPost(post)
+        }
+      }
+
+      self.toggleLoadButtonContainer((self.loadedPage < 1))
+      self.toggleLoadPreloader(false)
+
+      app.isLoading = false
+
+      self.loadedPage++
+    }, 500)
+  }
+
   render () {
     return (
       <div className='page page-posts' ref='root'>
@@ -472,6 +561,10 @@ export default class PostsPage extends Component {
           <Table ref='table' />
           <List ref='list' />
         </div>
+        <div className='page-posts-load' ref='loadButtonContainer'>
+          <MaterialButton ref='loadButton' text='ZAŁADUJ WIĘCEJ (0)' onClick={this.onLoadButtonClick} />
+        </div>
+        <Preloader className='page-posts-preloader' ref='loadPreloader' />
       </div>
     )
   }

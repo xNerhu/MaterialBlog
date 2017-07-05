@@ -2,3 +2,18 @@
   opacity: 0;
   transition: 0.3s opacity;
 }
+
+
+.page-posts-load {
+  text-align: center;
+  margin-top: 32px;
+  margin-bottom: 32px;
+  display: none;
+}
+
+.page-posts-preloader {
+  width: 54px;
+  height: 54px;
+  margin: 32px auto;
+  display: none;
+}
