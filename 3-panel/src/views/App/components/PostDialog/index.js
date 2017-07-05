@@ -13,7 +13,7 @@ export default class PostDialog extends Component {
 
     this.previewToggled = false
 
-    this.clearForm = false
+    this.toggledEditMode = false
   }
 
   /**
@@ -29,12 +29,8 @@ export default class PostDialog extends Component {
    * @param {Boolean} show or hide
    */
   toggle = (flag, edit = false, postData) => {
+    const self = this
     const root = this.getRoot()
-    const preview = this.elements.preview
-
-    const fileInput = this.elements.fileInput
-    const input = fileInput.elements.upload
-    const uploadValue = fileInput.elements.value
 
     const app = window.app
     const navigationDrawer = app.getNavigationDrawer()
@@ -65,6 +61,20 @@ export default class PostDialog extends Component {
       setTimeout(function () {
         root.style.opacity = '1'
       }, 20)
+
+      if (edit) {
+        this.toggledEditMode = true
+
+        this.clearForm()
+
+        setTimeout(function () {
+          self.setForm(postData.title, postData.content, postData.media)
+        }, 1)
+      }
+
+      if (!edit && this.toggledEditMode) {
+        this.clearForm()
+      }
     } else {
       multiIcon.changeToDefault()
 
@@ -83,18 +93,6 @@ export default class PostDialog extends Component {
       setTimeout(function () {
         root.style.display = 'none'
       }, 300)
-
-      if (this.clearForm) {
-        this.resetForm()
-        this.clearForm = false
-
-        fileInput.toggleUploadValue(false)
-
-        input.innerHTML = ''
-        uploadValue.innerHTML = ''
-
-        preview.setMedia('')
-      }
     }
 
     let toolbarTitle = app.defaultTitle
@@ -107,40 +105,55 @@ export default class PostDialog extends Component {
 
     toolbar.setTitle(toolbarTitle)
 
-    if (edit) {
-      const title = this.elements.titleTextField
-      const content = this.elements.contentTextField
-
-      title.setValue(postData.title)
-      content.setValue(postData.content)
-
-      this.clearForm = true
-
-      if (postData.media != null) {
-        uploadValue.innerHTML = postData.media
-
-        fileInput.toggleUploadValue(true)
-
-        preview.setMedia(postData.media)
-      }
-    }
-
-    if (flag) {
-      this.updatePreview()
-    }
-
     this.toggled = flag
   }
 
   /**
-   * Resets form.
+   * Clears form.
    */
-  resetForm () {
+  clearForm () {
     const title = this.elements.titleTextField
     const content = this.elements.contentTextField
+    const preview = this.elements.preview
+    const fileInput = this.elements.fileInput
+    const uploadInput = fileInput.elements.upload
 
     title.setValue('')
     content.setValue('')
+    preview.setMedia(null)
+
+    this.updatePreview()
+
+    fileInput.toggleUploadValue(false, 1)
+    uploadInput.value = ''
+  }
+
+  /**
+   * Sets form.
+   * @param {String} title
+   * @param {String} content
+   * @param {String} media
+   */
+  setForm (_title, _content, _media) {
+    const title = this.elements.titleTextField
+    const content = this.elements.contentTextField
+    const preview = this.elements.preview
+    const fileInput = this.elements.fileInput
+    const uploadValue = fileInput.elements.value
+
+    title.setValue(_title)
+    content.setValue(_content)
+    preview.setMedia(_media)
+
+    if (_media != null) {
+      uploadValue.innerHTML = _media
+      fileInput.toggleUploadValue(true)
+    }
+
+    this.updatePreview()
+
+    this.onInput(title)
+    this.onInput(content)
   }
 
   /**

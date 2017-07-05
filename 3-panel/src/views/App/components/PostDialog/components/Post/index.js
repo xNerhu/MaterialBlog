@@ -78,8 +78,20 @@ export default class Post extends Component {
     const mediaBlur = this.elements.mediaBlur
     const mediaPic = this.elements.mediaPic
 
-    mediaBlur.style.backgroundImage = 'url(' + url + ')'
-    mediaPic.src = url
+    if (url == null) {
+      if (mediaBlur.style.display !== 'none') {
+        mediaBlur.style.display = 'none'
+        mediaPic.style.display = 'none'
+      }
+    } else {
+      mediaBlur.style.backgroundImage = 'url(' + url + ')'
+      mediaPic.src = url
+
+      if (mediaBlur.style.display === 'none') {
+        mediaBlur.style.display = 'block'
+        mediaPic.style.display = 'block'
+      }
+    }
   }
 
   render () {

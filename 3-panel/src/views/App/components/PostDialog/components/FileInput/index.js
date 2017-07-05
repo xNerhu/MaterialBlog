@@ -83,8 +83,9 @@ export default class FileInput extends Component {
   /**
    * Shows or hides upload value.
    * @param {Boolean}
+   * @param {Int} timer duration. Used in clearing form.
    */
-  toggleUploadValue = (flag) => {
+  toggleUploadValue = (flag, timerDuration = 300) => {
     const actionIcon = this.elements.actionIcon
     const input = this.elements.upload
 
@@ -107,7 +108,7 @@ export default class FileInput extends Component {
 
       setTimeout(function () {
         actionIcon.style.display = 'none'
-      }, 300)
+      }, timerDuration)
     }
   }
 
