@@ -79,7 +79,7 @@ export default class Cell extends Component {
         <td ref='comments' />
         <td ref='likes' />
         <td ref='picture' className='picture-cell' />
-        <td>
+        <td ref='title'>
           {
             this.props.data.title
           }

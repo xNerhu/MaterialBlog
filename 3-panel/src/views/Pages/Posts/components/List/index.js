@@ -4,6 +4,7 @@ import Item from './components/Item'
 
 export default class List extends Component {
   beforeRender () {
+    this.items = []
     this.cells = []
 
     this.toggledPictures = false
@@ -39,13 +40,15 @@ export default class List extends Component {
    * @param {Object} post data.
    */
   addPost = (data) => {
-    const root = this.getRoot()
+    if (data.deleted !== true) {
+      const root = this.getRoot()
 
-    const cell = (
-      <Item data={data} getMobileTable={this.getMobileTable} getItem={() => { return this }} />
-    )
+      const cell = (
+        <Item data={data} getMobileTable={this.getMobileTable} getItem={() => { return this }} />
+      )
 
-    this.renderComponents(cell, root)
+      this.renderComponents(cell, root)
+    }
   }
 
   /**

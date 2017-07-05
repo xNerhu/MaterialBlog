@@ -20,7 +20,7 @@ export default class Item extends Component {
 
   render () {
     return (
-      <div className='posts-table-list-item'>
+      <div className='posts-table-list-item' ref='root'>
         <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='AKCJA' isAction='true' />
         <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='ID' ref='id' />
         <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='AUTOR' ref='author' />
@@ -45,5 +45,7 @@ export default class Item extends Component {
     this.elements.picture.setText((data.media != null) ? '<img src="' + data.media + '" >' : '')
     this.elements.title.setText(data.title)
     this.elements.content.setText(data.content)
+
+    window.app.getPostsPage().elements.list.items.push(this)
   }
 }

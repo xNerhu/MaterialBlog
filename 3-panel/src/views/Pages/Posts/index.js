@@ -375,8 +375,6 @@ export default class PostsPage extends Component {
    * @return {Object} selected posts
    */
   getSelectedPosts = () => {
-    const app = window.app
-
     const table = this.elements.table
     const list = this.elements.list
 
@@ -416,35 +414,65 @@ export default class PostsPage extends Component {
   }
 
   /**
-   * Deletes selected posts.
-   * TODO
+   * On delete posts dialog confirm click event.
    */
-  deletePosts = (e) => {
+  onDeletePostsDialogConfirmClick = (e) => {
     const app = window.app
     const dialog = app.elements.deletePostsDialog
     const snackbar = app.elements.deletedPostsSnackbar
     const snackbarRoot = snackbar.getRoot()
 
+    this.toggleCheckBoxes(false)
+
     dialog.toggle(false)
     snackbar.toggle(true)
 
     app.moveFAB(snackbarRoot.scrollHeight)
+
+    const selectedPosts = this.getSelectedPosts()
+
+    for (var i = 0; i < selectedPosts.length; i++) {
+      this.deletePost(selectedPosts[i].props.data, selectedPosts[i])
+    }
   }
 
   /**
-   * Deletes selected post.
+   * On delete post dialog confirm click event.
    * TODO
    */
-  deletePost = (e) => {
+  onDeletePostDialogConfirmClick = (e) => {
     const app = window.app
     const dialog = app.elements.deletePostDialog
     const snackbar = app.elements.deletedPostSnackbar
     const snackbarRoot = snackbar.getRoot()
 
+    this.toggleCheckBoxes(false)
+
     dialog.toggle(false)
     snackbar.toggle(true)
 
     app.moveFAB(snackbarRoot.scrollHeight)
+
+    this.deletePost(this.clickedPost.props.data, this.clickedPost)
+  }
+
+  deletePost = (data, element) => {
+    let cell = element
+    const index = this.postsData.indexOf(data)
+
+    cell.getRoot().style.display = 'none'
+
+    if (!this.isTable && this.tableLoaded) {
+      const cellInTable = this.elements.table.cells[index]
+
+      cellInTable.getRoot().style.display = 'none'
+    } else if (this.isTable && this.listLoaded) {
+      const itemInList = this.elements.list.items[index]
+
+      itemInList.getRoot().style.display = 'none'
+    }
+
+    this.postsData[index].deleted = true
   }
 
   /**
@@ -474,18 +502,34 @@ export default class PostsPage extends Component {
     element.togglePictures(!this.toggledPictures)
   }
 
+  /**
+   * Shows or hides load button container.
+   * @param {Boolean}
+   */
   toggleLoadButtonContainer = (flag) => {
     this.elements.loadButtonContainer.style.display = (flag) ? 'block' : 'none'
   }
 
+  /**
+   * Shows or hides preloader.
+   * @param {Boolean}
+   */
   toggleLoadPreloader = (flag) => {
     this.elements.loadPreloader.getRoot().style.display = (flag) ? 'block' : 'none'
   }
 
+  /**
+   * On load button click event.
+   * @param {Event}
+   */
   onLoadButtonClick = (e) => {
     this.loadPosts()
   }
 
+  /**
+   * Loads more posts.
+   * TODO
+   */
   loadPosts () {
     const self = this
     const app = window.app

@@ -325,15 +325,42 @@ export default class PostDialog extends Component {
     const self = this
 
     const app = window.app
-    const postDialog = app.elements.postDialog
+    const postsPage = app.getPostsPage()
     const snackbar = app.elements.addedPostSnackbar
     const snackbarText = snackbar.elements.text
 
     if (this.verifyData()) {
-      postDialog.toggle(false)
+      this.toggle(false)
 
       snackbarText.innerHTML = (!this.toggledEditMode) ? 'Pomyślnie dodano post' : 'Pomyślnie zapisano post'
       snackbar.toggle(true)
+
+      const post = postsPage.clickedPost
+
+      const title = this.elements.titleTextField.getValue()
+      const content = this.elements.contentTextField.getValue()
+
+      const index = postsPage.postsData.indexOf(post.props.data)
+
+      if (postsPage.listLoaded) {
+        const postInList = postsPage.elements.list.items[index]
+
+        postInList.elements.title.elements.text.innerHTML = title
+        postInList.elements.content.elements.text.innerHTML = content
+      }
+
+      if (postsPage.tableLoaded) {
+        const postInTable = postsPage.elements.table.cells[index]
+
+        postInTable.elements.title.innerHTML = title
+        postInTable.elements.content.innerHTML = content
+      }
+
+      post.elements.title.innerHTML = title
+      post.elements.content.innerHTML = content
+
+      postsPage.postsData[index].title = title
+      postsPage.postsData[index].content = content
 
       setTimeout(function () {
         self.clearForm()

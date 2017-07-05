@@ -404,12 +404,6 @@ export default class App extends Component {
 
     const items = [
       {
-        text: 'Odśwież',
-        onClick: function () {
-
-        }
-      },
-      {
         text: 'Dodaj',
         onClick: function () {
           postDialog.toggle(true)
@@ -642,7 +636,7 @@ export default class App extends Component {
     const items = [
       {
         text: 'TAK',
-        onClick: postsPage.deletePosts
+        onClick: postsPage.onDeletePostsDialogConfirmClick
       },
       {
         text: 'NIE',
@@ -665,7 +659,7 @@ export default class App extends Component {
     const items = [
       {
         text: 'TAK',
-        onClick: postsPage.deletePost
+        onClick: postsPage.onDeletePostDialogConfirmClick
       },
       {
         text: 'NIE',

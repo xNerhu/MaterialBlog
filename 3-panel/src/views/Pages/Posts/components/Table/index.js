@@ -40,13 +40,15 @@ export default class Table extends Component {
    * @param {Object} post data.
    */
   addPost = (data) => {
-    const tbody = this.elements.tbody
+    if (data.deleted !== true) {
+      const tbody = this.elements.tbody
 
-    const cell = (
-      <Cell data={data} getDesktopTable={this.getDesktopTable} />
-    )
+      const cell = (
+        <Cell data={data} getDesktopTable={this.getDesktopTable} />
+      )
 
-    this.renderComponents(cell, tbody)
+      this.renderComponents(cell, tbody)
+    }
   }
 
   /**
