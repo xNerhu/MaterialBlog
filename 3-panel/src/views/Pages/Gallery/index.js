@@ -1,5 +1,7 @@
 import Component from '../../../helpers/Component'
 
+import Section from './components/Section'
+
 export default class GalleryPage extends Component {
   /**
    * Gets root.
@@ -25,7 +27,9 @@ export default class GalleryPage extends Component {
   render () {
     return (
       <div className='page page-gallery' ref='root'>
-        Gallery
+        <div className='page-gallery-container'>
+          <Section />
+        </div>
       </div>
     )
   }

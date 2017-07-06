@@ -1,0 +1,33 @@
+.page-gallery-category {
+  width: 200px;
+  height: 200px;
+  background-color: #fff;
+  position: relative;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url(http://s1.picswalls.com/wallpapers/2016/06/10/4k-background-wallpaper_065216608_309.jpg);
+  cursor: pointer;
+  float: left;
+  margin-top: 4px;
+  margin-left: 4px;
+
+  & .title {
+    width: calc(100% - 48px);
+    height: auto;
+    padding: 16px;
+    padding-right: 32px;
+    position: absolute;
+    bottom: 0;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.4);
+    @include Roboto-Regular;
+    @include text-selectable;
+    @include text-unselectable;
+    z-index: 10;
+
+    & .menu-icon {
+
+    }
+  }
+}
