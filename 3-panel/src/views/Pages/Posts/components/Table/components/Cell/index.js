@@ -100,7 +100,7 @@ export default class Cell extends Component {
     this.elements.date.innerHTML = data.date
     this.elements.comments.innerHTML = data.comments.length
     this.elements.likes.innerHTML = data.likes.length
-    this.elements.picture.innerHTML = (data.media != null) ? '<img src="' + data.media + '" >' : ''
+    this.elements.picture.innerHTML = (data.media != null) ? '<img src="' + data.media + '" >' : '<img>'
     this.elements.content.innerHTML = data.content
 
     this.props.getDesktopTable().cells.push(this)

@@ -323,6 +323,7 @@ export default class PostDialog extends Component {
    */
   onSavePostButtonClick = (e) => {
     const self = this
+    const previewMedia = this.elements.preview.elements.mediaPic
 
     const app = window.app
     const postsPage = app.getPostsPage()
@@ -341,12 +342,24 @@ export default class PostDialog extends Component {
       const content = this.elements.contentTextField.getValue()
 
       const index = postsPage.postsData.indexOf(post.props.data)
+      const media = (previewMedia.style.display !== 'none') ? previewMedia.src : null
 
       if (postsPage.listLoaded) {
         const postInList = postsPage.elements.list.items[index]
 
         postInList.elements.title.elements.text.innerHTML = title
         postInList.elements.content.elements.text.innerHTML = content
+
+        const img = postInList.elements.picture.elements.text.getElementsByTagName('img')[0]
+
+        if (img != null) {
+          if (media == null) {
+            img.style.display = 'none'
+          } else {
+            img.style.display = 'inline-block'
+            img.src = media
+          }
+        }
       }
 
       if (postsPage.tableLoaded) {
@@ -354,6 +367,17 @@ export default class PostDialog extends Component {
 
         postInTable.elements.title.innerHTML = title
         postInTable.elements.content.innerHTML = content
+
+        const img = postInTable.elements.picture.getElementsByTagName('img')[0]
+
+        if (img != null) {
+          if (media == null) {
+            img.style.display = 'none'
+          } else {
+            img.style.display = 'block'
+            img.src = media
+          }
+        }
       }
 
       post.elements.title.innerHTML = title
@@ -361,6 +385,7 @@ export default class PostDialog extends Component {
 
       postsPage.postsData[index].title = title
       postsPage.postsData[index].content = content
+      postsPage.postsData[index].media = media
 
       setTimeout(function () {
         self.clearForm()

@@ -122,7 +122,7 @@ export default class FileInput extends Component {
 
     const uploadValue = this.elements.value
 
-    preview.setMedia('')
+    preview.setMedia(null)
 
     input.value = ''
 
