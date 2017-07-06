@@ -87,7 +87,7 @@ export default class GalleryPage extends Component {
         },
         {
           name: 'Material Design Dark',
-          date: '20.04.2017',
+          date: '20.04.2016',
           pictures: [
             'http://orig11.deviantart.net/20eb/f/2015/030/6/f/_minflat__dark_material_design_wallpaper__4k__by_dakoder-d8fjqzu.jpg',
             'https://4kwallpapers.co/wp-content/uploads/2015/07/Red-Dark-Material-Design-Ultra-HD-Wallpaper.jpg'
@@ -95,7 +95,7 @@ export default class GalleryPage extends Component {
         },
         {
           name: 'Avatar',
-          date: '17.04.2017',
+          date: '17.04.2016',
           pictures: [
             'https://avatars2.githubusercontent.com/u/12050791?v=3&s=460'
           ]
@@ -104,13 +104,18 @@ export default class GalleryPage extends Component {
 
       for (var i = 0; i < self.categoriesData.length; i++) {
         const category = self.categoriesData[i]
-        const month = category.date.split('.', 2)[1]
-        const index = self.getSectionIndex(month)
+        const split = category.date.split('.')
+
+        const month = split[1]
+        const year = split[2]
+
+        const index = self.getSectionIndex(month, year)
 
         if (index < 0) {
           self.sectionsData.push(
             {
               month: month,
+              year: year,
               categories: []
             }
           )
@@ -122,7 +127,16 @@ export default class GalleryPage extends Component {
       }
 
       for (var i = 0; i < self.sectionsData.length; i++) {
-        self.addSection(self.sectionsData[i].categories, self.months[parseInt(self.sectionsData[i].month) - 1])
+        let subheader = self.months[parseInt(self.sectionsData[i].month) - 1]
+        const year = self.sectionsData[i].year
+
+        const actualYear = new Date().getFullYear()
+
+        if (year != actualYear) {
+          subheader += ' ' + year
+        }
+
+        self.addSection(self.sectionsData[i].categories, subheader)
       }
     }, 10)
   }
@@ -143,11 +157,11 @@ export default class GalleryPage extends Component {
   /**
    * Gets section index.
    * @param {String} month
-   * @return {Int} index
+   * @return {Int} year
    */
-  getSectionIndex = (month) => {
+  getSectionIndex = (month, year) => {
     for (var i = 0; i < this.sectionsData.length; i++) {
-      if (this.sectionsData[i].month === month) {
+      if (this.sectionsData[i].month === month && this.sectionsData[i].year === year) {
         return i
       }
     }
