@@ -181,8 +181,11 @@ export default class PostsPage extends Component {
    */
   onSelect = () => {
     const app = window.app
+    const toolbar = app.getToolbar()
 
     app.toggleFAB(true)
+
+    toolbar.showItems()
   }
 
   /**
@@ -190,8 +193,11 @@ export default class PostsPage extends Component {
    */
   onDeselect = () => {
     const app = window.app
+    const toolbar = app.getToolbar()
 
     app.toggleFAB(false)
+
+    toolbar.hideItems(false, false)
   }
 
   /**
