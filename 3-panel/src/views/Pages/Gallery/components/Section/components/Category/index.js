@@ -64,6 +64,22 @@ export default class Category extends Component {
   }
 
   /**
+   * On menu icon click event.
+   * Shows category menu.
+   * @param {Event}
+   */
+  onMenuIconClick = (e) => {
+    const app = window.app
+    const menu = app.elements.categoryMenu
+
+    document.removeEventListener('click', app.onClick)
+
+    app.toggleMenu(true, menu, e.target, false)
+
+    app.getPostsPage().clickedPost = this
+  }
+
+  /**
    * On menu icon mouse down event.
    * Makes ripple.
    * @param {Event}
@@ -98,7 +114,7 @@ export default class Category extends Component {
           {
             this.props.data.name
           }
-          <div className='menu-icon ripple-icon' ref='menuIcon' onMouseDown={this.onMenuIconMouseDown} onTouchStart={this.onMenuIconTouchStart} />
+          <div className='menu-icon ripple-icon' ref='menuIcon' onClick={this.onMenuIconClick} onMouseDown={this.onMenuIconMouseDown} onTouchStart={this.onMenuIconTouchStart} />
         </div>
       </div>
     )

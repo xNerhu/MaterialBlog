@@ -191,11 +191,13 @@ export default class PostsPage extends Component {
   /**
    * On deselect this page event.
    */
-  onDeselect = () => {
+  onDeselect = (selectedPage) => {
     const app = window.app
     const toolbar = app.getToolbar()
 
-    app.toggleFAB(false)
+    if (selectedPage !== app.getGalleryPage()) {
+      app.toggleFAB(false)
+    }
 
     toolbar.hideItems(false, false)
   }

@@ -35,6 +35,26 @@ export default class GalleryPage extends Component {
   }
 
   /**
+   * On select this page event.
+   */
+  onSelect = () => {
+    const app = window.app
+
+    app.toggleFAB(true)
+  }
+
+  /**
+   * On deselect this page event.
+   */
+  onDeselect = (selectedPage) => {
+    const app = window.app
+
+    if (selectedPage !== app.getPostsPage()) {
+      app.toggleFAB(false)
+    }
+  }
+
+  /**
    * Loads categories.
    */
   load = () => {

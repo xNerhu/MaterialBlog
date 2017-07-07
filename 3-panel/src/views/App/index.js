@@ -254,7 +254,7 @@ export default class App extends Component {
         position: 'Right',
         className: 'toolbar-icon-more',
         onClick: function (e) {
-          self.toggleMenu(true, self.elements.menu)
+          self.toggleMenu(true, self.elements.menu, e.target)
         }
       },
       {
@@ -441,6 +441,27 @@ export default class App extends Component {
     menu.setItems(items)
   }
 
+  setCategoryMenuItems () {
+    const menu = this.elements.categoryMenu
+
+    const items = [
+      {
+        text: 'Otwórz'
+      },
+      {
+        text: 'Edytuj'
+      },
+      {
+        text: 'Usuń'
+      },
+      {
+        text: 'Informacje'
+      }
+    ]
+
+    menu.setItems(items)
+  }
+
   /**
    * Selects page.
    * @param {PostsPage | GalleryPage}
@@ -495,7 +516,7 @@ export default class App extends Component {
 
       const lastPage = this.lastPage
       if (lastPage != null) {
-        this.deselectPage(lastPage)
+        this.deselectPage(lastPage, page)
       }
 
       this.lastPage = page
@@ -506,12 +527,12 @@ export default class App extends Component {
    * Deselects page.
    * @param {PostsPage | GalleryPage}
    */
-  deselectPage = (page) => {
+  deselectPage = (page, selectedPage) => {
     const pageRoot = page.getRoot()
 
     pageRoot.style.opacity = '0'
 
-    if (typeof page.onDeselect === 'function') page.onDeselect()
+    if (typeof page.onDeselect === 'function') page.onDeselect(selectedPage)
 
     setTimeout(function () {
       pageRoot.style.display = 'none'
@@ -556,20 +577,45 @@ export default class App extends Component {
 
     if (flag) {
       let top = 8
-      let right = 32
+      let bottom = false
+      let left = 0
+      let right = false
+
+      menuRoot.style.display = 'block'
 
       if (clickedElement != null) {
         const bounds = clickedElement.getBoundingClientRect()
 
-        top = bounds.top
-        right = bounds.right - bounds.left
+        top = bounds.top + 8
+
+        if (top + menuRoot.scrollHeight >= window.innerHeight) {
+          top = false
+          bottom = bounds.bottom - bounds.top
+        }
+
+        left = bounds.left
+
+        if (left + 112 >= window.innerWidth) {
+          left = false
+          right = bounds.right - bounds.left - 4
+        }
       }
 
-      menuRoot.style.top = top + 'px'
-      menuRoot.style.right = right + 'px'
+      if (top !== false) {
+        menuRoot.style.top = top + 'px'
+      } else {
+        menuRoot.style.top = 'initial'
+        menuRoot.style.bottom = bottom + 'px'
+      }
+
+      if (left !== false) {
+        menuRoot.style.left = left + 'px'
+      } else {
+        menuRoot.style.left = 'initial'
+        menuRoot.style.right = right + 'px'
+      }
 
       menuRoot.style.overflowY = 'hidden'
-      menuRoot.style.display = 'block'
       menuRoot.style.opacity = '1'
 
       setTimeout(function () {
@@ -728,6 +774,7 @@ export default class App extends Component {
         </div>
         <Menu ref='menu' className='toolbar-menu' mobile={true} />
         <Menu ref='postItemMenu' className='toolbar-menu' mobile={true} />
+        <Menu ref='categoryMenu' className='toolbar-menu' mobile={true} />
         <Dialog ref='deletePostsDialog' title='Jesteś pewny(a)?'>
           Nie będzie można ich odzyskać.
         </Dialog>
@@ -751,6 +798,7 @@ export default class App extends Component {
     this.setNavigationDrawerItems()
     this.setMenuItems()
     this.setPostItemMenuItems()
+    this.setCategoryMenuItems()
     this.setDeletePostsDialogItems()
     this.setDeletePostDialogItems()
 
