@@ -180,14 +180,6 @@ export default class Toolbar extends Component {
       const item = this.items[i]
       const classList = item.classList
 
-      /*if (multiIcon && classList.contains('toolbar-icon-multi-icon') || title && classList.contains('toolbar-title')) {
-
-      }*/
-      /*if (multiIcon && classList.contains('toolbar-icon-multi-icon') || title && classList.contains('toolbar-title')) {
-        this.hideElement(item)
-      } else {
-        this.hideElement(item)
-      }*/
       const isMultiIcon = classList.contains('toolbar-icon-multi-icon')
       const isTitle = classList.contains('toolbar-title')
       const isSaveButton = classList.contains('toolbar-button-save')
@@ -212,10 +204,14 @@ export default class Toolbar extends Component {
   showItems = () => {
     for (var i = 0; i < this.hiddenItems.length; i++) {
       const item = this.hiddenItems[i]
-      const top = '0px'
-
-      item.style.top = top
+      this.showItem(item)
     }
+  }
+
+  showItem = (element) => {
+    const top = '0px'
+
+    element.style.top = top
   }
 
   /**

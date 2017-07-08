@@ -54,8 +54,9 @@ export default class Category extends Component {
    */
   onTouchStart = (e) => {
     const root = this.getRoot()
+    const target = e.target
 
-    if (target !== this.elements.title && target !== this.elements.menuIcon) {
+    if (target !== this.elements.title && target !== this.elements.menuIcon && !this.touched) {
       const ripple = Ripple.createRipple(root, this.props.rippleStyle, createRippleMouse(root, e, 1.5, true))
       Ripple.makeRipple(ripple)
     }

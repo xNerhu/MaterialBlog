@@ -26,8 +26,11 @@ $pictureBlur: 10px;
 @import 'src/imports/materialdesign/helpers/ripple/style.scss';
 
 @import 'views/App/styles.scss';
+
 @import 'views/App/components/PostDialog/style.scss';
 @import 'views/App/components/PostDialog/components/Post/style.scss';
+
+@import 'views/App/components/AddCategoryDialog/style.scss';
 
 @import 'views/App/components/Toolbar/style.scss';
 @import 'views/App/components/Toolbar/components/MultiIcon/style.scss';

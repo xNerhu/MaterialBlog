@@ -1,6 +1,7 @@
 import Component from '../../helpers/Component'
 import Url from '../../helpers/Url'
 
+import AddCategoryDialog from './components/AddCategoryDialog'
 import PostDialog from './components/PostDialog'
 
 import NavigationDrawer from './components/NavigationDrawer/index'
@@ -446,6 +447,9 @@ export default class App extends Component {
 
     const items = [
       {
+        text: 'Dodaj'
+      },
+      {
         text: 'Otwórz'
       },
       {
@@ -733,9 +737,12 @@ export default class App extends Component {
    */
   onFABClick = (e) => {
     const postsPage = this.getPostsPage()
+    const galleryPage = this.getGalleryPage()
 
     if (this.selectedPage === postsPage) {
       this.elements.postDialog.toggle(true)
+    } else if (this.selectedPage === galleryPage) {
+      this.elements.addCategoryDialog.elements.dialog.toggle(true)
     }
   }
 
@@ -781,9 +788,11 @@ export default class App extends Component {
         <Dialog ref='deletePostDialog' title='Jesteś pewny(a)?'>
           Nie będzie można go odzyskać.
         </Dialog>
-        <Snackbar className='snackbar-deleted-posts' ref='deletedPostsSnackbar' text='Pomyślnie usunięto posty' />
-        <Snackbar className='snackbar-deleted-posts' ref='deletedPostSnackbar' text='Pomyślnie usunięto post' />
-        <Snackbar className='snackbar-added-post' ref='addedPostSnackbar' text='Pomyślnie dodano post' />
+        <AddCategoryDialog ref='addCategoryDialog' />
+        <Snackbar ref='deletedPostsSnackbar' text='Pomyślnie usunięto posty' />
+        <Snackbar ref='deletedPostSnackbar' text='Pomyślnie usunięto post' />
+        <Snackbar ref='addedPostSnackbar' text='Pomyślnie dodano post' />
+        <Snackbar ref='addedCategorySnackbar' text='Pomyślnie dodano kategorię' />
         <Tooltip ref='tooltipView' text='Przełącz na liste' />
         <Tooltip ref='tooltipShowPictures' text='Pokaż zdjęcia' />
         <Tooltip ref='tooltipUploadButton' text='Najlepiej w proporcjach 16:9' />
@@ -815,6 +824,10 @@ export default class App extends Component {
       } else if (urlPage === 'lessonsplan') {
         pageToSelect = this.getLessonsPlanTab()
       }
+    }
+
+    if (pageToSelect !== this.getPostsPage()) {
+      this.getToolbar().hideItems(false, false)
     }
 
     this.selectPage(pageToSelect)

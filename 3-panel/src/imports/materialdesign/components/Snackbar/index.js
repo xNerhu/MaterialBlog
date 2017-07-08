@@ -25,8 +25,12 @@ export default class Snackbar extends Component {
     const content = this.elements.content
 
     if (flag) {
-      root.style.display = 'block'
+      root.style.display = 'inline-block'
+      root.style.position = 'relative'
+      root.style.width = root.scrollWidth + 'px'
+      root.style.position = 'fixed'
 
+      root.style.opacity = '1'
       setTimeout(function () {
         root.style.bottom = '0px'
 
@@ -42,6 +46,7 @@ export default class Snackbar extends Component {
       root.style.bottom = -root.scrollHeight + 'px'
 
       setTimeout(function () {
+        root.style.opacity = '0'
         root.style.display = 'none'
         content.style.opacity = '0'
       }, 300)
