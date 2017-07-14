@@ -1,6 +1,8 @@
 import Component from '../../../helpers/Component'
 
 import PicturesDialog from './components/PicturesDialog'
+import UploadPicturesDialog from './components/UploadPicturesDialog'
+
 import Section from './components/Section'
 
 export default class GalleryPage extends Component {
@@ -225,6 +227,7 @@ export default class GalleryPage extends Component {
       <div className='page page-gallery' ref='root'>
         <div className='page-gallery-container' ref='container' />
         <PicturesDialog ref='picturesDialog' />
+        <UploadPicturesDialog ref='uploadPicturesDialog' />
       </div>
     )
   }

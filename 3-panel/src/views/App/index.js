@@ -747,7 +747,21 @@ export default class App extends Component {
     if (this.selectedPage === postsPage) {
       this.elements.postDialog.toggle(true)
     } else if (this.selectedPage === galleryPage) {
-      this.elements.addCategoryDialog.elements.dialog.toggle(true)
+      const uploadPicturesDialog = galleryPage.elements.uploadPicturesDialog
+
+      if (galleryPage.elements.picturesDialog.toggled) {
+        const input = document.createElement('input')
+        input.type = 'file'
+        input.accept = 'image/*'
+        input.multiple = 'true'
+
+        input.click()
+        input.addEventListener('change', function (e) {
+          uploadPicturesDialog.toggle(true, input)
+        })
+      } else {
+        this.elements.addCategoryDialog.elements.dialog.toggle(true)
+      }
     }
   }
 
@@ -765,6 +779,22 @@ export default class App extends Component {
       setTimeout(function () {
         fabContainer.style.bottom = '32px'
       }, duration)
+    }
+  }
+
+  toggleFullScreenDialog = (flag, root) => {
+    if (flag) {
+      root.style.display = 'block'
+
+      setTimeout(function () {
+        root.style.opacity = '1'
+      }, 10)
+    } else {
+      root.style.opacity = '0'
+
+      setTimeout(function () {
+        root.style.display = 'none'
+      }, 300)
     }
   }
 

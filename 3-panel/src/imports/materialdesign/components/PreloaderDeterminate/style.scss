@@ -1,9 +1,8 @@
 .preloader-determinate {
   -webkit-transform-origin: center center;
   transform-origin: center center;
-  width: 64px;
-  height: 64px;
-  margin: 64px;
+  width: 54px;
+  height: 54px;
 }
 
 .preloader-determinate .path {
@@ -11,4 +10,7 @@
   stroke-linecap: square;
   stroke: #FFC107;
   stroke-width: 4;
+  stroke-dasharray: 0, 200;
+  transition: 0.3s stroke-dasharray ease;
+  display: none;
 }

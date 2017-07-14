@@ -2,8 +2,15 @@ import Component from './../../../../helpers/Component'
 
 export default class PreloaderDeterminate extends Component {
   beforeRender () {
+    if (window.preloaderDeterminateID == null) {
+      window.preloaderDeterminateID = 0
+    } else {
+      window.preloaderDeterminateID++
+    }
 
+    this.id = window.preloaderDeterminateID
   }
+
   /**
    * Gets root.
    * @return {DOMElement} root.
@@ -14,16 +21,23 @@ export default class PreloaderDeterminate extends Component {
 
   /**
    * Sets value.
-   * @param {Int} progress in progress (0 - 100)
+   * @param {Int} progress in percent (0 - 100)
    */
   setProgress = (percent) => {
-    const root = this.getRoot()
-    const circle = this.elements.circle
+    // When I change this to this.elements.circle all changes on circle will not work. Very weird bug.
+    const circle = document.querySelectorAll('#preloader-determinate-' + this.id + ' .path')[0]
 
-    const value = 122 * percent / 100 + ', 200'
+    if (percent > 0 && circle.style.display !== 'block') {
+      circle.style.display = 'block'
+    } else if (percent <= 0 && circle.style.display !== 'none') {
+      circle.style.display = 'none'
+    }
 
-    circle.setAttribute('stroke-dasharray', value)
-    root.innerHTML = this.elements.svg.outerHTML
+    setTimeout(function () {
+      const value = 122 * percent / 100 + ', 200'
+
+      circle.style['stroke-dasharray'] = value
+    }, 10)
   }
 
   render () {
@@ -35,6 +49,8 @@ export default class PreloaderDeterminate extends Component {
   afterRender () {
     const props = this.props
     const root = this.getRoot()
+
+    root.id = 'preloader-determinate-' + window.preloaderDeterminateID
 
     // Must add svg manually.
     this.elements.svg = document.createElement('svg')
@@ -48,8 +64,7 @@ export default class PreloaderDeterminate extends Component {
       cy: '50',
       r: '20',
       fill: 'none',
-      'stroke-miterlimit': '10',
-      'stroke-dasharray': '1, 200'
+      'stroke-miterlimit': '10'
     })
 
     this.elements.svg.appendChild(this.elements.circle)

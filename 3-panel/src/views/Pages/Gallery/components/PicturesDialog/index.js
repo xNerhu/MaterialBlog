@@ -52,24 +52,14 @@ export default class PicturesDialog extends Component {
 
       this.categoryData = data
 
-      root.style.display = 'block'
-
-      setTimeout(function () {
-        root.style.opacity = '1'
-      }, 10)
-
       this.setItems()
 
       multiIcon.changeToArrow()
     } else {
-      root.style.opacity = '0'
-
-      setTimeout(function () {
-        root.style.display = 'none'
-      }, 300)
-
       multiIcon.changeToDefault()
     }
+
+    app.toggleFullScreenDialog(flag, root)
 
     const title = (flag) ? data.name : app.defaultTitle
 
@@ -110,7 +100,7 @@ export default class PicturesDialog extends Component {
 
   render () {
     return (
-      <div className='page-gallery-pictures' ref='root'>
+      <div className='full-screen-dialog page-gallery-pictures' ref='root'>
         <div className='page-gallery-pictures-container' ref='container' />
       </div>
     )
