@@ -157,9 +157,14 @@ export default class App extends Component {
     const postDialog = this.elements.postDialog
 
     const postsPage = this.getPostsPage()
+    const galleryPage = this.getGalleryPage()
+
+    const picturesDialog = galleryPage.elements.picturesDialog
 
     if (multiIcon.canClick) {
-      if (postsPage.checkBoxes) {
+      if (picturesDialog.toggled) {
+        picturesDialog.toggle(false)
+      } else if (postsPage.checkBoxes) {
         postsPage.toggleCheckBoxes(false)
       } else if (postDialog.toggled) {
         postDialog.toggle(false)

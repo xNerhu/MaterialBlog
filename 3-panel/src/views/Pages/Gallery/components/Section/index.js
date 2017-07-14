@@ -33,7 +33,7 @@ export default class Section extends Component {
    */
   addCategory (data) {
     const category = (
-      <Category data={data} onLoad={this.onCategoryLoad} />
+      <Category data={data} onLoad={this.onCategoryLoad} onClick={this.props.onCategoryClick} />
     )
 
     this.renderComponents(category, this.elements.container)

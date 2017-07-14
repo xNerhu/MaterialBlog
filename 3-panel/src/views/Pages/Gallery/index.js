@@ -1,5 +1,6 @@
 import Component from '../../../helpers/Component'
 
+import PicturesDialog from './components/PicturesDialog'
 import Section from './components/Section'
 
 export default class GalleryPage extends Component {
@@ -168,7 +169,7 @@ export default class GalleryPage extends Component {
    */
   addSection (data, subHeader) {
     const section = (
-      <Section data={data} subHeader={subHeader} onLoad={this.onSectionLoad} />
+      <Section data={data} subHeader={subHeader} onLoad={this.onSectionLoad} onCategoryClick={this.onCategoryClick} />
     )
 
     this.renderComponents(section, this.elements.container)
@@ -211,10 +212,19 @@ export default class GalleryPage extends Component {
     }
   }
 
+  /**
+   * On category click event.
+   * @param {Category} category
+   */
+  onCategoryClick = (category) => {
+    this.elements.picturesDialog.toggle(true, category.props.data)
+  }
+
   render () {
     return (
       <div className='page page-gallery' ref='root'>
         <div className='page-gallery-container' ref='container' />
+        <PicturesDialog ref='picturesDialog' />
       </div>
     )
   }

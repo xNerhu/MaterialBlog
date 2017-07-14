@@ -33,6 +33,20 @@ export default class Category extends Component {
   }
 
   /**
+   * On click event.
+   * Triggers on click function in props.
+   * @param {Event}
+   */
+  onClick = (e) => {
+    const onClick = this.props.onClick
+    const target = e.target
+
+    if (target !== this.elements.title && target !== this.elements.menuIcon) {
+      if (typeof onClick === 'function') onClick(this)
+    }
+  }
+
+  /**
    * On mouse down event.
    * Makes ripple.
    * @param {Event}
@@ -110,7 +124,7 @@ export default class Category extends Component {
 
   render () {
     return (
-      <div className='page-gallery-category ripple' ref='root' onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>
+      <div className='page-gallery-category ripple' ref='root' onClick={this.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>
         <div className='title' ref='title'>
           {
             this.props.data.name
