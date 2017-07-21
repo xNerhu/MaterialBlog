@@ -2,99 +2,85 @@ import Component from '../../../../../../helpers/Component'
 
 export default class MultiIcon extends Component {
   beforeRender () {
+    this.canClick = true
     this.isArrow = false
     this.isExit = false
 
-    this.canClick = true
     this.actualState = 'default'
   }
 
   /**
-   * Blocks click mouse event.
+   * Gets root.
+   * @return {DOMElement} root
    */
-  blockClick = () => {
-    const self = this
-
-    // Block click mouse event.
-    this.canClick = false
-    // Wait a second then unlock click mouse event.
-    setTimeout(function () {
-      self.canClick = true
-    }, 1000)
+  getRoot = () => {
+    return this.elements.root
   }
 
   /**
-   * Change to exit (X) version
-   * @param {Boolean} update actual state.
+   * Backs to default.
    */
-  changeToExit = (update = true) => {
-    const root = this.elements.root
+  changeToDefault () {
+    const root = this.getRoot()
+    const classList = root.classList
 
-    if (!this.isArrow && !this.isExit) {
-      root.className += ' multiIcon-exit multiIcon-exit-change'
-
-      this.isExit = true
-      if (update) this.actualState = 'exit'
-    }
+    classList.remove('arrow')
+    classList.remove('exit')
   }
 
   /**
-   * Change to arrow version.
-   * @param {Boolean} update actual state.
+   * Changes to arrow.
+   * @param {Boolean} update actual state
    */
-  changeToArrow = (update = true) => {
-    const root = this.elements.root
+  changeToArrow (update) {
+    this.manageClass('arrow', 'exit')
 
-    if (!this.isArrow && !this.isExit) {
-      root.classList.remove('multiIcon-arrow-true')
-      root.className += ' multiIcon-arrow multiIcon-arrow-change'
-      this.isArrow = true
-
-      if (update) this.actualState = 'arrow'
-    }
+    this.isArrow = true
+    if (update) this.actualState = 'arrow'
   }
 
   /**
-   * Change to normal menu.
-   * @param {Boolean} update last state.
+   * Changes to exit.
+   * @param {Boolean} update actual state
    */
-  changeToDefault = (update = true) => {
-    const self = this
-    const root = this.elements.root
+  changeToExit (update) {
+    this.manageClass('exit', 'arrow')
 
-    if (this.isArrow && !this.isExit) {
-      root.className += ' multiIcon-arrow multiIcon-arrow-backtodefault'
-      root.classList.remove('multiIcon-arrow')
-      root.classList.remove('multiIcon-arrow-change')
-      this.isArrow = false
+    this.isExit = true
+    if (update) this.actualState = 'exit'
+  }
 
-      // Wait until end of animation.
-      setTimeout(function () {
-        root.classList.remove('multiIcon-arrow-backtodefault')
-      }, 500)
+  /**
+   * Adds and removes classes.
+   * @param {String} class to add
+   * @param {String} class to remove
+   */
+  manageClass (classToAdd, classToRemove) {
+    const root = this.getRoot()
+    const classList = root.classList
 
-      if (update) this.actualState = 'default'
-    } else if (this.isExit) {
-      root.classList.remove('multiIcon-exit')
-      root.classList.remove('multiIcon-exit-change')
-      this.isExit = false
-
-      // Wait until end of animation.
-      setTimeout(function () {
-        root.classList.remove('multiIcon-exit-backtodefault')
-      }, 500)
-
-      if (update) this.actualState = 'default'
+    if (classList.contains(classToRemove)) {
+      classList.remove(classToRemove)
     }
+
+    classList.add(classToAdd)
   }
 
   render () {
     return (
-      <div className='multiIcon' ref='root' style={this.props.style}>
-        <div className='multiIcon-grid multiIcon-grid-1' ref='grid1' />
-        <div className='multiIcon-grid multiIcon-grid-2' ref='grid2' />
-        <div className='multiIcon-grid multiIcon-grid-3' ref='grid3' />
+      <div className='multiIcon' ref='root'>
+        <div className='grid g-1' ref='grid1' />
+        <div className='grid g-2 ' ref='grid2' />
+        <div className='grid g-3' ref='grid3' />
       </div>
     )
+  }
+
+  afterRender () {
+    const props = this.props
+
+    if (props.className != null) {
+      this.getRoot().classList.add(props.className)
+    }
   }
 }

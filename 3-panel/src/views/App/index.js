@@ -149,7 +149,7 @@ export default class App extends Component {
    * On multi-icon click event.
    * @param {Event}
    */
-  onMultiIconClick = () => {
+  onMultiIconClick = (e) => {
     const toolbar = this.getToolbar()
     const multiIcon = toolbar.getMultiIcon()
     const navigationDrawer = this.getNavigationDrawer()
@@ -171,7 +171,6 @@ export default class App extends Component {
       } else if (!navigationDrawer.toggled) {
         navigationDrawer.show()
         multiIcon.changeToExit()
-        multiIcon.blockClick()
       } else {
         navigationDrawer.hide()
       }
@@ -225,8 +224,8 @@ export default class App extends Component {
         onClick: this.onMultiIconClick,
         className: 'toolbar-icon-multi-icon',
         style: {
-          width: '24px',
-          height: '16px',
+          width: '18px',
+          height: '12px',
           position: 'absolute',
           top: '50%',
           transform: 'translateY(-50%)'
