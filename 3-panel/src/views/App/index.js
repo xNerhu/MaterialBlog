@@ -827,6 +827,7 @@ export default class App extends Component {
         <Snackbar ref='deletedPostSnackbar' text='Pomyślnie usunięto post' />
         <Snackbar ref='addedPostSnackbar' text='Pomyślnie dodano post' />
         <Snackbar ref='addedCategorySnackbar' text='Pomyślnie dodano kategorię' />
+        <Snackbar ref='addedPicturesSnackbar' text='Pomyślnie dodano zdjęcia' />
         <Tooltip ref='tooltipView' text='Przełącz na liste' />
         <Tooltip ref='tooltipShowPictures' text='Pokaż zdjęcia' />
         <Tooltip ref='tooltipUploadButton' text='Najlepiej w proporcjach 16:9' />

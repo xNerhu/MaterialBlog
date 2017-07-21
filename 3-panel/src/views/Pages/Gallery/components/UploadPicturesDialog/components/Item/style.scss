@@ -2,6 +2,8 @@
   width: 100%;
   height: 56px;
   position: relative;
+  overflow: hidden;
+  transition: 0.3s height;
 
   & .preloader-determinate {
     width: 32px;
@@ -53,5 +55,10 @@
     position: absolute;
     @include center-vertical;
     cursor: pointer;
+    transition: 0.3s opacity;
+  }
+
+  &.disabled-cancel-icon .cancel-icon {
+    opacity: 0.2;
   }
 }

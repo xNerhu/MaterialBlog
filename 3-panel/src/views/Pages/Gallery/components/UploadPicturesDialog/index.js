@@ -76,6 +76,9 @@ export default class UploadPicturesDialog extends Component {
     app.toggleFullScreenDialog(flag, root)
   }
 
+  /**
+   * Starts uploading.
+   */
   startUploading = () => {
     const self = this
 
@@ -85,23 +88,48 @@ export default class UploadPicturesDialog extends Component {
       const item = self.items[index]
       const preloader = item.elements.preloader
 
-      self.upload('', function (progress) {
-        preloader.setProgress(progress)
-      }, function () {
-        item.done()
+      if (item.canceled) {
         index++
 
         if (index >= self.items.length) {
-          console.log('done uploading')
+          self.onUpload()
         } else {
           upload()
         }
-      })
+      } else {
+        item.disableCancelIcon()
+
+        self.upload('', function (progress) {
+          preloader.setProgress(progress)
+        }, function () {
+          item.onUpload()
+          index++
+
+          if (index >= self.items.length) {
+            self.onUpload()
+          } else {
+            upload()
+          }
+        })
+      }
     }
 
     upload()
   }
 
+  onUpload = () => {
+    this.toggle(false)
+
+    window.app.elements.addedPicturesSnackbar.toggle(true)
+  }
+
+  /**
+   * Uploads image to server.
+   * TODO.
+   * @param {String} base 64
+   * @param {Function} on progress
+   * @param {Function} on upload
+   */
   upload = (src, onprogress, callback) => {
     let progress = 0
 
@@ -117,6 +145,10 @@ export default class UploadPicturesDialog extends Component {
     }, 200)
   }
 
+  /**
+   * Adds item.
+   * @param {String} file name
+   */
   addItem = (fileName) => {
     const element = (
       <Item fileName={fileName} getUploadPicturesDialog={() => { return this }} />
@@ -125,6 +157,10 @@ export default class UploadPicturesDialog extends Component {
     this.renderComponents(element, this.elements.container)
   }
 
+  /**
+   * Shows or hides preloader.
+   * @param {Boolean}
+   */
   togglePreloader = (flag) => {
     this.elements.preloader.getRoot().style.display = (flag) ? 'block' : 'none'
   }
