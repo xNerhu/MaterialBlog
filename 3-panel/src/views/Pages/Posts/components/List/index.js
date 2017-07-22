@@ -14,22 +14,15 @@ export default class List extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
-  }
-
-  /**
-   * Gets mobile table.
-   */
-  getMobileTable = () => {
-    return this
   }
 
   /**
    * Sets cells.
    * @param {Object} posts.
    */
-  setCells = (posts) => {
+  setCells (posts) {
     for (var i = 0; i < posts.length; i++) {
       this.addPost(posts[i])
     }
@@ -39,7 +32,7 @@ export default class List extends Component {
    * Adds post to table.
    * @param {Object} post data.
    */
-  addPost = (data) => {
+  addPost (data) {
     if (data.deleted !== true) {
       const root = this.getRoot()
 

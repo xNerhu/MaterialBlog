@@ -8,7 +8,7 @@ export default class Preloader extends Component {
    * Gets root.
    * @return {DOMElement} root.
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 

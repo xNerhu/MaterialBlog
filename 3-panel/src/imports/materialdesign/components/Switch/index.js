@@ -11,7 +11,7 @@ export default class Switch extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
@@ -27,7 +27,7 @@ export default class Switch extends Component {
    * Toggle switch.
    * @param {Boolean}
    */
-  toggle = (flag) => {
+  toggle (flag) {
     const root = this.getRoot()
 
     if (flag) {

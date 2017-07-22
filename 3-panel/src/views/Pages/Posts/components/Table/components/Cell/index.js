@@ -12,7 +12,7 @@ export default class Cell extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
@@ -39,18 +39,18 @@ export default class Cell extends Component {
    */
   onMenuIconMouseDown = (e) => {
     if (!this.touched) {
-      let ripple = Ripple.createRipple(this.elements.menuIcon, this.props.menuIconRippleStyle, createRippleCenter(this.elements.menuIcon, 14))
+      const ripple = Ripple.createRipple(this.elements.menuIcon, this.props.menuIconRippleStyle, createRippleCenter(this.elements.menuIcon, 14))
       Ripple.makeRipple(ripple)
     }
   }
 
   /**
-   * On menu icon touch start event.
+   * On menu icon touch start event. (on mobile)
    * Makes ripple.
    * @param {Event}
    */
   onMenuIconTouchStart = (e) => {
-    let ripple = Ripple.createRipple(this.elements.menuIcon, this.props.menuIconRippleStyle, createRippleCenter(this.elements.menuIcon, 14, 0.4, true))
+    const ripple = Ripple.createRipple(this.elements.menuIcon, this.props.menuIconRippleStyle, createRippleCenter(this.elements.menuIcon, 14, 0.4, true))
     Ripple.makeRipple(ripple)
 
     this.touched = true

@@ -13,14 +13,14 @@ export default class AboutClassPage extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
   /**
-   * Loads about class.
+   * Loads about class content.
    */
-  load = () => {
+  load () {
     const app = window.app
 
     setTimeout(function () {

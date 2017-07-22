@@ -9,14 +9,14 @@ export default class Checkbox extends Component {
    * Gets root.
    * @return {DOMElement} root
   */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
   /**
    * Unchecks the checkboxs.
    */
-  unCheck = () => {
+  unCheck () {
     const border = this.elements.border
     const icon = this.elements.icon
 
@@ -35,7 +35,7 @@ export default class Checkbox extends Component {
   /**
    * Checks the checkbox and raises checked-changed event.
    */
-  check = () => {
+  check () {
     const root = this.getRoot()
     const border = this.elements.border
     const icon = this.elements.icon

@@ -12,7 +12,7 @@ export default class TextField extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
@@ -20,7 +20,7 @@ export default class TextField extends Component {
    * Gets input.
    * @return {DOMElement} input
    */
-  getInput = () => {
+  getInput () {
     return (!this.props.textarea) ? this.elements.input : this.elements.textarea
   }
 
@@ -71,7 +71,7 @@ export default class TextField extends Component {
    * Sets hint text.
    * @param {String} text
    */
-  setHint = (str = 'Hint') => {
+  setHint (str = 'Hint') {
     this.elements.hint.innerHTML = str
   }
 
@@ -79,7 +79,7 @@ export default class TextField extends Component {
    * Sets input placeholder.
    * @param {String} text
    */
-  setPlaceholder = (str = 'Placeholder') => {
+  setPlaceholder (str = 'Placeholder') {
     this.getInput().setAttribute('placeholder', str)
   }
 
@@ -87,7 +87,7 @@ export default class TextField extends Component {
    * Sets helper text.
    * @param {String} text
    */
-  setHelperText = (str = 'Helper text') => {
+  setHelperText (str = 'Helper text') {
     this.elements.helperText.innerHTML = str
   }
 
@@ -95,20 +95,18 @@ export default class TextField extends Component {
    * Sets counter.
    * @param {Boolean}
    */
-  setCounter = (flag) => {
+  setCounter (flag) {
     this.counter = flag
-    if (flag) {
-      this.setCounterText(0 + '/' + this.props.maxLength)
-    } else {
-      this.setCounterText('')
-    }
+
+    const text = (flag) ? (0 + '/' + this.props.maxLength) : ''
+    this.setCounterText(text)
   }
 
   /**
    * Sets counter text.
    * @param {String} text
    */
-  setCounterText = (str = '0/0') => {
+  setCounterText (str = '0/0') {
     this.elements.counter.innerHTML = str
   }
 
@@ -116,7 +114,7 @@ export default class TextField extends Component {
    * Sets max length of text.
    * @param {Int} max characters
    */
-  setMaxLength = (max) => {
+  setMaxLength (max) {
     this.counter = true
     this.maxLength = max
 
@@ -124,10 +122,10 @@ export default class TextField extends Component {
   }
 
   /**
-   * Toggle error.
+   * Shows or hides error.
    * @param {Boolean}
    */
-  toggleError = (flag) => {
+  toggleError (flag) {
     const root = this.getRoot()
 
     if (flag) {
@@ -140,22 +138,17 @@ export default class TextField extends Component {
   }
 
   /**
-   * Toggle on input.
+   * Toggles on input.
    * @param {Boolean}
    */
-  toggle = (flag) => {
+  toggle (flag) {
     const root = this.getRoot()
     const input = this.getInput()
 
-    if (flag) {
-      root.classList.remove('disabled')
-      root.classList.add('enabled')
-      input.focus()
-    } else {
-      root.classList.remove('enabled')
-      root.classList.add('disabled')
-    }
+    root.classList.remove((flag) ? 'disabled' : 'enabled')
+    root.classList.add((flag) ? 'enabled' : 'disabled')
 
+    if (flag) input.focus()
     this.toggled = flag
   }
 
@@ -166,18 +159,18 @@ export default class TextField extends Component {
    */
   onActionIconMouseDown = (e) => {
     if (!this.touched) {
-      let ripple = Ripple.createRipple(this.elements.actionIcon, this.props.actionIconRippleStyle, createRippleCenter(this.elements.actionIcon, 14))
+      const ripple = Ripple.createRipple(this.elements.actionIcon, this.props.actionIconRippleStyle, createRippleCenter(this.elements.actionIcon, 14))
       Ripple.makeRipple(ripple)
     }
   }
 
   /**
-   * On action icon touch start event.
+   * On action icon touch start event. (on mobile)
    * Makes ripple.
    * @param {Object} event data.
    */
   onActionIconTouchStart = (e) => {
-    let ripple = Ripple.createRipple(this.elements.actionIcon, this.props.actionIconRippleStyle, createRippleCenter(this.elements.actionIcon, 14, 0.4, true))
+    const ripple = Ripple.createRipple(this.elements.actionIcon, this.props.actionIconRippleStyle, createRippleCenter(this.elements.actionIcon, 14, 0.4, true))
     Ripple.makeRipple(ripple)
     this.touched = true
   }

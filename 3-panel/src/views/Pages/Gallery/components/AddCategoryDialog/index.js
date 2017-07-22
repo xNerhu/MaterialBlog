@@ -10,14 +10,14 @@ export default class AddCategoryDialog extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
   /**
    * Sets dialog action buttons.
    */
-  setDialogItems = () => {
+  setDialogItems () {
     const dialog = this.elements.dialog
 
     const items = [

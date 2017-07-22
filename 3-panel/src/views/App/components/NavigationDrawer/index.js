@@ -12,14 +12,14 @@ export default class NavigationDrawer extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
   /**
    * Show navigation drawer.
    */
-  show = () => {
+  show () {
     // If window width is less than 768, then show temporary navigation drawer.
     if (window.innerWidth <= 768) this.showTemporary()
     // Otherwise show persistent navigation drawer.
@@ -29,7 +29,7 @@ export default class NavigationDrawer extends Component {
   /**
    * Hide navigation drawer.
    */
-  hide = () => {
+  hide () {
     // If window width is more than 768, then hide temporary navigation drawer.
     if (window.innerWidth <= 768) this.hideTemporary()
     // Otherwise hide persistent navigation drawer.
@@ -43,7 +43,7 @@ export default class NavigationDrawer extends Component {
   /**
    * Shows persistent navigation drawer.
    */
-  showPersistent = () => {
+  showPersistent () {
     const appContent = window.app.elements.appContent
     const container = this.elements.container
 
@@ -61,7 +61,7 @@ export default class NavigationDrawer extends Component {
   /**
    * Hides persistent navigation drawer.
    */
-  hidePersistent = () => {
+  hidePersistent () {
     const appContent = window.app.elements.appContent
     const container = this.elements.container
 
@@ -77,7 +77,7 @@ export default class NavigationDrawer extends Component {
   /**
    * Shows temporary navigation drawer.
    */
-  showTemporary = () => {
+  showTemporary () {
     const appContent = window.app.elements.appContent
     const container = this.elements.container
 
@@ -98,7 +98,7 @@ export default class NavigationDrawer extends Component {
   /**
    * Hides temporary navigation drawer.
    */
-  hideTemporary = () => {
+  hideTemporary () {
     const container = this.elements.container
 
     // Hide dark background.
@@ -113,7 +113,7 @@ export default class NavigationDrawer extends Component {
   /**
    * Shows dark and fullscreen background.
    */
-  showDark = () => {
+  showDark () {
     const darkOpacity = this.props.darkOpacity
     const dark = this.elements.dark
 
@@ -126,7 +126,7 @@ export default class NavigationDrawer extends Component {
   /**
    * Hides dark and fullscreen background.
    */
-  hideDark = () => {
+  hideDark () {
     const dark = this.elements.dark
 
     dark.style.opacity = '0'
@@ -167,18 +167,14 @@ export default class NavigationDrawer extends Component {
    * Sets items.
    * @param {Object} items
    */
-  setItems = (items) => {
+  setItems (items) {
     for (var i = 0; i < items.length; i++) {
       const item = items[i]
-      const ref = item.ref
-      const text = item.text
-      const className = item.className
-      const onClick = item.onClick
 
       const element = (
-        <NavigationDrawerItem className={className} onClick={onClick} ref={ref}>
+        <NavigationDrawerItem className={item.className} onClick={item.onClick} ref={item.ref}>
           {
-            text
+            item.text
           }
         </NavigationDrawerItem>
       )
@@ -190,7 +186,7 @@ export default class NavigationDrawer extends Component {
   /**
    * On user logs event.
    */
-  onUserLog = () => {
+  onUserLog () {
     const app = window.app
     const accountInfo = app.accountInfo
 

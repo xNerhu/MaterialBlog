@@ -11,14 +11,14 @@ export default class Menu extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
   /**
    * Sets items.
    */
-  setItems = (items) => {
+  setItems (items) {
     const root = this.getRoot()
 
     this.items = []
@@ -49,7 +49,7 @@ export default class Menu extends Component {
     const root = this.getRoot()
 
     if (props.className != null) root.classList.add(props.className)
-    if (props.mobile === true) root.classList.add('mobile')
-    if (props.medium === true) root.classList.add('medium')
+    if (props.mobile === 'true') root.classList.add('mobile')
+    if (props.medium === 'true') root.classList.add('medium')
   }
 }

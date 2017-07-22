@@ -10,7 +10,7 @@ export default class Tooltip extends Component {
    * Gets root.
    * @return {DOMElement} root.
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
@@ -18,16 +18,16 @@ export default class Tooltip extends Component {
    * Sets text.
    * @param {String} text.
    */
-  setText = (str) => {
+  setText (str) {
     this.getRoot().innerHTML = str
   }
 
   /**
-   * Toggle tooltip.
+   * Shows or hides tooltip.
    * @param {Boolean} show or hide.
    * @param {DOMElement} element.
    */
-  toggle = (flag, element) => {
+  toggle (flag, element) {
     const root = this.getRoot()
 
     if (flag && !this.toggled) {

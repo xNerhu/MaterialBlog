@@ -9,7 +9,7 @@ export default class Post extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
@@ -20,7 +20,7 @@ export default class Post extends Component {
    */
   onMouseDown = (e) => {
     if (!this.touched && e.target !== this.elements.showCommentsButton && e.target !== this.elements.commentsCount && e.target !== this.elements.likeButton && e.target !== this.elements.likesCount && this.props.ripple) {
-      let ripple = Ripple.createRipple(this.elements.content, this.props.rippleStyle, createRippleMouse(this.elements.content, e, 2))
+      const ripple = Ripple.createRipple(this.elements.content, this.props.rippleStyle, createRippleMouse(this.elements.content, e, 2))
       Ripple.makeRipple(ripple)
     }
   }
@@ -32,7 +32,7 @@ export default class Post extends Component {
    */
   onTouchStart = (e) => {
     if (e.target !== this.elements.showCommentsButton && e.target !== this.elements.commentsCount && e.target !== this.elements.likeButton && e.target !== this.elements.likesCount && this.props.ripple) {
-      let ripple = Ripple.createRipple(this.elements.content, this.props.rippleStyle, createRippleMouse(this.elements.content, e, 2, true))
+      const ripple = Ripple.createRipple(this.elements.content, this.props.rippleStyle, createRippleMouse(this.elements.content, e, 2, true))
       Ripple.makeRipple(ripple)
 
       this.touched = true
@@ -46,7 +46,7 @@ export default class Post extends Component {
    */
   onActionIconMouseDown = (e) => {
     if (!this.touched) {
-      let ripple = Ripple.createRipple(e.target, this.props.actionIconRippleStyle, createRippleCenter(e.target, 14))
+      const ripple = Ripple.createRipple(e.target, this.props.actionIconRippleStyle, createRippleCenter(e.target, 14))
       Ripple.makeRipple(ripple)
     }
   }
@@ -57,7 +57,7 @@ export default class Post extends Component {
    * @param {Event}
    */
   onActionIconTouchStart = (e) => {
-    let ripple = Ripple.createRipple(e.target, this.props.actionIconRippleStyle, createRippleCenter(e.target, 14, 0.4, true))
+    const ripple = Ripple.createRipple(e.target, this.props.actionIconRippleStyle, createRippleCenter(e.target, 14, 0.4, true))
     Ripple.makeRipple(ripple)
     this.touched = true
   }

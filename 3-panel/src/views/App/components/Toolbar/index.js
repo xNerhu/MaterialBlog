@@ -7,20 +7,16 @@ import MaterialButton from '../../../../imports/materialdesign/components/Materi
 export default class Toolbar extends Component {
   beforeRender () {
     this.touched = false
+
     this.items = []
     this.hiddenItems = []
-
-    this.actionIconRippleStyle = {
-      backgroundColor: '#000',
-      opacity: 0.2
-    }
   }
 
   /**
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
@@ -32,19 +28,19 @@ export default class Toolbar extends Component {
    */
   onItemMouseDown = (e, target) => {
     if (!this.touched) {
-      let ripple = Ripple.createRipple(target, this.actionIconRippleStyle, createRippleCenter(target, 14))
+      const ripple = Ripple.createRipple(target, this.props.actionIconRippleStyle, createRippleCenter(target, 14))
       Ripple.makeRipple(ripple)
     }
   }
 
   /**
-   * On item touch start event.
+   * On item touch start event. (on mobile)
    * Makes ripple.
    * @param {Event}
    * @param {DOMElement} element
    */
   onItemTouchStart = (e, target) => {
-    let ripple = Ripple.createRipple(target, this.actionIconRippleStyle, createRippleCenter(target, 14, 0.4, true))
+    const ripple = Ripple.createRipple(target, this.props.actionIconRippleStyle, createRippleCenter(target, 14, 0.4, true))
     Ripple.makeRipple(ripple)
     this.touched = true
   }
@@ -53,7 +49,7 @@ export default class Toolbar extends Component {
    * Sets items.
    * @param {Object} items
    */
-  setItems = (items) => {
+  setItems (items) {
     const self = this
     let first = true
 
@@ -145,18 +141,10 @@ export default class Toolbar extends Component {
   }
 
   /**
-   * Gets toolbar.
-   * @return {Toolbar}
-   */
-  getToolbar = () => {
-    return this
-  }
-
-  /**
    * Gets mutlti icon.
    * @return {MultiIcon}
    */
-  getMultiIcon = () => {
+  getMultiIcon () {
     return this.elements.multiIcon
   }
 
@@ -164,7 +152,7 @@ export default class Toolbar extends Component {
    * Gets view icon.
    * @return {DOMElement}
    */
-  getViewIcon = () => {
+  getViewIcon () {
     return this.elements.viewIcon
   }
 
@@ -173,7 +161,7 @@ export default class Toolbar extends Component {
    * @param {Boolean} hide multi icon
    * @param {Boolean} hide search icon
    */
-  hideItems = (multiIcon = false, title = true) => {
+  hideItems (multiIcon = false, title = true) {
     this.hiddenItems = []
 
     for (var i = 0; i < this.items.length; i++) {
@@ -193,7 +181,7 @@ export default class Toolbar extends Component {
   /**
    * Hides element.
    */
-  hideElement = (element) => {
+  hideElement (element) {
     element.style.top = '96px'
     this.hiddenItems.push(element)
   }
@@ -201,14 +189,14 @@ export default class Toolbar extends Component {
   /**
    * Shows hidden items.
    */
-  showItems = () => {
+  showItems () {
     for (var i = 0; i < this.hiddenItems.length; i++) {
       const item = this.hiddenItems[i]
       this.showItem(item)
     }
   }
 
-  showItem = (element) => {
+  showItem (element) {
     const top = '0px'
 
     element.style.top = top
@@ -218,7 +206,7 @@ export default class Toolbar extends Component {
    * Show or hides tabs.
    * @param {Boolean}
    */
-  toggleTabs = (flag) => {
+  toggleTabs (flag) {
     const app = window.app
     const tabLayout = app.elements.tabLayout
     const tabPages = app.elements.tabPages
@@ -234,7 +222,7 @@ export default class Toolbar extends Component {
    * Sets title.
    * @param {String} title.
    */
-  setTitle = (str) => {
+  setTitle (str) {
     this.elements.title.innerHTML = str
   }
 
@@ -244,5 +232,16 @@ export default class Toolbar extends Component {
         <div className='toolbar-content' ref='content' />
       </div>
     )
+  }
+
+  afterRender () {
+    const props = this.props
+
+    if (props.actionIconRippleStyle == null) {
+      props.actionIconRippleStyle = {
+        backgroundColor: '#000',
+        opacity: 0.2
+      }
+    }
   }
 }

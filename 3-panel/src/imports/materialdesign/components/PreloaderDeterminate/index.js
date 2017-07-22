@@ -15,7 +15,7 @@ export default class PreloaderDeterminate extends Component {
    * Gets root.
    * @return {DOMElement} root.
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
@@ -23,7 +23,7 @@ export default class PreloaderDeterminate extends Component {
    * Sets value.
    * @param {Int} progress in percent (0 - 100)
    */
-  setProgress = (percent) => {
+  setProgress (percent) {
     // When I change this to this.elements.circle all changes on circle will not work. Very weird bug.
     const circle = document.querySelectorAll('#preloader-determinate-' + this.id + ' .path')[0]
 

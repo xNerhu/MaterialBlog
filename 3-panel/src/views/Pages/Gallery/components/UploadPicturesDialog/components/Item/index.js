@@ -14,14 +14,14 @@ export default class Item extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
   /**
-   * On upload event.
+   * On done uploading event.
    */
-  onUpload = () => {
+  onUpload () {
     const done = this.elements.done
 
     done.style.width = '28px'
@@ -32,9 +32,7 @@ export default class Item extends Component {
    * Disables cancel icon.
    */
   disableCancelIcon = () => {
-    const root = this.getRoot()
-
-    root.classList.add('disabled-cancel-icon')
+    this.getRoot().classList.add('disabled-cancel-icon')
 
     this.disabledCancelIcon = true
   }
@@ -45,11 +43,9 @@ export default class Item extends Component {
    */
   onCancelIconClick = (e) => {
     if (!this.disabledCancelIcon) {
-      const root = this.getRoot()
-
       this.canceled = true
 
-      root.style.height = '0px'
+      this.getRoot().style.height = '0px'
     }
   }
 
@@ -60,19 +56,19 @@ export default class Item extends Component {
    */
   onCancelIconMouseDown = (e) => {
     if (!this.touched && !this.getRoot().classList.contains('done')) {
-      let ripple = Ripple.createRipple(this.elements.cancelIcon, this.props.cancelIconRippleStyle, createRippleCenter(this.elements.cancelIcon, 14))
+      const ripple = Ripple.createRipple(this.elements.cancelIcon, this.props.cancelIconRippleStyle, createRippleCenter(this.elements.cancelIcon, 14))
       Ripple.makeRipple(ripple)
     }
   }
 
   /**
-   * On cancel uploading icon touch start event.
+   * On cancel uploading icon touch start event. (on mobile)
    * Makes ripple.
    * @param {Event}
    */
   onCancelIconTouchStart = (e) => {
     if (!this.getRoot().classList.contains('done')) {
-      let ripple = Ripple.createRipple(this.elements.cancelIcon, this.props.cancelIconRippleStyle, createRippleCenter(this.elements.cancelIcon, 14, 0.4, true))
+      const ripple = Ripple.createRipple(this.elements.cancelIcon, this.props.cancelIconRippleStyle, createRippleCenter(this.elements.cancelIcon, 14, 0.4, true))
       Ripple.makeRipple(ripple)
       this.touched = true
     }

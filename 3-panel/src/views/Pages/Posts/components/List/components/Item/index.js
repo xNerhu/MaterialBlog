@@ -7,14 +7,14 @@ export default class Item extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
   /**
    * Gets item.
    */
-  getItem = () => {
+  getItem () {
     return this
   }
 

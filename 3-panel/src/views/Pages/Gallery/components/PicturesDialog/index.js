@@ -30,16 +30,16 @@ export default class PicturesDialog extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
   /**
-   * Toggles pictures dialog.
+   * Shows or hides dialog.
    * @param {Boolean} show or hide
    * @param {Object} category data
    */
-  toggle = (flag, data) => {
+  toggle (flag, data) {
     const root = this.getRoot()
     const container = this.elements.container
 
@@ -72,18 +72,27 @@ export default class PicturesDialog extends Component {
   /**
    * Adds pictures.
    */
-  setItems = () => {
+  setItems () {
+    this.setPicturesCount()
+
+    for (var i = 0; i < this.categoryData.pictures.length; i++) {
+      this.addPicture(this.categoryData.pictures[i])
+    }
+  }
+
+  /**
+   * Adds class which is count of pictures in the category.
+   */
+  setPicturesCount () {
     const container = this.elements.container
     const length = this.categoryData.pictures.length
 
-    if (length > 4) {
+    container.className = 'page-gallery-pictures-container'
+
+    if (length >= 4) {
       container.classList.add('many')
     } else if (length <= 2) {
       container.classList.add('count-' + length)
-    }
-
-    for (var i = 0; i < length; i++) {
-      this.addPicture(this.categoryData.pictures[i])
     }
   }
 
@@ -91,7 +100,7 @@ export default class PicturesDialog extends Component {
    * Adds picture.
    * @param {String} image url
    */
-  addPicture = (url) => {
+  addPicture (url) {
     const element = (
       <Picture url={url} getPictures={() => { return this }} />
     )

@@ -10,7 +10,7 @@ export default class Category extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
@@ -63,7 +63,7 @@ export default class Category extends Component {
   }
 
   /**
-   * On touch start event (on mobile).
+   * On touch start event. (on mobile)
    * Makes ripple.
    * @param {Event}
    */

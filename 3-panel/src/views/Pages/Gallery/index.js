@@ -39,23 +39,21 @@ export default class GalleryPage extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
   /**
    * On select this page event.
    */
-  onSelect = () => {
-    const app = window.app
-
-    app.toggleFAB(true)
+  onSelect () {
+    window.app.toggleFAB(true)
   }
 
   /**
    * On deselect this page event.
    */
-  onDeselect = (selectedPage) => {
+  onDeselect (selectedPage) {
     const app = window.app
 
     if (selectedPage !== app.getPostsPage()) {
@@ -66,7 +64,7 @@ export default class GalleryPage extends Component {
   /**
    * Loads categories.
    */
-  load = () => {
+  load () {
     const self = this
 
     setTimeout(function () {

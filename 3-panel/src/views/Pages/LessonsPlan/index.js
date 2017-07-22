@@ -13,14 +13,14 @@ export default class LessonsPlanPage extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
   /**
    * Loads categories.
    */
-  load = () => {
+  load () {
     const app = window.app
 
     setTimeout(function () {

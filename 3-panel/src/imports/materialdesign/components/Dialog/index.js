@@ -11,7 +11,7 @@ export default class Dialog extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
@@ -27,10 +27,10 @@ export default class Dialog extends Component {
   }
 
   /**
-   * Toggle dialog.
+   * Shows or hides dialog.
    * @param {Boolean} show or hide
    */
-  toggle = (flag) => {
+  toggle (flag) {
     const root = this.getRoot()
 
     if (flag && !this.toggled) {
@@ -48,6 +48,7 @@ export default class Dialog extends Component {
 
       root.style.opacity = '0'
       root.style.top = '25%'
+
       setTimeout(function () {
         root.style.display = 'none'
       }, 300)
@@ -57,10 +58,10 @@ export default class Dialog extends Component {
   }
 
   /**
-   * Toggle dark.
+   * Shows or hides dark.
    * @param {Boolean} show or hide
    */
-  toggleDark = (flag) => {
+  toggleDark (flag) {
     const opacity = this.props.darkOpacity
     const dark = this.elements.dark
 
@@ -83,7 +84,7 @@ export default class Dialog extends Component {
    * Sets action buttons.
    * @param {Object}
    */
-  setItems = (items) => {
+  setItems (items) {
     const action = this.elements.action
 
     action.innerHTML = ''
@@ -146,12 +147,12 @@ export default class Dialog extends Component {
       }
     }
 
-    if (props.title === false) {
+    if (props.title === 'false') {
       this.elements.title.style.display = 'none'
       this.elements.content.style.marginTop = '28px'
     }
 
-    if (props.list === true) action.classList.add('list')
+    if (props.list === 'true') action.classList.add('list')
     else action.classList.add('side-by-side')
   }
 }

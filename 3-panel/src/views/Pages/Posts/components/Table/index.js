@@ -13,23 +13,15 @@ export default class Table extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
-  }
-
-  /**
-   * Gets desktop table.
-   * @return {DekstopTable}
-   */
-  getDesktopTable = () => {
-    return this
   }
 
   /**
    * Sets cells.
    * @param {Object} posts data
    */
-  setCells = (posts) => {
+  setCells (posts) {
     for (var i = 0; i < posts.length; i++) {
       this.addPost(posts[i])
     }
@@ -39,12 +31,12 @@ export default class Table extends Component {
    * Adds post to table.
    * @param {Object} post data.
    */
-  addPost = (data) => {
+  addPost (data) {
     if (data.deleted !== true) {
       const tbody = this.elements.tbody
 
       const cell = (
-        <Cell data={data} getDesktopTable={this.getDesktopTable} />
+        <Cell data={data} getDesktopTable={() => { return this }} />
       )
 
       this.renderComponents(cell, tbody)

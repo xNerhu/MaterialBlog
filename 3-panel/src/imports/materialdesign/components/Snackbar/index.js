@@ -11,7 +11,7 @@ export default class Snackbar extends Component {
     * Gets root.
     * @return {DOMElement} root
     */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
@@ -19,7 +19,7 @@ export default class Snackbar extends Component {
    * Shows or hides snackbar.
    * @param {Boolean} show or hide
    */
-  toggle = (flag) => {
+  toggle (flag) {
     const self = this
     const root = this.elements.root
     const content = this.elements.content
@@ -59,7 +59,7 @@ export default class Snackbar extends Component {
    * Sets action button.
    * @param {Object} action button data
    */
-  setActionButton = (button) => {
+  setActionButton (button) {
     const content = this.elements.content
 
     if (button.rippleStyle == null) {

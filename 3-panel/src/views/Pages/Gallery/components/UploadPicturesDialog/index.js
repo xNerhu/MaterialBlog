@@ -16,11 +16,16 @@ export default class UploadPicturesDialog extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
-  toggle = (flag, input) => {
+  /**
+   * Shows or hides dialog.
+   * @param {Boolean}
+   * @param {DOMElement} file input
+   */
+  toggle (flag, input) {
     const self = this
     const root = this.getRoot()
 
@@ -78,7 +83,7 @@ export default class UploadPicturesDialog extends Component {
   /**
    * Starts uploading.
    */
-  startUploading = () => {
+  startUploading () {
     const self = this
 
     let index = 0
@@ -116,10 +121,26 @@ export default class UploadPicturesDialog extends Component {
     upload()
   }
 
-  onUpload = () => {
+  /**
+   * On done uploading event.
+   */
+  onUpload () {
     this.toggle(false)
 
     window.app.elements.addedPicturesSnackbar.toggle(true)
+
+    const gallery = window.app.getGalleryPage()
+    const picturesDialog = gallery.elements.picturesDialog
+
+    for (var i = 0; i < this.files.length; i++) {
+      const src = this.files[i].src
+
+      picturesDialog.categoryData.pictures.push(src)
+
+      picturesDialog.addPicture(src)
+    }
+
+    picturesDialog.setPicturesCount()
   }
 
   /**
@@ -129,7 +150,7 @@ export default class UploadPicturesDialog extends Component {
    * @param {Function} on progress
    * @param {Function} on upload
    */
-  upload = (src, onprogress, callback) => {
+  upload (src, onprogress, callback) {
     let progress = 0
 
     const timer = setInterval(function () {
@@ -148,7 +169,7 @@ export default class UploadPicturesDialog extends Component {
    * Adds item.
    * @param {String} file name
    */
-  addItem = (fileName) => {
+  addItem (fileName) {
     const element = (
       <Item fileName={fileName} getUploadPicturesDialog={() => { return this }} />
     )
@@ -160,7 +181,7 @@ export default class UploadPicturesDialog extends Component {
    * Shows or hides preloader.
    * @param {Boolean}
    */
-  togglePreloader = (flag) => {
+  togglePreloader (flag) {
     this.elements.preloader.getRoot().style.display = (flag) ? 'block' : 'none'
   }
 

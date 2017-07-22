@@ -488,12 +488,53 @@ export default class PostsPage extends Component {
   }
 
   /**
+   * On toolbar view item click event.
+   * Changes table.
+   * @param {Event}
+   */
+  onViewClick = (e) => {
+    const tooltip = window.app.elements.tooltipView
+
+    if (this.isTable) {
+      this.switchToList()
+    } else {
+      this.switchToTable()
+    }
+
+    tooltip.toggle(false)
+  }
+
+  /**
+   * On toolbar view item mouse enter event.
+   * Shows tooltip.
+   * @param {Event}
+   */
+  onViewMouseEnter = (e) => {
+    const tooltip = window.app.elements.tooltipView
+
+    const text = (this.isTable) ? 'Przełącz na listę' : 'Przełącz na tabelę'
+
+    tooltip.setText(text)
+    tooltip.toggle(true, e.target)
+  }
+
+  /**
+   * On toolbar view item mouse leave event.
+   * Hides tooltip.
+   * @param {Event}
+   */
+  onViewMouseLeave = (e) => {
+    window.app.elements.tooltipView.toggle(false)
+  }
+
+  /**
    * On toolbar show pictures icon click event.
    * Shows or hides pictures in table or list.
    * @param {Event}
    */
   onShowPicturesClick = (e) => {
     const app = window.app
+
     const toolbar = app.getToolbar()
     const showPicturesIcon = toolbar.elements.showPicturesIcon
     const tooltip = app.elements.tooltipShowPictures
@@ -512,6 +553,29 @@ export default class PostsPage extends Component {
     const element = (this.isTable) ? table : list
 
     element.togglePictures(!this.toggledPictures)
+  }
+
+  /**
+   * On toolbar show images mouse enter event.
+   * Shows tooltip.
+   * @param {Event}
+   */
+  onShowPicturesMouseEnter = (e) => {
+    const tooltip = window.app.elements.tooltipShowPictures
+
+    const text = (!this.toggledPictures) ? 'Pokaż zdjęcia' : 'Ukryj zdjęcia'
+
+    tooltip.setText(text)
+    tooltip.toggle(true, e.target)
+  }
+
+  /**
+   * On toolbar show images mouse leave event.
+   * Hides tooltip.
+   * @param {Event}
+   */
+  onShowPicturesMouseLeave = (e) => {
+    window.app.elements.tooltipShowPictures.toggle(false)
   }
 
   /**

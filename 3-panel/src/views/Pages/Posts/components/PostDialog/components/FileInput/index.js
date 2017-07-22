@@ -12,7 +12,7 @@ export default class FileInput extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
@@ -85,7 +85,7 @@ export default class FileInput extends Component {
    * @param {Boolean}
    * @param {Int} timer duration. Used in clearing form.
    */
-  toggleUploadValue = (flag, timerDuration = 300) => {
+  toggleUploadValue (flag, timerDuration = 300) {
     const actionIcon = this.elements.actionIcon
     const input = this.elements.upload
 
@@ -146,7 +146,7 @@ export default class FileInput extends Component {
   }
 
   /**
-   * On action icon touch start event.
+   * On action icon touch start event (on mobile).
    * Makes ripple.
    * @param {Event}
    */

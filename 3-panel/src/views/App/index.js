@@ -47,7 +47,7 @@ export default class App extends Component {
    * Gets toolbar.
    * @return {Toolbar}
    */
-  getToolbar = () => {
+  getToolbar () {
     return this.elements.toolbar
   }
 
@@ -55,7 +55,7 @@ export default class App extends Component {
    * Gets navigation drawer.
    * @return {NavigationDrawer}
    */
-  getNavigationDrawer = () => {
+  getNavigationDrawer () {
     return this.elements.navigationDrawer
   }
 
@@ -63,7 +63,7 @@ export default class App extends Component {
    * Gets posts page.
    * @return {PostsPage}
    */
-  getPostsPage = () => {
+  getPostsPage () {
     return this.elements.postsPage
   }
 
@@ -71,7 +71,7 @@ export default class App extends Component {
    * Gets gallery page.
    * @return {GalleryPage}
    */
-  getGalleryPage = () => {
+  getGalleryPage () {
     return this.elements.galleryPage
   }
 
@@ -79,7 +79,7 @@ export default class App extends Component {
    * Gets about class page.
    * @return {AboutClassPage}
    */
-  getAboutClassPage = () => {
+  getAboutClassPage () {
     return this.elements.aboutClassPage
   }
 
@@ -87,7 +87,7 @@ export default class App extends Component {
    * Gets lessons plan page.
    * @return {LessonsPlanPage}
    */
-  getLessonsPlanTab = () => {
+  getLessonsPlanTab () {
     return this.elements.lessonsPlanPage
   }
 
@@ -95,7 +95,7 @@ export default class App extends Component {
    * Gets menu.
    * @return {Menu}
    */
-  getMenu = () => {
+  getMenu () {
     return this.elements.menu
   }
 
@@ -103,7 +103,7 @@ export default class App extends Component {
    * Gets preloader.
    * @return {Preloader}
    */
-  getPreloader = () => {
+  getPreloader () {
     return this.elements.preloader
   }
 
@@ -111,15 +111,15 @@ export default class App extends Component {
    * Shows or hides preloader.
    * @param {Boolean}
    */
-  togglePreloader = (flag) => {
+  togglePreloader (flag) {
     this.getPreloader().getRoot().style.display = (!flag) ? 'none' : 'block'
   }
 
   /**
    * Shows or hides floatig action button.
-   * @param {Boolean} show or hide
+   * @param {Boolean}
    */
-  toggleFAB = (flag) => {
+  toggleFAB (flag) {
     const fab = this.elements.fab.getRoot()
 
     if (flag) {
@@ -140,7 +140,7 @@ export default class App extends Component {
   }
 
   /**
-   * On multi-icon click event.
+   * On multi icon click event.
    * @param {Event}
    */
   onMultiIconClick = (e) => {
@@ -175,7 +175,7 @@ export default class App extends Component {
    * Logs user.
    * TODO
    */
-  logUser = () => {
+  logUser () {
     this.accountInfo = {
       userID: 1,
       userName: 'Mikołaj Palkiewicz',
@@ -187,10 +187,9 @@ export default class App extends Component {
   }
 
   /**
-   * Calls event on user log in elements.
-   * Updates stuffs.
+   * Triggers on user log event.
    */
-  callElements = () => {
+  callElements () {
     if (this.accountInfo) {
       for (var i = 0; i < this.elementsToCall.length; i++) {
         const element = this.elementsToCall[i]
@@ -203,7 +202,7 @@ export default class App extends Component {
   /**
    * Sets toolbar items.
    */
-  setToolbarItems = () => {
+  setToolbarItems () {
     const self = this
     const toolbar = this.getToolbar()
 
@@ -261,9 +260,9 @@ export default class App extends Component {
         ref: 'viewIcon',
         position: 'Right',
         className: 'toolbar-icon-view',
-        onClick: this.onViewClick,
-        onMouseEnter: this.onViewMouseEnter,
-        onMouseLeave: this.onViewMouseLeave
+        onClick: postsPage.onViewClick,
+        onMouseEnter: postsPage.onViewMouseEnter,
+        onMouseLeave: postsPage.onViewMouseLeave
       },
       {
         type: 'Icon',
@@ -271,8 +270,8 @@ export default class App extends Component {
         position: 'Right',
         className: 'toolbar-icon-show-pictures',
         onClick: postsPage.onShowPicturesClick,
-        onMouseEnter: this.onShowPicturesMouseEnter,
-        onMouseLeave: this.onShowPicturesMouseLeave
+        onMouseEnter: postsPage.onShowPicturesMouseEnter,
+        onMouseLeave: postsPage.onShowPicturesMouseLeave
       }
     ]
 
@@ -280,79 +279,9 @@ export default class App extends Component {
   }
 
   /**
-   * On toolbar view item click event.
-   * Changes table.
-   * @param {Event}
-   */
-  onViewClick = (e) => {
-    const postsPage = this.getPostsPage()
-    const tooltip = this.elements.tooltipView
-
-    if (postsPage.isTable) {
-      postsPage.switchToList()
-    } else {
-      postsPage.switchToTable()
-    }
-
-    tooltip.toggle(false)
-  }
-
-  /**
-   * On toolbar view item mouse enter event.
-   * Shows tooltip.
-   * @param {Event}
-   */
-  onViewMouseEnter = (e) => {
-    const postsPage = this.getPostsPage()
-    const tooltip = this.elements.tooltipView
-
-    const text = (postsPage.isTable) ? 'Przełącz na listę' : 'Przełącz na tabelę'
-
-    tooltip.setText(text)
-    tooltip.toggle(true, e.target)
-  }
-
-  /**
-   * On toolbar view item mouse leave event.
-   * Hides tooltip.
-   * @param {Event}
-   */
-  onViewMouseLeave = (e) => {
-    const tooltip = this.elements.tooltipView
-
-    tooltip.toggle(false)
-  }
-
-  /**
-   * On toolbar show images mouse enter event.
-   * Shows tooltip.
-   * @param {Event}
-   */
-  onShowPicturesMouseEnter = (e) => {
-    const postsPage = this.getPostsPage()
-    const tooltip = this.elements.tooltipShowPictures
-
-    const text = (!postsPage.toggledPictures) ? 'Pokaż zdjęcia' : 'Ukryj zdjęcia'
-
-    tooltip.setText(text)
-    tooltip.toggle(true, e.target)
-  }
-
-  /**
-   * On toolbar show images mouse leave event.
-   * Hides tooltip.
-   * @param {Event}
-   */
-  onShowPicturesMouseLeave = (e) => {
-    const tooltip = this.elements.tooltipShowPictures
-
-    tooltip.toggle(false)
-  }
-
-  /**
    * Sets navigation drawer items.
    */
-  setNavigationDrawerItems = () => {
+  setNavigationDrawerItems () {
     const self = this
     const navigationDrawer = this.getNavigationDrawer()
 
@@ -431,7 +360,7 @@ export default class App extends Component {
   /**
    * Moves floating action button.
    * @param {Int} height
-   * @param {Int} duration
+   * @param {Int} duration (optional)
    */
   moveFAB (height, duration = 2700) {
     const fabContainer = this.elements.fabContainer
@@ -461,9 +390,9 @@ export default class App extends Component {
         <div className='fab' ref='fabContainer'>
           <FAB ref='fab' onClick={this.onFABClick} />
         </div>
-        <Menu ref='menu' className='toolbar-menu' mobile={true} />
-        <Menu ref='postItemMenu' className='toolbar-menu' mobile={true} />
-        <Menu ref='categoryMenu' className='toolbar-menu' mobile={true} />
+        <Menu ref='menu' className='toolbar-menu' mobile='true' />
+        <Menu ref='postItemMenu' className='toolbar-menu' mobile='true' />
+        <Menu ref='categoryMenu' className='toolbar-menu' mobile='true' />
         <Dialog ref='deletePostsDialog' title='Jesteś pewny(a)?'>
           Nie będzie można ich odzyskać.
         </Dialog>

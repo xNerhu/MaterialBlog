@@ -21,15 +21,15 @@ export default class PostDialog extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
   /**
-   * Toggle dialog.
+   * Shows or hides dialog.
    * @param {Boolean} show or hide
    */
-  toggle = (flag, edit = false, postData) => {
+  toggle (flag, edit = false, postData) {
     const self = this
     const root = this.getRoot()
 
@@ -181,7 +181,7 @@ export default class PostDialog extends Component {
   /**
    * Updates preview title and content.
    */
-  updatePreview = () => {
+  updatePreview () {
     const title = this.elements.titleTextField.getInput().value
     const content = this.elements.contentTextField.getInput().value
 
@@ -210,7 +210,7 @@ export default class PostDialog extends Component {
    * @param {Int}
    * @return {String}
    */
-  parseDate = (d) => {
+  parseDate (d) {
     if (d < 10) {
       d = '0' + d
     }
@@ -222,7 +222,7 @@ export default class PostDialog extends Component {
    * Verify data.
    * @return {Boolean} data is correct
    */
-  verifyData = () => {
+  verifyData () {
     const titleTextField = this.elements.titleTextField
     const contentTextField = this.elements.contentTextField
 
@@ -344,12 +344,9 @@ export default class PostDialog extends Component {
         const img = postInList.elements.picture.elements.text.getElementsByTagName('img')[0]
 
         if (img != null) {
-          if (media == null) {
-            img.style.display = 'none'
-          } else {
-            img.style.display = 'inline-block'
-            img.src = media
-          }
+          img.style.display = (media == null) ? 'none' : 'inline-block'
+
+          if (media != null) img.src = media
         }
       }
 
@@ -362,12 +359,9 @@ export default class PostDialog extends Component {
         const img = postInTable.elements.picture.getElementsByTagName('img')[0]
 
         if (img != null) {
-          if (media == null) {
-            img.style.display = 'none'
-          } else {
-            img.style.display = 'block'
-            img.src = media
-          }
+          img.style.display = (media == null) ? 'none' : 'inline-block'
+
+          if (media != null) img.src = media
         }
       }
 

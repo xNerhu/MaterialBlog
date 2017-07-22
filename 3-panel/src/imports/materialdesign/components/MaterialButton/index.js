@@ -9,7 +9,7 @@ export default class MaterialButton extends Component {
    * Gets root.
    * @return {DOMElement} root
    */
-  getRoot = () => {
+  getRoot () {
     return this.elements.root
   }
 
@@ -22,7 +22,7 @@ export default class MaterialButton extends Component {
     if (!this.touched) {
       const root = this.getRoot()
 
-      let ripple = Ripple.createRipple(root, this.props.rippleStyle, createRippleMouse(root, e, 1.5))
+      const ripple = Ripple.createRipple(root, this.props.rippleStyle, createRippleMouse(root, e, 1.5))
       Ripple.makeRipple(ripple)
     }
   }
@@ -35,7 +35,7 @@ export default class MaterialButton extends Component {
   onTouchStart = (e) => {
     const root = this.getRoot()
 
-    let ripple = Ripple.createRipple(root, this.props.rippleStyle, createRippleMouse(root, e, 1.5, true))
+    const ripple = Ripple.createRipple(root, this.props.rippleStyle, createRippleMouse(root, e, 1.5, true))
     Ripple.makeRipple(ripple)
 
     this.touched = true
@@ -45,7 +45,7 @@ export default class MaterialButton extends Component {
    * Sets button text.
    * @param {String} text
    */
-  setText = (str) => {
+  setText (str) {
     this.elements.root.innerHTML = str
   }
 
