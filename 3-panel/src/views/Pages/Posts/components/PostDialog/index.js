@@ -1,4 +1,5 @@
 import Component from '../../../../../helpers/Component'
+import DialogManager from '../../../../../helpers/DialogManager'
 
 import FileInput from './components/FileInput'
 
@@ -56,12 +57,6 @@ export default class PostDialog extends Component {
         }, 20)
       }, 100)
 
-      root.style.display = 'block'
-
-      setTimeout(function () {
-        root.style.opacity = '1'
-      }, 20)
-
       if (edit) {
         this.toggledEditMode = edit
 
@@ -93,13 +88,9 @@ export default class PostDialog extends Component {
           toolbar.showItems()
         }, 10)
       }, 150)
-
-      root.style.opacity = '0'
-
-      setTimeout(function () {
-        root.style.display = 'none'
-      }, 300)
     }
+
+    DialogManager.toggleFullScreenDialog(flag, root)
 
     let toolbarTitle = app.defaultTitle
 

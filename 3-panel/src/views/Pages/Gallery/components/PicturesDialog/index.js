@@ -1,4 +1,5 @@
 import Component from '../../../../../helpers/Component'
+import DialogManager from '../../../../../helpers/DialogManager'
 
 import Picture from './components/Picture'
 
@@ -59,7 +60,7 @@ export default class PicturesDialog extends Component {
       multiIcon.changeToDefault()
     }
 
-    app.toggleFullScreenDialog(flag, root)
+    DialogManager.toggleFullScreenDialog(flag, root)
 
     const title = (flag) ? data.name : app.defaultTitle
 

@@ -445,22 +445,6 @@ export default class App extends Component {
     }
   }
 
-  toggleFullScreenDialog = (flag, root) => {
-    if (flag) {
-      root.style.display = 'block'
-
-      setTimeout(function () {
-        root.style.opacity = '1'
-      }, 10)
-    } else {
-      root.style.opacity = '0'
-
-      setTimeout(function () {
-        root.style.display = 'none'
-      }, 300)
-    }
-  }
-
   render () {
     return (
       <div>

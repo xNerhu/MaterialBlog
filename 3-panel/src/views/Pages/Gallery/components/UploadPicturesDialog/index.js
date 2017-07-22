@@ -1,10 +1,9 @@
 import Component from '../../../../../helpers/Component'
-import Url from '../../../../../helpers/Url'
+import DialogManager from '../../../../../helpers/DialogManager'
 
 import Item from './components/Item'
 
 import Preloader from '../../../../../imports/materialdesign/components/Preloader'
-import MaterialButton from '../../../../../imports/materialdesign/components/MaterialButton'
 
 export default class UploadPicturesDialog extends Component {
   beforeRender () {
@@ -73,7 +72,7 @@ export default class UploadPicturesDialog extends Component {
       }
     }
 
-    app.toggleFullScreenDialog(flag, root)
+    DialogManager.toggleFullScreenDialog(flag, root)
   }
 
   /**
