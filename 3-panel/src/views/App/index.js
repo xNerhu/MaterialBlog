@@ -339,18 +339,8 @@ export default class App extends Component {
     if (this.selectedPage === postsPage) {
       this.elements.postDialog.toggle(true)
     } else if (this.selectedPage === galleryPage) {
-      const uploadPicturesDialog = galleryPage.elements.uploadPicturesDialog
-
       if (galleryPage.elements.picturesDialog.toggled) {
-        const input = document.createElement('input')
-        input.type = 'file'
-        input.accept = 'image/*'
-        input.multiple = 'true'
-
-        input.click()
-        input.addEventListener('change', function (e) {
-          uploadPicturesDialog.toggle(true, input)
-        })
+        galleryPage.elements.uploadPicturesDialog.triggerFileDialog()
       } else {
         this.elements.addCategoryDialog.elements.dialog.toggle(true)
       }

@@ -137,7 +137,9 @@ export default class UploadPicturesDialog extends Component {
 
       picturesDialog.categoryData.pictures.push(src)
 
-      picturesDialog.addPicture(src)
+      setTimeout(function () {
+        picturesDialog.addPicture(src)
+      }, (i + 1) * 10)
     }
 
     picturesDialog.setPicturesCount()
@@ -183,6 +185,25 @@ export default class UploadPicturesDialog extends Component {
    */
   togglePreloader (flag) {
     this.elements.preloader.getRoot().style.display = (flag) ? 'block' : 'none'
+  }
+
+  /**
+   * Opens file input dialog.
+   */
+  triggerFileDialog () {
+    const self = this
+
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = 'image/*'
+    input.multiple = 'true'
+
+    input.addEventListener('change', function (e) {
+      console.log(input, input.value)
+      self.toggle(true, input)
+    })
+
+    input.click()
   }
 
   render () {
