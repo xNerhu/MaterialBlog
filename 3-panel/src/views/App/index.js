@@ -1,8 +1,12 @@
 import Component from '../../helpers/Component'
 import Url from '../../helpers/Url'
 
-import AddCategoryDialog from './components/AddCategoryDialog'
-import PostDialog from './components/PostDialog'
+import DialogManager from '../../helpers/DialogManager'
+import MenuManager from '../../helpers/MenuManager'
+import PageManager from '../../helpers/PageManager'
+
+import AddCategoryDialog from '../Pages/Gallery/components/AddCategoryDialog'
+import PostDialog from '../Pages/Posts/components/PostDialog'
 
 import NavigationDrawer from './components/NavigationDrawer/index'
 import Toolbar from './components/Toolbar'
@@ -29,20 +33,12 @@ export default class App extends Component {
       userName: 'Mikołaj Palkiewicz'
     }
 
-    this.elementsToCallBack = []
+    this.elementsToCall = []
 
-    this.loadedPages = {
-      posts: false,
-      gallery: false,
-      aboutClass: false,
-      lessonsPlan: false
+    this.pagesData = {
+      loading: false,
+      selected: null
     }
-
-    this.isLoading = false
-
-    this.selectedPage = null
-    this.canSelect = true
-    this.lastPage = null
 
     this.toggledMenu = false
   }
@@ -116,9 +112,7 @@ export default class App extends Component {
    * @param {Boolean}
    */
   togglePreloader = (flag) => {
-    const preloader = this.getPreloader().getRoot()
-
-    preloader.style.display = (!flag) ? 'none' : 'block'
+    this.getPreloader().getRoot().style.display = (!flag) ? 'none' : 'block'
   }
 
   /**
@@ -198,8 +192,8 @@ export default class App extends Component {
    */
   callElements = () => {
     if (this.accountInfo) {
-      for (var i = 0; i < this.elementsToCallBack.length; i++) {
-        const element = this.elementsToCallBack[i]
+      for (var i = 0; i < this.elementsToCall.length; i++) {
+        const element = this.elementsToCall[i]
 
         element.onUserLog()
       }
@@ -259,7 +253,7 @@ export default class App extends Component {
         position: 'Right',
         className: 'toolbar-icon-more',
         onClick: function (e) {
-          self.toggleMenu(true, self.elements.menu, e.target)
+          MenuManager.toggle(true, self.elements.menu, e.target)
         }
       },
       {
@@ -291,7 +285,6 @@ export default class App extends Component {
    * @param {Event}
    */
   onViewClick = (e) => {
-    const target = e.target
     const postsPage = this.getPostsPage()
     const tooltip = this.elements.tooltipView
 
@@ -368,28 +361,28 @@ export default class App extends Component {
         text: 'Posty',
         className: 'navigation-drawer-posts',
         onClick: function (e) {
-          self.selectPage(self.getPostsPage())
+          PageManager.selectPage(self.getPostsPage())
         }
       },
       {
         text: 'Galeria',
         className: 'navigation-drawer-gallery',
         onClick: function (e) {
-          self.selectPage(self.getGalleryPage())
+          PageManager.selectPage(self.getGalleryPage())
         }
       },
       {
         text: 'O klasie',
         className: 'navigation-drawer-about-class',
         onClick: function (e) {
-          self.selectPage(self.getAboutClassPage())
+          PageManager.selectPage(self.getAboutClassPage())
         }
       },
       {
         text: 'Plan lekcji',
         className: 'navigation-drawer-lessons-plan',
         onClick: function (e) {
-          self.selectPage(self.getLessonsPlanTab())
+          PageManager.selectPage(self.getLessonsPlanTab())
         }
       }
     ]
@@ -398,341 +391,12 @@ export default class App extends Component {
   }
 
   /**
-   * Sets menu items.
-   */
-  setMenuItems = () => {
-    const self = this
-    const menu = this.getMenu()
-
-    const postDialog = this.elements.postDialog
-    const postsPage = this.getPostsPage()
-
-    const items = [
-      {
-        text: 'Dodaj',
-        onClick: function () {
-          postDialog.toggle(true)
-        }
-      },
-      {
-        text: 'Usuń',
-        onClick: postsPage.onMenuItemDeletePostsClick
-      }
-    ]
-
-    menu.setItems(items)
-  }
-
-  setPostItemMenuItems () {
-    const self = this
-    const menu = this.elements.postItemMenu
-    const dialog = this.elements.deletePostDialog
-
-    const postsPage = this.getPostsPage()
-
-    const items = [
-      {
-        text: 'Edytuj',
-        onClick: postsPage.onMenuItemEditPostClick
-      },
-      {
-        text: 'Usuń',
-        onClick: function () {
-          dialog.toggle(true)
-        }
-      }
-    ]
-
-    menu.setItems(items)
-  }
-
-  setCategoryMenuItems () {
-    const menu = this.elements.categoryMenu
-
-    const items = [
-      {
-        text: 'Dodaj'
-      },
-      {
-        text: 'Otwórz'
-      },
-      {
-        text: 'Edytuj'
-      },
-      {
-        text: 'Usuń'
-      },
-      {
-        text: 'Informacje'
-      }
-    ]
-
-    menu.setItems(items)
-  }
-
-  /**
-   * Selects page.
-   * @param {PostsPage | GalleryPage}
-   */
-  selectPage = (page) => {
-    if (this.canSelect && this.lastPage !== page && !this.isLoading) {
-      const self = this
-      const toolbar = this.getToolbar()
-      const navigationDrawer = this.getNavigationDrawer()
-      const pageRoot = page.getRoot()
-      const pageName = this.getPageName(page)
-
-      this.selectedPage = page
-      this.canSelect = false
-
-      if (navigationDrawer.toggled) navigationDrawer.hide()
-
-      pageRoot.style.display = 'block'
-
-      if (pageName === 'posts' && !this.loadedPages.posts || pageName === 'gallery' && !this.loadedPages.gallery || pageName === 'aboutClass' && !this.loadedPages.aboutClass || pageName === 'lessonsPlan' && !this.loadedPages.lessonsPlan) {
-        this.togglePreloader(true)
-        this.isLoading = true
-
-        page.load()
-      }
-
-      let title = 'Posty'
-
-      if (pageName === 'gallery') {
-        title = 'Galeria'
-      } else if (pageName === 'aboutClass') {
-        title = 'O klasie'
-      } else if (pageName === 'lessonsPlan') {
-        title = 'Plan lekcji'
-      }
-
-      this.defaultTitle = title
-      toolbar.setTitle(title)
-
-      setTimeout(function () {
-        pageRoot.style.opacity = '1'
-
-        setTimeout(function () {
-          self.canSelect = true
-        }, 300)
-      }, 10)
-
-      if (typeof page.onSelect === 'function') page.onSelect()
-
-      const url = '?page=' + pageName.toLowerCase()
-      window.history.pushState('', '', url)
-
-      const lastPage = this.lastPage
-      if (lastPage != null) {
-        this.deselectPage(lastPage, page)
-      }
-
-      this.lastPage = page
-    }
-  }
-
-  /**
-   * Deselects page.
-   * @param {PostsPage | GalleryPage}
-   */
-  deselectPage = (page, selectedPage) => {
-    const pageRoot = page.getRoot()
-
-    pageRoot.style.opacity = '0'
-
-    if (typeof page.onDeselect === 'function') page.onDeselect(selectedPage)
-
-    setTimeout(function () {
-      pageRoot.style.display = 'none'
-    }, 300)
-  }
-
-  /**
-   * Gets page page.
-   * @param {PostsPage | GalleryPage}
-   * @return {String} page name
-   */
-  getPageName = (page) => {
-    const postsPage = this.getPostsPage()
-    const galleryPage = this.getGalleryPage()
-    const aboutClassPage = this.getAboutClassPage()
-    const lessonsPlanPage = this.getLessonsPlanTab()
-
-    if (postsPage === page) return 'posts'
-    else if (galleryPage === page) return 'gallery'
-    else if (aboutClassPage === page) return 'aboutClass'
-    else if (lessonsPlanPage === page) return 'lessonsPlan'
-    return null
-  }
-
-  /**
-   * Toggle menu.
-   * @param {Boolean} show or hide.
-   * @param {Menu} menu
-   * @param {DOMElement} clicked element
-   */
-  toggleMenu = (flag, _menu, clickedElement) => {
-    const self = this
-    const menu = (flag) ? _menu : this.toggledMenu
-
-    const menuRoot = menu.getRoot()
-
-    if (this.toggledMenu !== false) {
-      if (_menu !== this.toggledMenu) {
-        this.toggleMenu(false, this.toggledMenu)
-      }
-    }
-
-    if (flag) {
-      let top = 8
-      let bottom = false
-      let left = 0
-      let right = false
-
-      menuRoot.style.display = 'block'
-
-      if (clickedElement != null) {
-        const bounds = clickedElement.getBoundingClientRect()
-
-        top = bounds.top + 8
-
-        if (top + menuRoot.scrollHeight >= window.innerHeight) {
-          top = false
-          bottom = bounds.bottom - bounds.top
-        }
-
-        left = bounds.left
-
-        if (left + 112 >= window.innerWidth) {
-          left = false
-          right = bounds.right - bounds.left - 4
-        }
-      }
-
-      if (top !== false) {
-        menuRoot.style.top = top + 'px'
-      } else {
-        menuRoot.style.top = 'initial'
-        menuRoot.style.bottom = bottom + 'px'
-      }
-
-      if (left !== false) {
-        menuRoot.style.left = left + 'px'
-      } else {
-        menuRoot.style.left = 'initial'
-        menuRoot.style.right = right + 'px'
-      }
-
-      menuRoot.style.overflowY = 'hidden'
-      menuRoot.style.opacity = '1'
-
-      setTimeout(function () {
-        document.removeEventListener('click', this.onClick)
-
-        menuRoot.style.width = '112px'
-        menuRoot.style.height = menuRoot.scrollHeight + 'px'
-
-        setTimeout(function () {
-          self.toggleMenuItems(true, menu)
-
-          setTimeout(function () {
-            menuRoot.style.overflowY = 'auto'
-          }, 200)
-        }, 100)
-
-        document.addEventListener('click', self.onClick)
-      }, 10)
-
-      this.toggledMenu = menu
-    } else {
-      document.removeEventListener('click', this.onClick)
-
-      menuRoot.style.overflowY = 'hidden'
-
-      menuRoot.style.height = '0px'
-      menuRoot.style.width = '0px'
-
-      this.toggleMenuItems(false, menu)
-
-      menuRoot.style.opacity = '0'
-
-      setTimeout(function () {
-        menuRoot.style.display = 'none'
-      }, 300)
-
-      this.toggledMenu = false
-    }
-  }
-
-  /**
-   * Shows or hides menu items.
-   * @param {Boolean} show or hide
-   * @param {Menu} menu
-   */
-  toggleMenuItems (flag, menu) {
-    for (var i = 0; i < menu.items.length; i++) {
-      const menuItem = menu.items[i]
-      const menuItemRoot = menuItem.getRoot()
-
-      setTimeout(function () {
-        menuItemRoot.style.opacity = (flag) ? '1' : '0'
-      }, i * 25)
-    }
-  }
-
-  /**
-   * Sets dialog action buttons.
-   */
-  setDeletePostsDialogItems = () => {
-    const postsPage = this.getPostsPage()
-    const dialog = this.elements.deletePostsDialog
-
-    const items = [
-      {
-        text: 'TAK',
-        onClick: postsPage.onDeletePostsDialogConfirmClick
-      },
-      {
-        text: 'NIE',
-        onClick: function () {
-          dialog.toggle(false)
-        }
-      }
-    ]
-
-    dialog.setItems(items)
-  }
-
-  /**
-   * Sets dialog action buttons.
-   */
-  setDeletePostDialogItems = () => {
-    const postsPage = this.getPostsPage()
-    const dialog = this.elements.deletePostDialog
-
-    const items = [
-      {
-        text: 'TAK',
-        onClick: postsPage.onDeletePostDialogConfirmClick
-      },
-      {
-        text: 'NIE',
-        onClick: function () {
-          dialog.toggle(false)
-        }
-      }
-    ]
-
-    dialog.setItems(items)
-  }
-
-  /**
    * On click event.
    * Hides menu.
    * @param {Event}
    */
   onClick = (e) => {
-    this.toggleMenu(false)
+    MenuManager.toggle(false)
   }
 
   /**
@@ -840,11 +504,11 @@ export default class App extends Component {
   afterRender () {
     this.setToolbarItems()
     this.setNavigationDrawerItems()
-    this.setMenuItems()
-    this.setPostItemMenuItems()
-    this.setCategoryMenuItems()
-    this.setDeletePostsDialogItems()
-    this.setDeletePostDialogItems()
+    MenuManager.setMenuItems()
+    MenuManager.setPostMenuItems()
+    MenuManager.setCategoryMenuItems()
+    DialogManager.setDeletePostsDialogItems()
+    DialogManager.setDeletePostDialogItems()
 
     let urlPage = Url.getUrlParameter('page')
     let pageToSelect = this.getPostsPage()
@@ -865,11 +529,18 @@ export default class App extends Component {
       this.getToolbar().hideItems(false, false)
     }
 
-    this.selectPage(pageToSelect)
+    PageManager.selectPage(pageToSelect)
 
     this.logUser()
 
-    this.elements.menu.getRoot().style.width = '0px'
-    this.elements.postItemMenu.getRoot().style.width = '0px'
+    const menus = [
+      this.elements.menu,
+      this.elements.postItemMenu,
+      this.elements.categoryMenu
+    ]
+
+    for (var i = 0; i < menus.length; i++) {
+      menus[i].getRoot().style.width = '0px'
+    }
   }
 }

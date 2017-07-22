@@ -27,9 +27,6 @@ $pictureBlur: 10px;
 
 @import 'views/App/styles.scss';
 
-@import 'views/App/components/PostDialog/style.scss';
-@import 'views/App/components/PostDialog/components/Post/style.scss';
-
 @import 'views/App/components/AddCategoryDialog/style.scss';
 
 @import 'views/App/components/Toolbar/style.scss';
@@ -42,6 +39,8 @@ $pictureBlur: 10px;
 @import 'views/Pages/Posts/style.scss';
 @import 'views/Pages/Posts/components/Table/style.scss';
 @import 'views/Pages/Posts/components/List/style.scss';
+@import 'views/Pages/Posts/components/PostDialog/style.scss';
+@import 'views/Pages/Posts/components/PostDialog/components/Post/style.scss';
 
 @import 'views/Pages/Gallery/style.scss';
 @import 'views/Pages/Gallery/components/PicturesDialog/style.scss';

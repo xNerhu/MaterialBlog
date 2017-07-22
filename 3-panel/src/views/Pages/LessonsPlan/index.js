@@ -1,6 +1,14 @@
 import Component from '../../../helpers/Component'
 
 export default class LessonsPlanPage extends Component {
+  beforeRender () {
+    this.pageData = {
+      title: 'Plan lekcji',
+      url: 'lessonsplan',
+      loaded: false
+    }
+  }
+
   /**
    * Gets root.
    * @return {DOMElement} root
@@ -14,11 +22,10 @@ export default class LessonsPlanPage extends Component {
    */
   load = () => {
     const app = window.app
-    app.loadedPages.lessonsPlan = true
 
     setTimeout(function () {
       app.togglePreloader(false)
-      app.isLoading = false
+      app.pagesData.loading = false
     }, 10)
   }
 

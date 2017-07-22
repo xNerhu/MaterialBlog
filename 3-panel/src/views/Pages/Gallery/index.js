@@ -7,6 +7,12 @@ import Section from './components/Section'
 
 export default class GalleryPage extends Component {
   beforeRender () {
+    this.pageData = {
+      title: 'Galeria',
+      url: 'gallery',
+      loaded: false
+    }
+
     this.categoriesData = []
 
     this.months = [
@@ -62,9 +68,6 @@ export default class GalleryPage extends Component {
    */
   load = () => {
     const self = this
-    const app = window.app
-
-    app.loadedPages.gallery = true
 
     setTimeout(function () {
       self.categoriesData = [
@@ -204,7 +207,7 @@ export default class GalleryPage extends Component {
       const container = this.elements.container
 
       app.togglePreloader(false)
-      app.isLoading = false
+      app.pagesData.loading = false
 
       container.style.display = 'block'
 

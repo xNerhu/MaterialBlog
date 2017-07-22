@@ -1,11 +1,11 @@
-import Component from './../../../../helpers/Component'
+import Component from '../../../../../helpers/Component'
 
 import FileInput from './components/FileInput'
 
 import Post from './components/Post'
 
-import TextField from '../../../../imports/materialdesign/components/TextField'
-import Switch from '../../../../imports/materialdesign/components/Switch'
+import TextField from '../../../../../imports/materialdesign/components/TextField'
+import Switch from '../../../../../imports/materialdesign/components/Switch'
 
 export default class PostDialog extends Component {
   beforeRender () {

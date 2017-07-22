@@ -9,6 +9,12 @@ import Preloader from '../../../imports/materialdesign/components/Preloader'
 
 export default class PostsPage extends Component {
   beforeRender () {
+    this.pageData = {
+      title: 'Posty',
+      url: 'posts',
+      loaded: false
+    }
+
     this.tableLoaded = false
     this.listLoaded = false
 
@@ -147,11 +153,9 @@ export default class PostsPage extends Component {
     const app = window.app
     const tables = this.elements.tables
 
-    app.loadedPages.posts = true
-
     setTimeout(function () {
       app.togglePreloader(false)
-      app.isLoading = false
+      app.pagesData.loading = false
 
       let cookieTable = Cookies.getCookie('table')
       const windowWidth = window.innerWidth

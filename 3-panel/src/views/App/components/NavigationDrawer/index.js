@@ -232,6 +232,6 @@ export default class NavigationDrawer extends Component {
     if (props.darkOpacity == null) props.darkOpacity = 0.7
 
     window.addEventListener('resize', this.onWindowResize)
-    window.app.elementsToCallBack.push(this)
+    window.app.elementsToCall.push(this)
   }
 }

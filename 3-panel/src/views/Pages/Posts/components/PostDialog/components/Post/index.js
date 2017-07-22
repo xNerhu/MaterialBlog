@@ -1,4 +1,4 @@
-import Component from '../../../../../../helpers/Component'
+import Component from '../../../../../../../helpers/Component'
 
 export default class Post extends Component {
   beforeRender () {

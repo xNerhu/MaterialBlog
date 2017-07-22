@@ -1,6 +1,14 @@
 import Component from '../../../helpers/Component'
 
 export default class AboutClassPage extends Component {
+  beforeRender () {
+    this.pageData = {
+      title: 'O klasie',
+      url: 'aboutclass',
+      loaded: false
+    }
+  }
+
   /**
    * Gets root.
    * @return {DOMElement} root
@@ -14,11 +22,10 @@ export default class AboutClassPage extends Component {
    */
   load = () => {
     const app = window.app
-    app.loadedPages.aboutClass = true
 
     setTimeout(function () {
       app.togglePreloader(false)
-      app.isLoading = false
+      app.pagesData.loading = false
     }, 10)
   }
 

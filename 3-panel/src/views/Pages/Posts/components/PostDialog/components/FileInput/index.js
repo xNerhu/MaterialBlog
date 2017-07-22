@@ -1,7 +1,7 @@
-import Component from '../../../../../../helpers/Component'
-import Url from '../../../../../../helpers/Url'
+import Component from '../../../../../../../helpers/Component'
+import Url from '../../../../../../../helpers/Url'
 
-import MaterialButton from '../../../../../../imports/materialdesign/components/MaterialButton'
+import MaterialButton from '../../../../../../../imports/materialdesign/components/MaterialButton'
 
 export default class FileInput extends Component {
   beforeRender () {

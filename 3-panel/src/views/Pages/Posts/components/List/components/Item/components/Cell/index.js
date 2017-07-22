@@ -1,4 +1,5 @@
 import Component from '../../../../../../../../../helpers/Component'
+import MenuManager from '../../../../../../../../../helpers/MenuManager'
 
 import Checkbox from '../../../../../../../../../imports/materialdesign/components/CheckBox'
 
@@ -33,7 +34,7 @@ export default class Cell extends Component {
 
     document.removeEventListener('click', app.onClick)
 
-    app.toggleMenu(true, menu, e.target, false)
+    MenuManager.toggle(true, menu, e.target, false)
 
     app.getPostsPage().clickedPost = this.props.getItem()
   }

@@ -1,4 +1,5 @@
 import Component from '../../../../../../../helpers/Component'
+import MenuManager from '../../../../../../../helpers/MenuManager'
 
 export default class Category extends Component {
   beforeRender () {
@@ -89,7 +90,7 @@ export default class Category extends Component {
 
     document.removeEventListener('click', app.onClick)
 
-    app.toggleMenu(true, menu, e.target, false)
+    MenuManager.toggle(true, menu, e.target, false)
 
     app.getPostsPage().clickedPost = this
   }
