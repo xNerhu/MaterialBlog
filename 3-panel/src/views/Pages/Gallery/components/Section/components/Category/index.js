@@ -92,7 +92,7 @@ export default class Category extends Component {
 
     MenuManager.toggle(true, menu, e.target, false)
 
-    app.getPostsPage().clickedPost = this
+    app.getGalleryPage().clickedCategory = this
   }
 
   /**
@@ -110,7 +110,7 @@ export default class Category extends Component {
   }
 
   /**
-   * On menu icon touch start event (on mobile).
+   * On menu icon touch start event. (on mobile)
    * Makes ripple.
    * @param {Event}
    */

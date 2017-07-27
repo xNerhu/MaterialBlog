@@ -5,8 +5,9 @@ import DialogManager from '../../helpers/DialogManager'
 import MenuManager from '../../helpers/MenuManager'
 import PageManager from '../../helpers/PageManager'
 
-import AddCategoryDialog from '../Pages/Gallery/components/AddCategoryDialog'
 import PostDialog from '../Pages/Posts/components/PostDialog'
+import AddCategoryDialog from '../Pages/Gallery/components/AddCategoryDialog'
+import EditCategoryDialog from '../Pages/Gallery/components/EditCategoryDialog'
 
 import NavigationDrawer from './components/NavigationDrawer/index'
 import Toolbar from './components/Toolbar'
@@ -390,10 +391,12 @@ export default class App extends Component {
           Nie będzie można go odzyskać.
         </Dialog>
         <AddCategoryDialog ref='addCategoryDialog' />
+        <EditCategoryDialog ref='editCategoryDialog' />
         <Snackbar ref='deletedPostsSnackbar' text='Pomyślnie usunięto posty' />
         <Snackbar ref='deletedPostSnackbar' text='Pomyślnie usunięto post' />
         <Snackbar ref='addedPostSnackbar' text='Pomyślnie dodano post' />
         <Snackbar ref='addedCategorySnackbar' text='Pomyślnie dodano kategorię' />
+        <Snackbar ref='editedCategorySnackbar' text='Pomyślnie edytowano kategorię' />
         <Snackbar ref='addedPicturesSnackbar' text='Pomyślnie dodano zdjęcia' />
         <Tooltip ref='tooltipView' text='Przełącz na liste' />
         <Tooltip ref='tooltipShowPictures' text='Pokaż zdjęcia' />

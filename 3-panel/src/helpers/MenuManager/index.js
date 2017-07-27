@@ -177,15 +177,24 @@ export default class MenuManager {
 
     const menu = app.elements.categoryMenu
 
+    const gallery = app.getGalleryPage()
+
     const items = [
       {
-        text: 'Dodaj'
+        text: 'Dodaj',
+        onClick: gallery.elements.uploadPicturesDialog.triggerFileDialog
       },
       {
-        text: 'Otwórz'
+        text: 'Otwórz',
+        onClick: function (e) {
+          gallery.clickedCategory.onClick(e)
+        }
       },
       {
-        text: 'Edytuj'
+        text: 'Edytuj',
+        onClick: function (e) {
+          app.elements.editCategoryDialog.show(gallery.clickedCategory.props.data)
+        }
       },
       {
         text: 'Usuń'

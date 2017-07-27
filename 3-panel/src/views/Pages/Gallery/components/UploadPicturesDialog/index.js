@@ -125,24 +125,34 @@ export default class UploadPicturesDialog extends Component {
    * On done uploading event.
    */
   onUpload () {
-    this.toggle(false)
+    const app = window.app
 
-    window.app.elements.addedPicturesSnackbar.toggle(true)
-
-    const gallery = window.app.getGalleryPage()
+    const gallery = app.getGalleryPage()
     const picturesDialog = gallery.elements.picturesDialog
+
+    const index = gallery.categoriesData.indexOf((picturesDialog.toggled) ? picturesDialog.categoryData : gallery.clickedCategory.props.data)
 
     for (var i = 0; i < this.files.length; i++) {
       const src = this.files[i].src
 
-      picturesDialog.categoryData.pictures.push(src)
+      gallery.categoriesData[index].pictures.push(src)
 
-      setTimeout(function () {
-        picturesDialog.addPicture(src)
-      }, (i + 1) * 10)
+      if (picturesDialog.toggled) {
+        setTimeout(function () {
+          picturesDialog.addPicture(src)
+        }, (i + 1) * 10)
+      }
+    }
+
+    if (index < 0) {
+      console.log('Error. Component: upload pictures dialog. Function: onUpload ')
     }
 
     picturesDialog.setPicturesCount()
+
+    this.toggle(false)
+
+    app.elements.addedPicturesSnackbar.toggle(true)
   }
 
   /**
@@ -190,7 +200,7 @@ export default class UploadPicturesDialog extends Component {
   /**
    * Opens file input dialog.
    */
-  triggerFileDialog () {
+  triggerFileDialog = () => {
     const self = this
 
     const input = document.createElement('input')

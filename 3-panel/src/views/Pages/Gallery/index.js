@@ -33,6 +33,8 @@ export default class GalleryPage extends Component {
     this.sectionLoaded = 0
 
     this.sectionsData = []
+
+    this.clickedCategory = null
   }
 
   /**

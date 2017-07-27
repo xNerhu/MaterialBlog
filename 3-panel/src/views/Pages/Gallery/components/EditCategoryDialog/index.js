@@ -6,13 +6,22 @@ import Dialog from '../../../../../imports/materialdesign/components/Dialog'
 import TextField from '../../../../../imports/materialdesign/components/TextField'
 import Preloader from '../../../../../imports/materialdesign/components/Preloader'
 
-export default class AddCategoryDialog extends Component {
+export default class EditCategoryDialog extends Component {
   /**
    * Gets root.
    * @return {DOMElement} root
    */
   getRoot () {
     return this.elements.root
+  }
+
+  /**
+   * Shows dialog.
+   */
+  show (data) {
+    this.categoryNameTextField.setValue(data.name)
+
+    this.elements.dialog.toggle(true)
   }
 
   /**
@@ -23,8 +32,8 @@ export default class AddCategoryDialog extends Component {
 
     const items = [
       {
-        text: 'DODAJ',
-        onClick: this.onAddCategoryButtonClick
+        text: 'ZAPISZ',
+        onClick: this.onSaveButtonClick
       },
       {
         text: 'ANULUJ',
@@ -38,13 +47,13 @@ export default class AddCategoryDialog extends Component {
   }
 
   /**
-   * On dialog action button add category click event.
+   * On dialog action button save category click event.
    * @param {Event}
    */
-  onAddCategoryButtonClick = (e) => {
+  onSaveButtonClick = (e) => {
     CategoryDialog.checkForErrors(this, function (error) {
       if (!error) {
-        const snackbar = window.app.elements.addedCategorySnackbar
+        const snackbar = window.app.elements.editedCategorySnackbar
 
         snackbar.toggle(true)
       }
@@ -54,7 +63,7 @@ export default class AddCategoryDialog extends Component {
   render () {
     return (
       <div className='category-dialog' ref='root'>
-        <Dialog title='Dodaj nową kategorię' ref='dialog'>
+        <Dialog title='Edytuj kategorię' ref='dialog'>
           <TextField ref={(e) => this.categoryNameTextField = e} hint='Nazwa' helperText='*Wymagane' maxLength={30} />
           <Preloader ref={(e) => this.preloader = e} />
         </Dialog>
