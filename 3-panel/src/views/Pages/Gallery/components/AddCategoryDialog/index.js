@@ -74,11 +74,7 @@ export default class AddCategoryDialog extends Component {
         }
 
         gallery.categoriesData = _categoriesData
-
-        gallery.sectionLoaded = 0
-        gallery.sectionsData = []
-        gallery.elements.container.innerHTML = ''
-        gallery.addSections()
+        gallery.reloadSections()
       }
     })
   }

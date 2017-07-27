@@ -6,8 +6,10 @@ import MenuManager from '../../helpers/MenuManager'
 import PageManager from '../../helpers/PageManager'
 
 import PostDialog from '../Pages/Posts/components/PostDialog'
+
 import AddCategoryDialog from '../Pages/Gallery/components/AddCategoryDialog'
 import EditCategoryDialog from '../Pages/Gallery/components/EditCategoryDialog'
+import DeleteCategoryDialog from '../Pages/Gallery/components/DeleteCategoryDialog'
 
 import NavigationDrawer from './components/NavigationDrawer/index'
 import Toolbar from './components/Toolbar'
@@ -392,6 +394,7 @@ export default class App extends Component {
         </Dialog>
         <AddCategoryDialog ref='addCategoryDialog' />
         <EditCategoryDialog ref='editCategoryDialog' />
+        <DeleteCategoryDialog ref='deleteCategoryDialog' />
         <Snackbar ref='deletedPostsSnackbar' text='Pomyślnie usunięto posty' />
         <Snackbar ref='deletedPostSnackbar' text='Pomyślnie usunięto post' />
         <Snackbar ref='addedPostSnackbar' text='Pomyślnie dodano post' />

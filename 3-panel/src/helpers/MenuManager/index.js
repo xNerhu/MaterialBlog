@@ -197,10 +197,10 @@ export default class MenuManager {
         }
       },
       {
-        text: 'Usuń'
-      },
-      {
-        text: 'Informacje'
+        text: 'Usuń',
+        onClick: function (e) {
+          app.elements.deleteCategoryDialog.elements.dialog.toggle(true)
+        }
       }
     ]
 

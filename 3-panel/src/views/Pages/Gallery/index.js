@@ -138,25 +138,28 @@ export default class GalleryPage extends Component {
   addSections () {
     for (var i = 0; i < this.categoriesData.length; i++) {
       const category = this.categoriesData[i]
-      const split = category.date.split('.')
 
-      const month = split[1]
-      const year = split[2]
+      if (!category.removed) {
+        const split = category.date.split('.')
 
-      const index = this.getSectionIndex(month, year)
+        const month = split[1]
+        const year = split[2]
 
-      if (index < 0) {
-        this.sectionsData.push(
-          {
-            month: month,
-            year: year,
-            categories: []
-          }
-        )
+        const index = this.getSectionIndex(month, year)
 
-        this.sectionsData[this.sectionsData.length - 1].categories.push(category)
-      } else {
-        this.sectionsData[index].categories.push(category)
+        if (index < 0) {
+          this.sectionsData.push(
+            {
+              month: month,
+              year: year,
+              categories: []
+            }
+          )
+
+          this.sectionsData[this.sectionsData.length - 1].categories.push(category)
+        } else {
+          this.sectionsData[index].categories.push(category)
+        }
       }
     }
 
@@ -230,6 +233,13 @@ export default class GalleryPage extends Component {
    */
   onCategoryClick = (category) => {
     this.elements.picturesDialog.toggle(true, category.props.data)
+  }
+
+  reloadSections () {
+    this.sectionLoaded = 0
+    this.sectionsData = []
+    this.elements.container.innerHTML = ''
+    this.addSections()
   }
 
   render () {
