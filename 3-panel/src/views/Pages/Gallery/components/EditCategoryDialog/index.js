@@ -51,11 +51,28 @@ export default class EditCategoryDialog extends Component {
    * @param {Event}
    */
   onSaveButtonClick = (e) => {
-    CategoryDialog.checkForErrors(this, function (error) {
+    CategoryDialog.checkForErrors(this, function (error, title) {
       if (!error) {
-        const snackbar = window.app.elements.editedCategorySnackbar
+        const app = window.app
 
-        snackbar.toggle(true)
+        const gallery = app.getGalleryPage()
+
+        const clickedCategory = gallery.clickedCategory
+        const categoriesData = gallery.categoriesData
+
+        const index = categoriesData.indexOf(clickedCategory.props.data)
+
+        if (index < 0) {
+          console.log('Index is less than 0')
+        } else {
+          const snackbar = app.elements.editedCategorySnackbar
+
+          snackbar.toggle(true)
+
+          categoriesData[index].name = title
+
+          clickedCategory.elements.title.innerHTML = title
+        }
       }
     })
   }

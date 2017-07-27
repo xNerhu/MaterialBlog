@@ -5,7 +5,7 @@ export default class CategoryDialog {
     const textField = categoryDialog.categoryNameTextField
     const name = textField.getValue()
 
-    if (name.length < 1 && !textField.error) {
+    if (name.length < 1 && !textField.error || name.length > 30) {
       textField.toggleError(true)
       callback(true)
     } else if (name.length > 0) {
@@ -22,7 +22,7 @@ export default class CategoryDialog {
 
         categoryDialog.setDialogItems()
 
-        callback(false)
+        callback(false, name)
       }, 500)
 
       root.classList.add('enabled-preloader')

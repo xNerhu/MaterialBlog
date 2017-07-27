@@ -30,7 +30,9 @@ export default class Category extends Component {
       if (typeof onLoad === 'function') onLoad()
     }
 
-    img.src = this.props.data.pictures[0]
+    const pic = this.props.data.pictures[0]
+
+    if (pic != null) img.src = pic
   }
 
   /**
@@ -126,10 +128,12 @@ export default class Category extends Component {
   render () {
     return (
       <div className='page-gallery-category ripple' ref='root' onClick={this.onClick} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>
-        <div className='title' ref='title'>
-          {
-            this.props.data.name
-          }
+        <div className='container'>
+          <div ref='title'>
+            {
+              this.props.data.name
+            }
+          </div>
           <div className='menu-icon ripple-icon' ref='menuIcon' onClick={this.onMenuIconClick} onMouseDown={this.onMenuIconMouseDown} onTouchStart={this.onMenuIconTouchStart} />
         </div>
       </div>

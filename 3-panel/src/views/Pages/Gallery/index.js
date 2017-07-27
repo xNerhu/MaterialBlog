@@ -128,43 +128,50 @@ export default class GalleryPage extends Component {
         }
       ]
 
-      for (var i = 0; i < self.categoriesData.length; i++) {
-        const category = self.categoriesData[i]
-        const split = category.date.split('.')
-
-        const month = split[1]
-        const year = split[2]
-
-        const index = self.getSectionIndex(month, year)
-
-        if (index < 0) {
-          self.sectionsData.push(
-            {
-              month: month,
-              year: year,
-              categories: []
-            }
-          )
-
-          self.sectionsData[self.sectionsData.length - 1].categories.push(category)
-        } else {
-          self.sectionsData[index].categories.push(category)
-        }
-      }
-
-      for (var i = 0; i < self.sectionsData.length; i++) {
-        let subheader = self.months[parseInt(self.sectionsData[i].month) - 1]
-        const year = self.sectionsData[i].year
-
-        const actualYear = new Date().getFullYear()
-
-        if (year != actualYear) {
-          subheader += ' ' + year
-        }
-
-        self.addSection(self.sectionsData[i].categories, subheader)
-      }
+      self.addSections()
     }, 10)
+  }
+
+  /**
+   * Parses categories data and adds sections ordered by date.
+   */
+  addSections () {
+    for (var i = 0; i < this.categoriesData.length; i++) {
+      const category = this.categoriesData[i]
+      const split = category.date.split('.')
+
+      const month = split[1]
+      const year = split[2]
+
+      const index = this.getSectionIndex(month, year)
+
+      if (index < 0) {
+        this.sectionsData.push(
+          {
+            month: month,
+            year: year,
+            categories: []
+          }
+        )
+
+        this.sectionsData[this.sectionsData.length - 1].categories.push(category)
+      } else {
+        this.sectionsData[index].categories.push(category)
+      }
+    }
+
+    for (var i = 0; i < this.sectionsData.length; i++) {
+      let subheader = this.months[parseInt(this.sectionsData[i].month) - 1]
+      const year = this.sectionsData[i].year
+
+      const actualYear = new Date().getFullYear()
+
+      if (year != actualYear) {
+        subheader += ' ' + year
+      }
+
+      this.addSection(this.sectionsData[i].categories, subheader)
+    }
   }
 
   /**

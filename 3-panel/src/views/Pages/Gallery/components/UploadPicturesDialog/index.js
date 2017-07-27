@@ -145,7 +145,7 @@ export default class UploadPicturesDialog extends Component {
     }
 
     if (index < 0) {
-      console.log('Error. Component: upload pictures dialog. Function: onUpload ')
+      console.log('Index is less than 0')
     }
 
     picturesDialog.setPicturesCount()

@@ -42,11 +42,43 @@ export default class AddCategoryDialog extends Component {
    * @param {Event}
    */
   onAddCategoryButtonClick = (e) => {
-    CategoryDialog.checkForErrors(this, function (error) {
+    CategoryDialog.checkForErrors(this, function (error, title) {
       if (!error) {
         const snackbar = window.app.elements.addedCategorySnackbar
 
         snackbar.toggle(true)
+
+        const app = window.app
+
+        const gallery = app.getGalleryPage()
+        const date = new Date()
+
+        function getDate (d) {
+          return (d < 10) ? ('0' + d) : d
+        }
+
+        const day = getDate(date.getDate())
+        const month = getDate(date.getMonth() + 1)
+        const year = date.getFullYear()
+
+        const _categoriesData = []
+
+        _categoriesData.push({
+          name: title,
+          date: day + '.' + month + '.' + year,
+          pictures: []
+        })
+
+        for (var i = 0; i < gallery.categoriesData.length; i++) {
+          _categoriesData.push(gallery.categoriesData[i])
+        }
+
+        gallery.categoriesData = _categoriesData
+
+        gallery.sectionLoaded = 0
+        gallery.sectionsData = []
+        gallery.elements.container.innerHTML = ''
+        gallery.addSections()
       }
     })
   }
