@@ -206,4 +206,21 @@ export default class MenuManager {
 
     menu.setItems(items)
   }
+
+  static setPicturesMenuItems () {
+    const app = window.app
+
+    const menu = app.elements.picturesMenu
+
+    const items = [
+      {
+        text: 'Usuń',
+        onClick: function () {
+          app.getGalleryPage().elements.picturesDialog.toggleDeleteMode(true)
+        }
+      }
+    ]
+
+    menu.setItems(items)
+  }
 }

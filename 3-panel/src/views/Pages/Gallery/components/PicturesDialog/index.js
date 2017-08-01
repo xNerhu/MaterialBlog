@@ -7,23 +7,10 @@ export default class PicturesDialog extends Component {
   beforeRender () {
     this.toggled = false
 
-    this.categoryData = {
-      name: '4K Wall papers',
-      date: '10.06.2017',
-      pictures: [
-        'http://s1.picswalls.com/wallpapers/2016/06/10/4k-background-wallpaper_065216608_309.jpg',
-        'http://s1.picswalls.com/thumbs2/2016/06/10/4k-images_065320942_309.jpg',
-        'http://s1.picswalls.com/thumbs2/2016/06/10/4k-photo_065319874_309.jpg',
-        'http://s1.picswalls.com/thumbs2/2016/06/10/4k-picture_065317474_309.jpg',
-        'http://s1.picswalls.com/thumbs2/2016/06/10/4k-pictures_065316401_309.jpg',
-        'http://s1.picswalls.com/thumbs2/2016/06/10/4k-wallpaper_06531428_309.jpg',
-        'http://s1.picswalls.com/thumbs2/2016/06/10/beautiful-4k-background_065309630_309.jpg',
-        'http://s1.picswalls.com/thumbs2/2016/06/10/best-4k-wallpaper_065306859_309.jpg',
-        'https://static.pexels.com/photos/33109/fall-autumn-red-season.jpg',
-        'http://www.wallpaperup.com/uploads/wallpapers/2016/06/24/991974/big_thumb_417501ac9b21edf40b5b4ffea1107041.jpg',
-        'http://www.wallpaperup.com/uploads/wallpapers/2016/06/24/991972/big_thumb_6f203f6e57350091415a7db5c2d93241.jpg'
-      ]
-    }
+    this.toggledDeleteMode = false
+    this.selectedPictures = []
+
+    this.categoryData = {}
   }
 
   /**
@@ -56,8 +43,12 @@ export default class PicturesDialog extends Component {
       this.setItems()
 
       multiIcon.changeToArrow()
+
+      toolbar.showItem(toolbar.elements.menuIcon)
     } else {
       multiIcon.changeToDefault()
+
+      toolbar.hideItem(toolbar.elements.menuIcon)
     }
 
     DialogManager.toggleFullScreenDialog(flag, root)
@@ -102,10 +93,56 @@ export default class PicturesDialog extends Component {
    */
   addPicture (url) {
     const element = (
-      <Picture url={url} getPictures={() => { return this }} />
+      <Picture url={url} getPicturesDialog={() => { return this }} />
     )
 
     this.renderComponents(element, this.elements.container)
+  }
+
+  /**
+   * Toggles delete mode.
+   * @param {Boolean}
+   */
+  toggleDeleteMode (flag) {
+    const app = window.app
+
+    const toolbar = app.getToolbar()
+    const multiIcon = toolbar.getMultiIcon()
+
+    toolbar.toggleButton(flag, toolbar.elements.deleteButton)
+
+    if (flag) {
+      multiIcon.changeToExit()
+
+      toolbar.hideItem(toolbar.elements.menuIcon)
+
+      this.selectedPictures = []
+      this.updateToolbarTitle()
+    } else {
+      multiIcon.changeToArrow()
+
+      toolbar.setTitle(this.categoryData.name)
+
+      setTimeout(function () {
+        toolbar.showItem(toolbar.elements.menuIcon)
+      }, 200)
+
+      for (var i = 0; i < this.selectedPictures.length; i++) {
+        const picture = this.selectedPictures[i]
+
+        picture.selected = false
+        picture.select(false)
+      }
+    }
+
+    this.toggledDeleteMode = flag
+  }
+
+  /**
+   * Updates toolbar title.
+   */
+  updateToolbarTitle () {
+    window.app.getToolbar().setTitle('Usuń zaznaczone zdjęcia (' + this.selectedPictures.length + ')')
   }
 
   render () {

@@ -50,12 +50,8 @@ export default class PostDialog extends Component {
       multiIcon.changeToExit()
 
       setTimeout(function () {
-        saveButtonRoot.style.display = 'block'
-
-        setTimeout(function () {
-          saveButtonRoot.style.opacity = '1'
-        }, 20)
-      }, 100)
+        toolbar.toggleButton(true, saveButton)
+      }, 150)
 
       if (edit) {
         this.toggledEditMode = edit
@@ -66,7 +62,7 @@ export default class PostDialog extends Component {
 
         setTimeout(function () {
           self.setForm(postData.title, postData.content, postData.media)
-        }, 1)
+        }, 10)
       } else {
         saveButtonRoot.innerHTML = 'DODAJ'
       }
@@ -79,14 +75,10 @@ export default class PostDialog extends Component {
     } else {
       multiIcon.changeToDefault()
 
-      saveButtonRoot.style.opacity = '0'
+      toolbar.toggleButton(false, saveButton)
 
       setTimeout(function () {
-        saveButtonRoot.style.display = 'none'
-
-        setTimeout(function () {
-          toolbar.showItems()
-        }, 10)
+        toolbar.showItems()
       }, 150)
     }
 

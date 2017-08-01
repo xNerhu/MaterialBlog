@@ -159,7 +159,9 @@ export default class App extends Component {
     const picturesDialog = galleryPage.elements.picturesDialog
 
     if (multiIcon.canClick) {
-      if (picturesDialog.toggled) {
+      if (picturesDialog.toggledDeleteMode) {
+        picturesDialog.toggleDeleteMode(false)
+      } else if (picturesDialog.toggled) {
         picturesDialog.toggle(false)
       } else if (postsPage.checkBoxes) {
         postsPage.toggleCheckBoxes(false)
@@ -206,7 +208,6 @@ export default class App extends Component {
    * Sets toolbar items.
    */
   setToolbarItems () {
-    const self = this
     const toolbar = this.getToolbar()
 
     const postDialog = this.elements.postDialog
@@ -248,15 +249,14 @@ export default class App extends Component {
         ref: 'deleteButton',
         position: 'Right',
         className: 'toolbar-button',
-        onClick: postsPage.onDeletePostsButtonClick
+        onClick: this.onToolbarDeleteButtonClick
       },
       {
         type: 'Icon',
+        ref: 'menuIcon',
         position: 'Right',
         className: 'toolbar-icon-more',
-        onClick: function (e) {
-          MenuManager.toggle(true, self.elements.menu, e.target)
-        }
+        onClick: this.onToolbarMenuIconClick
       },
       {
         type: 'Icon',
@@ -367,6 +367,25 @@ export default class App extends Component {
     }
   }
 
+  onToolbarMenuIconClick = (e) => {
+    if (this.selectedPage === this.getPostsPage()) {
+      MenuManager.toggle(true, this.elements.menu, e.target)
+    } else if (this.selectedPage === this.getGalleryPage()) {
+      MenuManager.toggle(true, this.elements.picturesMenu, e.target)
+    }
+  }
+
+  onToolbarDeleteButtonClick = (e) => {
+    const postsPage = this.getPostsPage()
+    const galleryPage = this.getGalleryPage()
+
+    if (this.selectedPage === postsPage) {
+      postsPage.onDeletePostsButtonClick
+    } else if (this.selectedPage === galleryPage && galleryPage.elements.picturesDialog.toggledDeleteMode) {
+      console.log('wrwr')
+    }
+  }
+
   render () {
     return (
       <div>
@@ -386,6 +405,7 @@ export default class App extends Component {
         <Menu ref='menu' className='toolbar-menu' mobile='true' />
         <Menu ref='postItemMenu' className='toolbar-menu' mobile='true' />
         <Menu ref='categoryMenu' className='toolbar-menu' mobile='true' />
+        <Menu ref='picturesMenu' className='toolbar-menu' mobile='true' />
         <Dialog ref='deletePostsDialog' title='Jesteś pewny(a)?'>
           Nie będzie można ich odzyskać.
         </Dialog>
@@ -416,6 +436,7 @@ export default class App extends Component {
     MenuManager.setMenuItems()
     MenuManager.setPostMenuItems()
     MenuManager.setCategoryMenuItems()
+    MenuManager.setPicturesMenuItems()
     DialogManager.setDeletePostsDialogItems()
     DialogManager.setDeletePostDialogItems()
 
@@ -445,7 +466,8 @@ export default class App extends Component {
     const menus = [
       this.elements.menu,
       this.elements.postItemMenu,
-      this.elements.categoryMenu
+      this.elements.categoryMenu,
+      this.elements.picturesMenu
     ]
 
     for (var i = 0; i < menus.length; i++) {

@@ -173,15 +173,16 @@ export default class Toolbar extends Component {
       const isSaveButton = classList.contains('toolbar-button-save')
 
       if (multiIcon && isMultiIcon || title && isTitle || !isMultiIcon && !isTitle && !isSaveButton) {
-        this.hideElement(item)
+        this.hideItem(item)
       }
     }
   }
 
   /**
-   * Hides element.
+   * Hides item.
+   * @param {DOMElement}
    */
-  hideElement (element) {
+  hideItem (element) {
     element.style.top = '96px'
     this.hiddenItems.push(element)
   }
@@ -196,10 +197,32 @@ export default class Toolbar extends Component {
     }
   }
 
+  /**
+   * Shows item.
+   * @param {DOMElement}
+   */
   showItem (element) {
     const top = '0px'
 
     element.style.top = top
+  }
+
+  toggleButton (flag, element) {
+    const elementRoot = element.getRoot()
+
+    if (flag) {
+      elementRoot.style.display = 'block'
+
+      setTimeout(function () {
+        elementRoot.style.opacity = '1'
+      }, 15)
+    } else {
+      elementRoot.style.opacity = '1'
+
+      setTimeout(function () {
+        elementRoot.style.display = 'none'
+      }, 200)
+    }
   }
 
   /**

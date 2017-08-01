@@ -1,9 +1,7 @@
 import Component from '../../../../../helpers/Component'
-import CategoryDialog from '../../../../../helpers/CategoryDialog'
 
 import Dialog from '../../../../../imports/materialdesign/components/Dialog'
 
-import TextField from '../../../../../imports/materialdesign/components/TextField'
 import Preloader from '../../../../../imports/materialdesign/components/Preloader'
 
 export default class AddCategoryDialog extends Component {
