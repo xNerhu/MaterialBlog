@@ -10,6 +10,7 @@ import PostDialog from '../Pages/Posts/components/PostDialog'
 import AddCategoryDialog from '../Pages/Gallery/components/AddCategoryDialog'
 import EditCategoryDialog from '../Pages/Gallery/components/EditCategoryDialog'
 import DeleteCategoryDialog from '../Pages/Gallery/components/DeleteCategoryDialog'
+import DeletePicturesDialog from '../Pages/Gallery/components/DeletePicturesDialog'
 
 import NavigationDrawer from './components/NavigationDrawer/index'
 import Toolbar from './components/Toolbar'
@@ -382,7 +383,9 @@ export default class App extends Component {
     if (this.selectedPage === postsPage) {
       postsPage.onDeletePostsButtonClick
     } else if (this.selectedPage === galleryPage && galleryPage.elements.picturesDialog.toggledDeleteMode) {
-      console.log('wrwr')
+      const dialog = this.elements.deletePicturesDialog
+
+      dialog.elements.dialog.toggle(true)
     }
   }
 
@@ -415,6 +418,7 @@ export default class App extends Component {
         <AddCategoryDialog ref='addCategoryDialog' />
         <EditCategoryDialog ref='editCategoryDialog' />
         <DeleteCategoryDialog ref='deleteCategoryDialog' />
+        <DeletePicturesDialog ref='deletePicturesDialog' />
         <Snackbar ref='deletedPostsSnackbar' text='Pomyślnie usunięto posty' />
         <Snackbar ref='deletedPostSnackbar' text='Pomyślnie usunięto post' />
         <Snackbar ref='addedPostSnackbar' text='Pomyślnie dodano post' />

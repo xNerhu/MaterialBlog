@@ -24,7 +24,7 @@ export default class AddCategoryDialog extends Component {
     const items = [
       {
         text: 'DODAJ',
-        onClick: this.onAddCategoryButtonClick
+        onClick: this.onAddButtonClick
       },
       {
         text: 'ANULUJ',
@@ -41,15 +41,25 @@ export default class AddCategoryDialog extends Component {
    * On dialog action button add category click event.
    * @param {Event}
    */
-  onAddCategoryButtonClick = (e) => {
-    CategoryDialog.checkForErrors(this, function (error, title) {
-      if (!error) {
-        const snackbar = window.app.elements.addedCategorySnackbar
+  onAddButtonClick = (e) => {
+    const self = this
 
-        snackbar.toggle(true)
+    const root = this.getRoot()
+    const dialog = this.elements.dialog
+    const textField = this.textField
+
+    const error = CategoryDialog.checkForErrors(this)
+
+    if (!error) {
+      root.classList.add('category-dialog-preloader')
+      dialog.setItems([])
+
+      setTimeout(function () {
+        root.classList.remove('category-dialog-preloader')
 
         const app = window.app
 
+        const snackbar = window.app.elements.addedCategorySnackbar
         const gallery = app.getGalleryPage()
         const date = new Date()
 
@@ -64,7 +74,7 @@ export default class AddCategoryDialog extends Component {
         const _categoriesData = []
 
         _categoriesData.push({
-          name: title,
+          name: textField.getValue(),
           date: day + '.' + month + '.' + year,
           pictures: []
         })
@@ -75,16 +85,21 @@ export default class AddCategoryDialog extends Component {
 
         gallery.categoriesData = _categoriesData
         gallery.reloadSections()
-      }
-    })
+
+        dialog.toggle(false)
+        textField.setValue('')
+        self.setDialogItems()
+        snackbar.toggle(true)
+      }, 500)
+    }
   }
 
   render () {
     return (
       <div className='category-dialog' ref='root'>
         <Dialog title='Dodaj nową kategorię' ref='dialog'>
-          <TextField ref={(e) => this.categoryNameTextField = e} hint='Nazwa' helperText='*Wymagane' maxLength={30} />
-          <Preloader ref={(e) => this.preloader = e} />
+          <TextField ref={(e) => this.textField = e} hint='Nazwa' helperText='*Wymagane' maxLength={30} />
+          <Preloader />
         </Dialog>
       </div>
     )

@@ -16,14 +16,14 @@
     margin-right: auto;
     display: none;
   }
+}
 
-  &.enabled-preloader {
-    & .material-text-field {
-      display: none;
-    }
+.category-dialog-preloader {
+  & .material-text-field, & .text {
+    display: none;
+  }
 
-    & .material-preloader {
-      display: block;
-    }
+  & .material-preloader {
+    display: block !important;
   }
 }

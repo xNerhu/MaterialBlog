@@ -19,7 +19,7 @@ export default class EditCategoryDialog extends Component {
    * Shows dialog.
    */
   show (data) {
-    this.categoryNameTextField.setValue(data.name)
+    this.textField.setValue(data.name)
 
     this.elements.dialog.toggle(true)
   }
@@ -51,38 +51,54 @@ export default class EditCategoryDialog extends Component {
    * @param {Event}
    */
   onSaveButtonClick = (e) => {
-    CategoryDialog.checkForErrors(this, function (error, title) {
-      if (!error) {
-        const app = window.app
+    const self = this
 
-        const gallery = app.getGalleryPage()
+    const root = this.getRoot()
+    const dialog = this.elements.dialog
+    const textField = this.textField
 
-        const clickedCategory = gallery.clickedCategory
-        const categoriesData = gallery.categoriesData
+    const error = CategoryDialog.checkForErrors(this)
 
-        const index = categoriesData.indexOf(clickedCategory.props.data)
+    if (!error) {
+      const app = window.app
 
-        if (index < 0) {
-          console.log('Index is less than 0')
-        } else {
-          const snackbar = app.elements.editedCategorySnackbar
+      const gallery = app.getGalleryPage()
+      const clickedCategory = gallery.clickedCategory
+      const categoriesData = gallery.categoriesData
 
-          snackbar.toggle(true)
+      const index = categoriesData.indexOf(clickedCategory.props.data)
+
+      if (index < 0) {
+        console.log('Index is less than 0')
+      } else {
+        root.classList.add('category-dialog-preloader')
+        dialog.setItems([])
+
+        const title = textField.getValue()
+
+        setTimeout(function () {
+          root.classList.remove('category-dialog-preloader')
 
           categoriesData[index].name = title
-
           clickedCategory.elements.title.innerHTML = title
-        }
+
+          const snackbar = app.elements.editedCategorySnackbar
+
+          dialog.toggle(false)
+          textField.setValue('')
+          self.setDialogItems()
+          snackbar.toggle(true)
+        }, 500)
       }
-    })
+    }
   }
 
   render () {
     return (
       <div className='category-dialog' ref='root'>
         <Dialog title='Edytuj kategorię' ref='dialog'>
-          <TextField ref={(e) => this.categoryNameTextField = e} hint='Nazwa' helperText='*Wymagane' maxLength={30} />
-          <Preloader ref={(e) => this.preloader = e} />
+          <TextField ref={(e) => this.textField = e} hint='Nazwa' helperText='*Wymagane' maxLength={30} />
+          <Preloader />
         </Dialog>
       </div>
     )

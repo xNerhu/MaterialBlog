@@ -4,7 +4,7 @@ import Dialog from '../../../../../imports/materialdesign/components/Dialog'
 
 import Preloader from '../../../../../imports/materialdesign/components/Preloader'
 
-export default class AddCategoryDialog extends Component {
+export default class DeletePicturesDialog extends Component {
   /**
    * Gets root.
    * @return {DOMElement} root
@@ -45,23 +45,34 @@ export default class AddCategoryDialog extends Component {
     const root = this.getRoot()
     const dialog = this.elements.dialog
 
-    const gallery = window.app.getGalleryPage()
-    const clickedPost = gallery.clickedCategory
-    const index = gallery.categoriesData.indexOf(clickedPost.props.data)
-
     root.classList.add('category-dialog-preloader')
 
     dialog.setItems([])
 
-    setTimeout(function () {
-      gallery.categoriesData[index].removed = true
+    const app = window.app
 
-      gallery.reloadSections()
+    const galleryPage = app.getGalleryPage()
+    const picturesDialog = galleryPage.elements.picturesDialog
+    const selectedPictures = picturesDialog.selectedPictures
+
+    setTimeout(function () {
+      for (var i = 0; i < selectedPictures.length; i++) {
+        const picture = selectedPictures[i]
+
+        const categoryIndex = galleryPage.categoriesData.indexOf(picturesDialog.categoryData)
+        const category = galleryPage.categoriesData[categoryIndex]
+        const picIndex = category.pictures.indexOf(picture.props.url)
+
+        category.pictures.splice(picIndex, 1)
+
+        picture.getRoot().style.display = 'none'
+      }
 
       root.classList.remove('category-dialog-preloader')
 
-      self.setDialogItems()
+      picturesDialog.toggleDeleteMode(false)
 
+      self.setDialogItems()
       dialog.toggle(false)
     }, 500)
   }
@@ -69,7 +80,7 @@ export default class AddCategoryDialog extends Component {
   render () {
     return (
       <div className='delete-category-dialog' ref='root'>
-        <Dialog title='Czy napewno chcesz usunąć tą kategorię?' ref='dialog'>
+        <Dialog title='Czy napewno chcesz usunąć zaznaczone zdjęcia?' ref='dialog'>
           <div className='text'>
             Nie będzie można tego cofnąć.
           </div>
