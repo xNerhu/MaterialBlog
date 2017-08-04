@@ -45,7 +45,9 @@ export default class AddCategoryDialog extends Component {
     const root = this.getRoot()
     const dialog = this.elements.dialog
 
-    const gallery = window.app.getGalleryPage()
+    const app = window.app
+
+    const gallery = app.getGalleryPage()
     const clickedPost = gallery.clickedCategory
     const index = gallery.categoriesData.indexOf(clickedPost.props.data)
 
@@ -54,15 +56,15 @@ export default class AddCategoryDialog extends Component {
     dialog.setItems([])
 
     setTimeout(function () {
+      root.classList.remove('category-dialog-preloader')
+
       gallery.categoriesData[index].removed = true
 
       gallery.reloadSections()
-
-      root.classList.remove('category-dialog-preloader')
-
       self.setDialogItems()
-
       dialog.toggle(false)
+
+      app.elements.deleteCategorySnackbar.toggle(true)
     }, 500)
   }
 

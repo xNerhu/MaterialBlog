@@ -59,7 +59,6 @@ export default class AddCategoryDialog extends Component {
 
         const app = window.app
 
-        const snackbar = window.app.elements.addedCategorySnackbar
         const gallery = app.getGalleryPage()
         const date = new Date()
 
@@ -89,7 +88,7 @@ export default class AddCategoryDialog extends Component {
         dialog.toggle(false)
         textField.setValue('')
         self.setDialogItems()
-        snackbar.toggle(true)
+        app.elements.addCategorySnackbar
       }, 500)
     }
   }

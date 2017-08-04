@@ -383,9 +383,11 @@ export default class App extends Component {
     if (this.selectedPage === postsPage) {
       postsPage.onDeletePostsButtonClick
     } else if (this.selectedPage === galleryPage && galleryPage.elements.picturesDialog.toggledDeleteMode) {
-      const dialog = this.elements.deletePicturesDialog
+      const picturesDialog = galleryPage.elements.picturesDialog
 
-      dialog.elements.dialog.toggle(true)
+      if (picturesDialog.selectedPictures.length > 0) {
+        this.elements.deletePicturesDialog.elements.dialog.toggle(true)
+      }
     }
   }
 
@@ -419,15 +421,17 @@ export default class App extends Component {
         <EditCategoryDialog ref='editCategoryDialog' />
         <DeleteCategoryDialog ref='deleteCategoryDialog' />
         <DeletePicturesDialog ref='deletePicturesDialog' />
-        <Snackbar ref='deletedPostsSnackbar' text='Pomyślnie usunięto posty' />
-        <Snackbar ref='deletedPostSnackbar' text='Pomyślnie usunięto post' />
-        <Snackbar ref='addedPostSnackbar' text='Pomyślnie dodano post' />
-        <Snackbar ref='addedCategorySnackbar' text='Pomyślnie dodano kategorię' />
-        <Snackbar ref='editedCategorySnackbar' text='Pomyślnie edytowano kategorię' />
-        <Snackbar ref='addedPicturesSnackbar' text='Pomyślnie dodano zdjęcia' />
-        <Tooltip ref='tooltipView' text='Przełącz na liste' />
-        <Tooltip ref='tooltipShowPictures' text='Pokaż zdjęcia' />
-        <Tooltip ref='tooltipUploadButton' text='Najlepiej w proporcjach 16:9' />
+        <Snackbar ref='deletePostsSnackbar' text='Pomyślnie usunięto posty' />
+        <Snackbar ref='deletePostSnackbar' text='Pomyślnie usunięto post' />
+        <Snackbar ref='addPostSnackbar' text='Pomyślnie dodano post' />
+        <Snackbar ref='addCategorySnackbar' text='Pomyślnie dodano kategorię' />
+        <Snackbar ref='editCategorySnackbar' text='Pomyślnie edytowano kategorię' />
+        <Snackbar ref='deleteCategorySnackbar' text='Pomyślnie usunięto kategorię' />
+        <Snackbar ref='addPicturesSnackbar' text='Pomyślnie dodano zdjęcia' />
+        <Snackbar ref='deletePicturesSnackbar' text='Pomyślnie usunięto zdjęcia' />
+        <Tooltip ref='viewTooltip' text='Przełącz na liste' />
+        <Tooltip ref='showPicturesTooltip' text='Pokaż zdjęcia' />
+        <Tooltip ref='uploadButtonTooltip' text='Najlepiej w proporcjach 16:9' />
         <NavigationDrawer ref='navigationDrawer' />
         <Preloader className='data-preloader' ref='preloader' />
       </div>

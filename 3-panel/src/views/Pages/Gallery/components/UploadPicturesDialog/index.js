@@ -148,11 +148,10 @@ export default class UploadPicturesDialog extends Component {
       console.log('Index is less than 0')
     }
 
-    picturesDialog.setPicturesCount()
+    if (picturesDialog.toggled) picturesDialog.setPicturesCount()
 
     this.toggle(false)
-
-    app.elements.addedPicturesSnackbar.toggle(true)
+    app.elements.addPicturesSnackbar.toggle(true)
   }
 
   /**

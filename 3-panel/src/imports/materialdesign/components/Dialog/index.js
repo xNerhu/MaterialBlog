@@ -37,10 +37,11 @@ export default class Dialog extends Component {
       this.toggled = true
 
       root.style.display = 'block'
+
       setTimeout(function () {
         root.style.opacity = '1'
         root.style.top = '50%'
-      }, 10)
+      }, 20)
 
       this.toggleDark(true)
     } else {
@@ -70,7 +71,7 @@ export default class Dialog extends Component {
 
       setTimeout(function () {
         dark.style.opacity = opacity
-      }, 10)
+      }, 20)
     } else {
       dark.style.opacity = '0'
 

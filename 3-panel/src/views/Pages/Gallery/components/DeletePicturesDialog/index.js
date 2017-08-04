@@ -71,9 +71,10 @@ export default class DeletePicturesDialog extends Component {
       root.classList.remove('category-dialog-preloader')
 
       picturesDialog.toggleDeleteMode(false)
-
+      picturesDialog.setPicturesCount()
       self.setDialogItems()
       dialog.toggle(false)
+      app.elements.deletePicturesSnackbar.toggle(true)
     }, 500)
   }
 

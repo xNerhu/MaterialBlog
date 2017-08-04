@@ -4,6 +4,6 @@ import UI from './helpers/UI'
 import './styles.scss'
 
 // Wait for sass load.
-setTimeout(function () {
+window.onload = function () {
   UI.render(new App(), document.getElementById('app'))
-}, 1)
+}

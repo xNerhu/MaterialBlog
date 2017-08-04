@@ -82,12 +82,10 @@ export default class EditCategoryDialog extends Component {
           categoriesData[index].name = title
           clickedCategory.elements.title.innerHTML = title
 
-          const snackbar = app.elements.editedCategorySnackbar
-
           dialog.toggle(false)
           textField.setValue('')
           self.setDialogItems()
-          snackbar.toggle(true)
+          app.elements.editCategorySnackbar.toggle(true)
         }, 500)
       }
     }
