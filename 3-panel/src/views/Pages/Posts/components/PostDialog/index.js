@@ -365,11 +365,11 @@ export default class PostDialog extends Component {
         postsPage.postsData[index].media = media
       } else {
         const postData = {
-          id: 9,
+          id: 11,
           media: 'http://img11.deviantart.net/a66d/i/2015/109/3/b/forest_wallpaper_16_9_by_iorgudesign-d8qa67w.jpg',
-          title: 'Test',
+          title: title,
           author: 'Mikołaj Palkiewicz',
-          content: 'Card with picture test',
+          content: content,
           date: '14.04.2017 10:38',
           avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
           likes: [],

@@ -455,7 +455,7 @@ export default class PostsPage extends Component {
   onDeletePostDialogConfirmClick = (e) => {
     const app = window.app
     const dialog = app.elements.deletePostDialog
-    const snackbar = app.elements.deletedPostSnackbar
+    const snackbar = app.elements.deletePostSnackbar
     const snackbarRoot = snackbar.getRoot()
 
     this.toggleCheckBoxes(false)
