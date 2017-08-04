@@ -22,9 +22,7 @@ export default class FileInput extends Component {
    * @param {Event}
    */
   onButtonClick = (e) => {
-    const input = this.elements.upload
-
-    input.click()
+    this.elements.upload.click()
   }
 
   /**
@@ -33,9 +31,7 @@ export default class FileInput extends Component {
    * @param {Event}
    */
   onButtonMouseEnter = (e) => {
-    const tooltip = window.app.elements.tooltipUploadButton
-
-    tooltip.toggle(true, this.elements.button.getRoot())
+    window.app.elements.uploadButtonTooltip.toggle(true, this.elements.button.getRoot())
   }
 
   /**
@@ -44,9 +40,7 @@ export default class FileInput extends Component {
    * @param {Event}
    */
   onButtonMouseLeave = (e) => {
-    const tooltip = window.app.elements.tooltipUploadButton
-
-    tooltip.toggle(false)
+    window.app.elements.uploadButtonTooltip.toggle(false)
   }
 
   /**

@@ -25,13 +25,20 @@
 
 @media (max-width: 455px) {
   .page-gallery-container {
-    max-width: 216px;
+    max-width: 100%;
+    margin: 0;
+
+    & .page-gallery-category {
+      width: calc(100% - 16px);
+      padding-top: calc(100% - 16px);
+      height: auto;
+    }
   }
 }
 
 @media (max-width: 670px) {
   .page-gallery-container {
-    width: 100%;
+    //width: 100%;
     box-shadow: none;
     background-color: transparent;
   }

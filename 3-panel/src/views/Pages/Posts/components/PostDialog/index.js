@@ -14,7 +14,7 @@ export default class PostDialog extends Component {
 
     this.previewToggled = false
 
-    this.toggledEditMode = false
+    this.isEditMode = false
   }
 
   /**
@@ -54,7 +54,7 @@ export default class PostDialog extends Component {
       }, 150)
 
       if (edit) {
-        this.toggledEditMode = edit
+        this.isEditMode = edit
 
         saveButtonRoot.innerHTML = 'ZAPISZ'
 
@@ -67,8 +67,8 @@ export default class PostDialog extends Component {
         saveButtonRoot.innerHTML = 'DODAJ'
       }
 
-      if (!edit && this.toggledEditMode) {
-        this.toggledEditMode = false
+      if (!edit && this.isEditMode) {
+        this.isEditMode = false
 
         this.clearForm()
       }
@@ -310,13 +310,13 @@ export default class PostDialog extends Component {
 
     const app = window.app
     const postsPage = app.getPostsPage()
-    const snackbar = app.elements.addedPostSnackbar
+    const snackbar = app.elements.addPostSnackbar
     const snackbarText = snackbar.elements.text
 
     if (this.verifyData()) {
       this.toggle(false)
 
-      snackbarText.innerHTML = (!this.toggledEditMode) ? 'Pomyślnie dodano post' : 'Pomyślnie zapisano post'
+      snackbarText.innerHTML = (!this.isEditMode) ? 'Pomyślnie dodano post' : 'Pomyślnie zapisano post'
       snackbar.toggle(true)
 
       const post = postsPage.clickedPost
@@ -324,45 +324,75 @@ export default class PostDialog extends Component {
       const title = this.elements.titleTextField.getValue()
       const content = this.elements.contentTextField.getValue()
 
-      const index = postsPage.postsData.indexOf(post.props.data)
-      const media = (previewMedia.style.display !== 'none') ? previewMedia.src : null
+      if (this.isEditMode) {
+        const index = postsPage.postsData.indexOf(post.props.data)
+        const media = (previewMedia.style.display !== 'none') ? previewMedia.src : null
 
-      if (postsPage.listLoaded) {
-        const postInList = postsPage.elements.list.items[index]
+        function updatePost (post, titleElement, contentElement, imgElement, title, content, media) {
+          titleElement.innerHTML = title
+          contentElement.innerHTML = content
 
-        postInList.elements.title.elements.text.innerHTML = title
-        postInList.elements.content.elements.text.innerHTML = content
+          if (imgElement != null) {
+            imgElement.style.display = (media == null) ? 'none' : 'inline-block'
 
-        const img = postInList.elements.picture.elements.text.getElementsByTagName('img')[0]
+            if (media != null) imgElement.src = media
+          }
+        }
 
-        if (img != null) {
-          img.style.display = (media == null) ? 'none' : 'inline-block'
+        if (postsPage.listLoaded) {
+          const postInList = postsPage.elements.list.items[index]
+          const titleElement = postInList.elements.title.elements.text
+          const contentElement = postInList.elements.content.elements.text
+          const imgElement = post.elements.picture.elements.text.getElementsByTagName('img')[0]
 
-          if (media != null) img.src = media
+          updatePost(postInList, titleElement, contentElement, imgElement, title, content, media)
+        }
+
+        if (postsPage.tableLoaded) {
+          const postInTable = postsPage.elements.table.cells[index]
+          const titleElement = postInTable.elements.title
+          const contentElement = postInTable.elements.content
+          const imgElement = postInTable.elements.picture.getElementsByTagName('img')[0]
+
+          updatePost(postInTable, titleElement, contentElement, imgElement, title, content, media)
+        }
+
+        post.elements.title.innerHTML = title
+        post.elements.content.innerHTML = content
+
+        postsPage.postsData[index].title = title
+        postsPage.postsData[index].content = content
+        postsPage.postsData[index].media = media
+      } else {
+        const postData = {
+          id: 9,
+          media: 'http://img11.deviantart.net/a66d/i/2015/109/3/b/forest_wallpaper_16_9_by_iorgudesign-d8qa67w.jpg',
+          title: 'Test',
+          author: 'Mikołaj Palkiewicz',
+          content: 'Card with picture test',
+          date: '14.04.2017 10:38',
+          avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+          likes: [],
+          comments: []
+        }
+
+        const _postsData = []
+        _postsData.push(postData)
+
+        for (var i = 0; i < postsPage.postsData.length; i++) {
+          _postsData.push(postsPage.postsData[i])
+        }
+
+        postsPage.postsData = _postsData
+
+        if (postsPage.tableLoaded) {
+          postsPage.elements.table.setCells(postsPage.postsData)
+        }
+
+        if (postsPage.listLoaded) {
+          postsPage.elements.list.setCells(postsPage.postsData)
         }
       }
-
-      if (postsPage.tableLoaded) {
-        const postInTable = postsPage.elements.table.cells[index]
-
-        postInTable.elements.title.innerHTML = title
-        postInTable.elements.content.innerHTML = content
-
-        const img = postInTable.elements.picture.getElementsByTagName('img')[0]
-
-        if (img != null) {
-          img.style.display = (media == null) ? 'none' : 'inline-block'
-
-          if (media != null) img.src = media
-        }
-      }
-
-      post.elements.title.innerHTML = title
-      post.elements.content.innerHTML = content
-
-      postsPage.postsData[index].title = title
-      postsPage.postsData[index].content = content
-      postsPage.postsData[index].media = media
 
       setTimeout(function () {
         self.clearForm()

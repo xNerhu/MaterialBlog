@@ -22,6 +22,9 @@ export default class Table extends Component {
    * @param {Object} posts data
    */
   setCells (posts) {
+    this.cells = []
+    this.elements.tbody.innerHTML = ''
+
     for (var i = 0; i < posts.length; i++) {
       this.addPost(posts[i])
     }

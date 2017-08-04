@@ -23,6 +23,10 @@ export default class List extends Component {
    * @param {Object} posts.
    */
   setCells (posts) {
+    this.items = []
+    this.cells = []
+    this.getRoot().innerHTML = ''
+
     for (var i = 0; i < posts.length; i++) {
       this.addPost(posts[i])
     }
@@ -37,7 +41,7 @@ export default class List extends Component {
       const root = this.getRoot()
 
       const cell = (
-        <Item data={data} getMobileTable={this.getMobileTable} getItem={() => { return this }} />
+        <Item data={data} getMobileTable={() => { return this }} getItem={() => { return this }} />
       )
 
       this.renderComponents(cell, root)

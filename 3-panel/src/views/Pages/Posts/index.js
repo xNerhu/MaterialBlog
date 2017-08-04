@@ -493,7 +493,7 @@ export default class PostsPage extends Component {
    * @param {Event}
    */
   onViewClick = (e) => {
-    const tooltip = window.app.elements.tooltipView
+    const tooltip = window.app.elements.viewTooltip
 
     if (this.isTable) {
       this.switchToList()
@@ -510,7 +510,7 @@ export default class PostsPage extends Component {
    * @param {Event}
    */
   onViewMouseEnter = (e) => {
-    const tooltip = window.app.elements.tooltipView
+    const tooltip = window.app.elements.viewTooltip
 
     const text = (this.isTable) ? 'Przełącz na listę' : 'Przełącz na tabelę'
 
@@ -524,7 +524,7 @@ export default class PostsPage extends Component {
    * @param {Event}
    */
   onViewMouseLeave = (e) => {
-    window.app.elements.tooltipView.toggle(false)
+    window.app.elements.viewTooltip.toggle(false)
   }
 
   /**
@@ -537,7 +537,7 @@ export default class PostsPage extends Component {
 
     const toolbar = app.getToolbar()
     const showPicturesIcon = toolbar.elements.showPicturesIcon
-    const tooltip = app.elements.tooltipShowPictures
+    const tooltip = app.elements.showPicturesTooltip
 
     const table = this.elements.table
     const list = this.elements.list
@@ -561,7 +561,7 @@ export default class PostsPage extends Component {
    * @param {Event}
    */
   onShowPicturesMouseEnter = (e) => {
-    const tooltip = window.app.elements.tooltipShowPictures
+    const tooltip = window.app.elements.showPicturesTooltip
 
     const text = (!this.toggledPictures) ? 'Pokaż zdjęcia' : 'Ukryj zdjęcia'
 
@@ -575,7 +575,7 @@ export default class PostsPage extends Component {
    * @param {Event}
    */
   onShowPicturesMouseLeave = (e) => {
-    window.app.elements.tooltipShowPictures.toggle(false)
+    window.app.elements.showPicturesTooltip.toggle(false)
   }
 
   /**
