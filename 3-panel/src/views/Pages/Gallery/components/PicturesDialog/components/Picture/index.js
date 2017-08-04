@@ -36,34 +36,26 @@ export default class Picture extends Component {
   }
 
   select (flag) {
-    const picturesDialog = this.props.getPicturesDialog()
-
     const selectContainer = this.elements.selectContainer
     const img = this.elements.img
-    const icon = this.elements.icon
 
-    const size = (flag) ? (picturesDialog.elements.container.classList.contains('vertical') ? img.clientHeight : img.clientWidth) : 0
+    selectContainer.style.width = img.clientWidth + 1 + 'px'
+    selectContainer.style.height = img.clientHeight + 'px'
 
-    selectContainer.style.borderRadius = (flag) ? '0%' : '100%'
-
-    setTimeout(function () {
-      selectContainer.style.width = size + 'px'
-      selectContainer.style.height = size + 'px'
-    }, 10)
-
-    icon.style[(flag) ? 'display' : 'opacity'] = (flag) ? 'block' : '0'
+    selectContainer.style[(flag) ? 'display' : 'opacity'] = (flag) ? 'block' : '0'
 
     setTimeout(function () {
-      icon.style[(flag) ? 'opacity' : 'display'] = (flag) ? '1' : 'none'
-    }, (flag) ? 10 : 150)
+      selectContainer.style[(flag) ? 'opacity' : 'display'] = (flag) ? '1' : 'none'
+    }, (flag) ? 20 : 150)
   }
 
   render () {
     return (
       <div className='picture' ref='root' onClick={this.onClick}>
         <img ref='img' />
-        <div className='select-container' ref='selectContainer' />
-        <div className='icon' ref='icon' />
+        <div className='select-container' ref='selectContainer'>
+          <div className='icon' />
+        </div>
       </div>
     )
   }
