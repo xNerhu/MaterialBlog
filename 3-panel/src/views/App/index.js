@@ -91,7 +91,7 @@ export default class App extends Component {
    * Gets lessons plan page.
    * @return {LessonsPlanPage}
    */
-  getLessonsPlanTab () {
+  getLessonsPlanPage () {
     return this.elements.lessonsPlanPage
   }
 
@@ -315,7 +315,7 @@ export default class App extends Component {
         text: 'Plan lekcji',
         className: 'navigation-drawer-lessons-plan',
         onClick: function (e) {
-          PageManager.selectPage(self.getLessonsPlanTab())
+          PageManager.selectPage(self.getLessonsPlanPage())
         }
       }
     ]
@@ -459,7 +459,7 @@ export default class App extends Component {
       } else if (urlPage === 'aboutclass') {
         pageToSelect = this.getAboutClassPage()
       } else if (urlPage === 'lessonsplan') {
-        pageToSelect = this.getLessonsPlanTab()
+        pageToSelect = this.getLessonsPlanPage()
       }
     }
 
