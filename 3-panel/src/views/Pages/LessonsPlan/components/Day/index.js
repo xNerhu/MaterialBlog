@@ -30,11 +30,11 @@ export default class Day extends Component {
     const root = this.getRoot()
     const icon = this.elements.icon
 
-    root.style.height = (flag) ? root.scrollHeight + 'px' : '48px'
+    root.style.height = root.scrollHeight + 'px'
 
     setTimeout(function () {
-      root.style.height = 'auto'
-    }, 300)
+      root.style.height = (flag) ? 'auto' : '48px'
+    }, (flag) ? 300 : 20)
 
     icon.style.transform = 'rotate(' + ((flag) ? 180 : 0) + 'deg)'
 
