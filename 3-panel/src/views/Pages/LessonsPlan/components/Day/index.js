@@ -12,6 +12,8 @@ export default class Day extends Component {
     this.movedSubject = null
 
     this.lastEnteredSubject = null
+
+    this.touched = false
   }
 
   /**
@@ -71,6 +73,30 @@ export default class Day extends Component {
    */
   onToggleIconClick = (e) => {
     this.toggle(!this.toggled)
+  }
+
+  /**
+   * On toggle icon mouse down.
+   * Makes ripple.
+   * @param {Event}
+   */
+  onToggleIconMouseDown = (e) => {
+    if (!this.touched) {
+      const ripple = Ripple.createRipple(this.elements.icon, this.props.toggleIconRippleStyle, createRippleCenter(this.elements.icon, 14))
+      Ripple.makeRipple(ripple)
+    }
+  }
+
+  /**
+   * On toggle icon touch start. (on mobile)
+   * Makes ripple.
+   * @param {Event}
+   */
+  onToggleIconTouchStart = (e) => {
+    const ripple = Ripple.createRipple(this.elements.icon, this.props.toggleIconRippleStyle, createRippleCenter(this.elements.icon, 14, 0.4, true))
+    Ripple.makeRipple(ripple)
+
+    this.touched = true
   }
 
   /**
@@ -143,7 +169,7 @@ export default class Day extends Component {
         <div className='title-container' ref='titleContainer' onMouseEnter={this.onTitleContainerMouseEnter}>
           <div className='title' ref='title' />
           <div className='icon-container'>
-            <div className='icon' ref='icon' onClick={this.onToggleIconClick} />
+            <div className='icon' ref='icon' onClick={this.onToggleIconClick} onMouseDown={this.onToggleIconMouseDown} onTouchStart={this.onToggleIconTouchStart} />
           </div>
         </div>
         <div className='subjects-container' ref='subjectsContainer' />
@@ -152,11 +178,19 @@ export default class Day extends Component {
   }
 
   afterRender () {
-    const lessonsPlanPage = this.props.getLessonsPlanPage()
+    const props = this.props
+    const lessonsPlanPage = props.getLessonsPlanPage()
 
     lessonsPlanPage.days.push(this)
     this.elements.title.innerHTML = lessonsPlanPage.dayNames[lessonsPlanPage.days.indexOf(this)]
 
     this.addSubjects()
+
+    if (props.toggleIconRippleStyle == null) {
+      props.toggleIconRippleStyle = {
+        backgroundColor: '#000',
+        opacity: 0.3
+      }
+    }
   }
 }

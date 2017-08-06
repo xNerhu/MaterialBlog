@@ -1,6 +1,10 @@
 import Component from '../../../../../../../helpers/Component'
 
 export default class Subject extends Component {
+  beforeRender () {
+    this.touched = false
+  }
+
   /**
    * Gets root.
    * @return {DOMElement} root
@@ -36,7 +40,33 @@ export default class Subject extends Component {
    * @param {Event}
    */
   onMouseDown = (e) => {
-    this.props.getDay().toggleMovingMode(true, this)
+    if (e.target !== this.elements.menuIcon) {
+      this.props.getDay().toggleMovingMode(true, this)
+    }
+  }
+
+  /**
+   * On menu icon mouse down.
+   * Makes ripple.
+   * @param {Event}
+   */
+  onMenuIconMouseDown = (e) => {
+    if (!this.touched) {
+      const ripple = Ripple.createRipple(this.elements.menuIcon, this.props.menuIconRippleStyle, createRippleCenter(this.elements.menuIcon, 14))
+      Ripple.makeRipple(ripple)
+    }
+  }
+
+  /**
+   * On menu icon touch start. (on mobile)
+   * Makes ripple.
+   * @param {Event}
+   */
+  onMenuIconTouchStart = (e) => {
+    const ripple = Ripple.createRipple(this.elements.menuIcon, this.props.menuIconRippleStyle, createRippleCenter(this.elements.menuIcon, 14, 0.4, true))
+    Ripple.makeRipple(ripple)
+
+    this.touched = true
   }
 
   render () {
@@ -50,12 +80,21 @@ export default class Subject extends Component {
             this.props.name
           }
         </div>
-        <div className='menu-icon' />
+        <div className='menu-icon ripple-icon' ref='menuIcon' onMouseDown={this.onMenuIconMouseDown} onTouchStart={this.onMenuIconTouchStart} />
       </div>
     )
   }
 
   afterRender () {
-    this.props.getDay().subjects.push(this)
+    const props = this.props
+
+    props.getDay().subjects.push(this)
+
+    if (props.menuIconRippleStyle == null) {
+      props.menuIconRippleStyle = {
+        backgroundColor: '#000',
+        opacity: 0.3
+      }
+    }
   }
 }
