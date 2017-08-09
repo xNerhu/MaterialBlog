@@ -1,5 +1,5 @@
 import Component from '../../../../../helpers/Component'
-import CategoryDialog from '../../../../../helpers/CategoryDialog'
+import DialogManager from '../../../../../helpers/DialogManager'
 
 import Dialog from '../../../../../imports/materialdesign/components/Dialog'
 
@@ -51,13 +51,11 @@ export default class EditCategoryDialog extends Component {
    * @param {Event}
    */
   onSaveButtonClick = (e) => {
-    const self = this
-
     const root = this.getRoot()
     const dialog = this.elements.dialog
     const textField = this.textField
 
-    const error = CategoryDialog.checkForErrors(this)
+    const error = DialogManager.checkForErrors(this)
 
     if (!error) {
       const app = window.app
@@ -71,20 +69,18 @@ export default class EditCategoryDialog extends Component {
       if (index < 0) {
         console.log('Index is less than 0')
       } else {
-        root.classList.add('category-dialog-preloader')
-        dialog.setItems([])
+        root.classList.add('enabled-preloader')
 
         const title = textField.getValue()
 
         setTimeout(function () {
-          root.classList.remove('category-dialog-preloader')
+          root.classList.remove('enabled-preloader')
 
           categoriesData[index].name = title
           clickedCategory.elements.title.innerHTML = title
 
           dialog.toggle(false)
           textField.setValue('')
-          self.setDialogItems()
           app.elements.editCategorySnackbar.toggle(true)
         }, 500)
       }
@@ -93,7 +89,7 @@ export default class EditCategoryDialog extends Component {
 
   render () {
     return (
-      <div className='category-dialog' ref='root'>
+      <div className='input-dialog' ref='root'>
         <Dialog title='Edytuj kategorię' ref='dialog'>
           <TextField ref={(e) => this.textField = e} hint='Nazwa' helperText='*Wymagane' maxLength={30} />
           <Preloader />

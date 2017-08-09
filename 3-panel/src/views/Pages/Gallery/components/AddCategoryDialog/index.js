@@ -1,5 +1,5 @@
 import Component from '../../../../../helpers/Component'
-import CategoryDialog from '../../../../../helpers/CategoryDialog'
+import DialogManager from '../../../../../helpers/DialogManager'
 
 import Dialog from '../../../../../imports/materialdesign/components/Dialog'
 
@@ -42,20 +42,17 @@ export default class AddCategoryDialog extends Component {
    * @param {Event}
    */
   onAddButtonClick = (e) => {
-    const self = this
-
     const root = this.getRoot()
     const dialog = this.elements.dialog
     const textField = this.textField
 
-    const error = CategoryDialog.checkForErrors(this)
+    const error = DialogManager.checkForErrors(this)
 
     if (!error) {
-      root.classList.add('category-dialog-preloader')
-      dialog.setItems([])
+      root.classList.add('enabled-preloader')
 
       setTimeout(function () {
-        root.classList.remove('category-dialog-preloader')
+        root.classList.remove('enabled-preloader')
 
         const app = window.app
 
@@ -87,7 +84,6 @@ export default class AddCategoryDialog extends Component {
 
         dialog.toggle(false)
         textField.setValue('')
-        self.setDialogItems()
         app.elements.addCategorySnackbar
       }, 500)
     }
@@ -95,7 +91,7 @@ export default class AddCategoryDialog extends Component {
 
   render () {
     return (
-      <div className='category-dialog' ref='root'>
+      <div className='input-dialog' ref='root'>
         <Dialog title='Dodaj nową kategorię' ref='dialog'>
           <TextField ref={(e) => this.textField = e} hint='Nazwa' helperText='*Wymagane' maxLength={30} />
           <Preloader />

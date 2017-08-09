@@ -40,8 +40,6 @@ export default class AddCategoryDialog extends Component {
    * @param {Event}
    */
   onDeleteButtonClick = (e) => {
-    const self = this
-
     const root = this.getRoot()
     const dialog = this.elements.dialog
 
@@ -51,17 +49,14 @@ export default class AddCategoryDialog extends Component {
     const clickedPost = gallery.clickedCategory
     const index = gallery.categoriesData.indexOf(clickedPost.props.data)
 
-    root.classList.add('category-dialog-preloader')
-
-    dialog.setItems([])
+    root.classList.add('enabled-preloader')
 
     setTimeout(function () {
-      root.classList.remove('category-dialog-preloader')
+      root.classList.remove('enabled-preloader')
 
       gallery.categoriesData[index].removed = true
 
       gallery.reloadSections()
-      self.setDialogItems()
       dialog.toggle(false)
 
       app.elements.deleteCategorySnackbar.toggle(true)
@@ -70,7 +65,7 @@ export default class AddCategoryDialog extends Component {
 
   render () {
     return (
-      <div className='delete-category-dialog' ref='root'>
+      <div className='input-dialog' ref='root'>
         <Dialog title='Czy napewno chcesz usunąć tą kategorię?' ref='dialog'>
           <div className='text'>
             Nie będzie można tego cofnąć.

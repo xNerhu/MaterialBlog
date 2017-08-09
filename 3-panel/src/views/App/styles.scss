@@ -95,3 +95,37 @@ a {
 .clear-both {
   clear: both;
 }
+
+.input-dialog {
+  & .material-dialog-content {
+    padding-top: 20px;
+    margin-top: 0px;
+    overflow: hidden;
+  }
+
+  & .material-preloader {
+    width: 54px;
+    height: 54px;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+  }
+
+  &.enabled-preloader {
+    & .material-dialog {
+      min-height: 205px;
+    }
+
+    & .material-preloader {
+      display: block
+    }
+
+    & .material-text-field, & .material-dialog-action, & .text {
+      display: none;
+    }
+  }
+}
+
+.error-dialog .material-dialog {
+  max-width: 450px;
+}

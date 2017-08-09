@@ -100,10 +100,7 @@ export default class LessonsPlanPage extends Component {
             'Matematyka',
             'Angielski',
             'Angielski',
-            'Polski',
-            'WF',
-            'WF',
-            'WF'
+            'Polski'
           ]
         }
       ]

@@ -41,8 +41,6 @@ $pictureBlur: 10px;
 @import 'views/Pages/Posts/components/PostDialog/components/Post/style.scss';
 
 @import 'views/Pages/Gallery/style.scss';
-@import 'views/Pages/Gallery/components/AddCategoryDialog/style.scss';
-@import 'views/Pages/Gallery/components/DeleteCategoryDialog/style.scss';
 @import 'views/Pages/Gallery/components/PicturesDialog/style.scss';
 @import 'views/Pages/Gallery/components/UploadPicturesDialog/style.scss';
 @import 'views/Pages/Gallery/components/UploadPicturesDialog/components/Item/style.scss';
@@ -51,3 +49,4 @@ $pictureBlur: 10px;
 @import 'views/Pages/Gallery/components/Section/components/Category/style.scss';
 
 @import 'views/Pages/LessonsPlan/style.scss';
+@import 'views/Pages/LessonsPlan/components/AddLessonDialog/style.scss';

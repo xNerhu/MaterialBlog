@@ -40,14 +40,10 @@ export default class DeletePicturesDialog extends Component {
    * @param {Event}
    */
   onDeleteButtonClick = (e) => {
-    const self = this
-
     const root = this.getRoot()
     const dialog = this.elements.dialog
 
-    root.classList.add('category-dialog-preloader')
-
-    dialog.setItems([])
+    root.classList.add('enabled-preloader')
 
     const app = window.app
 
@@ -68,11 +64,10 @@ export default class DeletePicturesDialog extends Component {
         picture.getRoot().style.display = 'none'
       }
 
-      root.classList.remove('category-dialog-preloader')
+      root.classList.remove('enabled-preloader')
 
       picturesDialog.toggleDeleteMode(false)
       picturesDialog.setPicturesCount()
-      self.setDialogItems()
       dialog.toggle(false)
       app.elements.deletePicturesSnackbar.toggle(true)
     }, 500)
@@ -80,7 +75,7 @@ export default class DeletePicturesDialog extends Component {
 
   render () {
     return (
-      <div className='delete-category-dialog' ref='root'>
+      <div className='input-dialog' ref='root'>
         <Dialog title='Czy napewno chcesz usunąć zaznaczone zdjęcia?' ref='dialog'>
           <div className='text'>
             Nie będzie można tego cofnąć.

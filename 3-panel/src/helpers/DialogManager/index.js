@@ -69,4 +69,17 @@ export default class DialogManager {
       }, 300)
     }
   }
+
+  static checkForErrors (dialog) {
+    const textField = dialog.textField
+    const name = textField.getValue()
+
+    if (name.length < 1 && !textField.error || name.length > textField.props.maxLength) {
+      textField.toggleError(true)
+
+      return true
+    } else if (name.length > 0) {
+      return false
+    }
+  }
 }
