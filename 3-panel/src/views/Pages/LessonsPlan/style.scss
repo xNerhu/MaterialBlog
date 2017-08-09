@@ -31,16 +31,16 @@
     }
 
     & .icon-container {
-      width: 24px;
-      height: 24px;
-      right: 24px;
+      width: 48px;
+      height: 48px;
+      right: 12px;
       position: absolute;
       @include center-vertical;
 
       & .icon {
         width: 100%;
         height: 100%;
-        @include image-center(100%, auto);
+        @include image-center(24px, auto);
         background-image: url(images/Post/expand_more.png);
         transition: 0.3s ease transform;
         cursor: pointer;
@@ -49,45 +49,87 @@
     }
   }
 
-  & .subject {
-    width: 100%;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    overflow: hidden;
-    position: relative;
-    cursor: pointer;
+  & .subjects-container {
+    opacity: 1;
+    transition: 0.3s opacity;
 
-    & .hour {
-      margin-left: 24px;
-      display: inline-block;
-    }
-
-    & .name {
-      display: inline-block;
-      margin-left: 16px;
-      opacity: 0.54;
-    }
-
-    & .menu-icon {
-      width: 24px;
-      height: 24px;
-      position: absolute;
-      @include center-vertical;
-      right: 24px;
-      @include image-center(24px, auto);
-      background-image: url(images/Toolbar/more.png);
-      opacity: 0.54;
+    & .subject {
+      width: 100%;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      overflow: hidden;
+      position: relative;
       cursor: pointer;
+
+      & .hour {
+        margin-left: 24px;
+        display: inline-block;
+      }
+
+      & .name {
+        display: inline-block;
+        margin-left: 16px;
+        opacity: 0.54;
+      }
+
+      & .menu-icon {
+        width: 48px;
+        height: 48px;
+        position: absolute;
+        @include center-vertical;
+        right: 12px;
+        @include image-center(24px, auto);
+        background-image: url(images/Toolbar/more.png);
+        opacity: 0.54;
+        cursor: pointer;
+      }
+
+      $border: 1px solid rgba(0, 0, 0, 0.24);
+
+      &.border {
+        border-top: $border;
+      }
+
+      &.border-bottom {
+        border-bottom: $border;
+      }
     }
 
-    $border: 1px solid rgba(0, 0, 0, 0.24);
+    &.disable-cursor-pointer .subject {
+      cursor: default;
 
-    &.border {
-      border-bottom: $border;
+      & .menu-icon {
+        cursor: default;
+      }
     }
+  }
 
-    &.border-top {
-      border-top: $border;
+  & .buttons-container {
+    width: 100%;
+    height: 0px;
+    position: relative;
+    transition: 0.3s ease height;
+    overflow: hidden;
+
+    & .material-button {
+      float: right;
+      margin-right: 8px;
+      background-color: transparent;
+      color: #3f51b5;
+      margin-top: 8px;
+      margin-bottom: 8px;
+
+      &.cancel {
+        color: #000;
+      }
     }
+  }
+
+  & .material-preloader {
+    position: absolute;
+    @include center;
+    width: 54px;
+    height: 54px;
+    display: none;
   }
 }

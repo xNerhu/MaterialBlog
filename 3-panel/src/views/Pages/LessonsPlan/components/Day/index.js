@@ -2,6 +2,9 @@ import Component from '../../../../../helpers/Component'
 
 import Subject from './components/Subject'
 
+import MaterialButton from '../../../../../imports/materialdesign/components/MaterialButton'
+import Preloader from '../../../../../imports/materialdesign/components/Preloader'
+
 export default class Day extends Component {
   beforeRender () {
     this.toggled = false
@@ -14,6 +17,8 @@ export default class Day extends Component {
     this.lastEnteredSubject = null
 
     this.touched = false
+
+    this.isSaving = false
   }
 
   /**
@@ -76,7 +81,7 @@ export default class Day extends Component {
   }
 
   /**
-   * On toggle icon mouse down.
+   * On expand / collapse icon mouse down.
    * Makes ripple.
    * @param {Event}
    */
@@ -88,7 +93,7 @@ export default class Day extends Component {
   }
 
   /**
-   * On toggle icon touch start. (on mobile)
+   * On expand / collapse icon touch start. (on mobile)
    * Makes ripple.
    * @param {Event}
    */
@@ -100,15 +105,17 @@ export default class Day extends Component {
   }
 
   /**
-   * On title container mouse enter.
+   * On buttons container mouse enter.
    * @param {Event}
    */
-  onTitleContainerMouseEnter = (e) => {
-    if (this.isMovingMode && this.lastEnteredSubject != null) {
-      const lastEnteredSubjectRoot = this.lastEnteredSubject.getRoot()
+  onButtonsContainerMouseEnter = (e) => {
+    if (!this.isSaving) {
+      if (this.isMovingMode && this.lastEnteredSubject != null) {
+        const lastEnteredSubjectRoot = this.lastEnteredSubject.getRoot()
 
-      lastEnteredSubjectRoot.classList.remove('border')
-      lastEnteredSubjectRoot.classList.add('border-top')
+        lastEnteredSubjectRoot.classList.remove('border')
+        lastEnteredSubjectRoot.classList.add('border-bottom')
+      }
     }
   }
 
@@ -123,6 +130,9 @@ export default class Day extends Component {
       this.movedSubject = subject
 
       window.addEventListener('mouseup', this.onWindowMouseUp)
+
+      const buttonsContainer = this.elements.buttonsContainer
+      buttonsContainer.style.height = buttonsContainer.scrollHeight + 'px'
     } else {
       window.removeEventListener('mouseup', this.onWindowMouseUp)
 
@@ -160,19 +170,81 @@ export default class Day extends Component {
     const lastEnteredSubjectRoot = this.lastEnteredSubject.getRoot()
 
     lastEnteredSubjectRoot.classList.remove('border')
-    lastEnteredSubjectRoot.classList.remove('border-top')
+    lastEnteredSubjectRoot.classList.remove('border-bottom')
+  }
+
+  /**
+   * On cancel button click.
+   * Backs plan.
+   * @param {Event}
+   */
+  onCancelButtonClick = (e) => {
+    if (!this.isSaving) {
+      const lessonsPlanPage = this.props.getLessonsPlanPage()
+
+      const index = lessonsPlanPage.days.indexOf(this)
+      lessonsPlanPage.lessonsPlan[index].subjects = JSON.parse(JSON.stringify(lessonsPlanPage.lessonsPlanCopy[index])).subjects // Same weird problem. Can't clone object copy of lessons plan.
+
+      this.addSubjects()
+
+      this.elements.buttonsContainer.style.height = '0px'
+    }
+  }
+
+  /**
+   * On save button click.
+   * Saves plan for day.
+   * @param {Event}
+   */
+  onSaveButtonClick = (e) => {
+    const self = this
+
+    const lessonsPlanPage = this.props.getLessonsPlanPage()
+    const subjectsContainer = this.elements.subjectsContainer
+    const preloaderRoot = this.elements.preloader.getRoot()
+
+    subjectsContainer.style.opacity = '0'
+    subjectsContainer.classList.add('disable-cursor-pointer')
+
+    this.elements.buttonsContainer.style.height = '0px'
+    this.isSaving = true
+
+    preloaderRoot.style.display = 'block'
+
+    setTimeout(function () {
+      subjectsContainer.style.opacity = '1'
+      subjectsContainer.classList.remove('disable-cursor-pointer')
+
+      self.isSaving = false
+
+      preloaderRoot.style.display = 'none'
+
+      lessonsPlanPage.lessonsPlanCopy = JSON.parse(JSON.stringify(lessonsPlanPage.lessonsPlan))
+    }, 1000)
   }
 
   render () {
     return (
       <div className='lessons-plan-list' ref='root'>
-        <div className='title-container' ref='titleContainer' onMouseEnter={this.onTitleContainerMouseEnter}>
+        <div className='title-container'>
           <div className='title' ref='title' />
           <div className='icon-container'>
             <div className='icon' ref='icon' onClick={this.onToggleIconClick} onMouseDown={this.onToggleIconMouseDown} onTouchStart={this.onToggleIconTouchStart} />
           </div>
         </div>
         <div className='subjects-container' ref='subjectsContainer' />
+        <div className='buttons-container' ref='buttonsContainer' onMouseEnter={this.onButtonsContainerMouseEnter}>
+          <MaterialButton text='ZAPISZ' onClick={this.onSaveButtonClick} shadow={false} rippleStyle={{
+            backgroundColor: '#3f51b5',
+            opacity: 0.2
+          }} />
+          <MaterialButton className='cancel' text='ANULUJ' onClick={this.onCancelButtonClick} shadow={false} rippleStyle={{
+            backgroundColor: '#000',
+            opacity: 0.2
+          }} />
+          <div className='clear-both' />
+        </div>
+        <Preloader ref='preloader' />
       </div>
     )
   }

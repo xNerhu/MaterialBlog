@@ -20,7 +20,7 @@ export default class Subject extends Component {
   onMouseEnter = (e) => {
     const day = this.props.getDay()
 
-    if (day.isMovingMode) {
+    if (day.isMovingMode && !day.isSaving) {
       const lastEnteredSubject = day.lastEnteredSubject
 
       if (lastEnteredSubject != null) {
@@ -29,7 +29,7 @@ export default class Subject extends Component {
 
       const root = this.getRoot()
 
-      root.classList.add((day.subjects.indexOf(this) < 0) ? 'border-top' : 'border')
+      root.classList.add((day.subjects.indexOf(this) < 0) ? 'border-bottom' : 'border')
 
       day.lastEnteredSubject = this
     }
@@ -41,7 +41,9 @@ export default class Subject extends Component {
    */
   onMouseDown = (e) => {
     if (e.target !== this.elements.menuIcon) {
-      this.props.getDay().toggleMovingMode(true, this)
+      const day = this.props.getDay()
+
+      if (!day.isSaving) day.toggleMovingMode(true, this)
     }
   }
 

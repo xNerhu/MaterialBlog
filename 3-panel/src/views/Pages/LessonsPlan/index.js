@@ -12,6 +12,8 @@ export default class LessonsPlanPage extends Component {
 
     this.lessonsPlan = []
 
+    this.lessonsPlanCopy = []
+
     this.dayNames = [
       'Poniedziałek',
       'Wtorek',
@@ -49,15 +51,64 @@ export default class LessonsPlanPage extends Component {
             'WOS',
             'Niemiecki',
             'Polski',
-            'Niemiecki'
+            'Niemiecki',
+            'Biologia',
+            'Chemia',
+            'Chemia',
+            'Geografia'
           ]
         },
         {
           subjects: [
-            'Fizyka'
+            'Fizyka',
+            'Polski',
+            'Geografia',
+            'Niemiecki',
+            'Angielski',
+            'Angielski',
+            'Niemiecki',
+            'Matematyka'
+          ]
+        },
+        {
+          subjects: [
+            'Historia',
+            'Historia',
+            'Informatyka',
+            'Technika',
+            'Fizyka',
+            'Angielski',
+            'Angielski',
+            'Lekcja wychowawcza'
+          ]
+        },
+        {
+          subjects: [
+            'Matematyka',
+            'Matematyka',
+            'Niemiecki',
+            'Niemiecki',
+            'Polski',
+            'Polski',
+            'Biologia'
+          ]
+        },
+        {
+          subjects: [
+            'Matematyka',
+            'Matematyka',
+            'Angielski',
+            'Angielski',
+            'Polski',
+            'WF',
+            'WF',
+            'WF'
           ]
         }
       ]
+
+      // It's a weird problem. Object assign not working.
+      self.lessonsPlanCopy = JSON.parse(JSON.stringify(self.lessonsPlan)) // Object.assign({}, plan)
 
       for (var i = 0; i < self.lessonsPlan.length; i++) {
         const day = (
