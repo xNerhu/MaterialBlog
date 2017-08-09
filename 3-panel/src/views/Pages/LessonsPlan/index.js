@@ -11,8 +11,9 @@ export default class LessonsPlanPage extends Component {
     }
 
     this.lessonsPlan = []
-
     this.lessonsPlanCopy = []
+    this.lessonsStart = []
+    this.lessonsFinish = []
 
     this.dayNames = [
       'Poniedziałek',
@@ -105,6 +106,28 @@ export default class LessonsPlanPage extends Component {
             'WF'
           ]
         }
+      ]
+
+      self.lessonsStart = [
+        '8.00',
+        '8.50',
+        '9.40',
+        '10.30',
+        '11.30',
+        '12.20',
+        '13.30',
+        '14.20'
+      ]
+
+      self.lessonsFinish = [
+        '8.45',
+        '9.35',
+        '10.25',
+        '11.15',
+        '12.15',
+        '13.05',
+        '14.15',
+        '15.05'
       ]
 
       // It's a weird problem. Object assign not working.

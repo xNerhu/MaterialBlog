@@ -74,9 +74,7 @@ export default class Subject extends Component {
   render () {
     return (
       <div className='subject' ref='root' onMouseDown={this.onMouseDown} onMouseEnter={this.onMouseEnter}>
-        <div className='hour'>
-          8.00-8.45
-        </div>
+        <div className='hour' ref='hour' />
         <div className='name'>
           {
             this.props.name
@@ -89,8 +87,13 @@ export default class Subject extends Component {
 
   afterRender () {
     const props = this.props
+    const day = props.getDay()
+    const lessonsPlanPage = day.props.getLessonsPlanPage()
 
-    props.getDay().subjects.push(this)
+    day.subjects.push(this)
+
+    const index = day.subjects.length - 1
+    this.elements.hour.innerHTML = lessonsPlanPage.lessonsStart[index] + ' - ' + lessonsPlanPage.lessonsFinish[index]
 
     if (props.menuIconRippleStyle == null) {
       props.menuIconRippleStyle = {
