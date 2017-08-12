@@ -11,7 +11,7 @@ export default class App extends Component {
     return (
       <div>
         <div className='app-content' ref='appContent'>
-          <TimePicker />
+          <TimePicker onConfirm={(hour, minutes, isAM) => { console.log(hour + ':' + minutes + ' (' + ((isAM) ? 'AM' : 'PM') + ')') }} />
         </div>
       </div>
     )

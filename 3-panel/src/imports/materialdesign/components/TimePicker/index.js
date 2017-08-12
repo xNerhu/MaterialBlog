@@ -219,6 +219,26 @@ export default class TimePicker extends Component {
     if (tick != null) tick.getRoot().classList.remove('selected')
   }
 
+  /**
+   * On confirm button click.
+   * Triggers event.
+   * @param {Event}
+   */
+  onConfirmButtonClick = (e) => {
+    const onConfirm = this.props.onConfirm
+
+    if (typeof onConfirm === 'function') {
+      /**
+       * @param {Int} hour
+       * @param {Int | String} minutes
+       * @param {Boolean} is AM
+       */
+      onConfirm(this.elements.hoursClock.selectedTick.props.number, this.elements.minutesClock.selectedTick.props.number, this.isAM)
+    }
+
+    this.toggle(false)
+  }
+
   render () {
     return (
       <div>
@@ -275,7 +295,7 @@ export default class TimePicker extends Component {
 
     const buttons = (
       <div>
-        <MaterialButton text='OK' shadow={false} rippleStyle={this.props.actionButtonRippleStyle} />
+        <MaterialButton text='OK' shadow={false} rippleStyle={this.props.actionButtonRippleStyle} onClick={this.onConfirmButtonClick} />
         <MaterialButton text='ANULUJ' shadow={false} rippleStyle={this.props.actionButtonRippleStyle} onClick={() => { this.toggle(false) }} />
       </div>
     )
