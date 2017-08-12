@@ -25,8 +25,9 @@ export default class TimePicker extends Component {
 
   /**
    * Shows or hides time picker dialog.
+   * @param {Boolean} set time to default (optional)
    */
-  toggle (flag) {
+  toggle (flag, setTimeToDefault) {
     const root = this.getRoot()
 
     root.style[(flag) ? 'display' : 'top'] = (flag) ? 'block' : '25%'
@@ -38,6 +39,7 @@ export default class TimePicker extends Component {
     }, (flag) ? 20 : 300)
 
     this.toggleDark(flag)
+    if (flag) this.reset(setTimeToDefault)
   }
 
   /**
@@ -53,6 +55,60 @@ export default class TimePicker extends Component {
     setTimeout(function () {
       dark.style[(flag) ? 'opacity' : 'display'] = (flag) ? opacity : 'none'
     }, (flag) ? 20 : 300)
+  }
+
+  /**
+   * Resets clocks.
+   * @param {Boolean} set time to default (optional)
+   */
+  reset (setTimeToDefault = true) {
+    this.canSelectClock = true
+    this.selectClock(true)
+
+    if (setTimeToDefault) {
+      this.selectTime(true)
+      this.setTime(6, 30)
+    }
+  }
+
+  /**
+   * Sets time.
+   * @param {Int} hour
+   * @param {Int | String} minutes
+   */
+  setTime (hour, minutes) {
+    const hoursClock = this.elements.hoursClock
+    const minutesClock = this.elements.minutesClock
+
+    const hoursTickIndex = this.getTickIndex(hoursClock, hour)
+    const minutesTickIndex = this.getTickIndex(minutesClock, minutes)
+
+    if (hoursTickIndex < 0) console.log('cant find hour tick index')
+    if (minutesTickIndex < 0) console.log('cant find minutes tick index')
+    console.log(hoursTickIndex, minutesTickIndex)
+
+    const hoursTick = hoursClock.ticks[hoursTickIndex]
+    const minutesTick = minutesClock.ticks[minutesTickIndex]
+
+    if (hoursClock.selectedTick !== hoursTick) this.selectTick(hoursTick, hoursClock)
+    if (minutesClock.selectedTick !== minutesTick) this.selectTick(minutesTick, minutesClock)
+
+    this.updateTime()
+  }
+
+  /**
+   * Gets tick index.
+   * @param {HoursClock | MinutesClock}
+   * @param {Int | String} hour or minutes
+   * @return {Int} tick index
+   */
+  getTickIndex (clock, number) {
+    for (var i = 0; i < clock.ticks.length; i++) {
+      const tickNumber = clock.ticks[i].props.number
+      if (tickNumber == number) return i
+    }
+
+    return -1
   }
 
   /**
@@ -72,14 +128,14 @@ export default class TimePicker extends Component {
     window.removeEventListener('mouseup', this.disableSelecting)
 
     if (this.actualClock === this.elements.hoursClock) {
-      this.selectClock(this.elements.minutesClock)
+      this.selectClock(false)
     }
   }
 
   /**
-   * Updates hour.
+   * Updates time.
    */
-  updateHour () {
+  updateTime () {
     const hoursClock = this.elements.hoursClock
     const minutesClock = this.elements.minutesClock
 
@@ -91,23 +147,23 @@ export default class TimePicker extends Component {
 
   /**
    * Selects clock.
-   * @param {HoursClock | MinutesClock}
+   * @param {Boolean} select hours clock
    */
-  selectClock (clock) {
+  selectClock (selectHoursClock) {
+    const hoursClock = this.elements.hoursClock
+    const minutesClock = this.elements.minutesClock
+
+    const clock = (selectHoursClock) ? hoursClock : minutesClock
+
     if (this.actualClock !== clock && this.canSelectClock) {
       this.actualClock = clock
 
-      const hoursClock = this.elements.hoursClock
-      const minutesClock = this.elements.minutesClock
-
-      const isMinutesClock = (clock === this.elements.minutesClock)
-
-      this.toggleClock(false, (isMinutesClock) ? hoursClock : minutesClock)
+      this.toggleClock(false, (selectHoursClock) ? minutesClock : hoursClock)
       this.canSelectClock = false
 
       const self = this
       setTimeout(function () {
-        self.toggleClock(true, (isMinutesClock) ? minutesClock : hoursClock)
+        self.toggleClock(true, (selectHoursClock) ? hoursClock : minutesClock)
 
         setTimeout(function () {
           self.canSelectClock = true
@@ -117,8 +173,8 @@ export default class TimePicker extends Component {
       const hourDisplay = this.elements.hour
       const minutesDisplay = this.elements.minutes
 
-      this.select(false, (isMinutesClock ? hourDisplay : minutesDisplay))
-      this.select(true, (isMinutesClock ? minutesDisplay : hourDisplay))
+      this.select(false, (selectHoursClock ? minutesDisplay : hourDisplay))
+      this.select(true, (selectHoursClock ? hourDisplay : minutesDisplay))
     }
   }
 
@@ -157,24 +213,24 @@ export default class TimePicker extends Component {
 
   /**
    * Selects time. (AM, PM)
-   * @param {DOMElement}
+   * @param {Boolean} select AM
    */
-  selectTime (element) {
+  selectTime (selectAM) {
     const am = this.elements.am
     const pm = this.elements.pm
 
-    this.isAM = (element === am)
+    this.select(false, (selectAM) ? pm : am)
+    this.select(true, (selectAM) ? am : pm)
 
-    this.select(false, (this.isAM) ? pm : am)
-    this.select(true, (this.isAM) ? am : pm)
+    this.isAM = selectAM
   }
 
   /**
    * Calculates ticks position.
-   * @param {Int} circle radius (Optional)
-   * @param {Int} circle size (Optional)
-   * @param {Int} tick size (Optional)
-   * @param {Int} ticks count (Optional)
+   * @param {Int} circle radius (optional)
+   * @param {Int} circle size (optional)
+   * @param {Int} tick size (optional)
+   * @param {Int} ticks count (optional)
    * @return {Object} positions
    */
   calculateTickPosition (radius = 108, size = 270, tickSize = 40, length = 12) {
@@ -197,18 +253,19 @@ export default class TimePicker extends Component {
   /**
    * Selects tick.
    * @param {Tick}
+   * @param {HoursClock | MinutesClock} clock (optional)
    */
-  selectTick (tick) {
-    const line = this.actualClock.elements.line
-    const rotate = this.actualClock.getRotate(tick.props.number)
+  selectTick (tick, clock = this.actualClock) {
+    const line = clock.elements.line
+    const rotate = clock.getRotate(tick.props.number)
 
     line.style.transform = 'translateY(-75%) rotate(' + rotate + 'deg)'
 
     tick.getRoot().classList.add('selected')
 
-    this.deselectTick(this.actualClock.selectedTick)
-    this.actualClock.selectedTick = tick
-    this.updateHour()
+    this.deselectTick(clock.selectedTick)
+    clock.selectedTick = tick
+    this.updateTime()
   }
 
   /**
@@ -245,20 +302,20 @@ export default class TimePicker extends Component {
         <div className='material-time-picker' ref='root'>
           <div className='date-display'>
             <div className='date-container'>
-              <span className='hour selected' ref='hour' onClick={() => this.selectClock(this.elements.hoursClock)}>
+              <span className='hour selected' ref='hour' onClick={() => this.selectClock(true)}>
                 6
               </span>
               <span className='separate'>
                 :
               </span>
-              <span className='minutes' ref='minutes' onClick={() => this.selectClock(this.elements.minutesClock)}>
+              <span className='minutes' ref='minutes' onClick={() => this.selectClock(false)}>
                 30
               </span>
               <div className='am-pm-container'>
-                <div className='item selected' ref='am' onClick={() => this.selectTime(this.elements.am)}>
+                <div className='item selected' ref='am' onClick={() => this.selectTime(true)}>
                   AM
                 </div>
-                <div className='item' ref='pm' onClick={() => this.selectTime(this.elements.pm)}>
+                <div className='item' ref='pm' onClick={() => this.selectTime(false)}>
                   PM
                 </div>
               </div>
@@ -284,12 +341,10 @@ export default class TimePicker extends Component {
     if (props.darkOpacity == null) props.darkOpacity = 0.7
     if (props.actionButtonRippleStyle == null) {
       props.actionButtonRippleStyle = {
-        backgroundColor: '#26a69a',
+        backgroundColor: '#3f51b5',
         opacity: 0.3
       }
     }
-
-    this.toggle(true)
 
     this.actualClock = this.elements.hoursClock
 

@@ -25,13 +25,6 @@ export default class Day extends Component {
     for (var i = 0; i < lessonsPlanPage.lessonsStart.length; i++) {
       this.addItem(lessonsPlanPage.lessonsStart[i], lessonsPlanPage.lessonsFinish[i])
     }
-
-    for (var i = 0; i < this.items.length; i++) {
-      const item = this.items[i]
-
-      item.elements.start.setValue(lessonsPlanPage.lessonsStart[i], false)
-      item.elements.finish.setValue(lessonsPlanPage.lessonsFinish[i], false)
-    }
   }
 
   addItem (start, finish) {

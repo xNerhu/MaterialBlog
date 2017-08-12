@@ -149,6 +149,10 @@ export default class LessonsPlanPage extends Component {
     }, 10)
   }
 
+  onTimePickerConfirm = (hour, minutes, isAM) => {
+    console.log(hour, minutes, isAM)
+  }
+
   render () {
     return (
       <div className='page page-lessons-plan' ref='root'>

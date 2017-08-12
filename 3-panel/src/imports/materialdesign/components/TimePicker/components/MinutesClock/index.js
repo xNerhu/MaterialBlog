@@ -43,7 +43,7 @@ export default class MinutesClock extends Component {
     }
 
     setTimeout(function () {
-      timePicker.updateHour()
+      timePicker.updateTime()
     }, 10)
   }
 

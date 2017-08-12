@@ -16,7 +16,7 @@
   & .date-display {
     width: 196px;
     height: 100%;
-    background-color: #26a69a;
+    background-color: #3f51b5;
     position: absolute;
     left: 0;
     top: 0;
@@ -84,7 +84,7 @@
       background-color: #eee;
 
       & .dot {
-        background-color: #26a69a;
+        background-color: #3f51b5;
         width: 8px;
         height: 8px;
         border-radius: 100%;
@@ -93,7 +93,7 @@
       }
 
       & .line {
-        background-color: #26a69a;
+        background-color: #3f51b5;
         height: calc(50% - 28px);
         width: 2px;
         position: absolute;
@@ -121,7 +121,7 @@
         }
 
         &.selected {
-          background-color: #26a69a;
+          background-color: #3f51b5;
           color: #fff;
         }
       }
@@ -146,7 +146,7 @@
         float: right;
         margin-right: 8px;
         background-color: transparent;
-        color: #26a69a;
+        color: #3f51b5;
         min-width: 0px;
         padding-left: 18px;
         padding-right: 18px;

@@ -30,6 +30,7 @@ import Menu from './../../imports/materialdesign/components/Menu'
 import Preloader from './../../imports/materialdesign/components/Preloader'
 import Snackbar from './../../imports/materialdesign/components/Snackbar'
 import Tooltip from './../../imports/materialdesign/components/Tooltip'
+import TimePicker from './../../imports/materialdesign/components/TimePicker'
 
 export default class App extends Component {
   beforeRender () {
@@ -427,6 +428,7 @@ export default class App extends Component {
         <DeletePicturesDialog ref='deletePicturesDialog' />
         <AddLessonDialog ref='addLessonDialog' />
         <ErrorDialog ref='errorDialog' />
+        <TimePicker ref='timePicker' onConfirm={(hour, minutes, isAM) => { this.getLessonsPlanPage().onTimePickerConfirm(hour, minutes, isAM) }} />
         <Snackbar ref='deletePostsSnackbar' text='Pomyślnie usunięto posty' />
         <Snackbar ref='deletePostSnackbar' text='Pomyślnie usunięto post' />
         <Snackbar ref='addPostSnackbar' text='Pomyślnie dodano post' />

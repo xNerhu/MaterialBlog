@@ -1,4 +1,4 @@
-import App from './views/test'
+import App from './views/App'
 import UI from './helpers/UI'
 
 import './styles.scss'

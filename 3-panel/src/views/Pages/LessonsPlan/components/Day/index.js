@@ -110,7 +110,6 @@ export default class Day extends Component {
    * @param {Event}
    */
   onWindowMouseUp = (e) => {
-    console.log('window mouse up event')
     this.toggleMovingMode(false)
   }
 

@@ -1,9 +1,6 @@
 import Component from '../../../../../../../helpers/Component'
 
-import TextField from '../../../../../../../imports/materialdesign/components/TextField'
-
 export default class Item extends Component {
-
   /**
    * Gets root.
    * @return {DOMElement} root
@@ -12,16 +9,41 @@ export default class Item extends Component {
     return this.elements.root
   }
 
+  editStart = (e) => {
+    const app = window.app
+    const timePicker = app.elements.timePicker
+
+    const time = this.props.start
+    const split = time.split('.')
+    let hour = split[0]
+    const minutes = split[1]
+
+    if (hour > 12) {
+      hour -= 12
+      timePicker.selectTime(false)
+    } else if (!timePicker.isAM) {
+      timePicker.selectTime(true)
+    }
+
+    timePicker.setTime(hour, minutes)
+    timePicker.toggle(true, false)
+  }
+
   render () {
     return (
       <div className='item'>
-        <TextField ref='start' type='datetime' />
-        <TextField ref='finish' type='number' />
+        <div className='start' ref='start' onClick={this.editStart} />
+        <div className='finish' ref='finish' />
       </div>
     )
   }
 
   afterRender () {
-    this.props.getLessonHours().items.push(this)
+    const props = this.props
+
+    props.getLessonHours().items.push(this)
+
+    this.elements.start.innerHTML = props.start
+    this.elements.finish.innerHTML = props.finish
   }
 }

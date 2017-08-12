@@ -3,10 +3,22 @@
     position: relative;
     clear: both;
 
-    & .material-text-field {
-      width: 64px;
-      margin-left: 24px;
+    & .start, & .finish {
       float: left;
+      font-size: 16px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      margin-left: 24px;
+      border-bottom: 2px solid #FFC107;
+      cursor: pointer;
+      margin-bottom: 12px;
+      min-width: 44px;
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
     }
   }
 }
