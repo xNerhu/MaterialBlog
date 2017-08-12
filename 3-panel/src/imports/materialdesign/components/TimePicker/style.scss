@@ -1,0 +1,148 @@
+.material-time-picker {
+  width: 600px;
+  height: 356px;
+  position: fixed;
+  top: 0;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  margin: 64px;
+  @include Roboto-Regular;
+
+  & .date-display {
+    width: 196px;
+    height: 100%;
+    background-color: #26a69a;
+    position: relative;
+    float: left;
+
+    & .date-container {
+      color: rgba(255, 255, 255, 0.54);
+      font-size: 48px;
+      position: absolute;
+      @include center;
+
+      & .hour, & .minutes {
+        cursor: pointer;
+        transition: 0.3s color;
+
+        &.selected {
+          color: #fff;
+        }
+      }
+
+      & .hour {
+        margin-right: 4px;
+      }
+
+      & .minutes {
+        margin-left: 4px;
+      }
+    }
+
+    & .am-pm-container {
+      padding-top: 8px;
+      font-size: 18px;
+      margin: 0 auto;
+      text-align: center;
+
+      & .item {
+        cursor: pointer;
+        transition: 0.3s color;
+
+        &:last-child {
+          margin-top: 4px;
+        }
+
+        &.selected {
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  & .clock-buttons-container {
+    width: calc(100% - 196px);
+    height: 100%;
+    position: relative;
+    float: left;
+
+    & .clock {
+      width: 270px;
+      height: 270px;
+      border-radius: 100%;
+      position: absolute;
+      margin-top: -24px;
+      @include center;
+      background-color: #eee;
+
+      & .dot {
+        background-color: #26a69a;
+        width: 8px;
+        height: 8px;
+        border-radius: 100%;
+        position: absolute;
+        @include center;
+      }
+
+      & .line {
+        background-color: #26a69a;
+        height: calc(50% - 28px);
+        width: 2px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        top: calc(75% + 12px);
+        transform: translateY(-75%);
+        transform-origin: center top;
+      }
+
+      & .tick {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        border-radius: 100%;
+        font-size: 15px;
+        cursor: pointer;
+        transition: 0.3s background-color, 0.3s color;
+
+        & .number {
+          display: inline-block;
+          position: absolute;
+          @include center;
+        }
+
+        &.selected {
+          background-color: #26a69a;
+          color: #fff;
+        }
+      }
+
+      & .ticks-container {
+        width: 270px;
+        height: 270px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition: 0.3s transform;
+      }
+    }
+
+    & .hours-clock, & .minutes-clock {
+      transition: 0.3s opacity;
+    }
+
+    & .minutes-clock {
+      opacity: 0;
+      display: none;
+
+      & .ticks-container {
+        transform: translate(-50%, -50%) scale(1.2);
+      }
+    }
+  }
+
+  &::after {
+    clear: both;
+  }
+}

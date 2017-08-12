@@ -2,21 +2,19 @@ import Component from '../../../../../helpers/Component'
 
 import Subject from './components/Subject'
 
+import ExpansionPanel from '../ExpansionPanel'
+
 import MaterialButton from '../../../../../imports/materialdesign/components/MaterialButton'
 import Preloader from '../../../../../imports/materialdesign/components/Preloader'
 
 export default class Day extends Component {
   beforeRender () {
-    this.toggled = false
-
     this.subjects = []
 
     this.isMovingMode = false
     this.movedSubject = null
 
     this.lastEnteredSubject = null
-
-    this.touched = false
 
     this.isSaving = false
 
@@ -35,29 +33,10 @@ export default class Day extends Component {
   }
 
   /**
-   * Collapses or rises up container with subjects.
-   * @param {Boolean}
-   */
-  toggle (flag) {
-    const root = this.getRoot()
-    const icon = this.elements.toggleIcon
-
-    root.style.height = root.scrollHeight + 'px'
-
-    setTimeout(function () {
-      root.style.height = (flag) ? 'auto' : '48px'
-    }, (flag) ? 300 : 20)
-
-    icon.style.transform = 'rotate(' + ((flag) ? 180 : 0) + 'deg)'
-
-    this.toggled = flag
-  }
-
-  /**
    * Parses day and adds subjects.
    */
   addSubjects () {
-    this.elements.subjectsContainer.innerHTML = ''
+    this.subjectsContainer.innerHTML = ''
     this.subjects = []
 
     for (var i = 0; i < this.props.data.subjects.length; i++) {
@@ -74,39 +53,7 @@ export default class Day extends Component {
       <Subject name={name} getDay={() => { return this }} />
     )
 
-    this.renderComponents(subject, this.elements.subjectsContainer)
-  }
-
-  /**
-   * On toggle icon click.
-   * @param {Event}
-   */
-  onToggleIconClick = (e) => {
-    this.toggle(!this.toggled)
-  }
-
-  /**
-   * On expand / collapse icon mouse down.
-   * Makes ripple.
-   * @param {Event}
-   */
-  onToggleIconMouseDown = (e) => {
-    if (!this.touched) {
-      const ripple = Ripple.createRipple(this.elements.toggleIcon, this.props.toggleIconRippleStyle, createRippleCenter(this.elements.toggleIcon, 14))
-      Ripple.makeRipple(ripple)
-    }
-  }
-
-  /**
-   * On expand / collapse icon touch start. (on mobile)
-   * Makes ripple.
-   * @param {Event}
-   */
-  onToggleIconTouchStart = (e) => {
-    const ripple = Ripple.createRipple(this.elements.toggleIcon, this.props.toggleIconRippleStyle, createRippleCenter(this.elements.toggleIcon, 14, 0.4, true))
-    Ripple.makeRipple(ripple)
-
-    this.touched = true
+    this.renderComponents(subject, this.subjectsContainer)
   }
 
   /**
@@ -203,11 +150,11 @@ export default class Day extends Component {
   onSaveButtonClick = (e) => {
     const self = this
 
-    const subjectsContainer = this.elements.subjectsContainer
-    const buttonsContainer = this.elements.buttonsContainer
+    const subjectsContainer = this.subjectsContainer
+    const buttonsContainer = this.buttonsContainer
 
     const lessonsPlanPage = this.props.getLessonsPlanPage()
-    const preloaderRoot = this.elements.preloader.getRoot()
+    const preloaderRoot = this.preloader.getRoot()
 
     subjectsContainer.style.opacity = '0'
     subjectsContainer.classList.add('disable-cursor-pointer')
@@ -245,7 +192,7 @@ export default class Day extends Component {
     }
 
     if (lessonsPlanPage.lessonsFinish.length < length) {
-      error += '<br>Brakuje godziny kończącej lekcję (' + lessonsPlanPage.lessonsFinish[lessonsPlanPage.lessonsFinish.length - 1] + ')'
+      error = ((error) ? (error + '<br>') : '') + 'Brakuje godziny kończącej lekcję (' + lessonsPlanPage.lessonsFinish[lessonsPlanPage.lessonsFinish.length - 1] + ')'
     }
 
     if (!error) {
@@ -260,7 +207,7 @@ export default class Day extends Component {
    * @param {Boolean}
    */
   toggleActionButtons (flag) {
-    const actionButtons = this.elements.actionButtons
+    const actionButtons = this.actionButtons
 
     actionButtons.style[(flag) ? 'display' : 'opacity'] = (flag) ? 'block' : '0'
 
@@ -271,16 +218,10 @@ export default class Day extends Component {
 
   render () {
     return (
-      <div className='lessons-plan-list' ref='root'>
-        <div className='title-container'>
-          <div className='title' ref='title' />
-          <div className='icon-container'>
-            <div className='toggle-icon' ref='toggleIcon' onClick={this.onToggleIconClick} onMouseDown={this.onToggleIconMouseDown} onTouchStart={this.onToggleIconTouchStart} />
-          </div>
-        </div>
-        <div className='subjects-container' ref='subjectsContainer' />
-        <div className='buttons-container' ref='buttonsContainer' onMouseEnter={this.onButtonsContainerMouseEnter}>
-          <div className='action-buttons' ref='actionButtons'>
+      <ExpansionPanel className='day-expansion-panel' ref='root'>
+        <div className='subjects-container' ref={(e) => { this.subjectsContainer = e }} />
+        <div className='buttons-container' ref={(e) => { this.buttonsContainer = e }} onMouseEnter={this.onButtonsContainerMouseEnter}>
+          <div className='action-buttons' ref={(e) => { this.actionButtons = e }}>
             <MaterialButton className='save' text='ZAPISZ' onClick={this.onSaveButtonClick} shadow={false} rippleStyle={this.materialButtonRippleStyle} />
             <MaterialButton className='cancel' text='ANULUJ' onClick={this.onCancelButtonClick} shadow={false} rippleStyle={{
               backgroundColor: '#000',
@@ -290,8 +231,8 @@ export default class Day extends Component {
           <MaterialButton className='add' text='DODAJ' onClick={this.onAddButtonClick} shadow={false} rippleStyle={this.materialButtonRippleStyle} />
           <div className='clear-both' />
         </div>
-        <Preloader ref='preloader' />
-      </div>
+        <Preloader ref={(e) => { this.preloader = e }} />
+      </ExpansionPanel>
     )
   }
 
@@ -300,7 +241,7 @@ export default class Day extends Component {
     const lessonsPlanPage = props.getLessonsPlanPage()
 
     lessonsPlanPage.days.push(this)
-    this.elements.title.innerHTML = lessonsPlanPage.dayNames[lessonsPlanPage.days.indexOf(this)]
+    this.getRoot().setTitle(lessonsPlanPage.dayNames[lessonsPlanPage.days.indexOf(this)])
 
     this.addSubjects()
 

@@ -23,6 +23,7 @@ $pictureBlur: 10px;
 @import 'src/imports/materialdesign/components/FAB/style.scss';
 @import 'src/imports/materialdesign/components/Snackbar/style.scss';
 @import 'src/imports/materialdesign/components/Switch/style.scss';
+@import 'src/imports/materialdesign/components/TimePicker/style.scss';
 @import 'src/imports/materialdesign/helpers/ripple/style.scss';
 
 @import 'views/App/styles.scss';
@@ -50,3 +51,6 @@ $pictureBlur: 10px;
 
 @import 'views/Pages/LessonsPlan/style.scss';
 @import 'views/Pages/LessonsPlan/components/AddLessonDialog/style.scss';
+@import 'views/Pages/LessonsPlan/components/Day/style.scss';
+@import 'views/Pages/LessonsPlan/components/ExpansionPanel/style.scss';
+@import 'views/Pages/LessonsPlan/components/LessonHours/style.scss';

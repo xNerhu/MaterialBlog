@@ -1,6 +1,7 @@
 import Component from '../../../helpers/Component'
 
 import Day from './components/Day'
+import LessonHours from './components/LessonHours'
 
 export default class LessonsPlanPage extends Component {
   beforeRender () {
@@ -113,7 +114,8 @@ export default class LessonsPlanPage extends Component {
         '11.30',
         '12.20',
         '13.30',
-        '14.20'
+        '14.20',
+        '15.10'
       ]
 
       self.lessonsFinish = [
@@ -124,7 +126,8 @@ export default class LessonsPlanPage extends Component {
         '12.15',
         '13.05',
         '14.15',
-        '15.05'
+        '15.05',
+        '15.50'
       ]
 
       // It's a weird problem. Object assign not working.
@@ -137,6 +140,12 @@ export default class LessonsPlanPage extends Component {
 
         self.renderComponents(day, self.elements.container)
       }
+
+      const lessonHours = (
+        <LessonHours getLessonsPlanPage={() => { return self }} />
+      )
+
+      self.renderComponents(lessonHours, self.elements.container)
     }, 10)
   }
 

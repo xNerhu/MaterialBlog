@@ -140,15 +140,16 @@ export default class TextField extends Component {
   /**
    * Toggles on input.
    * @param {Boolean}
+   * @param {Boolean} focus
    */
-  toggle (flag) {
+  toggle (flag, focus = true) {
     const root = this.getRoot()
     const input = this.getInput()
 
     root.classList.remove((flag) ? 'disabled' : 'enabled')
     root.classList.add((flag) ? 'enabled' : 'disabled')
 
-    if (flag) input.focus()
+    if (flag && focus) input.focus()
     this.toggled = flag
   }
 
@@ -178,8 +179,9 @@ export default class TextField extends Component {
   /**
    * Sets input value.
    * @param {String} value
+   * @param {Boolean} focus
    */
-  setValue (str) {
+  setValue (str, focus) {
     if (this.props.textarea === true) {
       this.elements.textarea.value = str
     } else {
@@ -189,7 +191,7 @@ export default class TextField extends Component {
     this.onInput()
 
     if (str.length >= 1 && !this.toggled) {
-      this.toggle(true)
+      this.toggle(true, focus)
     } else if (str.length < 1 && this.toggled) {
       this.toggle(false)
     }
