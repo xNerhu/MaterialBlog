@@ -3,6 +3,8 @@ import Component from '../../../../helpers/Component'
 import HoursClock from './components/HoursClock'
 import MinutesClock from './components/MinutesClock'
 
+import MaterialButton from '../MaterialButton'
+
 export default class TimePicker extends Component {
   beforeRender () {
     this.toggled = false
@@ -19,6 +21,38 @@ export default class TimePicker extends Component {
    */
   getRoot () {
     return this.elements.root
+  }
+
+  /**
+   * Shows or hides time picker dialog.
+   */
+  toggle (flag) {
+    const root = this.getRoot()
+
+    root.style[(flag) ? 'display' : 'top'] = (flag) ? 'block' : '25%'
+    if (!flag) root.style.opacity = '0'
+
+    setTimeout(function () {
+      root.style[(flag) ? 'top' : 'display'] = (flag) ? '50%' : 'none'
+      if (flag) root.style.opacity = '1'
+    }, (flag) ? 20 : 300)
+
+    this.toggleDark(flag)
+  }
+
+  /**
+   * Shows or hides dark.
+   * @param {Boolean}
+   */
+  toggleDark (flag) {
+    const opacity = this.props.darkOpacity
+    const dark = this.elements.dark
+
+    dark.style[(flag) ? 'display' : 'opacity'] = (flag) ? 'block' : '0'
+
+    setTimeout(function () {
+      dark.style[(flag) ? 'opacity' : 'display'] = (flag) ? opacity : 'none'
+    }, (flag) ? 20 : 300)
   }
 
   /**
@@ -187,40 +221,65 @@ export default class TimePicker extends Component {
 
   render () {
     return (
-      <div className='material-time-picker' ref='root'>
-        <div className='date-display'>
-          <div className='date-container'>
-            <span className='hour selected' ref='hour' onClick={() => this.selectClock(this.elements.hoursClock)}>
-              6
-            </span>
-            <span className='separate'>
-              :
-            </span>
-            <span className='minutes' ref='minutes' onClick={() => this.selectClock(this.elements.minutesClock)}>
-              30
-            </span>
-            <div className='am-pm-container'>
-              <div className='item selected' ref='am' onClick={() => this.selectTime(this.elements.am)}>
-                AM
-              </div>
-              <div className='item' ref='pm' onClick={() => this.selectTime(this.elements.pm)}>
-                PM
+      <div>
+        <div className='material-time-picker' ref='root'>
+          <div className='date-display'>
+            <div className='date-container'>
+              <span className='hour selected' ref='hour' onClick={() => this.selectClock(this.elements.hoursClock)}>
+                6
+              </span>
+              <span className='separate'>
+                :
+              </span>
+              <span className='minutes' ref='minutes' onClick={() => this.selectClock(this.elements.minutesClock)}>
+                30
+              </span>
+              <div className='am-pm-container'>
+                <div className='item selected' ref='am' onClick={() => this.selectTime(this.elements.am)}>
+                  AM
+                </div>
+                <div className='item' ref='pm' onClick={() => this.selectTime(this.elements.pm)}>
+                  PM
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className='clock-buttons-container'>
-          <div className='clock' ref='root'>
-            <HoursClock ref='hoursClock' getTimePicker={() => { return this }} />
-            <MinutesClock ref='minutesClock' getTimePicker={() => { return this }} />
-            <div className='dot' />
+          <div className='clock-buttons-container'>
+            <div className='clock'>
+              <HoursClock ref='hoursClock' getTimePicker={() => { return this }} />
+              <MinutesClock ref='minutesClock' getTimePicker={() => { return this }} />
+              <div className='dot' />
+            </div>
+            <div className='buttons-container' ref='buttonsContainer' />
           </div>
         </div>
+        <div className='material-time-picker-dark' ref='dark' />
       </div>
     )
   }
 
   afterRender () {
+    const props = this.props
+
+    if (props.darkOpacity == null) props.darkOpacity = 0.7
+    if (props.actionButtonRippleStyle == null) {
+      props.actionButtonRippleStyle = {
+        backgroundColor: '#26a69a',
+        opacity: 0.3
+      }
+    }
+
+    this.toggle(true)
+
     this.actualClock = this.elements.hoursClock
+
+    const buttons = (
+      <div>
+        <MaterialButton text='OK' shadow={false} rippleStyle={this.props.actionButtonRippleStyle} />
+        <MaterialButton text='ANULUJ' shadow={false} rippleStyle={this.props.actionButtonRippleStyle} onClick={() => { this.toggle(false) }} />
+      </div>
+    )
+
+    this.renderComponents(buttons, this.elements.buttonsContainer)
   }
 }

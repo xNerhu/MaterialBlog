@@ -47,10 +47,16 @@ export default class Component {
           }
 
           if (typeof props.onClick === 'function') element.addEventListener('click', props.onClick)
+
           if (typeof props.onMouseDown === 'function') element.addEventListener('mousedown', props.onMouseDown)
           if (typeof props.onMouseEnter === 'function') element.addEventListener('mouseenter', props.onMouseEnter)
           if (typeof props.onMouseLeave === 'function') element.addEventListener('mouseleave', props.onMouseLeave)
+
           if (typeof props.onTouchStart === 'function') element.addEventListener('touchstart', props.onTouchStart)
+          if (typeof props.onTouchEnd === 'function') element.addEventListener('touchend', props.onTouchEnd)
+          if (typeof props.onTouchCancel === 'function') element.addEventListener('touchcancel', props.onTouchCancel)
+          if (typeof props.onTouchMove === 'function') element.addEventListener('touchmove', props.onTouchMove)
+
           if (typeof props.onFocus === 'function') element.addEventListener('focus', props.onFocus)
           if (typeof props.onBlur === 'function') element.addEventListener('blur', props.onBlur)
           if (typeof props.onInput === 'function') element.addEventListener('input', props.onInput)

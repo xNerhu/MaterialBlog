@@ -37,13 +37,24 @@ export default class Tick extends Component {
     if (clock.isMouseDown && !this.isSelected()) timePicker.selectTick(this)
   }
 
+  /**
+   * On touch start. (on mobile)
+   * Selects touched tick.
+   * @param {Event}
+   */
+  onTouchStart = (e) => {
+    const timePicker = this.props.getTimePicker()
+
+    if (!this.isSelected()) timePicker.selectTick(this)
+  }
+
   isSelected () {
     return (this.props.getClock().selectedTick === this)
   }
 
   render () {
     return (
-      <div className='tick' ref='root' onMouseDown={this.onMouseDown} onMouseEnter={this.onMouseEnter}>
+      <div className='tick' ref='root' onMouseDown={this.onMouseDown} onMouseEnter={this.onMouseEnter} onTouchStart={this.onTouchStart} onTouchEnd={this.onTouchEnd} onTouchMove={this.onTouchMove}>
         <div className='number' ref='number' />
       </div>
     )
