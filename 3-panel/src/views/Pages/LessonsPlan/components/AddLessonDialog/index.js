@@ -59,9 +59,10 @@ export default class AddLessonDialog extends Component {
       const error = DialogManager.checkForErrors(this)
 
       if (!error) {
-        lessonsPlanPage.lessonsPlan[index].subjects.push(this.textField.getValue())
+        lessonsPlanPage.lessonsPlan.plan[index].subjects.push(this.textField.getValue())
         this.day.addSubjects()
-        this.day.toggleActionButtons(true)
+        this.day.isEdited = true
+        lessonsPlanPage.toggleActionButtons(true, this.day.actionButtons)
 
         dialog.toggle(false)
       }

@@ -16,6 +16,7 @@ export default class Day extends Component {
 
     this.lastEnteredSubject = null
 
+    this.isEdited = false
     this.isSaving = false
 
     this.materialButtonRippleStyle = {
@@ -77,13 +78,16 @@ export default class Day extends Component {
    * @param {Subject} moved subject
    */
   toggleMovingMode (flag, subject) {
+    const lessonsPlanPage = this.props.getLessonsPlanPage()
+
     if (flag) {
       this.isMovingMode = true
       this.movedSubject = subject
 
       window.addEventListener('mouseup', this.onWindowMouseUp)
 
-      this.toggleActionButtons(true)
+      this.isEdited = true
+      lessonsPlanPage.toggleActionButtons(true, this.actionButtons)
     } else {
       window.removeEventListener('mouseup', this.onWindowMouseUp)
 
@@ -91,9 +95,7 @@ export default class Day extends Component {
         const oldIndex = this.subjects.indexOf(this.movedSubject)
         const newIndex = this.subjects.indexOf(this.lastEnteredSubject)
 
-        const lessonsPlanPage = this.props.getLessonsPlanPage()
-
-        lessonsPlanPage.lessonsPlan[lessonsPlanPage.days.indexOf(this)].subjects = this.props.data.subjects.move(oldIndex, newIndex)
+        lessonsPlanPage.lessonsPlan.plan[lessonsPlanPage.days.indexOf(this)].subjects = this.props.data.subjects.move(oldIndex, newIndex)
 
         this.clearBorderFromLastEnterSubject()
         this.addSubjects()
@@ -133,11 +135,12 @@ export default class Day extends Component {
       const lessonsPlanPage = this.props.getLessonsPlanPage()
 
       const index = lessonsPlanPage.days.indexOf(this)
-      lessonsPlanPage.lessonsPlan[index].subjects = JSON.parse(JSON.stringify(lessonsPlanPage.lessonsPlanCopy[index])).subjects // Same weird problem. Can't clone object copy of lessons plan.
+      lessonsPlanPage.lessonsPlan.plan[index].subjects = JSON.parse(JSON.stringify(lessonsPlanPage.lessonsPlanCopy.plan[index])).subjects // Same weird problem. Can't clone object copy of lessons plan.
 
       this.addSubjects()
+      this.isEdited = false
 
-      this.toggleActionButtons(false)
+      lessonsPlanPage.toggleActionButtons(false, this.actionButtons)
     }
   }
 
@@ -149,32 +152,42 @@ export default class Day extends Component {
   onSaveButtonClick = (e) => {
     const self = this
 
-    const subjectsContainer = this.subjectsContainer
-    const buttonsContainer = this.buttonsContainer
-
     const lessonsPlanPage = this.props.getLessonsPlanPage()
-    const preloaderRoot = this.preloader.getRoot()
+    const lessonHours = lessonsPlanPage.elements.lessonHours
 
-    subjectsContainer.style.opacity = '0'
-    subjectsContainer.classList.add('disable-cursor-pointer')
-
-    buttonsContainer.style.height = '0px'
-    this.toggleActionButtons(false)
+    lessonsPlanPage.toggleSavingAnimation(true, this)
     this.isSaving = true
+    this.isEdited = false
 
-    preloaderRoot.style.display = 'block'
+    const edited = []
+
+    if (lessonHours.isEdited) {
+      edited.push(lessonHours)
+      lessonsPlanPage.toggleSavingAnimation(true, lessonHours)
+    }
+
+    for (var i = 0; i < lessonsPlanPage.days.length; i++) {
+      const day = lessonsPlanPage.days[i]
+
+      if (day.isEdited) {
+        edited.push(day)
+        lessonsPlanPage.toggleSavingAnimation(true, day)
+      }
+    }
 
     setTimeout(function () {
-      subjectsContainer.style.opacity = '1'
-      subjectsContainer.classList.remove('disable-cursor-pointer')
-
-      buttonsContainer.style.height = buttonsContainer.scrollHeight + 'px'
-
       self.isSaving = false
 
-      preloaderRoot.style.display = 'none'
-
       lessonsPlanPage.lessonsPlanCopy = JSON.parse(JSON.stringify(lessonsPlanPage.lessonsPlan))
+      lessonsPlanPage.toggleActionButtons(false, lessonsPlanPage.elements.lessonHours.actionButtons)
+      lessonsPlanPage.toggleSavingAnimation(false, self)
+
+      for (var i = 0; i < edited.length; i++) {
+        edited[i].isEdited = false
+        lessonsPlanPage.toggleSavingAnimation(false, edited[i])
+      }
+
+      lessonHours.isEdited = false
     }, 1000)
   }
 
@@ -186,12 +199,15 @@ export default class Day extends Component {
 
     const length = this.props.data.subjects.length + 1
 
-    if (lessonsPlanPage.lessonsStart.length < length) {
-      error = 'Brakuje godziny rozpoczynającej lekcję (po ' + lessonsPlanPage.lessonsStart[lessonsPlanPage.lessonsStart.length - 1] + ')'
+    const lessonsPlanStart = lessonsPlanPage.lessonsPlan.start
+    const lessonsPlanFinish = lessonsPlanPage.lessonsPlan.finish
+
+    if (lessonsPlanStart.length < length) {
+      error = 'Brakuje godziny rozpoczynającej lekcję (po ' + lessonsPlanStart[lessonsPlanStart.length - 1] + ')'
     }
 
-    if (lessonsPlanPage.lessonsFinish.length < length) {
-      error = ((error) ? (error + '<br>') : '') + 'Brakuje godziny kończącej lekcję (' + lessonsPlanPage.lessonsFinish[lessonsPlanPage.lessonsFinish.length - 1] + ')'
+    if (lessonsPlanFinish.length < length) {
+      error = ((error) ? (error + '<br>') : '') + 'Brakuje godziny kończącej lekcję (' + lessonsPlanFinish[lessonsPlanFinish.length - 1] + ')'
     }
 
     if (!error) {
@@ -199,20 +215,6 @@ export default class Day extends Component {
     } else {
       app.elements.errorDialog.show(error)
     }
-  }
-
-  /**
-   * Shows or hides action buttons container (save and cancel)
-   * @param {Boolean}
-   */
-  toggleActionButtons (flag) {
-    const actionButtons = this.actionButtons
-
-    actionButtons.style[(flag) ? 'display' : 'opacity'] = (flag) ? 'block' : '0'
-
-    setTimeout(function () {
-      actionButtons.style[(flag) ? 'opacity' : 'display'] = (flag) ? '1' : 'none'
-    }, (flag) ? 20 : 300)
   }
 
   render () {
@@ -228,9 +230,10 @@ export default class Day extends Component {
             }} />
           </div>
           <MaterialButton className='add' text='DODAJ' onClick={this.onAddButtonClick} shadow={false} rippleStyle={this.materialButtonRippleStyle} />
-          <div className='clear-both' />
         </div>
-        <Preloader ref={(e) => { this.preloader = e }} />
+        <div className='preloader-container' ref={(e) => { this.preloaderContainer = e }}>
+          <Preloader ref={(e) => { this.preloader = e }} />
+        </div>
       </ExpansionPanel>
     )
   }

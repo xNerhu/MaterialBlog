@@ -85,7 +85,6 @@ export default class TimePicker extends Component {
 
     if (hoursTickIndex < 0) console.log('cant find hour tick index')
     if (minutesTickIndex < 0) console.log('cant find minutes tick index')
-    console.log(hoursTickIndex, minutesTickIndex)
 
     const hoursTick = hoursClock.ticks[hoursTickIndex]
     const minutesTick = minutesClock.ticks[minutesTickIndex]

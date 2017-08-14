@@ -9,11 +9,11 @@ export default class Item extends Component {
     return this.elements.root
   }
 
-  editStart = (e) => {
+  toggleEditing (time, isStart) {
     const app = window.app
+    const lessonsPlanPage = this.props.getLessonsPlanPage()
     const timePicker = app.elements.timePicker
 
-    const time = this.props.start
     const split = time.split('.')
     let hour = split[0]
     const minutes = split[1]
@@ -27,23 +27,30 @@ export default class Item extends Component {
 
     timePicker.setTime(hour, minutes)
     timePicker.toggle(true, false)
+
+    lessonsPlanPage.editedTime = {
+      time: time,
+      start: isStart,
+      item: this
+    }
+  }
+
+  setTime () {
+    this.elements.start.innerHTML = this.props.start
+    this.elements.finish.innerHTML = this.props.finish
   }
 
   render () {
     return (
       <div className='item'>
-        <div className='start' ref='start' onClick={this.editStart} />
-        <div className='finish' ref='finish' />
+        <div className='start' ref='start' onClick={() => { this.toggleEditing(this.props.start, true) }} />
+        <div className='finish' ref='finish' onClick={() => { this.toggleEditing(this.props.finish, false) }} />
       </div>
     )
   }
 
   afterRender () {
-    const props = this.props
-
-    props.getLessonHours().items.push(this)
-
-    this.elements.start.innerHTML = props.start
-    this.elements.finish.innerHTML = props.finish
+    this.setTime()
+    this.props.getLessonHours().items.push(this)
   }
 }

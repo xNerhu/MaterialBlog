@@ -71,6 +71,16 @@ export default class Subject extends Component {
     this.touched = true
   }
 
+  setTime () {
+    const day = this.props.getDay()
+    const lessonsPlanPage = day.props.getLessonsPlanPage()
+
+    const indexInSubjects = day.subjects.indexOf(this)
+    const index = (indexInSubjects < 0) ? day.subjects.length : indexInSubjects
+
+    this.elements.hour.innerHTML = lessonsPlanPage.lessonsPlan.start[index] + ' - ' + lessonsPlanPage.lessonsPlan.finish[index]
+  }
+
   render () {
     return (
       <div className='subject' ref='root' onMouseDown={this.onMouseDown} onMouseEnter={this.onMouseEnter}>
@@ -88,12 +98,9 @@ export default class Subject extends Component {
   afterRender () {
     const props = this.props
     const day = props.getDay()
-    const lessonsPlanPage = day.props.getLessonsPlanPage()
 
+    this.setTime()
     day.subjects.push(this)
-
-    const index = day.subjects.length - 1
-    this.elements.hour.innerHTML = lessonsPlanPage.lessonsStart[index] + ' - ' + lessonsPlanPage.lessonsFinish[index]
 
     if (props.menuIconRippleStyle == null) {
       props.menuIconRippleStyle = {
