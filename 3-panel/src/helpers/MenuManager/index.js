@@ -122,7 +122,6 @@ export default class MenuManager {
   static setMenuItems () {
     const app = window.app
     const menu = app.getMenu()
-
     const postDialog = app.elements.postDialog
     const postsPage = app.getPostsPage()
 
@@ -147,7 +146,6 @@ export default class MenuManager {
    */
   static setPostMenuItems () {
     const app = window.app
-
     const menu = app.elements.postItemMenu
     const dialog = app.elements.deletePostDialog
 
@@ -174,9 +172,7 @@ export default class MenuManager {
    */
   static setCategoryMenuItems () {
     const app = window.app
-
     const menu = app.elements.categoryMenu
-
     const gallery = app.getGalleryPage()
 
     const items = [
@@ -209,7 +205,6 @@ export default class MenuManager {
 
   static setPicturesMenuItems () {
     const app = window.app
-
     const menu = app.elements.picturesMenu
 
     const items = [
@@ -217,6 +212,22 @@ export default class MenuManager {
         text: 'Usuń',
         onClick: function () {
           app.getGalleryPage().elements.picturesDialog.toggleDeleteMode(true)
+        }
+      }
+    ]
+
+    menu.setItems(items)
+  }
+
+  static setLessonsPlanSubjectMenu () {
+    const app = window.app
+    const menu = app.elements.lessonsPlanSubjectMenu
+
+    const items = [
+      {
+        text: 'Usuń',
+        onClick: function () {
+          app.elements.deleteLessonDialog.elements.dialog.toggle(true)
         }
       }
     ]

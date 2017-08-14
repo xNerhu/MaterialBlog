@@ -1,4 +1,5 @@
 import Component from '../../../../../../../helpers/Component'
+import MenuManager from '../../../../../../../helpers/MenuManager'
 
 export default class Subject extends Component {
   beforeRender () {
@@ -47,6 +48,16 @@ export default class Subject extends Component {
     }
   }
 
+  onMenuIconClick = (e) => {
+    const app = window.app
+    const menu = app.elements.lessonsPlanSubjectMenu
+    const lessonsPlanPage = this.props.getLessonsPlanPage()
+
+    document.removeEventListener('click', app.onClick)
+    MenuManager.toggle(true, menu, e.target, false)
+    lessonsPlanPage.clickedLesson = this
+  }
+
   /**
    * On menu icon mouse down.
    * Makes ripple.
@@ -90,7 +101,7 @@ export default class Subject extends Component {
             this.props.name
           }
         </div>
-        <div className='menu-icon ripple-icon' ref='menuIcon' onMouseDown={this.onMenuIconMouseDown} onTouchStart={this.onMenuIconTouchStart} />
+        <div className='menu-icon ripple-icon' ref='menuIcon' onClick={this.onMenuIconClick} onMouseDown={this.onMenuIconMouseDown} onTouchStart={this.onMenuIconTouchStart} />
       </div>
     )
   }

@@ -51,7 +51,7 @@ export default class Day extends Component {
    */
   addSubject (name) {
     const subject = (
-      <Subject name={name} getDay={() => { return this }} />
+      <Subject name={name} getDay={() => { return this }} getLessonsPlanPage={() => { return this.props.getLessonsPlanPage() }} />
     )
 
     this.renderComponents(subject, this.subjectsContainer)

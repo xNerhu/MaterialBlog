@@ -15,6 +15,7 @@ import DeleteCategoryDialog from '../Pages/Gallery/components/DeleteCategoryDial
 import DeletePicturesDialog from '../Pages/Gallery/components/DeletePicturesDialog'
 
 import AddLessonDialog from '../Pages/LessonsPlan/components/AddLessonDialog'
+import DeleteLessonDialog from '../Pages/LessonsPlan/components/DeleteLessonDialog'
 
 import NavigationDrawer from './components/NavigationDrawer/index'
 import Toolbar from './components/Toolbar'
@@ -416,6 +417,7 @@ export default class App extends Component {
         <Menu ref='postItemMenu' className='toolbar-menu' mobile='true' />
         <Menu ref='categoryMenu' className='toolbar-menu' mobile='true' />
         <Menu ref='picturesMenu' className='toolbar-menu' mobile='true' />
+        <Menu ref='lessonsPlanSubjectMenu' className='toolbar-menu' mobile='true' />
         <Dialog ref='deletePostsDialog' title='Jesteś pewny(a)?'>
           Nie będzie można ich odzyskać.
         </Dialog>
@@ -427,6 +429,7 @@ export default class App extends Component {
         <DeleteCategoryDialog ref='deleteCategoryDialog' />
         <DeletePicturesDialog ref='deletePicturesDialog' />
         <AddLessonDialog ref='addLessonDialog' />
+        <DeleteLessonDialog ref='deleteLessonDialog' />
         <ErrorDialog ref='errorDialog' />
         <TimePicker ref='timePicker' onConfirm={(hour, minutes, isAM) => { this.getLessonsPlanPage().onTimePickerConfirm(hour, minutes, isAM) }} />
         <Snackbar ref='deletePostsSnackbar' text='Pomyślnie usunięto posty' />
@@ -437,6 +440,7 @@ export default class App extends Component {
         <Snackbar ref='deleteCategorySnackbar' text='Pomyślnie usunięto kategorię' />
         <Snackbar ref='addPicturesSnackbar' text='Pomyślnie dodano zdjęcia' />
         <Snackbar ref='deletePicturesSnackbar' text='Pomyślnie usunięto zdjęcia' />
+        <Snackbar ref='deleteLessonSnackbar' text='Pomyślnie usunięto lekcję' />
         <Tooltip ref='viewTooltip' text='Przełącz na liste' />
         <Tooltip ref='showPicturesTooltip' text='Pokaż zdjęcia' />
         <Tooltip ref='uploadButtonTooltip' text='Najlepiej w proporcjach 16:9' />
@@ -453,6 +457,7 @@ export default class App extends Component {
     MenuManager.setPostMenuItems()
     MenuManager.setCategoryMenuItems()
     MenuManager.setPicturesMenuItems()
+    MenuManager.setLessonsPlanSubjectMenu()
     DialogManager.setDeletePostsDialogItems()
     DialogManager.setDeletePostDialogItems()
 
@@ -483,7 +488,8 @@ export default class App extends Component {
       this.elements.menu,
       this.elements.postItemMenu,
       this.elements.categoryMenu,
-      this.elements.picturesMenu
+      this.elements.picturesMenu,
+      this.elements.lessonsPlanSubjectMenu
     ]
 
     for (var i = 0; i < menus.length; i++) {
