@@ -94,6 +94,21 @@ export default class Day extends Component {
     lessonsPlanPage.toggleActionButtons(false, this.actionButtons)
   }
 
+  onAddButtonClick = (e) => {
+    const lessonsPlanPage = this.props.getLessonsPlanPage()
+    const lessonsPlan = lessonsPlanPage.lessonsPlan
+
+    const start = lessonsPlan.start[lessonsPlan.start.length - 1]
+    const finish = lessonsPlan.finish[lessonsPlan.finish.length - 1]
+
+    lessonsPlan.start.push(start)
+    lessonsPlan.finish.push(finish)
+
+    this.addItem(start, finish)
+
+    lessonsPlanPage.toggleActionButtons(true, this.actionButtons)
+  }
+
   render () {
     return (
       <ExpansionPanel className='hours-expansion-panel' ref='root'>
