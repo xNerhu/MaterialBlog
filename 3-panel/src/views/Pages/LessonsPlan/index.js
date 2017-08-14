@@ -27,6 +27,8 @@ export default class LessonsPlanPage extends Component {
     this.days = []
     this.editedTime = null
     this.clickedLesson = null
+    this.clickedLessonHours = null
+    this.deletingLesson = false
   }
 
   /**

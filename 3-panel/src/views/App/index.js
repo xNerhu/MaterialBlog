@@ -16,6 +16,7 @@ import DeletePicturesDialog from '../Pages/Gallery/components/DeletePicturesDial
 
 import AddLessonDialog from '../Pages/LessonsPlan/components/AddLessonDialog'
 import DeleteLessonDialog from '../Pages/LessonsPlan/components/DeleteLessonDialog'
+import DeleteLessonHoursDialog from '../Pages/LessonsPlan/components/DeleteLessonHoursDialog'
 
 import NavigationDrawer from './components/NavigationDrawer/index'
 import Toolbar from './components/Toolbar'
@@ -430,17 +431,19 @@ export default class App extends Component {
         <DeletePicturesDialog ref='deletePicturesDialog' />
         <AddLessonDialog ref='addLessonDialog' />
         <DeleteLessonDialog ref='deleteLessonDialog' />
+        <DeleteLessonHoursDialog ref='deleteLessonHoursDialog' />
         <ErrorDialog ref='errorDialog' />
         <TimePicker ref='timePicker' onConfirm={(hour, minutes, isAM) => { this.getLessonsPlanPage().onTimePickerConfirm(hour, minutes, isAM) }} />
-        <Snackbar ref='deletePostsSnackbar' text='Pomyślnie usunięto posty' />
-        <Snackbar ref='deletePostSnackbar' text='Pomyślnie usunięto post' />
-        <Snackbar ref='addPostSnackbar' text='Pomyślnie dodano post' />
-        <Snackbar ref='addCategorySnackbar' text='Pomyślnie dodano kategorię' />
-        <Snackbar ref='editCategorySnackbar' text='Pomyślnie edytowano kategorię' />
-        <Snackbar ref='deleteCategorySnackbar' text='Pomyślnie usunięto kategorię' />
-        <Snackbar ref='addPicturesSnackbar' text='Pomyślnie dodano zdjęcia' />
-        <Snackbar ref='deletePicturesSnackbar' text='Pomyślnie usunięto zdjęcia' />
-        <Snackbar ref='deleteLessonSnackbar' text='Pomyślnie usunięto lekcję' />
+        <Snackbar ref='deletePostsSnackbar' text='Usunięto posty' />
+        <Snackbar ref='deletePostSnackbar' text='Usunięto post' />
+        <Snackbar ref='addPostSnackbar' text='Dodano nowy post' />
+        <Snackbar ref='addCategorySnackbar' text='Dodano nową kategorię' />
+        <Snackbar ref='editCategorySnackbar' text='Zapisano kategorię' />
+        <Snackbar ref='deleteCategorySnackbar' text='Usunięto kategorię' />
+        <Snackbar ref='addPicturesSnackbar' text='Dodano zdjęcia' />
+        <Snackbar ref='deletePicturesSnackbar' text='Usunięto zdjęcia' />
+        <Snackbar ref='deleteLessonSnackbar' text='Usunięto lekcję' />
+        <Snackbar ref='deleteLessonHoursSnackbar' text='Usunięto godziny lekcji' />
         <Tooltip ref='viewTooltip' text='Przełącz na liste' />
         <Tooltip ref='showPicturesTooltip' text='Pokaż zdjęcia' />
         <Tooltip ref='uploadButtonTooltip' text='Najlepiej w proporcjach 16:9' />

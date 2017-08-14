@@ -20,5 +20,17 @@
       display: block;
       clear: both;
     }
+
+    & .menu-icon {
+      width: 48px;
+      height: 48px;
+      position: absolute;
+      @include center-vertical;
+      right: 12px;
+      @include image-center(24px, auto);
+      background-image: url(images/Toolbar/more.png);
+      opacity: 0.54;
+      cursor: pointer;
+    }
   }
 }

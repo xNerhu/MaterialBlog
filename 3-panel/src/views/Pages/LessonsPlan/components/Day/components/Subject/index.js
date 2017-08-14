@@ -56,6 +56,7 @@ export default class Subject extends Component {
     document.removeEventListener('click', app.onClick)
     MenuManager.toggle(true, menu, e.target, false)
     lessonsPlanPage.clickedLesson = this
+    lessonsPlanPage.deletingLesson = true
   }
 
   /**
@@ -110,14 +111,14 @@ export default class Subject extends Component {
     const props = this.props
     const day = props.getDay()
 
-    this.setTime()
-    day.subjects.push(this)
-
     if (props.menuIconRippleStyle == null) {
       props.menuIconRippleStyle = {
         backgroundColor: '#000',
         opacity: 0.3
       }
     }
+
+    this.setTime()
+    day.subjects.push(this)
   }
 }

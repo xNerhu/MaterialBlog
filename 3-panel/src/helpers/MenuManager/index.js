@@ -222,12 +222,17 @@ export default class MenuManager {
   static setLessonsPlanSubjectMenu () {
     const app = window.app
     const menu = app.elements.lessonsPlanSubjectMenu
+    const lessonsPlanPage = app.getLessonsPlanPage()
 
     const items = [
       {
         text: 'Usuń',
         onClick: function () {
-          app.elements.deleteLessonDialog.elements.dialog.toggle(true)
+          if (lessonsPlanPage.deletingLesson) {
+            app.elements.deleteLessonDialog.elements.dialog.toggle(true)
+          } else {
+            app.elements.deleteLessonHoursDialog.elements.dialog.toggle(true)
+          }
         }
       }
     ]
