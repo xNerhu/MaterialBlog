@@ -122,7 +122,7 @@ export default class UploadPicturesDialog extends Component {
   }
 
   /**
-   * On done uploading event.
+   * On done uploading.
    */
   onUpload () {
     const app = window.app

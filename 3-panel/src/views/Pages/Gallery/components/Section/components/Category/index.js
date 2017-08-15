@@ -36,7 +36,7 @@ export default class Category extends Component {
   }
 
   /**
-   * On click event.
+   * On click.
    * Triggers on click function in props.
    * @param {Event}
    */
@@ -50,7 +50,7 @@ export default class Category extends Component {
   }
 
   /**
-   * On mouse down event.
+   * On mouse down.
    * Makes ripple.
    * @param {Event}
    */
@@ -65,7 +65,7 @@ export default class Category extends Component {
   }
 
   /**
-   * On touch start event. (on mobile)
+   * On touch start. (on mobile)
    * Makes ripple.
    * @param {Event}
    */
@@ -82,7 +82,7 @@ export default class Category extends Component {
   }
 
   /**
-   * On menu icon click event.
+   * On menu icon click.
    * Shows category menu.
    * @param {Event}
    */
@@ -98,7 +98,7 @@ export default class Category extends Component {
   }
 
   /**
-   * On menu icon mouse down event.
+   * On menu icon mouse down.
    * Makes ripple.
    * @param {Event}
    */
@@ -112,7 +112,7 @@ export default class Category extends Component {
   }
 
   /**
-   * On menu icon touch start event. (on mobile)
+   * On menu icon touch start. (on mobile)
    * Makes ripple.
    * @param {Event}
    */

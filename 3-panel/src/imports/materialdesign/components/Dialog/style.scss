@@ -74,6 +74,12 @@
     background-color: transparent;
     color: #FFC107;
   }
+
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
 }
 
 .material-dialog-dark {

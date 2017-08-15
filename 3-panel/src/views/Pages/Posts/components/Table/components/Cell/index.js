@@ -17,7 +17,7 @@ export default class Cell extends Component {
   }
 
   /**
-   * On menu icon click event.
+   * On menu icon click.
    * Shows menu.
    * @param {Event}
    */
@@ -33,7 +33,7 @@ export default class Cell extends Component {
   }
 
   /**
-   * On menu icon mouse down event.
+   * On menu icon mouse down.
    * Makes ripple.
    * @param {Event}
    */
@@ -45,7 +45,7 @@ export default class Cell extends Component {
   }
 
   /**
-   * On menu icon touch start event. (on mobile)
+   * On menu icon touch start. (on mobile)
    * Makes ripple.
    * @param {Event}
    */
@@ -57,7 +57,7 @@ export default class Cell extends Component {
   }
 
   /**
-   * On checkbox check event.
+   * On checkbox check.
    * @param {Boolean} checked
    */
   onCheck = (flag) => {

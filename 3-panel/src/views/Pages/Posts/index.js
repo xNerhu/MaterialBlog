@@ -181,28 +181,24 @@ export default class PostsPage extends Component {
   }
 
   /**
-   * On select this page event.
+   * On select this page.
    */
   onSelect = () => {
     const app = window.app
     const toolbar = app.getToolbar()
 
     app.toggleFAB(true)
-
     toolbar.showItems()
   }
 
   /**
-   * On deselect this page event.
+   * On deselect this page.
    */
   onDeselect = (selectedPage) => {
     const app = window.app
     const toolbar = app.getToolbar()
 
-    if (selectedPage !== app.getGalleryPage()) {
-      app.toggleFAB(false)
-    }
-
+    if (selectedPage !== app.getGalleryPage()) app.toggleFAB(false)
     toolbar.hideItems(false, false)
   }
 
@@ -277,7 +273,7 @@ export default class PostsPage extends Component {
   }
 
   /**
-   * On menu delete posts button click event.
+   * On menu delete posts button click.
    * @param {Event}
    */
   onMenuItemDeletePostsClick = (e) => {
@@ -342,7 +338,7 @@ export default class PostsPage extends Component {
   }
 
   /**
-   * On checkbox check event.
+   * On checkbox check.
    * @param {Boolean} checked or unchecked
    * @param {Checkbox}
    */
@@ -411,7 +407,7 @@ export default class PostsPage extends Component {
   }
 
   /**
-   * On toolbar button delete posts click event.
+   * On toolbar button delete posts click.
    * Shows confirm dialog.
    * @param {Event}
    */
@@ -426,7 +422,7 @@ export default class PostsPage extends Component {
   }
 
   /**
-   * On delete posts dialog confirm click event.
+   * On delete posts dialog confirm click.
    */
   onDeletePostsDialogConfirmClick = (e) => {
     const app = window.app
@@ -449,7 +445,7 @@ export default class PostsPage extends Component {
   }
 
   /**
-   * On delete post dialog confirm click event.
+   * On delete post dialog confirm click.
    * TODO
    */
   onDeletePostDialogConfirmClick = (e) => {
@@ -488,7 +484,7 @@ export default class PostsPage extends Component {
   }
 
   /**
-   * On toolbar view item click event.
+   * On toolbar view item click.
    * Changes table.
    * @param {Event}
    */
@@ -505,7 +501,7 @@ export default class PostsPage extends Component {
   }
 
   /**
-   * On toolbar view item mouse enter event.
+   * On toolbar view item mouse enter.
    * Shows tooltip.
    * @param {Event}
    */
@@ -519,7 +515,7 @@ export default class PostsPage extends Component {
   }
 
   /**
-   * On toolbar view item mouse leave event.
+   * On toolbar view item mouse leave.
    * Hides tooltip.
    * @param {Event}
    */
@@ -528,7 +524,7 @@ export default class PostsPage extends Component {
   }
 
   /**
-   * On toolbar show pictures icon click event.
+   * On toolbar show pictures icon click.
    * Shows or hides pictures in table or list.
    * @param {Event}
    */
@@ -556,7 +552,7 @@ export default class PostsPage extends Component {
   }
 
   /**
-   * On toolbar show images mouse enter event.
+   * On toolbar show images mouse enter.
    * Shows tooltip.
    * @param {Event}
    */
@@ -570,7 +566,7 @@ export default class PostsPage extends Component {
   }
 
   /**
-   * On toolbar show images mouse leave event.
+   * On toolbar show images mouse leave.
    * Hides tooltip.
    * @param {Event}
    */
@@ -595,7 +591,7 @@ export default class PostsPage extends Component {
   }
 
   /**
-   * On load button click event.
+   * On load button click.
    * @param {Event}
    */
   onLoadButtonClick = (e) => {

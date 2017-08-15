@@ -1,9 +1,6 @@
 import Component from './../../../../helpers/Component'
 
 export default class Preloader extends Component {
-  beforeRender () {
-
-  }
   /**
    * Gets root.
    * @return {DOMElement} root.

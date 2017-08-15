@@ -14,7 +14,7 @@ export default class Post extends Component {
   }
 
   /**
-   * On mouse down event.
+   * On mouse down.
    * Makes ripple.
    * @param {Event}
    */
@@ -26,7 +26,7 @@ export default class Post extends Component {
   }
 
   /**
-   * On touch start event (on mobile).
+   * On touch start. (on mobile)
    * Makes ripple.
    * @param {Event}
    */
@@ -40,7 +40,7 @@ export default class Post extends Component {
   }
 
   /**
-   * On action icon mouse down event.
+   * On action icon mouse down.
    * Makes ripple.
    * @param {Event}
    */
@@ -52,7 +52,7 @@ export default class Post extends Component {
   }
 
   /**
-   * On action icon touch start event (on mobile).
+   * On action icon touch start. (on mobile)
    * Makes ripple.
    * @param {Event}
    */
@@ -63,7 +63,7 @@ export default class Post extends Component {
   }
 
   /**
-   * On show comments button click event.
+   * On show comments button click.
    * @param {Event}
    */
   onShowCommentsButtonClick = (e) => {

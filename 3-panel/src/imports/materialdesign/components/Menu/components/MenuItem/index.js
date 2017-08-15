@@ -14,7 +14,7 @@ export default class MenuItem extends Component {
   }
 
   /**
-   * On mouse down event.
+   * On mouse down.
    * Makes ripple.
    * @param {Event}
    */
@@ -28,7 +28,7 @@ export default class MenuItem extends Component {
   }
 
   /**
-   * On touch start event. (on mobile)
+   * On touch start. (on mobile)
    * Makes ripple.
    * @param {Event}
    */
@@ -64,8 +64,6 @@ export default class MenuItem extends Component {
       }
     }
 
-    const menu = this.props.getMenu()
-
-    menu.items.push(this)
+    this.props.getMenu().items.push(this)
   }
 }

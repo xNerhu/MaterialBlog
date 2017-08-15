@@ -55,14 +55,17 @@ export default class Toolbar extends Component {
 
     for (var i = 0; i < items.length; i++) {
       const item = items[i]
-      const type = item.type
-      const subType = item.subType
-      const position = item.position
       let style = item.style
-      const image = item.image
-      const onClick = item.onClick
-      const onMouseEnter = item.onMouseEnter
-      const onMouseLeave = item.onMouseLeave
+
+      const {
+        type,
+        subType,
+        position,
+        image,
+        onClick,
+        onMouseEnter,
+        onMouseLeave
+      } = item
 
       if (type === 'Button') {
         let className = 'toolbar-button'

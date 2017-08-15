@@ -36,7 +36,7 @@ export default class AddCategoryDialog extends Component {
   }
 
   /**
-   * On dialog action button delete category click event.
+   * On dialog action button delete category click.
    * @param {Event}
    */
   onDeleteButtonClick = (e) => {

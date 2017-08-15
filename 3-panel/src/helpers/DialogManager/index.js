@@ -55,19 +55,11 @@ export default class DialogManager {
    * @param {DOMElement}
    */
   static toggleFullScreenDialog (flag, root) {
-    if (flag) {
-      root.style.display = 'block'
+    root.style[(flag) ? 'display' : 'opacity'] = (flag) ? 'block' : '0'
 
-      setTimeout(function () {
-        root.style.opacity = '1'
-      }, 10)
-    } else {
-      root.style.opacity = '0'
-
-      setTimeout(function () {
-        root.style.display = 'none'
-      }, 300)
-    }
+    setTimeout(function () {
+      root.style[(flag) ? 'opacity' : 'display'] = (flag) ? '1' : 'none'
+    }, (flag) ? 10 : 300)
   }
 
   static checkForErrors (dialog) {
@@ -76,7 +68,6 @@ export default class DialogManager {
 
     if (name.length < 1 && !textField.error || name.length > textField.props.maxLength) {
       textField.toggleError(true)
-
       return true
     } else if (name.length > 0) {
       return false

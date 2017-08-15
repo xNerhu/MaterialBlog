@@ -55,8 +55,8 @@ export default class Checkbox extends Component {
   }
 
   /**
-   * On click event.
-   * @param {Event} event data.
+   * On click.
+   * @param {Event}
    */
   onClick = (e) => {
     if (!this.checked) this.check()
@@ -64,9 +64,9 @@ export default class Checkbox extends Component {
   }
 
   /**
-   * On mouse down event.
+   * On mouse down.
    * Makes ripple.
-   * @param {Event} event data.
+   * @param {Event}
    */
   onMouseDown = (e) => {
     const root = this.getRoot()
@@ -92,11 +92,8 @@ export default class Checkbox extends Component {
   afterRender () {
     const props = this.props
 
-    if (!this.checked) {
-      this.unCheck()
-    } else {
-      this.check()
-    }
+    if (!this.checked) this.unCheck()
+    else this.check()
 
     if (props.onColor == null) props.onColor = '#FFC107'
     if (props.offColor == null) props.offColor = '#757575'

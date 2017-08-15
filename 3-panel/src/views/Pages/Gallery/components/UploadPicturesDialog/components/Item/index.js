@@ -19,7 +19,7 @@ export default class Item extends Component {
   }
 
   /**
-   * On done uploading event.
+   * On done uploading.
    */
   onUpload () {
     const done = this.elements.done
@@ -38,7 +38,7 @@ export default class Item extends Component {
   }
 
   /**
-   * On cancel uploading icon click event.
+   * On cancel uploading icon click.
    * @param {Event}
    */
   onCancelIconClick = (e) => {
@@ -50,7 +50,7 @@ export default class Item extends Component {
   }
 
   /**
-   * On cancel uploading icon mouse down event.
+   * On cancel uploading icon mouse down.
    * Makes ripple.
    * @param {Event}
    */
@@ -62,7 +62,7 @@ export default class Item extends Component {
   }
 
   /**
-   * On cancel uploading icon touch start event. (on mobile)
+   * On cancel uploading icon touch start. (on mobile)
    * Makes ripple.
    * @param {Event}
    */

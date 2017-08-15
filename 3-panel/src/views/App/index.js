@@ -167,18 +167,18 @@ export default class App extends Component {
     const picturesDialog = galleryPage.elements.picturesDialog
 
     if (multiIcon.canClick) {
-      if (picturesDialog.toggledDeleteMode) {
+      if (picturesDialog.toggledDeleteMode) { // If the pictures dialog and deleting mode is toggled on then toggle off deleting mode
         picturesDialog.toggleDeleteMode(false)
-      } else if (picturesDialog.toggled) {
+      } else if (picturesDialog.toggled) { // If the pictures dialog is open then hide pictures dialog
         picturesDialog.toggle(false)
-      } else if (postsPage.checkBoxes) {
+      } else if (postsPage.checkBoxes) { // If in posts page there is toggled on deleting mode (checkboxes are visible) then toggle off deleting mode
         postsPage.toggleCheckBoxes(false)
-      } else if (postDialog.toggled) {
+      } else if (postDialog.toggled) { // If the add post dialog is toggled on then toggle off dialog
         postDialog.toggle(false)
-      } else if (!navigationDrawer.toggled) {
+      } else if (!navigationDrawer.toggled) { // If the navigation drawer is not visible then show navigation drawer
         navigationDrawer.show()
         multiIcon.changeToExit()
-      } else {
+      } else { // If the navigation drawer is visible then hide navigation drawer
         navigationDrawer.hide()
       }
     }
@@ -347,12 +347,12 @@ export default class App extends Component {
     const postsPage = this.getPostsPage()
     const galleryPage = this.getGalleryPage()
 
-    if (this.selectedPage === postsPage) {
+    if (this.selectedPage === postsPage) { // If selected page is posts then show post dialog
       this.elements.postDialog.toggle(true)
-    } else if (this.selectedPage === galleryPage) {
-      if (galleryPage.elements.picturesDialog.toggled) {
+    } else if (this.selectedPage === galleryPage) { // If selected page is gallery
+      if (galleryPage.elements.picturesDialog.toggled) { // If the pictures dialog is toggled on then trigger file input
         galleryPage.elements.uploadPicturesDialog.triggerFileDialog()
-      } else {
+      } else { // Show add category dialog
         this.elements.addCategoryDialog.elements.dialog.toggle(true)
       }
     }
@@ -375,20 +375,28 @@ export default class App extends Component {
     }
   }
 
+  /**
+   * On toolbar menu icon click.
+   * @param {Event}
+   */
   onToolbarMenuIconClick = (e) => {
-    if (this.selectedPage === this.getPostsPage()) {
+    if (this.selectedPage === this.getPostsPage()) { // If selected page is posts then show posts menu
       MenuManager.toggle(true, this.elements.menu, e.target)
-    } else if (this.selectedPage === this.getGalleryPage()) {
+    } else if (this.selectedPage === this.getGalleryPage()) { // If selected page is gallery then show gallery menu
       MenuManager.toggle(true, this.elements.picturesMenu, e.target)
     }
   }
 
+  /**
+   * On toolbar delete button click.
+   * @param {Event}
+   */
   onToolbarDeleteButtonClick = (e) => {
     const postsPage = this.getPostsPage()
     const galleryPage = this.getGalleryPage()
 
     if (this.selectedPage === postsPage) {
-      postsPage.onDeletePostsButtonClick
+      postsPage.onDeletePostsButtonClick()
     } else if (this.selectedPage === galleryPage && galleryPage.elements.picturesDialog.toggledDeleteMode) {
       const picturesDialog = galleryPage.elements.picturesDialog
 

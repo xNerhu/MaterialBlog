@@ -38,7 +38,7 @@ export default class AddCategoryDialog extends Component {
   }
 
   /**
-   * On dialog action button add category click event.
+   * On dialog action button add category click.
    * @param {Event}
    */
   onAddButtonClick = (e) => {

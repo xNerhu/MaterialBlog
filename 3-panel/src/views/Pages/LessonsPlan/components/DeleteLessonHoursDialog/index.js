@@ -71,6 +71,7 @@ export default class DeleteLessonHoursDialog extends Component {
       dialog.toggle(false)
 
       for (var i = 0; i < lessonsPlanPage.days.length; i++) {
+        lessonsPlanPage.days[i].addSubjects()
         lessonsPlanPage.toggleActionButtons(false, lessonsPlanPage.days[i].actionButtons)
       }
     }, 1000)

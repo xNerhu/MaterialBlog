@@ -47,7 +47,7 @@ export default class EditCategoryDialog extends Component {
   }
 
   /**
-   * On dialog action button save category click event.
+   * On dialog action button save category click.
    * @param {Event}
    */
   onSaveButtonClick = (e) => {

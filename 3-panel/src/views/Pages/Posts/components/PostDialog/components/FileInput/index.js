@@ -17,7 +17,7 @@ export default class FileInput extends Component {
   }
 
   /**
-   * On upload button click event.
+   * On upload button click.
    * Triggers input click.
    * @param {Event}
    */
@@ -26,7 +26,7 @@ export default class FileInput extends Component {
   }
 
   /**
-   * On button mouse enter event.
+   * On button mouse enter.
    * Shows tooltip.
    * @param {Event}
    */
@@ -35,7 +35,7 @@ export default class FileInput extends Component {
   }
 
   /**
-   * On button mouse leave event.
+   * On button mouse leave.
    * Hides tooltip.
    * @param {Event}
    */
@@ -44,7 +44,7 @@ export default class FileInput extends Component {
   }
 
   /**
-   * On upload input change event.
+   * On upload input change.
    * Shows or hides field with file name.
    * @param {Event}
    */
@@ -81,7 +81,6 @@ export default class FileInput extends Component {
    */
   toggleUploadValue (flag, timerDuration = 300) {
     const actionIcon = this.elements.actionIcon
-    const input = this.elements.upload
 
     const uploadValue = this.elements.value
     const indicator = this.elements.indicator
@@ -107,7 +106,7 @@ export default class FileInput extends Component {
   }
 
   /**
-   * On action icon click event.
+   * On action icon click.
    * @param {Event}
    */
   onActionIconClick = (e) => {
@@ -128,7 +127,7 @@ export default class FileInput extends Component {
   }
 
   /**
-   * On action icon mouse down event.
+   * On action icon mouse down.
    * Makes ripple.
    * @param {Event}
    */
@@ -140,7 +139,7 @@ export default class FileInput extends Component {
   }
 
   /**
-   * On action icon touch start event (on mobile).
+   * On action icon touch start. (on mobile)
    * Makes ripple.
    * @param {Event}
    */

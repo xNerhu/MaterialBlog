@@ -14,7 +14,7 @@ export default class FAB extends Component {
   }
 
   /**
-   * On mouse down event.
+   * On mouse down.
    * Makes ripple.
    * @param {Event}
    */
@@ -28,7 +28,7 @@ export default class FAB extends Component {
   }
 
   /**
-   * On touch start event. (on mobile)
+   * On touch start. (on mobile)
    * Makes ripple.
    * @param {Event}
    */

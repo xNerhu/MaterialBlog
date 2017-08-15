@@ -16,7 +16,7 @@ export default class Switch extends Component {
   }
 
   /**
-   * On switch click event.
+   * On switch click.
    * @param {Event}
    */
   onClick = (e) => {
@@ -42,7 +42,7 @@ export default class Switch extends Component {
   }
 
   /**
-   * On mouse down event.
+   * On mouse down.
    * Makes ripple.
    * @param {Event}
    */
@@ -57,7 +57,7 @@ export default class Switch extends Component {
   }
 
   /**
-   * On touch start event.
+   * On touch start.
    * Makes ripple.
    * @param {Event}
    */

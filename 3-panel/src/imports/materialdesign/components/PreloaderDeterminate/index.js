@@ -34,9 +34,7 @@ export default class PreloaderDeterminate extends Component {
     }
 
     setTimeout(function () {
-      const value = 122 * percent / 100 + ', 200'
-
-      circle.style['stroke-dasharray'] = value
+      circle.style['stroke-dasharray'] = 122 * percent / 100 + ', 200'
     }, 10)
   }
 

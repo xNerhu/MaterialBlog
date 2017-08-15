@@ -16,14 +16,12 @@ export default class Dialog extends Component {
   }
 
   /**
-   * On action button click event.
+   * On action button click.
    * @param {Object} event data
    * @param {Object} button data
    */
   onActionButtonClick = (e, data) => {
-    if (typeof data.onClick === 'function') {
-      data.onClick(e)
-    }
+    if (typeof data.onClick === 'function') data.onClick(e)
   }
 
   /**
@@ -33,29 +31,18 @@ export default class Dialog extends Component {
   toggle (flag) {
     const root = this.getRoot()
 
-    if (flag && !this.toggled) {
-      this.toggled = true
+    this.toggled = flag
+    this.toggleDark(flag)
 
-      root.style.display = 'block'
+    root.style[(flag) ? 'display' : 'opacity'] = (flag) ? 'block' : '0'
 
-      setTimeout(function () {
-        root.style.opacity = '1'
-        root.style.top = '50%'
-      }, 20)
+    setTimeout(function () {
+      root.style.top = (flag) ? '50%' : '25%'
+    }, 20)
 
-      this.toggleDark(true)
-    } else {
-      this.toggled = false
-
-      root.style.opacity = '0'
-      root.style.top = '25%'
-
-      setTimeout(function () {
-        root.style.display = 'none'
-      }, 300)
-
-      this.toggleDark(false)
-    }
+    setTimeout(function () {
+      root.style[(flag) ? 'opacity' : 'display'] = (flag) ? '1' : 'none'
+    }, (flag) ? 20 : 300)
   }
 
   /**
@@ -66,19 +53,11 @@ export default class Dialog extends Component {
     const opacity = this.props.darkOpacity
     const dark = this.elements.dark
 
-    if (flag) {
-      dark.style.display = 'block'
+    dark.style[(flag) ? 'display' : 'opacity'] = (flag) ? 'block' : '0'
 
-      setTimeout(function () {
-        dark.style.opacity = opacity
-      }, 20)
-    } else {
-      dark.style.opacity = '0'
-
-      setTimeout(function () {
-        dark.style.display = 'none'
-      }, 300)
-    }
+    setTimeout(function () {
+      dark.style[(flag) ? 'opacity' : 'display'] = (flag) ? opacity : 'none'
+    }, (flag) ? 20 : 300)
   }
 
   /**
@@ -91,10 +70,11 @@ export default class Dialog extends Component {
     action.innerHTML = ''
 
     for (var i = 0; i < items.length; i++) {
-      const item = items[i]
-      const text = item.text
-      const style = item.style
-      const onClick = item.onClick
+      const {
+        text,
+        style,
+        onClick
+      } = items[i]
 
       const element = (
         <MaterialButton shadow={false} text={text} onClick={onClick} style={style} rippleStyle={this.props.actionButtonRippleStyle} />
@@ -102,12 +82,6 @@ export default class Dialog extends Component {
 
       this.renderComponents(element, action)
     }
-
-    const clear = (
-      <div className='material-dialog-action-clear' />
-    )
-
-    this.renderComponents(clear, action)
   }
 
   render () {

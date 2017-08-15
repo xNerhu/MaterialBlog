@@ -14,7 +14,7 @@ export default class Picture extends Component {
   }
 
   /**
-   * On click event.
+   * On click.
    * @param {Event}
    */
   onClick = (e) => {

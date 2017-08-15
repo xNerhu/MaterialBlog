@@ -46,21 +46,19 @@ export default class GalleryPage extends Component {
   }
 
   /**
-   * On select this page event.
+   * On select this page.
    */
   onSelect () {
     window.app.toggleFAB(true)
   }
 
   /**
-   * On deselect this page event.
+   * On deselect this page.
    */
   onDeselect (selectedPage) {
     const app = window.app
 
-    if (selectedPage !== app.getPostsPage()) {
-      app.toggleFAB(false)
-    }
+    if (selectedPage !== app.getPostsPage()) app.toggleFAB(false)
   }
 
   /**
@@ -228,7 +226,7 @@ export default class GalleryPage extends Component {
   }
 
   /**
-   * On category click event.
+   * On category click.
    * @param {Category} category
    */
   onCategoryClick = (category) => {

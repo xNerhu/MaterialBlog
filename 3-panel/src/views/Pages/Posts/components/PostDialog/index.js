@@ -146,7 +146,7 @@ export default class PostDialog extends Component {
   }
 
   /**
-   * On switch event.
+   * On switch.
    * @param {Boolean} switch state
    */
   onSwitch = (flag) => {
@@ -239,7 +239,7 @@ export default class PostDialog extends Component {
   }
 
   /**
-   * On textfield input event.
+   * On textfield input.
    * Updates preview post.
    * @param {TextField}
    */
@@ -258,7 +258,7 @@ export default class PostDialog extends Component {
   }
 
   /**
-   * On textfield blur event.
+   * On textfield blur.
    * @param {TextField}
    */
   onBlur = (textField) => {
@@ -266,7 +266,7 @@ export default class PostDialog extends Component {
   }
 
   /**
-   * On title textfield input event.
+   * On title textfield input.
    * @param {Event}
    */
   onTitleTextFieldInput = (e) => {
@@ -274,7 +274,7 @@ export default class PostDialog extends Component {
   }
 
   /**
-   * On title textfield blur event.
+   * On title textfield blur.
    * @param {Event}
    */
   onTitleTextFieldBlur = (e) => {
@@ -282,7 +282,7 @@ export default class PostDialog extends Component {
   }
 
   /**
-   * On content textfield input event.
+   * On content textfield input.
    * @param {Event}
    */
   onContentTextFieldInput = (e) => {
@@ -290,7 +290,7 @@ export default class PostDialog extends Component {
   }
 
   /**
-   * On content textfield blur event.
+   * On content textfield blur.
    * @param {Event}
    */
   onContentTextFieldBlur = (e) => {
@@ -298,7 +298,7 @@ export default class PostDialog extends Component {
   }
 
   /**
-   * On save post button click event.
+   * On save post button click.
    * Adds or saves post.
    * TODO.
    * Closes add post dialog.

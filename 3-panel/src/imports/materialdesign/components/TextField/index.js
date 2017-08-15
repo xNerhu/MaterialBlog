@@ -25,26 +25,26 @@ export default class TextField extends Component {
   }
 
   /**
-   * On focus event.
+   * On focus.
    * Toggle on input.
-   * @param {Object} event data
+   * @param {Event}
    */
   onFocus = (e) => {
     if (!this.toggled && this.getInput().value.length < 1) this.toggle(true)
   }
 
   /**
-   * On blur event.
+   * On blur.
    * Toggle off input.
-   * @param {Object} event data
+   * @param {Event}
    */
   onBlur = (e) => {
     if (this.toggled && this.getInput().value.length < 1) this.toggle(false)
   }
 
   /**
-   * On input event.
-   * @param {Object} event data
+   * On input.
+   * @param {Event}
    */
   onInput = (e) => {
     if (this.counter) {
@@ -154,9 +154,9 @@ export default class TextField extends Component {
   }
 
   /**
-   * On action icon mouse down event.
+   * On action icon mouse down.
    * Makes ripple.
-   * @param {Object} event data.
+   * @param {Event}
    */
   onActionIconMouseDown = (e) => {
     if (!this.touched) {
@@ -166,9 +166,9 @@ export default class TextField extends Component {
   }
 
   /**
-   * On action icon touch start event. (on mobile)
+   * On action icon touch start. (on mobile)
    * Makes ripple.
-   * @param {Object} event data.
+   * @param {Event}
    */
   onActionIconTouchStart = (e) => {
     const ripple = Ripple.createRipple(this.elements.actionIcon, this.props.actionIconRippleStyle, createRippleCenter(this.elements.actionIcon, 14, 0.4, true))
@@ -182,12 +182,7 @@ export default class TextField extends Component {
    * @param {Boolean} focus
    */
   setValue (str, focus) {
-    if (this.props.textarea === true) {
-      this.elements.textarea.value = str
-    } else {
-      this.elements.input.value = str
-    }
-
+    this.getInput().value = str
     this.onInput()
 
     if (str.length >= 1 && !this.toggled) {
