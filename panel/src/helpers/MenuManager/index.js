@@ -147,7 +147,7 @@ export default class MenuManager {
   static setPostMenuItems () {
     const app = window.app
     const menu = app.elements.postItemMenu
-    const dialog = app.elements.deletePostDialog
+    const dialog = app.elements.deletePostDialog.elements.dialog
 
     const postsPage = app.getPostsPage()
 

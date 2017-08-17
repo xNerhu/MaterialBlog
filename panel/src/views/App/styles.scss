@@ -120,6 +120,14 @@ a {
       min-height: 183px;
     }
 
+    &.delete-post-dialog .material-dialog {
+      min-height: 164px;
+    }
+
+    &.delete-posts-dialog .material-dialog {
+      min-height: 188px;
+    }
+
     & .material-preloader {
       display: block
     }

@@ -84,7 +84,11 @@ export default class AddCategoryDialog extends Component {
 
         dialog.toggle(false)
         textField.setValue('')
-        app.elements.addCategorySnackbar
+
+        const snackbar = app.elements.addCategorySnackbar
+
+        snackbar.toggle(true)
+        app.moveFAB(snackbar.getRoot().scrollHeight)
       }, 500)
     }
   }

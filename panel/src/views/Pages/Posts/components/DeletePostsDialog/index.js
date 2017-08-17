@@ -4,7 +4,7 @@ import Dialog from '../../../../../imports/materialdesign/components/Dialog'
 
 import Preloader from '../../../../../imports/materialdesign/components/Preloader'
 
-export default class AddCategoryDialog extends Component {
+export default class DeletePostsDialog extends Component {
   /**
    * Gets root.
    * @return {DOMElement} root
@@ -35,41 +35,38 @@ export default class AddCategoryDialog extends Component {
     dialog.setItems(items)
   }
 
-  /**
-   * On dialog action button delete category click.
-   * @param {Event}
-   */
   onDeleteButtonClick = (e) => {
+    const app = window.app
+    const postsPage = app.getPostsPage()
+    const snackbar = app.elements.deletePostsSnackbar
+
     const root = this.getRoot()
     const dialog = this.elements.dialog
-
-    const app = window.app
-
-    const gallery = app.getGalleryPage()
-    const clickedPost = gallery.clickedCategory
-    const index = gallery.categoriesData.indexOf(clickedPost.props.data)
 
     root.classList.add('enabled-preloader')
 
     setTimeout(function () {
       root.classList.remove('enabled-preloader')
 
-      gallery.categoriesData[index].removed = true
-
-      gallery.reloadSections()
-      dialog.toggle(false)
-
-      const snackbar = app.elements.deleteCategorySnackbar
-
       snackbar.toggle(true)
       app.moveFAB(snackbar.getRoot().scrollHeight)
-    }, 500)
+
+      postsPage.toggleCheckBoxes(false)
+
+      const selectedPosts = postsPage.getSelectedPosts()
+
+      for (var i = 0; i < selectedPosts.length; i++) {
+        postsPage.deletePost(selectedPosts[i].props.data, selectedPosts[i])
+      }
+
+      dialog.toggle(false)
+    }, 1000)
   }
 
   render () {
     return (
-      <div className='input-dialog' ref='root'>
-        <Dialog title='Czy napewno chcesz usunąć tą kategorię?' ref='dialog'>
+      <div className='input-dialog delete-posts-dialog' ref='root'>
+        <Dialog title='Czy napewno chcesz usunąć zaznaczone posty?' ref='dialog'>
           <div className='text'>
             Nie będzie można tego cofnąć.
           </div>

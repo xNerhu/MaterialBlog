@@ -68,8 +68,9 @@ export default class DeleteLessonDialog extends Component {
       }
 
       day.addSubjects()
-      app.elements.deleteLessonSnackbar.toggle(true)
       dialog.toggle(false)
+
+      app.elements.deleteLessonSnackbar.toggle(true)
     }, 1000)
   }
 

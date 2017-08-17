@@ -151,7 +151,11 @@ export default class UploadPicturesDialog extends Component {
     if (picturesDialog.toggled) picturesDialog.setPicturesCount()
 
     this.toggle(false)
-    app.elements.addPicturesSnackbar.toggle(true)
+
+    const snackbar = app.elements.addPicturesSnackbar
+
+    snackbar.toggle(true)
+    app.moveFAB(snackbar.getRoot().scrollHeight)
   }
 
   /**

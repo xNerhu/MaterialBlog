@@ -412,56 +412,11 @@ export default class PostsPage extends Component {
    * @param {Event}
    */
   onDeletePostsButtonClick = (e) => {
-    const app = window.app
     const selectedPosts = this.getSelectedPosts()
-    const dialog = app.elements.deletePostsDialog
 
     if (selectedPosts.length >= 1) {
-      dialog.toggle(true)
+      window.app.elements.deletePostsDialog.elements.dialog.toggle(true)
     }
-  }
-
-  /**
-   * On delete posts dialog confirm click.
-   */
-  onDeletePostsDialogConfirmClick = (e) => {
-    const app = window.app
-    const dialog = app.elements.deletePostsDialog
-    const snackbar = app.elements.deletedPostsSnackbar
-    const snackbarRoot = snackbar.getRoot()
-
-    this.toggleCheckBoxes(false)
-
-    dialog.toggle(false)
-    snackbar.toggle(true)
-
-    app.moveFAB(snackbarRoot.scrollHeight)
-
-    const selectedPosts = this.getSelectedPosts()
-
-    for (var i = 0; i < selectedPosts.length; i++) {
-      this.deletePost(selectedPosts[i].props.data, selectedPosts[i])
-    }
-  }
-
-  /**
-   * On delete post dialog confirm click.
-   * TODO
-   */
-  onDeletePostDialogConfirmClick = (e) => {
-    const app = window.app
-    const dialog = app.elements.deletePostDialog
-    const snackbar = app.elements.deletePostSnackbar
-    const snackbarRoot = snackbar.getRoot()
-
-    this.toggleCheckBoxes(false)
-
-    dialog.toggle(false)
-    snackbar.toggle(true)
-
-    app.moveFAB(snackbarRoot.scrollHeight)
-
-    this.deletePost(this.clickedPost.props.data, this.clickedPost)
   }
 
   deletePost = (data, element) => {

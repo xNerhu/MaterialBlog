@@ -6,6 +6,8 @@ import MenuManager from '../../helpers/MenuManager'
 import PageManager from '../../helpers/PageManager'
 
 import PostDialog from '../Pages/Posts/components/PostDialog'
+import DeletePostDialog from '../Pages/Posts/components/DeletePostDialog'
+import DeletePostsDialog from '../Pages/Posts/components/DeletePostsDialog'
 
 import ErrorDialog from './components/ErrorDialog'
 
@@ -427,12 +429,8 @@ export default class App extends Component {
         <Menu ref='categoryMenu' className='toolbar-menu' mobile='true' />
         <Menu ref='picturesMenu' className='toolbar-menu' mobile='true' />
         <Menu ref='lessonsPlanSubjectMenu' className='toolbar-menu' mobile='true' />
-        <Dialog ref='deletePostsDialog' title='Jesteś pewny(a)?'>
-          Nie będzie można ich odzyskać.
-        </Dialog>
-        <Dialog ref='deletePostDialog' title='Jesteś pewny(a)?'>
-          Nie będzie można go odzyskać.
-        </Dialog>
+        <DeletePostDialog ref='deletePostDialog' />
+        <DeletePostsDialog ref='deletePostsDialog' />
         <AddCategoryDialog ref='addCategoryDialog' />
         <EditCategoryDialog ref='editCategoryDialog' />
         <DeleteCategoryDialog ref='deleteCategoryDialog' />
@@ -469,8 +467,6 @@ export default class App extends Component {
     MenuManager.setCategoryMenuItems()
     MenuManager.setPicturesMenuItems()
     MenuManager.setLessonsPlanSubjectMenu()
-    DialogManager.setDeletePostsDialogItems()
-    DialogManager.setDeletePostDialogItems()
 
     let urlPage = Url.getUrlParameter('page')
     let pageToSelect = this.getPostsPage()

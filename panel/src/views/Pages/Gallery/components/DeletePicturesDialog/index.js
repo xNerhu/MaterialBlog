@@ -69,7 +69,11 @@ export default class DeletePicturesDialog extends Component {
       picturesDialog.toggleDeleteMode(false)
       picturesDialog.setPicturesCount()
       dialog.toggle(false)
-      app.elements.deletePicturesSnackbar.toggle(true)
+
+      const snackbar = app.elements.deletePicturesSnackbar
+
+      snackbar.toggle(true)
+      app.moveFAB(snackbar.getRoot().scrollHeight)
     }, 500)
   }
 

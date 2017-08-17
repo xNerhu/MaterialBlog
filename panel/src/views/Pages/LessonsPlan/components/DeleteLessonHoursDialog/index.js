@@ -67,13 +67,14 @@ export default class DeleteLessonHoursDialog extends Component {
       lessonsPlanPage.lessonsPlanCopy = JSON.parse(JSON.stringify(lessonsPlanPage.lessonsPlan))
 
       lessonHours.addItems()
-      app.elements.deleteLessonHoursSnackbar.toggle(true)
       dialog.toggle(false)
 
       for (var i = 0; i < lessonsPlanPage.days.length; i++) {
         lessonsPlanPage.days[i].addSubjects()
         lessonsPlanPage.toggleActionButtons(false, lessonsPlanPage.days[i].actionButtons)
       }
+
+      app.elements.deleteLessonHoursSnackbar.toggle(true)
     }, 1000)
   }
 
