@@ -11,25 +11,18 @@ export default class Item extends Component {
     return this.elements.root
   }
 
-  /**
-   * Gets item.
-   */
-  getItem () {
-    return this
-  }
-
   render () {
     return (
       <div className='posts-table-list-item' ref='root'>
-        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='AKCJA' isAction='true' />
-        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='ID' ref='id' />
-        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='AUTOR' ref='author' />
-        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='DATA' ref='date' />
-        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='KOMENTARZE' ref='comments' />
-        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='POLUBIENIA' ref='likes' />
-        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='ZDJĘCIE' className='picture' ref='picture' />
-        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='TYTUŁ' ref='title' />
-        <Cell getMobileTable={this.props.getMobileTable} getItem={this.getItem} title='TREŚĆ' ref='content' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={() => { return this }} title='AKCJA' isAction='true' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={() => { return this }} title='ID' ref='id' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={() => { return this }} title='AUTOR' ref='author' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={() => { return this }} title='DATA' ref='date' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={() => { return this }} title='KOMENTARZE' ref='comments' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={() => { return this }} title='POLUBIENIA' ref='likes' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={() => { return this }} title='ZDJĘCIE' className='picture' ref='picture' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={() => { return this }} title='TYTUŁ' ref='title' />
+        <Cell getMobileTable={this.props.getMobileTable} getItem={() => { return this }} title='TREŚĆ' ref='content' />
       </div>
     )
   }

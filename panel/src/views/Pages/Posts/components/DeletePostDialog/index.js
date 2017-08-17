@@ -53,7 +53,6 @@ export default class DeletePostDialog extends Component {
 
       postsPage.toggleCheckBoxes(false)
       postsPage.deletePost(postsPage.clickedPost.props.data, postsPage.clickedPost)
-
       dialog.toggle(false)
     }, 1000)
   }

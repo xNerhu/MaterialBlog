@@ -316,7 +316,7 @@ export default class PostDialog extends Component {
     if (this.verifyData()) {
       this.toggle(false)
 
-      snackbarText.innerHTML = (!this.isEditMode) ? 'Pomyślnie dodano post' : 'Pomyślnie zapisano post'
+      snackbarText.innerHTML = (!this.isEditMode) ? 'Dodano post' : 'Zapisano post'
       snackbar.toggle(true)
       app.moveFAB(snackbar.getRoot().scrollHeight)
 
