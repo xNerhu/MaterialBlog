@@ -144,7 +144,7 @@ export default class FileInput extends Component {
    * @param {Event}
    */
   onTouchStart = (e) => {
-    let ripple = Ripple.createRipple(this.elements.actionIcon, this.actionIconRippleStyle, createRippleCenter(this.elements.actionIcon, 14, 0.4, true))
+    const ripple = Ripple.createRipple(this.elements.actionIcon, this.actionIconRippleStyle, createRippleCenter(this.elements.actionIcon, 14, 0.4, true))
     Ripple.makeRipple(ripple)
     this.touched = true
   }

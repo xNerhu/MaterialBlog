@@ -27,6 +27,7 @@ import PostsPage from '../Pages/Posts'
 import GalleryPage from '../Pages/Gallery'
 import AboutClassPage from '../Pages/AboutClass'
 import LessonsPlanPage from '../Pages/LessonsPlan'
+import ManageAccountPage from '../Pages/ManageAccount'
 
 import FAB from './../../imports/materialdesign/components/FAB'
 import Menu from './../../imports/materialdesign/components/Menu'
@@ -42,7 +43,11 @@ export default class App extends Component {
     this.defaultTitle = 'Posty'
 
     this.accountInfo = {
-      userName: 'Mikołaj Palkiewicz'
+      userID: 1,
+      login: 'mikolajpalkiewicz',
+      userName: 'Mikołaj Palkiewicz',
+      avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
+      email: 'xnerhu22@onet.pl'
     }
 
     this.elementsToCall = []
@@ -101,6 +106,14 @@ export default class App extends Component {
    */
   getLessonsPlanPage () {
     return this.elements.lessonsPlanPage
+  }
+
+  /**
+   * Gets manage account page.
+   * @return {ManageAccountPage}
+   */
+  getManageAccountPage () {
+    return this.elements.manageAccountPage
   }
 
   /**
@@ -192,6 +205,7 @@ export default class App extends Component {
   logUser () {
     this.accountInfo = {
       userID: 1,
+      login: 'mikolajpalkiewicz',
       userName: 'Mikołaj Palkiewicz',
       avatar: 'https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281',
       email: 'xnerhu22@onet.pl'
@@ -332,6 +346,13 @@ export default class App extends Component {
         onClick: function (e) {
           PageManager.selectPage(self.getLessonsPlanPage())
         }
+      },
+      {
+        text: 'Zarządzaj kontem',
+        className: 'navigation-drawer-manage-account',
+        onClick: function (e) {
+          PageManager.selectPage(self.getManageAccountPage())
+        }
       }
     ]
 
@@ -424,6 +445,7 @@ export default class App extends Component {
             <GalleryPage ref='galleryPage' />
             <AboutClassPage ref='aboutClassPage' />
             <LessonsPlanPage ref='lessonsPlanPage' />
+            <ManageAccountPage ref='manageAccountPage' />
           </div>
           <PostDialog ref='postDialog' />
         </div>
@@ -487,6 +509,8 @@ export default class App extends Component {
         pageToSelect = this.getAboutClassPage()
       } else if (urlPage === 'lessonsplan') {
         pageToSelect = this.getLessonsPlanPage()
+      } else if (urlPage === 'manageaccount') {
+        pageToSelect = this.getManageAccountPage()
       }
     }
 

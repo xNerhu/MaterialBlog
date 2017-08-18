@@ -65,6 +65,9 @@ export default class TextField extends Component {
       textarea.style.height = 'auto'
       textarea.style.height = textarea.scrollHeight - 16 + 'px'
     }
+
+    const onInput = this.props.onInput
+    if (typeof onInput === 'function') onInput(e, this)
   }
 
   /**

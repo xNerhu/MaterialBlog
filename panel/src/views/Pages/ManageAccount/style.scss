@@ -1,0 +1,112 @@
+.page-manage-account-container {
+  width: 100%;
+  max-width: 700px;
+  margin: 24px auto;
+  height: auto;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-radius: 2px;
+  position: relative;
+
+  & .section {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    position: relative;
+    margin-top: 8px;
+
+    & .title {
+      margin-left: 24px;
+      opacity: 0.74;
+    }
+
+    & .control {
+      width: 50%;
+      max-width: 200px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    & .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 100%;
+      @include image-center(100%, 100%);
+      position: absolute;
+      @include center-vertical;
+      right: 0;
+      cursor: pointer;
+      background-image: url("https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-9/14581320_549947718524540_5437545186607783553_n.jpg?oh=1d709d8978f80d6887041c3e9583f27f&oe=59994281");
+    }
+
+    &:first-child {
+      margin-top: 0px;
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+  }
+
+  .buttons-container {
+    margin-top: 8px;
+    overflow: hidden;
+    height: 0px;
+    transition: 0.3s ease height;
+
+    & .material-button {
+      float: left;
+      margin-left: 8px;
+      color: #3f51b5;
+      background-color: transparent;
+      padding-left: 10px;
+      padding-right: 10px;
+
+      &:first-child {
+        margin-left: 24px;
+      }
+
+      &.cancel {
+        color: #000;
+      }
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+  }
+
+  .preloader-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #fff;
+    transition: 0.3s opacity;
+    opacity: 0;
+    display: none;
+
+    & .material-preloader {
+      width: 54px;
+      height: 54px;
+      position: absolute;
+      @include center;
+    }
+  }
+}
+
+@media (max-width: 710px) {
+  .page-manage-account-container .control {
+    left: unset !important;
+    transform: translateY(-50%) !important;
+    right: 16px;
+  }
+}

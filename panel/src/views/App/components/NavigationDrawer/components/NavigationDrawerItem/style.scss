@@ -49,3 +49,9 @@
     background-image: url(images/NavigationDrawer/lessonsplan.png);
   }
 }
+
+.navigation-drawer-manage-account {
+  & .icon {
+    background-image: url(images/NavigationDrawer/manage-account.png);
+  }
+}
