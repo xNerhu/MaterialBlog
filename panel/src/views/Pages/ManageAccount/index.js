@@ -64,9 +64,9 @@ export default class ManageAccountPage extends Component {
     if (this.canShowButtons) {
       this.isEdited = true
       this.toggleButtons(true)
-
-      if (textField.error) textField.toggleError(false)
     }
+
+    if (textField.error) textField.toggleError(false)
   }
 
   /**
@@ -113,8 +113,6 @@ export default class ManageAccountPage extends Component {
       app.accountInfo.login = this.elements.login.getValue()
       app.accountInfo.userName = this.elements.name.getValue()
       app.accountInfo.email = this.elements.email.getValue()
-
-      console.log(app.accountInfo)
 
       setTimeout(function () {
         self.togglePreloader(false)
@@ -175,30 +173,23 @@ export default class ManageAccountPage extends Component {
    * @param {Event}
    */
   onAvatarClick = (e) => {
+    this.elements.input.click()
+  }
+
+  onInputChange = (e) => {
     const self = this
 
-    const input = document.createElement('input')
+    let reader = new FileReader()
 
-    input.type = 'file'
-    input.accept = 'image/*'
+    reader.onload = function (readerEventData) {
+      const src = readerEventData.target.result
 
-    input.addEventListener('change', function (e) {
-      let reader = new FileReader()
+      self.avatar = src
+      self.elements.avatar.style.backgroundImage = 'url(' + src + ')'
+      self.toggleButtons(true)
+    }
 
-      reader.onload = function (e) {
-        const src = e.target.result
-
-        self.avatar = src
-        self.elements.avatar.style.backgroundImage = 'url(' + src + ')'
-        self.toggleButtons(true)
-      }
-
-      reader.readAsDataURL(input.files[0])
-    })
-
-    setTimeout(function () {
-      input.click()
-    }, 20)
+    reader.readAsDataURL(e.target.files[0])
   }
 
   render () {
@@ -267,6 +258,7 @@ export default class ManageAccountPage extends Component {
             <Preloader />
           </div>
         </div>
+        <input className='avatar-input' ref='input' type='file' name='pic' accept='image/*' onChange={this.onInputChange} />
       </div>
     )
   }

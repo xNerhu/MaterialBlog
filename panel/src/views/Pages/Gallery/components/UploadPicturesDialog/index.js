@@ -204,19 +204,11 @@ export default class UploadPicturesDialog extends Component {
    * Opens file input dialog.
    */
   triggerFileDialog = () => {
-    const self = this
+    this.elements.input.click()
+  }
 
-    const input = document.createElement('input')
-    input.type = 'file'
-    input.accept = 'image/*'
-    input.multiple = 'true'
-
-    input.addEventListener('change', function (e) {
-      console.log(input, input.value)
-      self.toggle(true, input)
-    })
-
-    input.click()
+  onInputChange = (e) => {
+    this.toggle(true, e.target)
   }
 
   render () {
@@ -224,6 +216,7 @@ export default class UploadPicturesDialog extends Component {
       <div className='full-screen-dialog upload-pictures-dialog' ref='root'>
         <div className='upload-pictures-dialog-container' ref='container' />
         <Preloader className='upload-pictures-preloader' ref='preloader' />
+        <input className='input' ref='input' type='file' name='pic' accept='image/*' onChange={this.onInputChange} multiple='true' />
       </div>
     )
   }

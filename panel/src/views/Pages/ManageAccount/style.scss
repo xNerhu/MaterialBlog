@@ -103,6 +103,12 @@
   }
 }
 
+.page-manage-account {
+  & .avatar-input {
+    display: none;
+  }
+}
+
 @media (max-width: 710px) {
   .page-manage-account-container .control {
     left: unset !important;
