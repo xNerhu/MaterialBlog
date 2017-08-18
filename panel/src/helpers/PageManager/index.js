@@ -5,10 +5,10 @@ export default class PageManager {
    */
   static selectPage (page) {
     const app = window.app
+    const appPagesData = app.pagesData
 
-    if (app.selectedPage !== page && !app.isLoading) {
+    if (app.selectedPage !== page && !appPagesData.loading) {
       const data = page.pageData
-      const appPagesData = app.pagesData
 
       const toolbar = app.getToolbar()
       const navigationDrawer = app.getNavigationDrawer()

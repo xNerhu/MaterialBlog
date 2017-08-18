@@ -290,7 +290,7 @@ export default class PostsPage extends Component {
    * Shows or hides checkboxes.
    * @param {Boolean}
    */
-  toggleCheckBoxes (flag) {
+  toggleCheckBoxes (flag, changeMultiIconState = true) {
     const app = window.app
     const toolbar = app.getToolbar()
     const deleteButton = toolbar.elements.deleteButton
@@ -299,31 +299,26 @@ export default class PostsPage extends Component {
 
     if (flag) {
       const navigationDrawer = app.getNavigationDrawer()
-
       if (navigationDrawer.toggled) navigationDrawer.hide()
 
       toolbar.hideItems(false, false)
-
-      setTimeout(function () {
-        deleteButtonRoot.style.display = 'block'
-
-        setTimeout(function () {
-          deleteButtonRoot.style.opacity = '1'
-        }, 20)
-      }, 100)
-
-      multiIcon.changeToExit()
-    } else {
-      deleteButtonRoot.style.opacity = '0'
-
-      setTimeout(function () {
-        deleteButtonRoot.style.display = 'none'
-
-        toolbar.showItems()
-      }, 150)
-
-      multiIcon.changeToDefault()
     }
+
+    setTimeout(function () {
+      deleteButtonRoot.style[(flag) ? 'display' : 'opacity'] = (flag) ? 'block' : '0'
+
+      setTimeout(function () {
+        deleteButtonRoot.style[(flag) ? 'opacity' : 'display'] = (flag) ? '1' : 'none'
+
+        if (!flag) {
+          toolbar.showItems()
+
+          if (changeMultiIconState) multiIcon.changeToDefault()
+        } else if (changeMultiIconState) {
+          multiIcon.changeToExit()
+        }
+      }, 20)
+    }, (flag) ? 100 : 150)
 
     const toolbarTitle = (flag) ? 'Usuń zaznaczone posty (' + this.checkedCheckBoxes + ')' : app.defaultTitle
     toolbar.setTitle(toolbarTitle)

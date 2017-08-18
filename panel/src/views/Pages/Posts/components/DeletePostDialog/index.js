@@ -51,7 +51,7 @@ export default class DeletePostDialog extends Component {
       snackbar.toggle(true)
       app.moveFAB(snackbar.getRoot().scrollHeight)
 
-      postsPage.toggleCheckBoxes(false)
+      postsPage.toggleCheckBoxes(false, false)
       postsPage.deletePost(postsPage.clickedPost.props.data, postsPage.clickedPost)
       dialog.toggle(false)
     }, 1000)

@@ -34,27 +34,27 @@ export default class PicturesDialog extends Component {
     const toolbar = app.getToolbar()
     const multiIcon = toolbar.getMultiIcon()
 
+    const navigationDrawer = app.getNavigationDrawer()
+
     if (flag) {
+      if (navigationDrawer.toggled) navigationDrawer.hide()
+
       container.innerHTML = ''
       container.className = 'page-gallery-pictures-container'
 
       this.categoryData = data
-
       this.setItems()
 
       multiIcon.changeToArrow()
-
       toolbar.showItem(toolbar.elements.menuIcon)
     } else {
       multiIcon.changeToDefault()
-
       toolbar.hideItem(toolbar.elements.menuIcon)
     }
 
     DialogManager.toggleFullScreenDialog(flag, root)
 
     const title = (flag) ? data.name : app.defaultTitle
-
     toolbar.setTitle(title)
 
     this.toggled = flag
