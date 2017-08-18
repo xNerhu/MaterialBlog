@@ -37,6 +37,7 @@
   max-height: 65vh;
   transform: translateZ(0);
   @include material-scroll;
+  z-index: 10;
 }
 
 .material-dialog-action {
@@ -44,6 +45,7 @@
   padding-top: 8px;
   padding-bottom: 8px;
   margin-top: 24px;
+  z-index: 9;
 
   &.side-by-side .material-button {
     margin-right: 8px;

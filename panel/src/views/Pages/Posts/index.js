@@ -175,7 +175,6 @@ export default class PostsPage extends Component {
       tables.style.opacity = '1'
 
       self.elements.loadButton.getRoot().innerHTML = 'ZAŁADUJ WIĘCEJ (3)'
-
       self.toggleLoadButtonContainer(true)
     }, 1000)
   }
@@ -217,7 +216,7 @@ export default class PostsPage extends Component {
     viewIcon.classList.remove('table')
 
     list.getRoot().style.display = 'none'
-    table.getRoot().style.display = 'block'
+    table.getRoot().style.display = 'table'
 
     if (!this.tableLoaded) {
       this.tableLoaded = true
@@ -327,11 +326,9 @@ export default class PostsPage extends Component {
     }
 
     const toolbarTitle = (flag) ? 'Usuń zaznaczone posty (' + this.checkedCheckBoxes + ')' : app.defaultTitle
-
     toolbar.setTitle(toolbarTitle)
 
     const table = (this.isTable) ? this.elements.table : this.elements.list
-
     table.toggleCheckBoxes(flag)
 
     this.checkBoxes = flag
@@ -436,6 +433,10 @@ export default class PostsPage extends Component {
     }
 
     this.postsData[index].deleted = true
+  }
+
+  onFilterClick = (e) => {
+    window.app.elements.postsFilterDialog.show()
   }
 
   /**

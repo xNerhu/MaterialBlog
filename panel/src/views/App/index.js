@@ -1,13 +1,13 @@
 import Component from '../../helpers/Component'
 import Url from '../../helpers/Url'
 
-import DialogManager from '../../helpers/DialogManager'
 import MenuManager from '../../helpers/MenuManager'
 import PageManager from '../../helpers/PageManager'
 
 import PostDialog from '../Pages/Posts/components/PostDialog'
 import DeletePostDialog from '../Pages/Posts/components/DeletePostDialog'
 import DeletePostsDialog from '../Pages/Posts/components/DeletePostsDialog'
+import PostsFilterDialog from '../Pages/Posts/components/PostsFilterDialog'
 
 import ErrorDialog from './components/ErrorDialog'
 
@@ -28,7 +28,6 @@ import GalleryPage from '../Pages/Gallery'
 import AboutClassPage from '../Pages/AboutClass'
 import LessonsPlanPage from '../Pages/LessonsPlan'
 
-import Dialog from './../../imports/materialdesign/components/Dialog'
 import FAB from './../../imports/materialdesign/components/FAB'
 import Menu from './../../imports/materialdesign/components/Menu'
 import Preloader from './../../imports/materialdesign/components/Preloader'
@@ -270,6 +269,13 @@ export default class App extends Component {
       },
       {
         type: 'Icon',
+        ref: 'filterIcon',
+        position: 'Right',
+        className: 'toolbar-icon-filter',
+        onClick: postsPage.onFilterClick
+      },
+      {
+        type: 'Icon',
         ref: 'viewIcon',
         position: 'Right',
         className: 'toolbar-icon-view',
@@ -431,6 +437,7 @@ export default class App extends Component {
         <Menu ref='lessonsPlanSubjectMenu' className='toolbar-menu' mobile='true' />
         <DeletePostDialog ref='deletePostDialog' />
         <DeletePostsDialog ref='deletePostsDialog' />
+        <PostsFilterDialog ref='postsFilterDialog' />
         <AddCategoryDialog ref='addCategoryDialog' />
         <EditCategoryDialog ref='editCategoryDialog' />
         <DeleteCategoryDialog ref='deleteCategoryDialog' />
