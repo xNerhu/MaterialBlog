@@ -136,7 +136,8 @@ export default class LessonsPlanPage extends Component {
 
       self.lessonsPlanCopy = JSON.parse(JSON.stringify(self.lessonsPlan))
       self.setItems()
-    }, 10)
+      self.elements.container.style.opacity = '1'
+    }, 200)
   }
 
   setItems () {
