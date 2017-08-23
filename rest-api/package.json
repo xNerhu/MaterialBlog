@@ -1,0 +1,49 @@
+{
+  "name": "rest-api",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --ignore 'src/*.js' index",
+    "watch": "npm run build:dev && webpack-dev-server --hot --inline --port 8080",
+    "build:dev": "rimraf build && webpack",
+    "build:production": "rimraf build && webpack"
+  },
+  "keywords": [
+    "rest-api"
+  ],
+  "author": "Nersent",
+  "license": "MIT",
+  "dependencies": {
+    "babel-preset-es2017": "latest",
+    "bcrypt": "latest",
+    "body-parser": "latest",
+    "cookie-parser": "latest",
+    "ejs": "^2.5.6",
+    "express": "latest",
+    "express-session": "latest",
+    "helmet": "latest",
+    "mongodb": "latest",
+    "nodemon": "^1.11.0",
+    "passport": "latest",
+    "passport-local": "latest",
+    "fs": "latest"
+  },
+  "devDependencies": {
+    "babel-core": "latest",
+    "babel-eslint": "latest",
+    "babel-loader": "latest",
+    "babel-plugin-transform-jsx": "latest",
+    "babel-preset-stage-0": "latest",
+    "babili-webpack-plugin": "latest",
+    "css-loader": "latest",
+    "eslint": "latest",
+    "node-sass": "latest",
+    "rimraf": "latest",
+    "sass-loader": "latest",
+    "style-loader": "latest",
+    "url-loader": "latest",
+    "webpack": "latest",
+    "webpack-dev-server": "latest"
+  }
+}

@@ -1,10 +1,6 @@
 html, body {
   @include Roboto-Regular;
   @include cursor-default;
-  padding: 0 !important;
-  margin: 0 !important;
-  overflow: hidden;
-  -webkit-tap-highlight-color:  rgba(255, 255, 255, 0) !important;
 }
 
 .pages {

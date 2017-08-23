@@ -86,7 +86,13 @@ export default class PostsFilterDialog extends Component {
     app.togglePreloader(true)
 
     setTimeout(function () {
-      postsPage.elements.table.setCells(postsPage.postsData)
+      if (postsPage.tableLoaded) {
+        postsPage.elements.table.setCells(postsPage.postsData)
+      }
+
+      if (postsPage.listLoaded) {
+        postsPage.elements.list.setCells(postsPage.postsData)
+      }
 
       setTimeout(function () {
         app.pagesData.loading = false
