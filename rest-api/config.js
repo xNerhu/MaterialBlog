@@ -1,6 +1,6 @@
 module.exports = {
   mongoData: {
-    ip: '',
+    ip: 'test',
     port: 10,
     user: '',
     db: ''

@@ -5,3 +5,5 @@
 3/node_modules
 rest-api/yarn.lock
 rest-api/node_modules
+rest-api/config.js
+rest-api/config-password.js
