@@ -1,5 +1,5 @@
-# MyClassBlog
-My class blog (Albert Einstein WSERO secondary school)
-Second class (2B) and Third class (3B)
+# MaterialBlog
+MaterialBlog is project created for my school class (Albert Einstein WSERO Laungage Secondary School)
+It's created on Google's Material Design guidelines.
 
-## Third class blog is in devopment progress!
+..TODO
