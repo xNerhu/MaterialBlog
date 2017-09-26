@@ -1,0 +1,100 @@
+.toolbar {
+  position: relative;
+  width: 100%;
+  transition: 0.15s height ease-out, 0.2s background-color, 0.2s box-shadow;
+  z-index: 8;
+  height: 64px;
+  background-color: #3f51b5;
+  overflow: hidden;
+
+  &.transparent {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+.toolbar-content {
+  height: 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.toolbar-shadow {
+  box-shadow: 0 2px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.toolbar-icon {
+  position: relative;
+  @include toolbar-icon;
+  @include invert-colors
+  cursor: pointer;
+  top: 0;
+  transition: 0.2s ease top, 0.2s opacity;
+}
+
+.toolbar-button {
+  transition: 0.2s opacity;
+  opacity: 0;
+  display: none;
+
+  & .material-button {
+    padding-top: 23.5px;
+    padding-bottom: 23px;
+    background-color: transparent;
+  }
+}
+
+.toolbar-right {
+  float: right;
+  margin-right: 4px;
+
+  &:first-child {
+    margin-right: 20px;
+  }
+}
+
+.toolbar-title {
+  @include Roboto-Medium;
+  @include center-vertical;
+  position: absolute;
+  left: 80px;
+  font-size: 18px;
+  transition: 0.3s top, 0.3s opacity;
+  color: #fff;
+}
+
+.toolbar-multi-icon {
+  width: 18px;
+  height: 12px;
+  position: absolute;
+  @include center-vertical;
+  margin-left: 16px;
+  float: left;
+  padding: 20px;
+  cursor: pointer;
+  @include invert-colors;
+}
+
+.toolbar-icon-more {
+  background-image: url(images/more.png);
+}
+
+.toolbar-icon-filter {
+  background-image: url(images/filter.png);
+}
+
+.toolbar-icon-view {
+  background-image: url(images/view_list.png);
+
+  &.table {
+    background-image: url(images/view_column.png)
+  }
+}
+
+.toolbar-icon-show-pictures {
+  background-image: url(images/image.png);
+
+  &.hide {
+    background-image: url(images/image-hide.png);
+  }
+}

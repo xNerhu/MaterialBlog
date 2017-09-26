@@ -1,0 +1,139 @@
+.post-dialog {
+  background-color: #F5F5F5;
+  width: 100%;
+  height: calc(100% - 64px);
+  position: fixed;
+  top: 64px;
+  left: 0;
+  overflow: auto;
+  opacity: 0;
+  display: none;
+  transition: 0.2s opacity;
+
+  & .upload-input {
+    display: none;
+  }
+
+  & .post-view .post {
+    height: 0px;
+    overflow: hidden;
+    transition: 0.2s ease height;
+  }
+}
+
+.post-dialog-container {
+  width: calc(100% - 64px);
+  padding: 32px;
+  max-width: 576px;
+  margin: 24px auto;
+  position: relative;
+  background-color: #fff;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  border-radius: 2px;
+
+  & a {
+    margin-top: 24px;
+    float: left;
+  }
+
+  & .material-text-field {
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+
+    &.text-area {
+      margin-top: 24px;
+    }
+  }
+
+  & .material-button.upload-picture {
+    float: right;
+    margin-top: 14px;
+
+    &::after {
+      content: '';
+      display: block;
+      clear:both;
+    }
+  }
+
+  & .switch-label {
+    width: 100px;
+    margin-top: 80px;
+
+    & .label {
+      font-size: 14px;
+      opacity: 0.7;
+      float: left;
+    }
+
+    & .material-switch {
+      float: right;
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      clear:both;
+    }
+  }
+
+  .file-view {
+    width: calc(100% - 200px);
+    font-size: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    position: absolute;
+    right: 32px;
+    bottom: 24px;
+    display: none;
+
+    & .text {
+      max-width: calc(100% - 32px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0;
+      transition: 0.2s opacity;
+      white-space: nowrap;
+    }
+
+    & .divider {
+      width: 0%;
+      height: 2px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      background-color: #FFC107;
+      transition: 0.2s ease width;
+    }
+
+    & .action-icon {
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      right: 0;
+      @include center-vertical;
+      @include image-center(24px, auto);
+      background-image: url(images/exit.png);
+      cursor: pointer;
+      opacity: 0;
+      transition: 0.2s opacity;
+    }
+
+    &.toggled {
+      & .text {
+        opacity: 1;
+      }
+
+      & .divider {
+        width: 100%;
+      }
+
+      & .action-icon {
+        opacity: 0.54;
+      }
+    }
+  }
+}

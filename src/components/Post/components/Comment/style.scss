@@ -1,0 +1,58 @@
+.post-comment {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  position: relative;
+
+  & .comment-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 100%;
+    @include image-cover();
+    margin-left: 16px;
+    float: left;
+  }
+
+  & .comment-date {
+    font-size: 14px;
+    opacity: 0.54;
+    margin-left: 8px;
+  }
+
+  & .comment-info {
+    width: calc(100% - 116px);
+    float: left;
+    margin-left: 16px;
+
+    & .comment-author {
+      font-size: 16px;
+      @include Roboto-Medium;
+    }
+
+    & .comment-content {
+      margin-top: 4px;
+    }
+  }
+
+  & .menu-icon {
+    width: 32px;
+    height: 58px;
+    @include image-center(24px, auto);
+    background-image: url(images/more.png);
+    opacity: 0.54;
+    cursor: pointer;
+    position: absolute;
+    right: 16px;
+    @include center-vertical;
+  }
+
+  &.not-editable .menu-icon {
+    opacity: 0.26 !important;
+    cursor: default !important;
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}

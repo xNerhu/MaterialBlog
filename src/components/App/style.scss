@@ -1,0 +1,387 @@
+html, body {
+  @include Roboto-Regular;
+  @include cursor-default;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden;
+  -webkit-tap-highlight-color:  rgba(255, 255, 255, 0) !important;
+  background-color: #f5f5f5;
+}
+
+.app-content {
+  position: fixed;
+  background-color: #FFFFFF;
+  transition: width 0.3s ease;
+  width: 100%;
+  height: 100%;
+  right: 0;
+  top: 0;
+}
+
+.data-preloader {
+  width: 54px;
+  height: 54px;
+  position: fixed;
+  @include center;
+  z-index: 8;
+  display: none;
+}
+
+a {
+  color: #3f51b5;
+  text-decoration: none;
+  @include Roboto-Regular;
+  font-size: 15px;
+  display: inline-block;
+  position: relative;
+}
+
+.toolbar-menu {
+  position: fixed !important;
+  width: 0px;
+  height: 0px;
+  top: 8px;
+  right: 32px;
+  opacity: 0;
+  display: none;
+  transition: 0.3s opacity, 0.25s height ease-out, 0.2s width ease-out;
+
+  & .material-menu-item {
+    opacity: 0;
+    transition: 0.3s opacity;
+  }
+}
+
+.input-dialog {
+  & .material-dialog-content {
+    padding-top: 20px;
+    margin-top: 0px;
+    overflow: hidden;
+  }
+
+  & .material-preloader {
+    width: 54px;
+    height: 54px;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+  }
+
+  &.enabled-preloader {
+    & .material-dialog {
+      min-height: 205px;
+    }
+
+    &.delete-lesson-dialog .material-dialog {
+      min-height: 183px;
+    }
+
+    &.delete-post-dialog .material-dialog {
+      min-height: 164px;
+    }
+
+    &.delete-posts-dialog .material-dialog {
+      min-height: 188px;
+    }
+
+    & .material-preloader {
+      display: block
+    }
+
+    & .material-text-field, & .material-dialog-action, & .text {
+      display: none;
+    }
+  }
+}
+
+.navigation-drawer-posts .icon {
+  background-image: url(images/posts.png);
+}
+
+.navigation-drawer-gallery .icon {
+  background-image: url(images/gallery.png);
+}
+
+.navigation-drawer-about-class .icon {
+  background-image: url(images/about-class.png);
+}
+
+.navigation-drawer-lessons-plan .icon {
+  background-image: url(images/lessonsplan.png);
+}
+
+.navigation-drawer-manage-account .icon {
+  background-image: url(images/manage-account.png);
+}
+
+.navigation-drawer-panel .icon {
+  background-image: url(images/settings.png);
+}
+
+.navigation-drawer-info .icon {
+  background-image: url(images/info.png);
+}
+
+.navigation-drawer-github .icon {
+  background-image: url(images/github.png);
+}
+
+.navigation-drawer-register {
+  & .icon {
+    background-image: url(images/register.png);
+  }
+
+  &.disabled {
+    display: none;
+  }
+}
+
+.navigation-drawer-login {
+  & .icon {
+    background-image: url(images/login.png);
+  }
+
+  &.logout .icon {
+    background-image: url(images/logout.png);
+  }
+}
+
+.navigation-drawer-logout .icon {
+  background-image: url(images/logout.png);
+}
+
+.navigation-drawer-back-to-blog .icon {
+  background-image: url(images/arrow-left.png);
+}
+
+.account-form {
+  width: 100%;
+  max-width: 450px;
+  max-height: 100%;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  border-radius: 2px;
+  position: absolute;
+  overflow: auto;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -25%);
+  z-index: 1;
+  background-color: #fff;
+  @include material-scroll(8px, $panelPrimaryColor, $panelPrimaryDarkerColor);
+
+  & .title-container {
+    width: calc(100% - 32px);
+    padding: 16px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #3f51b5;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+
+    & .arrow {
+      width: 54px;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      cursor: pointer;
+
+      & .icon {
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        @include center;
+        @include invert-colors;
+        @include image-center(100%, auto);
+        background-image: url(images/arrow-left.png);
+      }
+    }
+
+    & .title {
+      float: left;
+      margin-left: 42px;
+    }
+  }
+
+  & .material-text-field {
+    width: calc(100% - 64px);
+    margin: 0 auto;
+    margin-top: 24px;
+
+    &:first-child {
+      margin-top: 78px;
+    }
+
+    & .material-text-field-input {
+      -webkit-box-shadow: 0 0 0 1000px white inset !important;
+    }
+  }
+
+  & .action-container {
+    width: 100%;
+    position: relative;
+    margin-top: 16px;
+
+    & .material-button {
+      margin-right: 32px;
+      float: right;
+    }
+
+    & .reset-password {
+      position: absolute;
+      left: 32px;
+      @include center-vertical();
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+  }
+
+  & form {
+    margin-top: 54px;
+    padding-bottom: 16px;
+
+    & .copy-right {
+      left: 32px;
+      position: absolute;
+      @include center-vertical;
+
+      & .nersent-logo {
+        width: 32px;
+        height: 32px;
+        @include image-center(100%, auto);
+        background-image: url(images/nersent-logo.png);
+        position: absolute;
+        right: -40px;
+        @include center-vertical;
+      }
+    }
+
+    & .avatar-input {
+      display: none;
+    }
+  }
+
+  & .preloader-container {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    display: none;
+
+    & .material-preloader {
+      width: 54px;
+      height: 54px;
+      position: absolute;
+      @include center;
+    }
+  }
+}
+
+.register-form {
+  & form {
+    padding-top: 0px;
+
+    & .material-text-field.login {
+      margin-top: 0px !important;
+    }
+  }
+
+  & .control-container {
+    position: relative;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    width: 100%;
+
+    &.checkbox {
+      margin-top: 24px;
+      padding-top: 0px;
+      padding-bottom: 0px;
+
+      & .material-checkbox {
+        position: absolute;
+        right: 32px;
+        @include center-vertical;
+      }
+    }
+  }
+
+  & .control-title {
+    max-width: calc(100% - 96px);
+    margin-left: 32px;
+    opacity: 0.7;
+  }
+
+  & .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 100%;
+    @include image-cover()
+    position: absolute;
+    @include center-vertical;
+    right: 32px;
+    cursor: pointer;
+
+    & .camera-container {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.54);
+      border-radius: 100%;
+      position: absolute;
+      @include center;
+      opacity: 0;
+      transition: 0.3s opacity;
+
+      & .camera {
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        @include center;
+        @include image-center(100%, auto);
+        @include invert-colors;
+        background-image: url(images/camera.png);
+      }
+    }
+
+    &:hover .camera-container {
+      opacity: 1;
+    }
+  }
+}
+
+.register-form-footer {
+  position: absolute;
+  @include center-horizontal;
+  text-align: center;
+  bottom: 0;
+
+  & .github {
+    color: rgba(0, 0, 0, 0.54);
+    bottom: 24px;
+  }
+
+  & .copy-right {
+    bottom: 16px;
+    color: rgba(0, 0, 0, 0.74);
+    display: block;
+
+    & .nersent-logo {
+      width: 32px;
+      height: 32px;
+      @include image-center(100%, auto);
+      background-image: url(images/nersent-logo.png);
+      position: absolute;
+      right: -40px;
+      @include center-vertical;
+    }
+  }
+}

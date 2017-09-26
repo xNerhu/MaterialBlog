@@ -1,0 +1,54 @@
+.navigation-drawer {
+  & .header {
+    width: 100%;
+    height: 64px;
+    border-bottom: 1px solid rgba(0,0,0, $dividers-opacity-light);
+  }
+
+  & .header-title {
+    position: relative;
+    @include center-vertical;
+    @include Title;
+    left: 16px;
+  }
+}
+
+.admin-panel {
+  & .content {
+    position: relative;
+    width: calc(100% - #{$navigation-drawer-width});
+    left: $navigation-drawer-width;
+
+    & .content2 {
+      position: relative;
+      top: 64px;
+    }
+  }
+
+  & .toolbar {
+    width: 100%;
+    height: 64px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    position: fixed;
+    z-index: 2;
+    background-color: #2196F3;
+    @include cursor-default;
+
+    & .title {
+      color: #fff;
+      position: relative;
+      @include Title;
+      left: 16px;
+      @include center-vertical;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+

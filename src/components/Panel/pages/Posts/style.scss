@@ -1,0 +1,32 @@
+.panel-page.posts {
+  opacity: 0;
+  transition: 0.3s opacity;
+
+  &.list .posts-list {
+    display: block;
+  }
+
+  &.table .posts-table {
+    display: table;
+  }
+
+  &.pictures {
+    & .posts-list-item .picture {
+      display: block;
+    }
+
+    & .posts-table {
+      & .picture-header, & .picture-cell {
+        display: table-cell;
+      }
+    }
+  }
+
+  &.id {
+    & .posts-table {
+      & .id-header, & .id-cell {
+        display: table-cell;
+      }
+    }
+  }
+}

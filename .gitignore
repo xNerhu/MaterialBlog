@@ -1,9 +1,5 @@
-3/build
-3/materialdesign
-3/node_modules
-panel/build
-3/node_modules
-rest-api/yarn.lock
-rest-api/node_modules
-rest-api/config.js
-rest-api/config-password.js
+build
+node_modules
+yarn.lock
+images/uploads
+autosave

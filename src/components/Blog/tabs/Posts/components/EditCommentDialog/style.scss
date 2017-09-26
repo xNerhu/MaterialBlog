@@ -1,0 +1,18 @@
+.edit-comment-dialog {
+  .material-dialog {
+    max-width: 600px;
+  }
+
+  & .material-dialog-content {
+    overflow-y: auto;
+
+    & .material-text-field {
+      width: calc(100% - 10px);
+      @include material-scroll;
+    }
+  }
+
+  &.enabled-preloader .material-dialog-content {
+    overflow: hidden;
+  }
+}

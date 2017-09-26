@@ -1,0 +1,73 @@
+.tab-layout {
+  height: 56px;
+  width: calc(100% - 58px);
+  position: relative;
+  padding-left: 58px;
+  margin-top: 8px;
+  overflow-y: hidden;
+  overflow-x: auto;
+  white-space: nowrap;
+
+  & .tab {
+    display: inline-block;
+    height: 100%;
+    position: relative;
+    cursor: pointer;
+    white-space: nowrap;
+    padding-left: 24px;
+    padding-right: 24px;
+
+    & .title {
+      font-size: 13px;
+      @include Roboto-Medium;
+      position: relative;
+      @include center-vertical;
+      color: #fff;
+      opacity: 0.79;
+      transition: 0.2s opacity;
+    }
+  }
+
+  & .indicator {
+    width: 88px;
+    height: 2px;
+    position: absolute;
+    bottom: 0;
+    left: 58px;
+    background-color: #fff;
+    transition: 0.15s ease-out left, 0.2s width;
+  }
+}
+
+.tabs-container {
+  height: calc(100% - 120px);
+  overflow: hidden;
+  position: relative;
+}
+
+.tab-page {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transition: 0.15s ease-out left;
+  overflow-y: auto;
+/*
+  &.posts {
+    background-color: red;
+  }
+
+  &.gallery {
+    background-color: blue;
+  }
+
+  &.about-class {
+    background-color: yellow;
+  }
+
+  &.lessons-plan {
+    background-color: green;
+  }
+*/
+}

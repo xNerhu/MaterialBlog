@@ -1,0 +1,45 @@
+.post-comment-input {
+  padding-top: 8px;
+  position: relative;
+  margin-top: 16px;
+
+  & .comment-input-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 100%;
+    @include image-cover();
+    margin-left: 16px;
+    float: left;
+  }
+
+  & .material-text-field {
+    width: calc(100% - 100px);
+    float: left;
+    margin-left: 16px;
+    margin-bottom: 16px;
+  }
+
+  & .action-buttons-container {
+    height: 0px;
+    overflow: hidden;
+    transition: 0.25s ease-out height;
+    clear: both;
+
+    & .material-button {
+      background-color: transparent;
+      color: #3f51b5;
+      padding-left: 10px;
+      padding-right: 10px;
+      margin-bottom: 8px;
+      float: left;
+
+      &.cancel {
+        color: #000;
+      }
+
+      &:first-child {
+        margin-left: 8px;
+      }
+    }
+  }
+}

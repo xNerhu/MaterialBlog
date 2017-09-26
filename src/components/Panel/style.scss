@@ -1,0 +1,27 @@
+.panel-page {
+  height: calc(100% - 64px);
+  position: relative;
+  overflow: auto;
+}
+
+.fab {
+  width: 56px;
+  height: 56px;
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  transition: 0.3s bottom ease-out;
+
+  & .material-fab {
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    @include center;
+    display: none;
+    transition: 0.3s width, 0.3s height;
+
+    & .material-fab-icon {
+      background-image: url(images/add.png);
+    }
+  }
+}

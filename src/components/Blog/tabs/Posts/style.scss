@@ -1,0 +1,14 @@
+.tab-page.posts {
+  & .load-more-button {
+    max-width: 196px;
+    margin: 24px auto;
+    display: none;
+  }
+
+  & .load-more-preloader {
+    width: 54px;
+    height: 54px;
+    margin: 24px auto;
+    display: none;
+  }
+}

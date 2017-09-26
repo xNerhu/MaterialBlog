@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang='pl'>
+  <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=0.8'>
+    <meta name='keywords' content='blog, material, design, xnerhu, github, opole, wsero, einstein, panel' />
+    <meta name='description' content='Blog klasy 3B gimnazjum językowego EINSTEIN WSERO, Opole'>
+    <meta name='distribution' content='web'>
+    <meta name='author' content='Mikołaj Palkiewicz (xNerhu)'>
+    <meta name='copyright' content='MIT LICENSE https://github.com/xNerhu/MaterialBlog'>
+    <meta name='theme-color' content='#3f51b5'>
+    <link rel='icon' href='src/images/logo.ico'>
+    <title>Blog klasy 3B</title>
+  </head>
+  <body>
+    <div id='app'></div>
+    <script src='/js/animation.js'></script>
+    <script src='/js/ripple.js'></script>
+    <script src='/js/dom.js'></script>
+    <script>
+      function loadScripts (arr) {
+        for (var i = 0; i < arr.length; i++) {
+          var script = document.createElement('script');
+          script.src = arr[i];
+          document.body.appendChild(script);
+        }
+      }
+
+      const isLocalHost = (window.location.href.includes('C:/') || window.location.href.includes('localhost'));
+      if (isLocalHost) {
+        loadScripts(['http://localhost:8080/build/app.bundle.js', 'http://localhost:8080/webpack-dev-server.js']);
+      } else {
+        loadScripts(['/app.bundle.js']);
+      }
+    </script>
+  </body>
+</html>

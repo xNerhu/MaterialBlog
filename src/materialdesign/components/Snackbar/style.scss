@@ -1,0 +1,42 @@
+.material-snackbar {
+  min-width: 288px;
+  max-width: 568px;
+  background-color: #323232;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  position: fixed;
+  bottom: -48px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  border-radius: 2px;
+  display: none;
+  opacity: 0;
+  transition: 0.3s bottom ease-out;
+}
+
+.material-snackbar-content {
+  opacity: 0;
+  transition: 0.3s opacity;
+}
+
+.material-snackbar-text {
+  @include Roboto-Light;
+  font-size: 15px;
+  color: #fff;
+  padding-left: 24px;
+  padding-right: 96px;
+}
+
+.material-snackbar-action {
+  font-weight: 400;
+  background-color: transparent;
+  color: #FFEB3B;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%) !important;
+  position: absolute !important;
+  height: 48px;
+  padding-top: 14.5px;
+  padding-bottom: 14.5px;
+}

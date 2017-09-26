@@ -1,0 +1,74 @@
+$blogPrimaryColor: #2196F3;
+$panelPrimaryColor: #3f51b5;
+$panelPrimaryDarkerColor: #303F9F;
+$pictureBlur: 10px;
+
+// Mixins
+@import 'sass/imports/fonts.scss';
+
+@import 'sass/mixins/positioning.scss';
+@import 'sass/mixins/fonts.scss';
+@import 'sass/mixins/icons.scss';
+@import 'sass/mixins/cursors.scss';
+@import 'sass/mixins/backgrounds.scss';
+@import 'sass/mixins/shadows.scss';
+@import 'sass/mixins/text.scss';
+
+// Material design framework
+@import 'materialdesign/mixins/scroll.scss';
+@import 'materialdesign/components/Tooltip/style.scss';
+@import 'materialdesign/components/TimePicker/style.scss';
+@import 'materialdesign/components/TextField/style.scss';
+@import 'materialdesign/components/Switch/style.scss';
+@import 'materialdesign/components/Snackbar/style.scss';
+@import 'materialdesign/components/Preloader/style.scss';
+@import 'materialdesign/components/PreloaderDeterminate/style.scss';
+@import 'materialdesign/components/Menu/style.scss';
+@import 'materialdesign/components/Menu/components/MenuItem/style.scss';
+@import 'materialdesign/components/FAB/style.scss';
+@import 'materialdesign/components/DropDown/style.scss';
+@import 'materialdesign/components/Checkbox/style.scss';
+@import 'materialdesign/components/MaterialButton/style.scss';
+@import 'materialdesign/components/Dialog/style.scss';
+@import '../views/css/ripple.scss';
+
+// App
+@import 'components/App/style.scss';
+
+// Blog
+@import 'components/Blog/style.scss';
+@import 'components/Blog/TabLayout/style.scss';
+@import 'components/Blog/InfoDialog/style.scss';
+@import 'components/Blog/tabs/Posts/style.scss';
+@import 'components/Blog/tabs/Posts/components/EditCommentDialog/style.scss';
+@import 'components/Blog/tabs/Gallery/style.scss';
+@import 'components/Blog/tabs/LessonsPlan/style.scss';
+
+// Panel
+@import 'components/Panel/style.scss';
+@import 'components/Panel/pages/Posts/style.scss';
+@import 'components/Panel/pages/Posts/components/Table/style.scss';
+@import 'components/Panel/pages/Posts/components/List/style.scss';
+@import 'components/Panel/pages/Posts/components/PostDialog/style.scss';
+@import 'components/Panel/pages/Posts/components/PostsFilterDialog/style.scss';
+@import 'components/Panel/pages/Gallery/style.scss';
+@import 'components/Panel/pages/Gallery/components/UploadPicturesDialog/style.scss';
+@import 'components/Panel/pages/Gallery/components/UploadPicturesDialog/components/Item/style.scss';
+@import 'components/Panel/pages/LessonsPlan/style.scss';
+@import 'components/Panel/pages/LessonsPlan/components/LessonsHours/style.scss';
+@import 'components/Panel/pages/ManageAccount/style.scss';
+
+// Global components
+@import 'components/Post/style.scss';
+@import 'components/Post/components/Comment/style.scss';
+@import 'components/Post/components/CommentInput/style.scss';
+@import 'components/Toolbar/style.scss';
+@import 'components/Toolbar/components/MultiIcon/style.scss';
+@import 'components/NavigationDrawer/style.scss';
+@import 'components/NavigationDrawer/components/NavigationDrawerItem/style.scss';
+@import 'components/NavigationDrawerFooter/style.scss';
+@import 'components/ExpansionPanel/style.scss';
+@import 'components/Category/style.scss';
+@import 'components/Section/style.scss';
+@import 'components/PicturesDialog/style.scss';
+@import 'components/Day/style.scss';

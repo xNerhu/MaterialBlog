@@ -1,0 +1,38 @@
+.navigation-drawer-footer {
+  position: absolute;
+  bottom: 16px;
+  display: inline-block;
+  width: auto;
+  padding-right: 40px;
+  width: 100%;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.74);
+
+  & .copyright {
+    margin-top: 8px;
+  }
+
+  & .nersent-logo {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    @include image-cover;
+    background-image: url(images/nersent-logo.png);
+    position: absolute;
+    right: -36px;
+    @include center-vertical;
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
+@media (max-height: 500px) {
+  .navigation-drawer-footer {
+    margin-top: 32px;
+    position: relative;
+  }
+}

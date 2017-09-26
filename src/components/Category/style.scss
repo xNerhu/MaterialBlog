@@ -1,0 +1,48 @@
+.gallery-category {
+  width: 200px;
+  height: 200px;
+  background-color: #fff;
+  position: relative;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  float: left;
+  margin-top: 4px;
+  margin-left: 4px;
+
+  & .title {
+    width: calc(100% - 48px);
+    height: auto;
+    padding: 16px;
+    padding-right: 32px;
+    position: absolute;
+    bottom: 0;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  & .icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 51px;
+    height: 51px;
+    @include image-center(24px, auto);
+    @include invert-colors;
+    opacity: 0.74;
+  }
+
+  & .menu-icon {
+    background-image: url(images/more.png);
+  }
+
+  & .info-icon {
+    background-image: url(images/info.png);
+    transition: 0.3s opacity;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

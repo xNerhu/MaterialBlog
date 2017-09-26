@@ -1,0 +1,43 @@
+.lessons-plan-hours {
+  margin-bottom: 24px !important;
+
+  & .item {
+    position: relative;
+    clear: both;
+
+    & .start, & .finish {
+      float: left;
+      font-size: 16px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      margin-left: 24px;
+      border-bottom: 2px solid #FFC107;
+      cursor: pointer;
+      margin-bottom: 12px;
+      min-width: 44px;
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+    & .menu-icon {
+      width: 48px;
+      height: 48px;
+      position: absolute;
+      @include center-vertical;
+      right: 12px;
+      @include image-center(24px, auto);
+      background-image: url(images/more.png);
+      opacity: 0.54;
+      cursor: pointer;
+
+      &.disabled {
+        opacity: 0.26;
+        cursor: default;
+      }
+    }
+  }
+}

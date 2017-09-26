@@ -1,0 +1,27 @@
+.gallery-upload-pictures-dialog {
+  background-color: #F5F5F5;
+  width: 100%;
+  height: calc(100% - 64px);
+  position: fixed;
+  top: 64px;
+  left: 0;
+  transition: 0.2s opacity;
+  opacity: 0;
+  display: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  & .items-container {
+    width: calc(100% - 64px);
+    max-width: 640px;
+    margin: 24px auto;
+    position: relative;
+    background-color: #fff;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    border-radius: 2px;
+  }
+
+  & .upload-input {
+    display: none;
+  }
+}
