@@ -33,7 +33,8 @@ module.exports = (app, defaultDb, passport) => {
           id: user._id,
           username: user.username,
           email: user.email,
-          avatar: base64
+          avatar: base64,
+          moderator: user.moderator
         })
       })
     })(req, res, next)
@@ -82,7 +83,7 @@ module.exports = (app, defaultDb, passport) => {
       if (result != null) return res.json({message: 'login_exists', success: false})
 
       collection.findOne({
-        email: req.body.email
+        email: req.body.email.toLowerCase()
       }, (err, result) => {
         if (err) return res.json(err)
         if (result != null) return res.json({message: 'email_exists', success: false})
@@ -92,9 +93,9 @@ module.exports = (app, defaultDb, passport) => {
           if (err) return res.json({message: err, success: false})
 
           collection.insertOne({
-            login: req.body.login,
+            login: req.body.login.toLowerCase(),
             username: req.body.username,
-            email: req.body.email,
+            email: req.body.email.toLowerCase(),
             avatar: 'images/default-avatar.png',
             password: hash,
             admin: false,

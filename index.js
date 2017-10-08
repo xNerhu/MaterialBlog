@@ -8,7 +8,7 @@ const session = require('express-session')
 const { mongoData, expressData, upload, autoSave, autoSaveInterval, autoSaveDirectory } = require('./config')
 const path = require('path')
 const Directory = require('./utils/directory')
-const AutoSave = require('./utils/autosave')
+const makeDataCopy = require('./utils/data-copy')
 
 const app = express()
 const mongoURL = `mongodb://${mongoData.user}:${mongoData.password}@${mongoData.ip}:${mongoData.port}/admin`
@@ -47,11 +47,12 @@ MongoClient.connect(mongoURL, (err, db) => {
 
   if (autoSave) {
     setInterval(() => {
-      AutoSave.savePosts(defaultDb)
+      makeDataCopy(defaultDb)
     }, autoSaveInterval)
   }
 })
 
+Directory.createIfNotExists('images')
 Directory.createIfNotExists(upload.directory)
 Directory.createIfNotExists(upload.directory + upload.gallery)
 Directory.createIfNotExists(upload.directory + upload.posts)

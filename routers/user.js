@@ -7,27 +7,24 @@ const Directory = require('../utils/directory')
 
 module.exports = (app, defaultDb) => {
   app.get('/user-info', (req, res) => {
-    const isAuthenticated = req.isAuthenticated()
-    const userInfo = req.user
-
-    let info = null
-
-    if (userInfo != null) {
-      const base64 = userInfo.avatar
-
-      info = {
-        _id: userInfo._id,
-        login: userInfo.login,
-        username: userInfo.username,
-        email: userInfo.email,
-        avatar: base64
-      }
+    if (req.user != null) {
+      res.json({
+        success: true,
+        info: {
+          _id: req.user._id,
+          login: req.user.login,
+          username: req.user.username,
+          email: req.user.email,
+          avatar: req.user.avatar,
+          moderator: req.user.moderator
+        }
+      })
+    } else {
+      res.json({
+        success: false,
+        message: 'User is not logged!'
+      })
     }
-
-    res.send({
-      success: isAuthenticated,
-      info: info
-    })
   })
 
   app.get('/get-moderators', (req, res) => {
@@ -54,7 +51,7 @@ module.exports = (app, defaultDb) => {
   app.post('/change-user-settings', (req, res) => {
     let collection = defaultDb.collection('users')
 
-    if (req.query.user == null) return res.send({message: 'User is not logged!', success: false})
+    if (req.user == null) return res.send({message: 'User is not logged!', success: false})
 
     let avatar = req.user.avatar
 

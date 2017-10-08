@@ -2,6 +2,7 @@ import Component from 'inferno-component'
 import Url from 'url'
 
 import { login } from '../../actions/auth'
+import { userInfo } from '../../actions/user'
 
 import Preloader from '../../materialdesign/components/Preloader'
 import TextField from '../../materialdesign/components/TextField'
@@ -131,10 +132,11 @@ export default class Login extends Component {
     this.touched = true
   }
 
-  onArrowClick = (e) => {
+  onArrowClick = async (e) => {
     const backToBlog = Url.parse(window.location.href, true).query.backtoblog
+    const json = await userInfo()
 
-    window.location = (backToBlog !== 'true') ? '/panel' : '/'
+    window.location = (backToBlog !== 'true' && json.success) ? '/panel' : '/'
   }
 
   render () {

@@ -59,7 +59,7 @@ export default class MaterialButton extends Component {
     if (this.props.disabled) className += ' disabled'
 
     return (
-      <div className={className} ref={(e) => this.elements.root = e} onClick={this.onClick} style={this.props.style}>
+      <div className={className} ref={(e) => this.elements.root = e} onClick={this.onClick} onMouseDown={this.onMouseDown} style={this.props.style}>
         {this.props.text}
       </div>
     )

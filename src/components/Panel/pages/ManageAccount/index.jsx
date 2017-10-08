@@ -176,7 +176,7 @@ export default class LessonsPlan extends Component {
       if (!json.success) return console.error(json)
 
       const browserHistory = window.app.getBrowserHistory()
-      browserHistory.push('/panel/login')
+      browserHistory.push('/login')
     }
   }
 

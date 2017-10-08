@@ -22,8 +22,8 @@ module.exports = (app, defaultDb) => {
     const actualDate = new Date()
     let year = actualDate.getFullYear()
     let month = actualDate.getMonth()
-    if (timePeriod) {
 
+    if (timePeriod) {
       month -= timePeriod
 
       if (month < 0) {

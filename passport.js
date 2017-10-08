@@ -5,6 +5,8 @@ module.exports = (passport, defaultDb) => {
   passport.use(new LocalStrategy((username, password, done) => {
     let collection = defaultDb.collection('users')
 
+    username = username.toLowerCase()
+
     let criteria = (username.indexOf('@') === -1) ? {login: username} : {email: username}
 
     collection.findOne(criteria, (err, user) => {

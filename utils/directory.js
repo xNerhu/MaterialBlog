@@ -3,8 +3,9 @@ const fs = require('fs')
 /**
  * Deletes directory and all files in it.
  * @param {String} dir path
+ * @param {Boolean} delete dir on end (optional)
  */
-const rm = (path) => {
+const rm = (path, deleteDir = true) => {
   try {
     const files = fs.readdirSync(path)
 
@@ -20,7 +21,7 @@ const rm = (path) => {
       }
     }
 
-    fs.rmdirSync(path)
+    if (deleteDir) fs.rmdirSync(path)
 
     return true
   } catch (e) {

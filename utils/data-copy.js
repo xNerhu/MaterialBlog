@@ -2,7 +2,7 @@ const fs = require('fs')
 const { upload, autoSaveDirectory } = require('../config')
 const archiver = require('archiver')
 
-const savePosts = (defaultDb) => {
+module.exports = makeCopy = (defaultDb, callback) => {
   const usersCollection = defaultDb.collection('users')
   const postsCollection = defaultDb.collection('posts')
   const categoriesCollection = defaultDb.collection('categories')
@@ -36,7 +36,7 @@ const savePosts = (defaultDb) => {
             })
 
             output.on('close', () => {
-              console.log('Saved')
+              if (typeof callback === 'function') callback()
             })
 
             archive.on('warning', (err) => {
@@ -49,7 +49,7 @@ const savePosts = (defaultDb) => {
 
             archive.pipe(output)
 
-            archive.append(JSON.stringify(posts), {
+            archive.append(JSON.stringify(users), {
               name: 'users.json'
             })
             archive.append(JSON.stringify(posts), {
@@ -73,8 +73,4 @@ const savePosts = (defaultDb) => {
       })
     })
   })
-}
-
-module.exports = {
-  savePosts: savePosts
 }
