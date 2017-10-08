@@ -29,6 +29,21 @@ node index
 
 On the first ```node index``` run, you need to run
 ```bash
-node fabric-reset
+node default-settings
 ```
 to create first admin account
+
+## Saving data
+To save data (database and pictures), run:
+```bash
+node save
+```
+
+After finish, it will create compressed folder (ZIP) in auto save directory (default ./autosave) named actual date
+
+## Reseting to default settings
+This script must be ran on the first blog run to create admin account and more.
+```bash
+node default-settings
+```
+Before run, I recommending to make data copy with ```node save```
